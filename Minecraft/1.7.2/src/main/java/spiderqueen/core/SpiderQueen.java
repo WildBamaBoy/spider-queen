@@ -11,6 +11,7 @@ import spiderqueen.items.ItemCocoon;
 import com.radixshock.radixcore.core.IMod;
 import com.radixshock.radixcore.core.ModLogger;
 import com.radixshock.radixcore.core.RadixCore;
+import com.radixshock.radixcore.file.ModPropertiesManager;
 import com.radixshock.radixcore.lang.ILanguageLoaderHook;
 import com.radixshock.radixcore.lang.ILanguageParser;
 import com.radixshock.radixcore.lang.LanguageLoader;
@@ -38,6 +39,8 @@ public class SpiderQueen implements IMod
 	public static CommonProxy proxy;
 	
 	private ModLogger logger;
+	
+	public ModPropertiesManager modPropertiesManager;
 	
 	public CreativeTabs tabSpiderQueen;
 	
@@ -91,10 +94,16 @@ public class SpiderQueen implements IMod
 		return instance;
 	}
 	
+	public ModPropertiesList getModProperties()
+	{
+		return (ModPropertiesList)modPropertiesManager.modPropertiesInstance;
+	}
+	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
 		logger = new ModLogger(this);
+		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 	}
 
 	@Override
