@@ -29,7 +29,7 @@ public class ItemCocoon extends Item
 		if (!world.isRemote)
 		{
 			EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-			posY += 2;
+			posY += 4;
 			entityCocoon.setPositionAndRotation(posX, posY, posZ, entityCocoon.rotationYaw - 90F, 0F);
 			world.spawnEntityInWorld(entityCocoon);
 		}

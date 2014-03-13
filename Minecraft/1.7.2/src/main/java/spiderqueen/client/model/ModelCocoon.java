@@ -13,7 +13,7 @@ public class ModelCocoon extends ModelBase
 	public ModelCocoon()
 	{
 		float scale = 0F;
-		float y = -24F;
+		float y = -36F;
 		Cocoon1 = new ModelRenderer(this,16, 8);
 		Cocoon1.addBox(0F, 0F, 0F, 12, 12, 12, scale);
 		Cocoon1.setRotationPoint(-6F, 24F+y, -6F);
