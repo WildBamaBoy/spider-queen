@@ -28,8 +28,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public EntityCocoon(World world)
 	{
 		super(world);
-		setSize(1F, 1F);
-
+		this.setSize(1F, 1F);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 	}
 
@@ -66,7 +65,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public AxisAlignedBB getBoundingBox()
 	{
-		return boundingBox;
+		return this.boundingBox;
 	}
 
 	@Override
@@ -93,7 +92,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 		if (currentDamage > 0)
 		{
-			Random rand = new Random();
+			final Random rand = new Random();
+
 			rotationPitch += rand.nextFloat();
 			rotationPitch -= rand.nextFloat();
 			currentDamage--;
@@ -104,7 +104,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damage)
 	{
-		Entity entity = damageSource.getEntity();
+		final Entity entity = damageSource.getEntity();
 
 		timeSinceHit = 10;
 		currentDamage += damage * 10;
@@ -116,17 +116,13 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			if (isEaten())
 			{
 				worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
+			}
+
+			if (!worldObj.isRemote)
+			{
+				dropItem(cocoonType.getCocoonItem(), 1);
 				setDead();
 			}
-
-			else
-			{
-
-			}
-			//TODO
-			//dropItemWithDamage(mod_SpiderQueen.itemCocoon.shiftedIndex, 1, myType);
-
-			setDead();
 		}
 
 		return true;
@@ -144,7 +140,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		{
 			e.printStackTrace();
 		}
-		
+
 		isEaten = nbt.getBoolean("isEaten");
 	}
 
@@ -174,7 +170,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		{
 			e.printStackTrace();
 		}
-		
+
 		isEaten = buffer.readBoolean();
 	}
 
@@ -185,12 +181,15 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		{
 			entityPlayer.heal(3);
 			entityPlayer.getFoodStats().addStats(4, 0.4f);
-			
+
 			worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
 			worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
 			isEaten = true;
-			
-			this.entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, 5, 0), 0);
+
+			if (!worldObj.isRemote)
+			{
+				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, 5, 0), 0);
+			}
 		}
 
 		return true;
