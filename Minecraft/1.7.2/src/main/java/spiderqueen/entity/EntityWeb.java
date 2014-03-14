@@ -226,7 +226,7 @@ public class EntityWeb extends Entity
 					{
 						final Random rand = new Random();
 						final int intHealth = (int)entityHit.getHealth();
-						final int difficulty = cocoonType.getEntityCatchDifficulty();
+						final int captureDifficulty = cocoonType.getEntityCatchDifficulty();
 
 						//TODO
 						//						if(movingobjectposition.entityHit instanceof EntityFly)
@@ -236,7 +236,7 @@ public class EntityWeb extends Entity
 						//							setDead();
 						//						}
 
-						if (difficulty != 0 && rand.nextInt(intHealth / difficulty + 1) != 0)
+						if (captureDifficulty != 0 && rand.nextInt(intHealth / captureDifficulty + 1) != 0)
 						{
 							setToInactive();
 							return;
