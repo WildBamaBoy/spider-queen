@@ -10,8 +10,11 @@ import spiderqueen.entity.EntityWeb;
 
 public class ItemWeb extends Item
 {
-	public ItemWeb()
+	private boolean isPoison;
+	
+	public ItemWeb(boolean isPoison)
 	{
+		this.isPoison = isPoison;
 		this.maxStackSize = 64;
 		this.setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 	}
@@ -22,12 +25,20 @@ public class ItemWeb extends Item
 		
 		if (!world.isRemote)
 		{
-			world.spawnEntityInWorld(new EntityWeb(entityPlayer));
+			world.spawnEntityInWorld(new EntityWeb(entityPlayer, isPoison));
 		}
 
 		if (!entityPlayer.capabilities.isCreativeMode)
 		{
-			entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb);
+			if (isPoison)
+			{
+				entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemPoisonWeb);
+			}
+			
+			else
+			{
+				entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb);
+			}
 		}
 		
 		return itemStack;
@@ -36,6 +47,14 @@ public class ItemWeb extends Item
 	@Override
 	public void registerIcons(IIconRegister iconRegister)
 	{
-		itemIcon = iconRegister.registerIcon("spiderqueen:Web");
+		if (isPoison)
+		{
+			itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison");
+		}
+		
+		else
+		{
+			itemIcon = iconRegister.registerIcon("spiderqueen:Web");
+		}
 	}
 }

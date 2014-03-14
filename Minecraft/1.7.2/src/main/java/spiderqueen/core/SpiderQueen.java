@@ -3,6 +3,8 @@ package spiderqueen.core;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import spiderqueen.blocks.BlockPoisonWeb;
+import spiderqueen.blocks.BlockWeb;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityWeb;
@@ -72,7 +74,7 @@ public class SpiderQueen implements IMod
 	public Item itemHumanSkull;
 	
 	//Blocks
-	public Block blockSmallWeb;
+	public Block blockWeb;
 	public Block blockPoisonWeb;
 	public Block blockWebBed;
 	public Block blockBeehive;
@@ -154,10 +156,7 @@ public class SpiderQueen implements IMod
 		};
 		
 		itemCocoonAnt.setCreativeTab(tabSpiderQueen);
-		
-		//Other items
-		itemWeb = new ItemWeb().setUnlocalizedName("web");
-		
+	
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.Chicken).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.Cow).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.Creeper).setUnlocalizedName("cocoon.creeper");
@@ -171,8 +170,10 @@ public class SpiderQueen implements IMod
 		itemCocoonWasp = new ItemCocoon(EnumCocoonType.Wasp).setUnlocalizedName("cocoon.wasp");
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.Wolf).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.Zombie).setUnlocalizedName("cocoon.zombie");
+	
+		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
+		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
 		
-		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCreeper, itemCocoonCreeper.getUnlocalizedName());
@@ -186,12 +187,19 @@ public class SpiderQueen implements IMod
 		GameRegistry.registerItem(itemCocoonWasp, itemCocoonWasp.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonWolf, itemCocoonWolf.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonZombie, itemCocoonZombie.getUnlocalizedName());
+		
+		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
+		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
 	}
 
 	@Override
 	public void initializeBlocks() 
 	{
+		blockWeb = new BlockWeb();
+		blockPoisonWeb = new BlockPoisonWeb();
 		
+		GameRegistry.registerBlock(blockWeb, "Web");
+		GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
 	}
 
 	@Override

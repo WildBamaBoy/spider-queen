@@ -262,12 +262,12 @@ public class EntityWeb extends Entity
 				{
 					if (isPoison)
 					{
-						worldObj.setBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ, SpiderQueen.getInstance().blockPoisonWeb);
+						worldObj.setBlock(impactPoint.blockX, impactPoint.blockY + 1, impactPoint.blockZ, SpiderQueen.getInstance().blockPoisonWeb);
 					}
 
 					else
 					{
-						worldObj.setBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ, SpiderQueen.getInstance().blockSmallWeb);
+						worldObj.setBlock(impactPoint.blockX, impactPoint.blockY + 1, impactPoint.blockZ, SpiderQueen.getInstance().blockWeb);
 					}
 				}
 
