@@ -239,6 +239,7 @@ public class EntityWeb extends Entity
 						if (captureDifficulty != 0 && rand.nextInt(intHealth / captureDifficulty + 1) != 0)
 						{
 							setToInactive();
+							setNoBlockSpawn();
 							return;
 						}
 
@@ -280,9 +281,9 @@ public class EntityWeb extends Entity
 		isInactive = true;
 
 		final Random rand = new Random();
-		if(rand.nextInt(2) == 0) { motionX = motionX * -0.2F; }
-		if(rand.nextInt(2) == 0) { motionY = motionY * -0.2F; }
-		if(rand.nextInt(2) == 0) { motionZ = motionZ * -0.2F; }
+		if (rand.nextInt(2) == 0) { motionX = motionX * -0.2F; }
+		if (rand.nextInt(2) == 0) { motionY = motionY * -0.2F; }
+		if (rand.nextInt(2) == 0) { motionZ = motionZ * -0.2F; }
 	}
 
 	private void setNoBlockSpawn()
