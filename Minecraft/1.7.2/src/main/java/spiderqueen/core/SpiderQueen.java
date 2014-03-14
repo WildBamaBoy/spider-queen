@@ -5,8 +5,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.entity.EntityCocoon;
+import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.items.ItemCocoon;
+import spiderqueen.items.ItemWeb;
 
 import com.radixshock.radixcore.core.IMod;
 import com.radixshock.radixcore.core.ModLogger;
@@ -154,6 +156,8 @@ public class SpiderQueen implements IMod
 		itemCocoonAnt.setCreativeTab(tabSpiderQueen);
 		
 		//Other items
+		itemWeb = new ItemWeb().setUnlocalizedName("web");
+		
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.Chicken).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.Cow).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.Creeper).setUnlocalizedName("cocoon.creeper");
@@ -168,6 +172,7 @@ public class SpiderQueen implements IMod
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.Wolf).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.Zombie).setUnlocalizedName("cocoon.zombie");
 		
+		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCreeper, itemCocoonCreeper.getUnlocalizedName());
@@ -211,6 +216,7 @@ public class SpiderQueen implements IMod
 	public void initializeEntities() 
 	{
 		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), 1, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityWeb.class, EntityWeb.class.getSimpleName(), 2, this, 50, 2, true);
 	}
 
 	@Override
