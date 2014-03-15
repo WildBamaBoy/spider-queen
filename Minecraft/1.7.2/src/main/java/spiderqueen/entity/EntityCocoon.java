@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.enums.EnumCocoonType;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpawnData
@@ -118,11 +120,12 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
 			}
 
-			if (!worldObj.isRemote)
+			if (!worldObj.isRemote && !isEaten())
 			{
 				dropItem(cocoonType.getCocoonItem(), 1);
-				setDead();
 			}
+			
+			setDead();
 		}
 
 		return true;
@@ -182,13 +185,23 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			entityPlayer.heal(3);
 			entityPlayer.getFoodStats().addStats(4, 0.4f);
 
-			worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
-			worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
+			worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
+			worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
 			isEaten = true;
 
 			if (!worldObj.isRemote)
 			{
 				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, 5, 0), 0);
+				
+				try
+				{
+					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
+				}
+				
+				catch (Throwable e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 
