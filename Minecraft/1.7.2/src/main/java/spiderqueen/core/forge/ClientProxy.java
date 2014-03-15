@@ -1,6 +1,8 @@
 package spiderqueen.core.forge;
 
+import net.minecraft.entity.player.EntityPlayer;
 import spiderqueen.client.render.RenderCocoon;
+import spiderqueen.client.render.RenderSpiderQueen;
 import spiderqueen.client.render.RenderWeb;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityWeb;
@@ -13,5 +15,6 @@ public class ClientProxy extends CommonProxy
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityCocoon.class, new RenderCocoon());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWeb.class, new RenderWeb());
+		RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
 	}
 }
