@@ -156,7 +156,6 @@ public class SpiderQueen implements IMod
 		};
 		
 		itemCocoonAnt.setCreativeTab(tabSpiderQueen);
-	
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.Chicken).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.Cow).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.Creeper).setUnlocalizedName("cocoon.creeper");
@@ -236,13 +235,13 @@ public class SpiderQueen implements IMod
 	@Override
 	public String getShortModName() 
 	{
-		return "SQReborn";
+		return "SpiderQueen";
 	}
 
 	@Override
 	public String getLongModName() 
 	{
-		return "Spider Queen Reborn";
+		return "Spider Queen Remastered";
 	}
 
 	@Override
@@ -266,7 +265,7 @@ public class SpiderQueen implements IMod
 	@Override
 	public String getRedirectURL() 
 	{
-		return "{REDIR}";
+		return "{REDIR}"; //TODO
 	}
 
 	@Override
