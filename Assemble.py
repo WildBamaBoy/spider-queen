@@ -2,7 +2,7 @@
 
 #-------------------------------------------------------------------------------
 # Assemble.py
-# Prepares Minecraft Comes Alive to be distributed by packaging the mod
+# Prepares Spider Queen to be distributed by packaging the mod
 # archive and source archives.
 #
 # This file, both in source code form or as a compiled binary, is free and
@@ -24,7 +24,7 @@ dirCrowdin = dirCWD + "Crowdin/"
 
 def main():
     print "---------------------------------------------"
-    print "Minecraft Comes Alive Packaging Script"
+    print "Spider Queen Packaging Script"
     print "---------------------------------------------"
 
     #Get release version
@@ -62,7 +62,7 @@ def build():
     choice = raw_input("Run 'gradlew.bat build'? [Y/N]: ")
     print ""
 
-    copyRadixSourceToMCA()
+    copyRadixSourceToMod()
     updateLanguageFiles()
 
     if choice == "Y" or choice == "y":
@@ -70,13 +70,13 @@ def build():
     else:
         log("Gradle build SKIPPED.")
 
-    deleteRadixSourceFromMCA()
+    deleteRadixSourceFromMod()
     moveBuildToBuildFolder()
     cleanBuild()
     createSourceArchive()
 
-def copyRadixSourceToMCA():
-    log("Copying RadixCore source code to MCA directory...")
+def copyRadixSourceToMod():
+    log("Copying RadixCore source code to Spider Queen directory...")
 
     dirRadixSrc = "D:/Programming/radix-core/Minecraft/1.7.2/src/main/java/com/"
     dirRadixDst = dirGradleBase + "/src/main/java/com/"
@@ -87,20 +87,20 @@ def copyRadixSourceToMCA():
 
     shutil.copytree(dirRadixSrc, dirGradleBase + "/src/main/java/com/")
 
-def deleteRadixSourceFromMCA():
-    log("Deleting RadixCore source code from MCA directory...")
+def deleteRadixSourceFromMod():
+    log("Deleting RadixCore source code from Spider Queen directory...")
     shutil.rmtree(dirGradleBase + "/src/main/java/com/")
 
 def updateLanguageFiles():
     log("Updating language files...")
     convertLanguageFiles()
 
-    dirAssetsMCA = dirGradleBase + "/src/main/resources/assets/mca/"
-    shutil.rmtree(dirAssetsMCA + "/lang")
-    shutil.copytree(dirCrowdin + "/Build/", dirAssetsMCA + "/lang")
+    dirAssetsSQ = dirGradleBase + "/src/main/resources/assets/spiderqueen/"
+    shutil.rmtree(dirAssetsSQ + "/lang")
+    shutil.copytree(dirCrowdin + "/Build/", dirAssetsSQ + "/lang")
 
 def callGradleSubprocess():
-    log("Building MCA...")
+    log("Building Spider Queen...")
 
     os.chdir(dirGradleBase)
     print "--------------------- GRADLE BEGIN ---------------------"
@@ -110,7 +110,7 @@ def callGradleSubprocess():
 def moveBuildToBuildFolder():
     log("Moving build to build folder...")
 
-    fileFinishedBuild = dirGradleBase + "/build/libs/MCA-RadixAssembled.jar"
+    fileFinishedBuild = dirGradleBase + "/build/libs/SpiderQueen-RadixAssembled.jar"
 
     if os.path.exists(dirBuild):
         logSub("Removing existing build folder...")
@@ -119,13 +119,13 @@ def moveBuildToBuildFolder():
         time.sleep(1)
 
     os.mkdir(dirBuild)
-    shutil.copy(fileFinishedBuild, dirBuild + "/_in_MCA-" + modVersion + " MC-" + minecraftVersion + ".zip")
+    shutil.copy(fileFinishedBuild, dirBuild + "/_in_SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + ".zip")
 
 def cleanBuild():
-    log("Cleaning MCA...")
+    log("Cleaning Spider Queen...")
 
-    fileInArchive = dirBuild + "/_in_MCA-" + modVersion + " MC-" + minecraftVersion + ".zip"
-    fileOutArchive = dirBuild + "/_out_MCA-" + modVersion + " MC-" + minecraftVersion + ".zip"
+    fileInArchive = dirBuild + "/_in_SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + ".zip"
+    fileOutArchive = dirBuild + "/_out_SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + ".zip"
 
     zipInArchive = zipfile.ZipFile(fileInArchive, "r", zipfile.ZIP_DEFLATED)
     zipOutArchive = zipfile.ZipFile(fileOutArchive, "w", zipfile.ZIP_DEFLATED)
@@ -151,15 +151,15 @@ def createSourceArchive():
 
     log("Building source archive...")
 
-    sourceFolder = dirGradleBase + "/src/main/java/mca/"
-    sourceArchive = zipfile.ZipFile(dirBuild + "/MCA-" + modVersion + " MC-" + minecraftVersion + " - Source.zip", "w", zipfile.ZIP_DEFLATED)
+    sourceFolder = dirGradleBase + "/src/main/java/spiderqueen/"
+    sourceArchive = zipfile.ZipFile(dirBuild + "/SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + " - Source.zip", "w", zipfile.ZIP_DEFLATED)
     sourceFiles = os.listdir(sourceFolder)
 
     for root, dirs, files in os.walk(sourceFolder):
         for fileName in files:
             containsCorrectHeader = False
             fullPath = os.path.join(root, fileName)
-            archiveName = fullPath.replace(sourceFolder, "mca/")
+            archiveName = fullPath.replace(sourceFolder, "spiderqueen/")
             sourceArchive.write(fullPath, archiveName)
 
             with open(fullPath) as f:

@@ -24,8 +24,8 @@ buildscript
 apply plugin: 'forge'
 
 version = "RadixAssembled"
-group= "mca"
-archivesBaseName = "MCA"
+group= "spiderqueen"
+archivesBaseName = "SpiderQueen"
 
 minecraft 
 {
