@@ -12,32 +12,34 @@ import net.minecraft.item.Item;
 
 public enum EnumCocoonType 
 {
-	Empty(null, 0),
-	Pig(EntityPig.class, 0),
-	Sheep(EntitySheep.class, 6),
-	Creeper(EntityCreeper.class, 4),
-	Chicken(EntityChicken.class, 0),
-	Zombie(EntityZombie.class, 4),
-	Skeleton(EntitySkeleton.class, 4),
-	Cow(EntityCow.class, 6),
-	Human(null, 0),
-	GathererBee(null, 4),
-	WarriorBee(null, 4),
-	QueenBee(null, 1),
-	Wasp(null, 4),
-	Ant(null, 4),
-	Wolf(EntityWolf.class, 4);
+	Empty(null, 0, "null"),
+	Pig(EntityPig.class, 0, "mob.pig.death"),
+	Sheep(EntitySheep.class, 6, "mob.sheep.say"),
+	Creeper(EntityCreeper.class, 4, "mob.creeper.death"),
+	Chicken(EntityChicken.class, 0, "mob.chicken.death"),
+	Zombie(EntityZombie.class, 4, "mob.zombie.death"),
+	Skeleton(EntitySkeleton.class, 4, "mob.skeleton.death"),
+	Cow(EntityCow.class, 6, "mob.cow.hurt"),
+	Human(null, 0, "null"),
+	GathererBee(null, 4, "null"),
+	WarriorBee(null, 4, "null"),
+	QueenBee(null, 1, "null"),
+	Wasp(null, 4, "null"),
+	Ant(null, 4, "null"),
+	Wolf(EntityWolf.class, 4, "mob.wolf.death");
 	
 	private Class entityClass;
 	private Item itemCocoon;
 	
 	/** How difficult it is to catch this entity. Lower factor is more difficult, unless 0. */
 	private int entityCatchDifficulty;
+	private String deathSound;
 	
-	private EnumCocoonType(Class entityClass, int entityCatchDifficulty)
+	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound)
 	{
 		this.entityClass = entityClass;
 		this.entityCatchDifficulty = entityCatchDifficulty;
+		this.deathSound = deathSound;
 	}
 	
 	public Class getEntityClass()
@@ -58,6 +60,11 @@ public enum EnumCocoonType
 	public int getEntityCatchDifficulty()
 	{
 		return entityCatchDifficulty;
+	}
+	
+	public String getDeathSound()
+	{
+		return deathSound;
 	}
 	
 	public static EnumCocoonType getCocoonTypeByCapturedClass(Class entityClass)
