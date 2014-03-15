@@ -30,11 +30,6 @@ public class EntityWeb extends Entity
 	public double accelerationY;
 	public double accelerationZ;
 
-	/**
-	 * Constructor for client rendering.
-	 * 
-	 * @param 	worldObj	The world to render the object in.
-	 */
 	public EntityWeb(World worldObj)
 	{
 		super(worldObj);
@@ -75,7 +70,7 @@ public class EntityWeb extends Entity
 	@Override
 	public boolean isInRangeToRenderDist(double distance)
 	{
-		double weightedLength = this.boundingBox.getAverageEdgeLength() * 4.0D;
+		double weightedLength = boundingBox.getAverageEdgeLength() * 4.0D;
 		weightedLength *= 64.0D;
 		return distance < weightedLength * weightedLength;
 	}
@@ -83,18 +78,18 @@ public class EntityWeb extends Entity
 	@Override
 	public void onUpdate()
 	{
-		if (!this.worldObj.isRemote && (this.shooter != null && this.shooter.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ)))
+		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.blockExists((int)posX, (int)posY, (int)posZ)))
 		{
-			this.setDead();
+			setDead();
 		}
 
 		else
 		{
 			super.onUpdate();
 
-			if (!this.worldObj.isRemote)
+			if (!worldObj.isRemote)
 			{
-				if (this.shooter != null && this.getDistanceToEntity(shooter) > 150.0D)
+				if (shooter != null && getDistanceToEntity(shooter) > 150.0D)
 				{
 					setDead();
 					return;
@@ -108,26 +103,26 @@ public class EntityWeb extends Entity
 
 	private void updateCollision()
 	{
-		Vec3 currentVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-		Vec3 nextVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition collisionPosition = this.worldObj.rayTraceBlocks(currentVector, nextVector);
-		currentVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-		nextVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		Vec3 currentVector = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
+		Vec3 nextVector = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+		MovingObjectPosition collisionPosition = worldObj.rayTraceBlocks(currentVector, nextVector);
+		currentVector = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
+		nextVector = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
 
 		if (collisionPosition != null)
 		{
-			nextVector = this.worldObj.getWorldVec3Pool().getVecFromPool(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
+			nextVector = worldObj.getWorldVec3Pool().getVecFromPool(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
 		}
 
 		Entity collidedEntity = null;
-		List entitiesInAABB = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+		List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 		double lastDistance = 0.0D;
 
 		for (int counter = 0; counter < entitiesInAABB.size(); ++counter)
 		{
 			final Entity entityInList = (Entity)entitiesInAABB.get(counter);
 
-			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(this.shooter) || this.ticksInAir >= 25))
+			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(shooter) || ticksInAir >= 25))
 			{
 				final AxisAlignedBB AABB = entityInList.boundingBox.expand(0.3D, 0.3D, 0.3D);
 				final MovingObjectPosition entityCollisionPosition = AABB.calculateIntercept(currentVector, nextVector);
@@ -152,61 +147,67 @@ public class EntityWeb extends Entity
 
 		if (collisionPosition != null)
 		{
-			this.onImpact(collisionPosition);
+			onImpact(collisionPosition);
 		}
 	}
 
 	private void updateMotion()
 	{
-		this.posX += this.motionX;
-		this.posY += this.motionY;
-		this.posZ += this.motionZ;
-		float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		this.rotationYaw = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
+		ticksInAir++;
+		
+		posX += motionX;
+		posY += motionY;
+		posZ += motionZ;
+		float f1 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+		rotationYaw = (float)(Math.atan2(motionZ, motionX) * 180.0D / Math.PI) + 90.0F;
 
-		for (this.rotationPitch = (float)(Math.atan2((double)f1, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+		for (rotationPitch = (float)(Math.atan2((double)f1, motionY) * 180.0D / Math.PI) - 90.0F; rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F)
 		{
 			;
 		}
 
-		while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
+		while (rotationPitch - prevRotationPitch >= 180.0F)
 		{
-			this.prevRotationPitch += 360.0F;
+			prevRotationPitch += 360.0F;
 		}
 
-		while (this.rotationYaw - this.prevRotationYaw < -180.0F)
+		while (rotationYaw - prevRotationYaw < -180.0F)
 		{
-			this.prevRotationYaw -= 360.0F;
+			prevRotationYaw -= 360.0F;
 		}
 
-		while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
+		while (rotationYaw - prevRotationYaw >= 180.0F)
 		{
-			this.prevRotationYaw += 360.0F;
+			prevRotationYaw += 360.0F;
 		}
 
-		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
+		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
 		float motionFactor =  0.95F;
 
-		if (this.isInWater())
+		if (isInWater())
 		{
-			for (int k = 0; k < 4; ++k)
+			for (int counter = 0; counter < 4; ++counter)
 			{
-				float f3 = 0.25F;
-				this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)f3, this.posY - this.motionY * (double)f3, this.posZ - this.motionZ * (double)f3, this.motionX, this.motionY, this.motionZ);
+				float speedFactor = 0.25F;
+				worldObj.spawnParticle("bubble", 
+						posX - motionX * (double)speedFactor, 
+						posY - motionY * (double)speedFactor, 
+						posZ - motionZ * (double)speedFactor, 
+						motionX, motionY, motionZ);
 			}
 
 			motionFactor = 0.8F;
 		}
 
-		this.motionX += this.accelerationX;
-		this.motionY += this.accelerationY;
-		this.motionZ += this.accelerationZ;
-		this.motionX *= (double)motionFactor;
-		this.motionY *= (double)motionFactor;
-		this.motionZ *= (double)motionFactor;
+		motionX += accelerationX;
+		motionY += accelerationY;
+		motionZ += accelerationZ;
+		motionX *= (double)motionFactor;
+		motionY *= (double)motionFactor;
+		motionZ *= (double)motionFactor;
 
-		this.setPosition(this.posX, this.posY, this.posZ);
+		setPosition(posX, posY, posZ);
 	}
 
 	private void onImpact(MovingObjectPosition impactPoint) 
@@ -298,7 +299,7 @@ public class EntityWeb extends Entity
 
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		//No data to write.
+		//No data to read.
 	}
 
 	@Override
@@ -316,14 +317,14 @@ public class EntityWeb extends Entity
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
-		if (this.isEntityInvulnerable())
+		if (isEntityInvulnerable())
 		{
 			return false;
 		}
 
 		else
 		{
-			this.setBeenAttacked();
+			setBeenAttacked();
 
 			if (damageSource.getEntity() != null)
 			{
@@ -331,17 +332,17 @@ public class EntityWeb extends Entity
 
 				if (sourceLookVector != null)
 				{
-					this.motionX = sourceLookVector.xCoord;
-					this.motionY = sourceLookVector.yCoord;
-					this.motionZ = sourceLookVector.zCoord;
-					this.accelerationX = this.motionX * 0.1D;
-					this.accelerationY = this.motionY * 0.1D;
-					this.accelerationZ = this.motionZ * 0.1D;
+					motionX = sourceLookVector.xCoord;
+					motionY = sourceLookVector.yCoord;
+					motionZ = sourceLookVector.zCoord;
+					accelerationX = motionX * 0.1D;
+					accelerationY = motionY * 0.1D;
+					accelerationZ = motionZ * 0.1D;
 				}
 
 				if (damageSource.getEntity() instanceof EntityLivingBase)
 				{
-					this.shooter = (EntityPlayer)damageSource.getEntity();
+					shooter = (EntityPlayer)damageSource.getEntity();
 				}
 
 				return true;
