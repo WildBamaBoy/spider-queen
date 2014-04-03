@@ -12,9 +12,10 @@ import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.items.ItemCocoon;
 import spiderqueen.items.ItemWeb;
 
-import com.radixshock.radixcore.core.IMod;
+import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.core.ModLogger;
 import com.radixshock.radixcore.core.RadixCore;
+import com.radixshock.radixcore.enums.EnumNetworkType;
 import com.radixshock.radixcore.file.ModPropertiesManager;
 import com.radixshock.radixcore.lang.ILanguageLoaderHook;
 import com.radixshock.radixcore.lang.ILanguageParser;
@@ -35,7 +36,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid="spiderqueen", name="Spider Queen", version = Constants.VERSION, dependencies="required-after:radixcore")
-public class SpiderQueen implements IMod
+public class SpiderQueen implements IEnforcedCore
 {
 	@Instance("spiderqueen")
 	private static SpiderQueen instance;
@@ -332,5 +333,47 @@ public class SpiderQueen implements IMod
 	public void setLanguageLoaded(boolean value) 
 	{
 		
+	}
+
+	@Override
+	public void initializeCommands(FMLServerStartingEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public EnumNetworkType getNetworkSystemType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModPropertiesManager getModPropertiesManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean getSetModPropertyCommandEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean getGetModPropertyCommandEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean getListModPropertiesCommandEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPropertyCommandPrefix() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
