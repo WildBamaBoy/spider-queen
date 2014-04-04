@@ -1,32 +1,38 @@
 package spiderqueen.enums;
 
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.item.Item;
 
 public enum EnumCocoonType 
 {
-	Empty(null, 0, "null"),
-	Pig(EntityPig.class, 0, "mob.pig.death"),
-	Sheep(EntitySheep.class, 6, "mob.sheep.say"),
-	Creeper(EntityCreeper.class, 4, "mob.creeper.death"),
-	Chicken(EntityChicken.class, 0, "mob.chicken.death"),
-	Zombie(EntityZombie.class, 4, "mob.zombie.death"),
-	Skeleton(EntitySkeleton.class, 4, "mob.skeleton.death"),
-	Cow(EntityCow.class, 6, "mob.cow.hurt"),
-	Human(null, 0, "null"),
-	GathererBee(null, 4, "null"),
-	WarriorBee(null, 4, "null"),
-	QueenBee(null, 1, "null"),
-	Wasp(null, 4, "null"),
-	Ant(null, 4, "null"),
-	Wolf(EntityWolf.class, 4, "mob.wolf.death");
+	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL),
+	PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL),
+	SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL),
+	CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL),
+	CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL),
+	ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL),
+	SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL),
+	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL),
+	HUMAN(null, 0, "null", EnumCocoonSize.NORMAL),
+	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL),
+	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.TALL),
+	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL),
+	GATHERER_BEE(null, 4, "null", EnumCocoonSize.NORMAL),
+	WARRIOR_BEE(null, 4, "null", EnumCocoonSize.NORMAL),
+	QUEEN_BEE(null, 1, "null", EnumCocoonSize.NORMAL),
+	WASP(null, 4, "null", EnumCocoonSize.NORMAL),
+	ANT(null, 4, "null", EnumCocoonSize.NORMAL),
+	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL);
 	
 	private Class entityClass;
 	private Item itemCocoon;
@@ -34,12 +40,14 @@ public enum EnumCocoonType
 	/** How difficult it is to catch this entity. Lower factor is more difficult, unless 0. */
 	private int entityCatchDifficulty;
 	private String deathSound;
+	private EnumCocoonSize cocoonSize;
 	
-	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound)
+	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound, EnumCocoonSize cocoonSize)
 	{
 		this.entityClass = entityClass;
 		this.entityCatchDifficulty = entityCatchDifficulty;
 		this.deathSound = deathSound;
+		this.cocoonSize = cocoonSize;
 	}
 	
 	public Class getEntityClass()
@@ -67,6 +75,11 @@ public enum EnumCocoonType
 		return deathSound;
 	}
 	
+	public EnumCocoonSize getCocoonSize()
+	{
+		return cocoonSize;
+	}
+
 	public static EnumCocoonType getCocoonTypeByCapturedClass(Class entityClass)
 	{
 		for (EnumCocoonType type : EnumCocoonType.values())

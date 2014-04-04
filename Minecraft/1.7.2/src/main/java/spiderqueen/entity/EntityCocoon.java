@@ -6,7 +6,6 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.enums.EnumCocoonType;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
+
+import com.radixshock.radixcore.logic.LogicHelper;
+
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpawnData
@@ -100,7 +101,11 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			rotationPitch -= rand.nextFloat();
 			currentDamage--;
 		}
-
+		
+		if (cocoonType == EnumCocoonType.ENDERMAN && !isEaten)
+		{
+			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + 1 + rand.nextDouble() * (double)0.25D, posZ + rand.nextDouble() - 0.5D * (double)width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
+		}
 	}
 
 	@Override
@@ -191,7 +196,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			if (!worldObj.isRemote)
 			{
-				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, 5, 0), 0);
+				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, LogicHelper.getNumberInRange(0, 5), 0), 0);
 				
 				try
 				{

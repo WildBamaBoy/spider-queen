@@ -18,7 +18,6 @@ public class BlockWeb extends Block
     public BlockWeb() 
     {
 		super(Material.plants);
-		this.setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 	}
 	
     public int quantityDropped(Random random)
