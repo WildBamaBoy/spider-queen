@@ -101,7 +101,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			rotationPitch -= rand.nextFloat();
 			currentDamage--;
 		}
-		
+
 		if (cocoonType == EnumCocoonType.ENDERMAN && !isEaten)
 		{
 			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + 1 + rand.nextDouble() * (double)0.25D, posZ + rand.nextDouble() - 0.5D * (double)width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
@@ -112,27 +112,30 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public boolean attackEntityFrom(DamageSource damageSource, float damage)
 	{
 		final Entity entity = damageSource.getEntity();
-
-		timeSinceHit = 10;
-		currentDamage += damage * 10;
-
-		setBeenAttacked();
-
-		if (currentDamage > 80)
+		
+		if (entity instanceof EntityPlayer)
 		{
-			if (isEaten())
-			{
-				worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
-			}
+			timeSinceHit = 10;
+			currentDamage += damage * 10;
 
-			if (!worldObj.isRemote && !isEaten())
+			setBeenAttacked();
+
+			if (currentDamage > 80)
 			{
-				dropItem(cocoonType.getCocoonItem(), 1);
+				if (isEaten())
+				{
+					worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2, posZ - motionZ * 2, motionX, motionY, motionZ);
+				}
+
+				if (!worldObj.isRemote && !isEaten())
+				{
+					dropItem(cocoonType.getCocoonItem(), 1);
+				}
+
+				setDead();
 			}
-			
-			setDead();
 		}
-
+		
 		return true;
 	}
 
@@ -197,12 +200,12 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			if (!worldObj.isRemote)
 			{
 				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, LogicHelper.getNumberInRange(0, 5), 0), 0);
-				
+
 				try
 				{
 					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
 				}
-				
+
 				catch (Throwable e)
 				{
 					e.printStackTrace();
