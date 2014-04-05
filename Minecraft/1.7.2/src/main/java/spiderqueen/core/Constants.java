@@ -9,6 +9,8 @@ public final class Constants
 	 *  -1.0.0.*/
 	public static final String VERSION = "0.7.0.Alpha";
 
+	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
+	
 	private Constants()
 	{
 	}

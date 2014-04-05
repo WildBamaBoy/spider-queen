@@ -1,12 +1,19 @@
 package spiderqueen.core;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockWeb;
+import spiderqueen.command.CommandRefreshSkins;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.entity.EntityCocoon;
+import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.items.ItemCocoon;
@@ -20,6 +27,7 @@ import com.radixshock.radixcore.file.ModPropertiesManager;
 import com.radixshock.radixcore.lang.ILanguageLoaderHook;
 import com.radixshock.radixcore.lang.ILanguageParser;
 import com.radixshock.radixcore.lang.LanguageLoader;
+import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketCodec;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
 import com.radixshock.radixcore.network.PacketPipeline;
@@ -92,6 +100,8 @@ public class SpiderQueen implements IEnforcedCore
 	public Block blockLantern;
 	public Block blockStinger;
 	
+	public List<String> fakePlayerNames = new ArrayList<String>();
+	
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
@@ -112,6 +122,7 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		logger = new ModLogger(this);
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
+		fakePlayerNames = downloadFakePlayerNames();
 	}
 
 	@Override
@@ -234,12 +245,19 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), 1, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityWeb.class, EntityWeb.class.getSimpleName(), 2, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityFakePlayer.class, EntityFakePlayer.class.getSimpleName(), 3, this, 50, 2, true);
 	}
 
 	@Override
 	public void initializeNetwork() 
 	{
 		
+	}
+
+	@Override
+	public void initializeCommands(FMLServerStartingEvent event) 
+	{
+		event.registerServerCommand(new CommandRefreshSkins());
 	}
 
 	@Override
@@ -345,12 +363,6 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void initializeCommands(FMLServerStartingEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public EnumNetworkType getNetworkSystemType() {
 		// TODO Auto-generated method stub
 		return null;
@@ -384,5 +396,36 @@ public class SpiderQueen implements IEnforcedCore
 	public String getPropertyCommandPrefix() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<String> downloadFakePlayerNames() 
+	{
+		final List<String> returnList = new ArrayList<String>();
+		
+		try
+		{
+			final URL url = new URL(Constants.SKINS_URL);
+			final Scanner scanner = new Scanner(url.openStream());
+
+			while (scanner.hasNext())
+			{
+				returnList.add(scanner.next());
+			}
+
+			scanner.close();
+		}
+		
+		catch (Throwable e)
+		{
+			getLogger().log("Failed to download fake player names.");
+		}
+		
+		return returnList;
+	}
+	
+	public String getRandomPlayerName()
+	{
+		final int index = LogicHelper.getNumberInRange(0, fakePlayerNames.size() - 1);
+		return fakePlayerNames.get(index);
 	}
 }
