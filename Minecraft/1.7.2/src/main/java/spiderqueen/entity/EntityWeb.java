@@ -43,9 +43,9 @@ public class EntityWeb extends Entity
 
 		this.shooter = player;
 		this.setPosition(player.posX + vec.xCoord * 2, player.posY + 1 + vec.yCoord * 2, player.posZ + vec.zCoord * 2);
-		this.accelerationX = vec.xCoord * 0.5;
-		this.accelerationY = vec.yCoord * 0.5;
-		this.accelerationZ = vec.zCoord * 0.5;
+		this.accelerationX = vec.xCoord * 1.5;
+		this.accelerationY = vec.yCoord * 1.5;
+		this.accelerationZ = vec.zCoord * 1.5;
 
 		this.motionX = accelerationX;
 		this.motionY = accelerationY;
