@@ -13,7 +13,7 @@ public class ModelCocoon extends ModelBase
 	private final ModelRenderer modelWrappedBody;
 	private final ModelRenderer modelWrappedBodyTall;
 	private final ModelRenderer modelVisibleFlatHead;
-	
+
 	private final ModelRenderer modelSheepFlatHead;
 
 	private final ModelRenderer modelWolfHead;
@@ -25,9 +25,14 @@ public class ModelCocoon extends ModelBase
 	private final ModelRenderer modelChickenHead;
 
 	private final ModelRenderer modelEndermanHead;
-	
+
 	private final ModelRenderer modelVillagerHead;
 	private final ModelRenderer modelVillagerNose;
+
+	private final ModelRenderer modelHorseHeadStart;
+	private final ModelRenderer modelHorseMuzzleUp;
+	private final ModelRenderer modelHorseMuzzleDown;
+	private final ModelRenderer modelHorseWeb;
 
 	public ModelCocoon()
 	{
@@ -44,7 +49,7 @@ public class ModelCocoon extends ModelBase
 		modelWrappedBodyTall = new ModelRenderer(this, 0, 0);
 		modelWrappedBodyTall.addBox(-5F, 0F, -3.5F, 10, 17, 7);
 		modelWrappedBodyTall.setRotationPoint(0F, -16F, 0F);
-		
+
 		modelVisibleFlatHead = new ModelRenderer(this, 2, 2);
 		modelVisibleFlatHead.addBox(-4F, -4F, -7F, 8, 8, 6, 0F);
 		modelVisibleFlatHead.setRotationPoint(0F, -16F, -1F);
@@ -84,10 +89,30 @@ public class ModelCocoon extends ModelBase
 		modelVillagerHead = new ModelRenderer(this, 32, 14);
 		modelVillagerHead.addBox(-4F, -10F, -4F, 8, 10, 8);
 		modelVillagerHead.setRotationPoint(0F, -16F, 0F);
-		
+
 		modelVillagerNose = new ModelRenderer(this, 56, 0);
 		modelVillagerNose.addBox(-1F, -1F, -2F, 2, 4, 2);
 		modelVillagerNose.setRotationPoint(0F, -18F, -3.8F);
+
+		modelHorseHeadStart = new ModelRenderer(this, 0, 8);
+		modelHorseHeadStart.addBox(-2F, -14F, -3F, 4, 5, 6);
+		modelHorseHeadStart.setRotationPoint(0F, -7F, -2F);
+		setRotation(modelHorseHeadStart, 0.2617994F, 0F, 0F);
+		
+		modelHorseMuzzleUp = new ModelRenderer(this, 20, 0);
+		modelHorseMuzzleUp.addBox(-2F, -14F, -9F, 4, 3, 6);
+		modelHorseMuzzleUp.setRotationPoint(0F, -7F, -2F);
+		setRotation(modelHorseMuzzleUp, 0.2617994F, 0F, 0F);
+		
+		modelHorseMuzzleDown = new ModelRenderer(this, 0, 0);
+		modelHorseMuzzleDown.addBox(-2F, -1F, -6.2F, 4, 2, 6);
+		modelHorseMuzzleDown.setRotationPoint(0F, -16F, -7F);
+		setRotation(modelHorseMuzzleDown, 0.4476924F, 0.0174533F, 0F);
+		
+		modelHorseWeb = new ModelRenderer(this, 51, -6);
+		modelHorseWeb.addBox(2F, -3F, -6F, 0, 4, 6);
+		modelHorseWeb.setRotationPoint(0F, -16F, -7F);
+		setRotation(modelHorseWeb, 0.3490659F, -0.0174533F, 0F);
 	}
 
 	public void render(Entity entity, float posX, float posY, float posZ, float rotationYaw, float rotationPitch, float partialTickTime)
@@ -128,6 +153,14 @@ public class ModelCocoon extends ModelBase
 			modelEndermanHead.render(partialTickTime);
 		}
 
+		else if (cocoonType == EnumCocoonType.HORSE)
+		{
+			modelHorseHeadStart.render(partialTickTime);
+			modelHorseMuzzleUp.render(partialTickTime);
+			modelHorseMuzzleDown.render(partialTickTime);
+			modelHorseWeb.render(partialTickTime);
+		}
+
 		else
 		{
 			modelVisibleFlatHead.render(partialTickTime);
@@ -151,5 +184,12 @@ public class ModelCocoon extends ModelBase
 		{
 			modelWrappedBodyTall.render(partialTickTime);
 		}
+	}
+
+	private void setRotation(ModelRenderer model, float x, float y, float z)
+	{
+		model.rotateAngleX = x;
+		model.rotateAngleY = y;
+		model.rotateAngleZ = z;
 	}
 }

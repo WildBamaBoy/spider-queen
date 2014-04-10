@@ -25,7 +25,7 @@ public enum EnumCocoonType
 	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL),
 	HUMAN(null, 0, "null", EnumCocoonSize.NORMAL),
 	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL),
-	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.TALL),
+	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL),
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL),
 	GATHERER_BEE(null, 4, "null", EnumCocoonSize.NORMAL),
 	WARRIOR_BEE(null, 4, "null", EnumCocoonSize.NORMAL),
