@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockWeb;
@@ -161,32 +162,31 @@ public class SpiderQueen implements IEnforcedCore
 	public void initializeItems() 
 	{
 		//Creative tab
-		itemCocoonAnt = new ItemCocoon(EnumCocoonType.ANT).setUnlocalizedName("cocoon.ant");
-		GameRegistry.registerItem(itemCocoonAnt, itemCocoonAnt.getUnlocalizedName());
+		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.ant");
+		GameRegistry.registerItem(itemCocoonEnderman, itemCocoonEnderman.getUnlocalizedName());
 		
 		tabSpiderQueen = new CreativeTabs("tabSpiderQueen")
 		{
 			public Item getTabIconItem()
 			{
-				return itemCocoonAnt;
+				return itemCocoonEnderman;
 			}
 		};
 		
-		itemCocoonAnt.setCreativeTab(tabSpiderQueen);
+//		itemCocoonAnt.setCreativeTab(tabSpiderQueen);
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER).setUnlocalizedName("cocoon.creeper");
-		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
-		itemCocoonGathererBee = new ItemCocoon(EnumCocoonType.GATHERERBEE).setUnlocalizedName("cocoon.gathererbee");
+//		itemCocoonGathererBee = new ItemCocoon(EnumCocoonType.GATHERERBEE).setUnlocalizedName("cocoon.gathererbee");
 		itemCocoonHorse = new ItemCocoon(EnumCocoonType.HORSE).setUnlocalizedName("cocoon.horse");
 		itemCocoonHuman = new ItemCocoon(EnumCocoonType.HUMAN).setUnlocalizedName("cocoon.human");
 		itemCocoonPig = new ItemCocoon(EnumCocoonType.PIG).setUnlocalizedName("cocoon.pig");
-		itemCocoonQueenBee = new ItemCocoon(EnumCocoonType.QUEENBEE).setUnlocalizedName("cocoon.queenbee");
+//		itemCocoonQueenBee = new ItemCocoon(EnumCocoonType.QUEENBEE).setUnlocalizedName("cocoon.queenbee");
 		itemCocoonSheep = new ItemCocoon(EnumCocoonType.SHEEP).setUnlocalizedName("cocoon.sheep");
 		itemCocoonSkeleton = new ItemCocoon(EnumCocoonType.SKELETON).setUnlocalizedName("cocoon.skeleton");
 		itemCocoonTestificate = new ItemCocoon(EnumCocoonType.VILLAGER).setUnlocalizedName("cocoon.testificate");
-		itemCocoonWarriorBee = new ItemCocoon(EnumCocoonType.WARRIORBEE).setUnlocalizedName("cocoon.warriorbee");
-		itemCocoonWasp = new ItemCocoon(EnumCocoonType.WASP).setUnlocalizedName("cocoon.wasp");
+//		itemCocoonWarriorBee = new ItemCocoon(EnumCocoonType.WARRIORBEE).setUnlocalizedName("cocoon.warriorbee");
+//		itemCocoonWasp = new ItemCocoon(EnumCocoonType.WASP).setUnlocalizedName("cocoon.wasp");
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.WOLF).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE).setUnlocalizedName("cocoon.zombie");
 	
@@ -197,17 +197,16 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCreeper, itemCocoonCreeper.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonEnderman, itemCocoonEnderman.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonGathererBee, itemCocoonGathererBee.getUnlocalizedName());
+		//GameRegistry.registerItem(itemCocoonGathererBee, itemCocoonGathererBee.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonHorse, itemCocoonHorse.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonHuman, itemCocoonHuman.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonPig, itemCocoonPig.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonQueenBee, itemCocoonQueenBee.getUnlocalizedName());
+		//GameRegistry.registerItem(itemCocoonQueenBee, itemCocoonQueenBee.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonSheep, itemCocoonSheep.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonSkeleton, itemCocoonSkeleton.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonTestificate, itemCocoonTestificate.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonWarriorBee, itemCocoonWarriorBee.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonWasp, itemCocoonWasp.getUnlocalizedName());
+		//GameRegistry.registerItem(itemCocoonWarriorBee, itemCocoonWarriorBee.getUnlocalizedName());
+		//GameRegistry.registerItem(itemCocoonWasp, itemCocoonWasp.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonWolf, itemCocoonWolf.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonZombie, itemCocoonZombie.getUnlocalizedName());
 		
