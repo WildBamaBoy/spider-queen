@@ -27,11 +27,11 @@ public enum EnumCocoonType
 	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL),
 	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL),
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL),
-	GATHERER_BEE(null, 4, "null", EnumCocoonSize.NORMAL),
-	WARRIOR_BEE(null, 4, "null", EnumCocoonSize.NORMAL),
-	QUEEN_BEE(null, 1, "null", EnumCocoonSize.NORMAL),
-	WASP(null, 4, "null", EnumCocoonSize.NORMAL),
-	ANT(null, 4, "null", EnumCocoonSize.NORMAL),
+//	GATHERERBEE(null, 4, "null", EnumCocoonSize.NORMAL),
+//	WARRIORBEE(null, 4, "null", EnumCocoonSize.NORMAL),
+//	QUEENBEE(null, 1, "null", EnumCocoonSize.NORMAL),
+//	WASP(null, 4, "null", EnumCocoonSize.NORMAL),
+//	ANT(null, 4, "null", EnumCocoonSize.NORMAL),
 	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL);
 	
 	private Class entityClass;
