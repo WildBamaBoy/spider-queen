@@ -17,6 +17,7 @@ import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.items.ItemCocoon;
+import spiderqueen.items.ItemSpiderRod;
 import spiderqueen.items.ItemWeb;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
@@ -61,6 +62,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemWeb;
 	public Item itemPoisonWeb;
 	public Item itemWebslinger;
+	public Item itemSpiderRod;
 	public Item itemSpiderEgg;
 	public Item itemGhastEgg;
 	public Item itemCocoon;
@@ -190,6 +192,7 @@ public class SpiderQueen implements IEnforcedCore
 	
 		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
+		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
 		
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
@@ -210,6 +213,7 @@ public class SpiderQueen implements IEnforcedCore
 		
 		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
+		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
 	}
 
 	@Override
