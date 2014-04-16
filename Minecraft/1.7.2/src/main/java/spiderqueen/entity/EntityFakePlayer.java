@@ -30,7 +30,8 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public String username;
 	public ResourceLocation skinResourceLocation;
 	public ThreadDownloadImageData imageDownloadThread;
-
+	public boolean isContributor;
+	
 	public EntityFakePlayer(World world) 
 	{
 		super(world);
@@ -40,6 +41,12 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		{
 			this.addAI();
 			this.username = SpiderQueen.getInstance().getRandomPlayerName();
+			
+			if (username.endsWith("*"))
+			{
+				isContributor = true;
+				username = username.substring(0, username.length() - 1);
+			}
 		}
 	}
 
@@ -91,12 +98,14 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public void writeSpawnData(ByteBuf buffer) 
 	{
 		ByteBufIO.writeObject(buffer, username);
+		buffer.writeBoolean(isContributor);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf additionalData) 
 	{
 		username = (String)ByteBufIO.readObject(additionalData);
+		isContributor = additionalData.readBoolean();
 		setupCustomSkin();
 	}
 }

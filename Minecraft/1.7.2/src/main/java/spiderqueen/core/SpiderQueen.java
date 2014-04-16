@@ -7,17 +7,18 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockWeb;
-import spiderqueen.command.CommandRefreshSkins;
+import spiderqueen.command.CommandPlayerSkins;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
+import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.items.ItemCocoon;
+import spiderqueen.items.ItemDebugSpawner;
 import spiderqueen.items.ItemSpiderRod;
 import spiderqueen.items.ItemWeb;
 
@@ -87,6 +88,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemNectar;
 	public Item itemRareFruit;
 	public Item itemHumanSkull;
+	public Item itemDebugSpawner;
 	
 	//Blocks
 	public Block blockWeb;
@@ -104,6 +106,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Block blockStinger;
 	
 	public List<String> fakePlayerNames = new ArrayList<String>();
+	public boolean doDisplayPlayerSkins = true;
 	
 	public SpiderQueen()
 	{
@@ -162,9 +165,8 @@ public class SpiderQueen implements IEnforcedCore
 	public void initializeItems() 
 	{
 		//Creative tab
-		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.ant");
+		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
 		GameRegistry.registerItem(itemCocoonEnderman, itemCocoonEnderman.getUnlocalizedName());
-		
 		tabSpiderQueen = new CreativeTabs("tabSpiderQueen")
 		{
 			public Item getTabIconItem()
@@ -172,47 +174,41 @@ public class SpiderQueen implements IEnforcedCore
 				return itemCocoonEnderman;
 			}
 		};
+		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
 		
-//		itemCocoonAnt.setCreativeTab(tabSpiderQueen);
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER).setUnlocalizedName("cocoon.creeper");
-//		itemCocoonGathererBee = new ItemCocoon(EnumCocoonType.GATHERERBEE).setUnlocalizedName("cocoon.gathererbee");
 		itemCocoonHorse = new ItemCocoon(EnumCocoonType.HORSE).setUnlocalizedName("cocoon.horse");
 		itemCocoonHuman = new ItemCocoon(EnumCocoonType.HUMAN).setUnlocalizedName("cocoon.human");
 		itemCocoonPig = new ItemCocoon(EnumCocoonType.PIG).setUnlocalizedName("cocoon.pig");
-//		itemCocoonQueenBee = new ItemCocoon(EnumCocoonType.QUEENBEE).setUnlocalizedName("cocoon.queenbee");
 		itemCocoonSheep = new ItemCocoon(EnumCocoonType.SHEEP).setUnlocalizedName("cocoon.sheep");
 		itemCocoonSkeleton = new ItemCocoon(EnumCocoonType.SKELETON).setUnlocalizedName("cocoon.skeleton");
 		itemCocoonTestificate = new ItemCocoon(EnumCocoonType.VILLAGER).setUnlocalizedName("cocoon.testificate");
-//		itemCocoonWarriorBee = new ItemCocoon(EnumCocoonType.WARRIORBEE).setUnlocalizedName("cocoon.warriorbee");
-//		itemCocoonWasp = new ItemCocoon(EnumCocoonType.WASP).setUnlocalizedName("cocoon.wasp");
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.WOLF).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE).setUnlocalizedName("cocoon.zombie");
 	
 		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
 		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
+		itemDebugSpawner = new ItemDebugSpawner();
 		
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCreeper, itemCocoonCreeper.getUnlocalizedName());
-		//GameRegistry.registerItem(itemCocoonGathererBee, itemCocoonGathererBee.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonHorse, itemCocoonHorse.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonHuman, itemCocoonHuman.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonPig, itemCocoonPig.getUnlocalizedName());
-		//GameRegistry.registerItem(itemCocoonQueenBee, itemCocoonQueenBee.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonSheep, itemCocoonSheep.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonSkeleton, itemCocoonSkeleton.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonTestificate, itemCocoonTestificate.getUnlocalizedName());
-		//GameRegistry.registerItem(itemCocoonWarriorBee, itemCocoonWarriorBee.getUnlocalizedName());
-		//GameRegistry.registerItem(itemCocoonWasp, itemCocoonWasp.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonWolf, itemCocoonWolf.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonZombie, itemCocoonZombie.getUnlocalizedName());
 		
 		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
+		GameRegistry.registerItem(itemDebugSpawner, "spawner");
 	}
 
 	@Override
@@ -232,7 +228,7 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void initializeSmeltings() 
+	public void initializeSmeltings()
 	{
 		
 	}
@@ -249,6 +245,7 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), 1, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityWeb.class, EntityWeb.class.getSimpleName(), 2, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityFakePlayer.class, EntityFakePlayer.class.getSimpleName(), 3, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
 	}
 
 	@Override
@@ -260,7 +257,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeCommands(FMLServerStartingEvent event) 
 	{
-		event.registerServerCommand(new CommandRefreshSkins());
+		event.registerServerCommand(new CommandPlayerSkins());
 	}
 
 	@Override
