@@ -31,17 +31,16 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public ResourceLocation skinResourceLocation;
 	public ThreadDownloadImageData imageDownloadThread;
 	public boolean isContributor;
-	
+
 	public EntityFakePlayer(World world) 
 	{
 		super(world);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 
 		if (!this.worldObj.isRemote)
 		{
 			this.addAI();
 			this.username = SpiderQueen.getInstance().getRandomPlayerName();
-			
+
 			if (username.endsWith("*"))
 			{
 				isContributor = true;
@@ -70,16 +69,24 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
 		this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 0.6F));
 		this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(6, new EntityAIWander(this, 0.6F));
+		this.tasks.addTask(6, new EntityAIWander(this, 0.4F));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
 	}
-	
+
+	@Override
+	protected void applyEntityAttributes()
+	{
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.4F);
+	}
+
 	@Override
 	public boolean isAIEnabled()
 	{
 		return true;
 	}
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) 
 	{
