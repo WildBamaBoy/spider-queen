@@ -199,8 +199,16 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			if (!worldObj.isRemote)
 			{
+				final boolean doDropEgg = LogicHelper.getBooleanWithProbability(15);
+				final int dropAmount = LogicHelper.getNumberInRange(1, 2);
+				
 				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, LogicHelper.getNumberInRange(0, 5), 0), 0);
-
+				
+				if (doDropEgg)
+				{
+					entityDropItem(new ItemStack(SpiderQueen.getInstance().itemSpiderEgg, dropAmount, 0), 0);
+				}
+				
 				try
 				{
 					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
