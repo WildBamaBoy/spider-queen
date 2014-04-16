@@ -80,51 +80,7 @@ public class RenderFakePlayer extends RenderBiped
 			labelText = "SheWolfDeadly";
 		}
 
-		if (entityFakePlayer.isSneaking())
-		{
-			final Tessellator  tessellator = Tessellator.instance;
-			final FontRenderer fontRendererObj = getFontRendererFromRenderManager();
-			final int stringWidth = fontRendererObj.getStringWidth(labelText) / 2;
-
-			GL11.glPushMatrix();
-			{
-				GL11.glTranslatef((float)posX + 0.0F, (float)posY + 2.3F, (float)posZ);
-				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-				GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-				GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-				GL11.glScalef(-LABEL_SCALE, -LABEL_SCALE, LABEL_SCALE);
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glTranslatef(0.0F, 0.25F / LABEL_SCALE, 0.0F);
-				GL11.glDepthMask(false);
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
-
-				tessellator.startDrawingQuads();
-				tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-				tessellator.addVertex(-stringWidth - 1, -1D, 0.0D);
-				tessellator.addVertex(-stringWidth - 1, 8D, 0.0D);
-				tessellator.addVertex(stringWidth + 1, 8D, 0.0D);
-				tessellator.addVertex(stringWidth + 1, -1D, 0.0D);
-				tessellator.draw();
-
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-				GL11.glDepthMask(true);
-				fontRendererObj.drawString(labelText, -fontRendererObj.getStringWidth(labelText) / 2, 0, 0x20ffffff);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			}
-			GL11.glPopMatrix();
-		}
-
-		else
-		{
-			//RenderLivingLabel
-			renderLivingLabel(entityFakePlayer, labelText, posX, posY, posZ, 64);
-		}
+		renderLivingLabel(entityFakePlayer, labelText, posX, posY, posZ, 64);
 	}
 	
 	protected void renderLivingLabel(Entity entity, String text, double posX, double posY, double posZ, int visibleDistance)
