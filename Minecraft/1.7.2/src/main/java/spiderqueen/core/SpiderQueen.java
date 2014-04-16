@@ -7,7 +7,10 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockWeb;
 import spiderqueen.command.CommandPlayerSkins;
@@ -21,6 +24,8 @@ import spiderqueen.items.ItemCocoon;
 import spiderqueen.items.ItemDebugSpawner;
 import spiderqueen.items.ItemSpiderRod;
 import spiderqueen.items.ItemWeb;
+import spiderqueen.network.PacketCodec;
+import spiderqueen.network.PacketHandler;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.core.ModLogger;
@@ -33,6 +38,7 @@ import com.radixshock.radixcore.lang.LanguageLoader;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketCodec;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
+import com.radixshock.radixcore.network.Packet;
 import com.radixshock.radixcore.network.PacketPipeline;
 
 import cpw.mods.fml.common.Mod;
@@ -54,6 +60,9 @@ public class SpiderQueen implements IEnforcedCore
 	@SidedProxy(clientSide="spiderqueen.core.forge.ClientProxy", serverSide="spiderqueen.core.forge.CommonProxy")
 	public static CommonProxy proxy;
 	
+	public static PacketPipeline packetPipeline;
+	private static PacketCodec packetCodec;
+	private static PacketHandler packetHandler;
 	private ModLogger logger;
 	
 	public ModPropertiesManager modPropertiesManager;
@@ -224,7 +233,10 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeRecipes() 
 	{
-		
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), 
+				"GTG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'T', Blocks.torch);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), 
+				"GTG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'T', Blocks.torch);
 	}
 
 	@Override
@@ -251,7 +263,12 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeNetwork() 
 	{
-		
+		packetPipeline = new PacketPipeline(this);
+		packetCodec = new PacketCodec(this);
+		packetHandler = new PacketHandler(this);
+
+		packetPipeline.addChannel("SpiderQueen");
+		packetPipeline.registerPacket(Packet.class);
 	}
 
 	@Override

@@ -15,11 +15,15 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.ByteBufIO;
+import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.logic.NBTHelper;
 
@@ -31,7 +35,8 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public ResourceLocation skinResourceLocation;
 	public ThreadDownloadImageData imageDownloadThread;
 	public boolean isContributor;
-
+	public Inventory inventory = new Inventory(this);
+	
 	public EntityFakePlayer(World world) 
 	{
 		super(world);
@@ -74,11 +79,30 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
+	public void onUpdate()
+	{
+		super.onUpdate();
+		
+		if (inventory.isEmpty())
+		{
+			Inventory.populateWithRandomEquipment(inventory);
+		}
+	}
+	
+	@Override
+	public void onDeath(DamageSource damageSource) 
+	{
+		super.onDeath(damageSource);
+		
+		inventory.dropAllItems();
+	}
+	
+	@Override
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.4F);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6F);
 	}
 
 	@Override
@@ -88,9 +112,16 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
+	public ItemStack getHeldItem()
+	{
+		return inventory.getBestItemOfType(ItemSword.class);
+	}
+
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) 
 	{
 		super.writeEntityToNBT(nbt);
+		inventory.writeInventoryToNBT(nbt);
 		NBTHelper.autoWriteEntityToNBT(this, nbt);
 	}
 
@@ -98,6 +129,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public void readEntityFromNBT(NBTTagCompound nbt) 
 	{
 		super.readEntityFromNBT(nbt);
+		inventory.readInventoryFromNBT(nbt);
 		NBTHelper.autoReadEntityFromNBT(this, nbt);
 	}
 
