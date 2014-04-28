@@ -23,9 +23,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.ByteBufIO;
+import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.logic.NBTHelper;
+import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -35,6 +37,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public ResourceLocation skinResourceLocation;
 	public ThreadDownloadImageData imageDownloadThread;
 	public boolean isContributor;
+	public boolean hasInventoryBeenPopulated;
 	public Inventory inventory = new Inventory(this);
 	
 	public EntityFakePlayer(World world) 
@@ -51,15 +54,6 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 				isContributor = true;
 				username = username.substring(0, username.length() - 1);
 			}
-		}
-	}
-
-	protected void setupCustomSkin()
-	{
-		if (!username.isEmpty())
-		{
-			skinResourceLocation = AbstractClientPlayer.getLocationSkin(username);
-			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, username);
 		}
 	}
 
@@ -83,9 +77,10 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	{
 		super.onUpdate();
 		
-		if (inventory.isEmpty())
+		if (!worldObj.isRemote && !hasInventoryBeenPopulated)
 		{
 			Inventory.populateWithRandomEquipment(inventory);
+			hasInventoryBeenPopulated = true;
 		}
 	}
 	
@@ -146,5 +141,20 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		username = (String)ByteBufIO.readObject(additionalData);
 		isContributor = additionalData.readBoolean();
 		setupCustomSkin();
+		getInventoryFromServer();
+	}
+
+	private void getInventoryFromServer()
+	{
+		SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
+	}
+	
+	private void setupCustomSkin()
+	{
+		if (!username.isEmpty())
+		{
+			skinResourceLocation = AbstractClientPlayer.getLocationSkin(username);
+			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, username);
+		}
 	}
 }

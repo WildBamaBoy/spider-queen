@@ -35,12 +35,16 @@ public final class PacketCodec extends AbstractPacketCodec
 
 	public void encode(Packet packet, ChannelHandlerContext context, ByteBuf buffer)
 	{
-		EnumPacketType type = (EnumPacketType)packet.packetType;
+		final EnumPacketType type = (EnumPacketType)packet.packetType;
 
 		try
 		{
 			switch (type)
 			{
+			case GetInventory:
+				buffer.writeInt((Integer)packet.arguments[0]);
+				break;
+				
 			case SetInventory:
 				buffer.writeInt((Integer)packet.arguments[0]);
 				writeObject(buffer, packet.arguments[1]);
@@ -59,12 +63,16 @@ public final class PacketCodec extends AbstractPacketCodec
 
 	public void decode(Packet packet, ChannelHandlerContext context, ByteBuf buffer)
 	{
-		EnumPacketType type = (EnumPacketType)packet.packetType;
+		final EnumPacketType type = (EnumPacketType)packet.packetType;
 
 		try
 		{
 			switch (type)
 			{
+			case GetInventory:
+				packet.arguments[0] = buffer.readInt();
+				break;
+				
 			case SetInventory:
 				packet.arguments[0] = buffer.readInt();
 				packet.arguments[1] = readObject(buffer);

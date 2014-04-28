@@ -47,9 +47,14 @@ public final class PacketHandler extends AbstractPacketHandler
 		{
 			switch (type)
 			{
+			case GetInventory:
+				handleGetInventory(packet.arguments, player);
+				break;
+				
 			case SetInventory:
 				handleSetInventory(packet.arguments, player);
 				break;
+				
 			default:
 				SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -61,6 +66,18 @@ public final class PacketHandler extends AbstractPacketHandler
 		}
 	}
 
+	private void handleGetInventory(Object[] arguments, EntityPlayer player)
+	{
+		final int entityId = (Integer)arguments[0];
+		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
+		
+		if (entity instanceof EntityFakePlayer)
+		{
+			final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
+			mod.getPacketPipeline().sendPacketToPlayer(new Packet(EnumPacketType.SetInventory, entityId, fakePlayer.inventory), (EntityPlayerMP) player);
+		}
+	}
+	
 	private void handleSetInventory(Object[] arguments, EntityPlayer player) 
 	{
 		final int entityId = (Integer)arguments[0];

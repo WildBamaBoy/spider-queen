@@ -20,6 +20,7 @@ import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
+import spiderqueen.enums.EnumPacketType;
 import spiderqueen.items.ItemCocoon;
 import spiderqueen.items.ItemDebugSpawner;
 import spiderqueen.items.ItemSpiderRod;
@@ -322,25 +323,25 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public AbstractPacketCodec getPacketCodec() 
 	{
-		return null;
+		return packetCodec;
 	}
 
 	@Override
 	public AbstractPacketHandler getPacketHandler() 
 	{
-		return null;
+		return packetHandler;
 	}
 
 	@Override
 	public PacketPipeline getPacketPipeline() 
 	{
-		return null;
+		return packetPipeline;
 	}
 
 	@Override
 	public Class getPacketTypeClass() 
 	{
-		return null;
+		return EnumPacketType.class;
 	}
 
 	@Override
@@ -380,9 +381,9 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public EnumNetworkType getNetworkSystemType() {
-		// TODO Auto-generated method stub
-		return null;
+	public EnumNetworkType getNetworkSystemType() 
+	{
+		return EnumNetworkType.Legacy;
 	}
 
 	@Override
