@@ -12,12 +12,15 @@ package spiderqueen.network;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import spiderqueen.core.SpiderQueen;
+import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
+import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
 import com.radixshock.radixcore.network.Packet;
 
@@ -53,6 +56,10 @@ public final class PacketHandler extends AbstractPacketHandler
 				
 			case SetInventory:
 				handleSetInventory(packet.arguments, player);
+				break;
+			
+			case SetEaten:
+				handleSetEaten(packet.arguments, player);
 				break;
 				
 			default:
@@ -101,6 +108,20 @@ public final class PacketHandler extends AbstractPacketHandler
 		else
 		{
 			inventory.setWornArmorItems();
+		}
+	}
+	
+	private void handleSetEaten(Object[] arguments, EntityPlayer player)
+	{
+		final int entityId = (Integer)arguments[0];
+		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
+		
+		if (entity instanceof EntityCocoon)
+		{
+			final EntityCocoon cocoon = (EntityCocoon)entity;
+			cocoon.worldObj.spawnParticle("largesmoke", cocoon.posX, cocoon.posY + 2, cocoon.posZ, cocoon.motionX, cocoon.motionY, cocoon.motionZ);
+			cocoon.worldObj.spawnParticle("largesmoke", cocoon.posX, cocoon.posY + 2, cocoon.posZ, cocoon.motionX, cocoon.motionY, cocoon.motionZ);
+			cocoon.setEaten(true);
 		}
 	}
 }

@@ -49,6 +49,9 @@ public final class PacketCodec extends AbstractPacketCodec
 				buffer.writeInt((Integer)packet.arguments[0]);
 				writeObject(buffer, packet.arguments[1]);
 				break;
+			case SetEaten:
+				buffer.writeInt((Integer)packet.arguments[0]);
+				break;
 				
 			default:
 				break;
@@ -78,6 +81,10 @@ public final class PacketCodec extends AbstractPacketCodec
 				packet.arguments[1] = readObject(buffer);
 				break;
 
+			case SetEaten:
+				packet.arguments[0] = buffer.readInt();
+				break;
+				
 			default:
 				break;
 			}

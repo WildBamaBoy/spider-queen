@@ -12,5 +12,6 @@ package spiderqueen.enums;
 public enum EnumPacketType
 {
 	GetInventory,
-	SetInventory
+	SetInventory,
+	SetEaten
 }

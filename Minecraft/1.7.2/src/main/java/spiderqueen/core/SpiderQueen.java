@@ -18,11 +18,14 @@ import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.entity.EntitySpiderEgg;
 import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.items.ItemCocoon;
-import spiderqueen.items.ItemDebugSpawner;
+import spiderqueen.items.ItemSpawnPlayer;
+import spiderqueen.items.ItemSpawnSpider;
+import spiderqueen.items.ItemSpiderEgg;
 import spiderqueen.items.ItemSpiderRod;
 import spiderqueen.items.ItemWeb;
 import spiderqueen.network.PacketCodec;
@@ -98,7 +101,9 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemNectar;
 	public Item itemRareFruit;
 	public Item itemHumanSkull;
-	public Item itemDebugSpawner;
+	
+	public Item itemSpawnPlayer;
+	public Item itemSpawnSpider;
 	
 	//Blocks
 	public Block blockWeb;
@@ -201,7 +206,9 @@ public class SpiderQueen implements IEnforcedCore
 		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
 		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
-		itemDebugSpawner = new ItemDebugSpawner();
+		itemSpiderEgg = new ItemSpiderEgg().setUnlocalizedName("spideregg");
+		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
+		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
@@ -218,7 +225,10 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
-		GameRegistry.registerItem(itemDebugSpawner, "spawner");
+		GameRegistry.registerItem(itemSpiderEgg, itemSpiderEgg.getUnlocalizedName());
+		
+		GameRegistry.registerItem(itemSpawnPlayer, itemSpawnPlayer.getUnlocalizedName());
+		GameRegistry.registerItem(itemSpawnSpider, itemSpawnSpider.getUnlocalizedName());
 	}
 
 	@Override
@@ -259,6 +269,7 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityWeb.class, EntityWeb.class.getSimpleName(), 2, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityFakePlayer.class, EntityFakePlayer.class.getSimpleName(), 3, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
 	}
 
 	@Override

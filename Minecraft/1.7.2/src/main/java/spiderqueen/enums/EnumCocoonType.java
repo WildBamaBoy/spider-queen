@@ -1,5 +1,7 @@
 package spiderqueen.enums;
 
+import com.radixshock.radixcore.logic.LogicHelper;
+
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -80,6 +82,11 @@ public enum EnumCocoonType
 		return cocoonSize;
 	}
 
+	public static boolean isAnimalBased(EnumCocoonType cocoonType)
+	{
+		return cocoonType == PIG || cocoonType == SHEEP || cocoonType == CHICKEN || cocoonType == COW;
+	}
+	
 	public static EnumCocoonType getCocoonTypeByCapturedClass(Class entityClass)
 	{
 		for (EnumCocoonType type : EnumCocoonType.values())
@@ -91,5 +98,13 @@ public enum EnumCocoonType
 		}
 		
 		return null;
+	}
+	
+	public static EnumCocoonType getRandomCocoonType()
+	{
+		final int maxRange = EnumCocoonType.values().length - 1;
+		final int typeIndexToReturn = LogicHelper.getNumberInRange(0, maxRange);
+		
+		return EnumCocoonType.values()[typeIndexToReturn];
 	}
 }
