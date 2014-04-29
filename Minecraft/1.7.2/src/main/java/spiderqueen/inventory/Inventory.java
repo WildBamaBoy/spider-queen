@@ -370,18 +370,21 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	 */
 	public void dropAllItems()
 	{
-		for (int i = 0; i < inventoryItems.length; i++)
+		if (!owner.worldObj.isRemote)
 		{
-			final ItemStack stack = inventoryItems[i];
-
-			if (stack != null)
+			for (int i = 0; i < inventoryItems.length; i++)
 			{
-				owner.entityDropItem(stack, owner.worldObj.rand.nextFloat());
-				setInventorySlotContents(i, null);
-			}
-		}
+				final ItemStack stack = inventoryItems[i];
 
-		onInventoryChanged(this);
+				if (stack != null)
+				{
+					owner.entityDropItem(stack, owner.worldObj.rand.nextFloat());
+					setInventorySlotContents(i, null);
+				}
+			}
+
+			onInventoryChanged(this);
+		}
 	}
 
 	/**
@@ -1061,41 +1064,41 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		final boolean giveChestplate = LogicHelper.getBooleanWithProbability(30);
 		final boolean giveLeggings = LogicHelper.getBooleanWithProbability(40);
 		final boolean giveBoots = LogicHelper.getBooleanWithProbability(70);
-		
+
 		if (giveBow)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.bow, 1));
 			inventory.addItemStackToInventory(new ItemStack(Items.arrow, LogicHelper.getNumberInRange(4, 64)));
 		}
-		
+
 		if (giveSword)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.diamond_sword, 1));
 		}
-		
+
 		if (giveHelmet)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.iron_helmet, 1));
 		}
-		
+
 		if (giveChestplate)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1));
 		}
-		
+
 		if (giveLeggings)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.iron_leggings, 1));
 		}
-		
+
 		if (giveBoots)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.iron_boots, 1));
 		}
-		
+
 		inventory.setWornArmorItems();
 	}
-	
+
 	public boolean isEmpty()
 	{
 		for (int i = 0; i < getSizeInventory(); i++)
@@ -1105,7 +1108,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }
