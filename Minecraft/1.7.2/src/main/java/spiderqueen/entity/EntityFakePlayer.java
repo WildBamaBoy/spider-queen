@@ -34,10 +34,10 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityFakePlayer extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	public String username;
-	public ResourceLocation skinResourceLocation;
-	public ThreadDownloadImageData imageDownloadThread;
 	public boolean isContributor;
 	public boolean hasInventoryBeenPopulated;
+	public ResourceLocation skinResourceLocation;
+	public ThreadDownloadImageData imageDownloadThread;
 	public Inventory inventory = new Inventory(this);
 	
 	public EntityFakePlayer(World world) 
