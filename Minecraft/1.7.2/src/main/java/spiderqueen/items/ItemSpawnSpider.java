@@ -43,7 +43,7 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 
 		else
 		{
-			final EntityHatchedSpider entityHatchedSpider = new EntityHatchedSpider(world, EnumCocoonType.getRandomCocoonType());
+			final EntityHatchedSpider entityHatchedSpider = new EntityHatchedSpider(world, player.getCommandSenderName(), EnumCocoonType.getRandomCocoonType());
 			final int spiderLevel = LogicHelper.getNumberInRange(1, 3);
 			
 			entityHatchedSpider.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);

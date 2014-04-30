@@ -18,14 +18,16 @@ import com.radixshock.radixcore.network.Packet;
 
 public class EntitySpiderEgg extends EntityCreature
 {
+	private String owner;
 	private int timeUntilEggHatch;
 	private int currentDamage;
 	private int timeSinceHit;
 	private int rockDirection = 1;
 
-	public EntitySpiderEgg(World world)
+	public EntitySpiderEgg(World world, String owner)
 	{
 		super(world);
+		this.owner = owner;
 		this.setSize(0.3F, 0.3F);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 		this.timeUntilEggHatch = LogicHelper.getNumberInRange(500, 5000);
@@ -163,13 +165,13 @@ public class EntitySpiderEgg extends EntityCreature
 
 		if (cocoonToConsume == null)
 		{
-			spiderToSpawn = new EntityHatchedSpider(worldObj, EnumCocoonType.EMPTY);
+			spiderToSpawn = new EntityHatchedSpider(worldObj, owner, EnumCocoonType.EMPTY);
 		}
 
 		else
 		{
 			cocoonToConsume.setEaten(true);
-			spiderToSpawn = new EntityHatchedSpider(worldObj, cocoonToConsume.getCocoonType());
+			spiderToSpawn = new EntityHatchedSpider(worldObj, owner, cocoonToConsume.getCocoonType());
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetEaten, cocoonToConsume.getEntityId()));
 		}
 

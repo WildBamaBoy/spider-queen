@@ -30,7 +30,7 @@ public class ItemSpiderEgg extends AbstractItemSpawner
 
 		else
 		{
-			final EntitySpiderEgg entitySpiderEgg = new EntitySpiderEgg(world);
+			final EntitySpiderEgg entitySpiderEgg = new EntitySpiderEgg(world, player.getCommandSenderName());
 			entitySpiderEgg.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);
 
 			if (!world.isRemote)

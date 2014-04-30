@@ -9,6 +9,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -20,6 +21,7 @@ import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
+import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.NBTHelper;
 import com.radixshock.radixcore.network.Packet;
 
@@ -27,22 +29,30 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHatchedSpider extends EntityCreature implements IEntityAdditionalSpawnData
 {
+	public String owner;
 	public EnumCocoonType cocoonType = EnumCocoonType.EMPTY;
 	public int level = 1;
 	public Inventory inventory = new Inventory(this);
 
 	public transient boolean hasSyncedInventory = false;
-	
+
 	public EntityHatchedSpider(World world)
 	{
 		super(world);
 	}
 
-	public EntityHatchedSpider(World world, EnumCocoonType cocoonType)
+	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
 	{
 		super(world);
+		this.owner = owner;
 		this.setSize(1.4F, 0.9F);
 		this.cocoonType = cocoonType;
+	}
+
+	@Override
+	public boolean isAIEnabled()
+	{
+		return true;
 	}
 
 	protected void entityInit()
@@ -61,9 +71,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		//Server-side only
 		if (!worldObj.isRemote) 
 		{
-			this.setBesideClimbableBlock(this.isCollidedHorizontally);
+			setBesideClimbableBlock(isCollidedHorizontally);
+			tryFollowOwnerPlayer();
 		}
-		
+
 		else //Client-side only
 		{
 			if (!hasSyncedInventory)
@@ -297,5 +308,55 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 
 		this.dataWatcher.updateObject(16, Byte.valueOf(b0));
+	}
+
+	private void tryFollowOwnerPlayer()
+	{
+		final EntityPlayer ownerPlayer = worldObj.getPlayerEntityByName(owner);
+
+		if (ownerPlayer != null)
+		{
+			final double distanceToOwner = LogicHelper.getDistanceToEntity(this, ownerPlayer);
+			final ItemStack currentItemStack = ownerPlayer.inventory.mainInventory[ownerPlayer.inventory.currentItem];
+
+			if (currentItemStack != null && distanceToOwner < 30.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+			{
+				moveToPlayer(ownerPlayer);
+			}
+		}
+	}
+
+	private void moveToPlayer(EntityPlayer player)
+	{
+		if (player != null && (player.onGround))
+		{
+			getLookHelper().setLookPositionWithEntity(player, 10.0F, getVerticalFaceSpeed());
+
+			if (getDistanceToEntity(player) > 3.5D)
+			{
+				final boolean pathSet = getNavigator().tryMoveToEntityLiving(player, 0.4D);
+				getNavigator().onUpdateNavigation();
+
+				if (!pathSet && getDistanceToEntity(player) >= 10.0D)
+				{
+					final int playerX = MathHelper.floor_double(player.posX) - 2;
+					final int playerY = MathHelper.floor_double(player.boundingBox.minY);
+					final int playerZ = MathHelper.floor_double(player.posZ) - 2;
+
+					for (int i = 0; i <= 4; ++i)
+					{
+						for (int i2 = 0; i2 <= 4; ++i2)
+						{
+							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && worldObj.doesBlockHaveSolidTopSurface(worldObj, playerX + i, playerY - 1, playerZ + i2) && !worldObj.getBlock(playerX + i, playerY, playerZ + i2).isNormalCube() && !worldObj.getBlock(playerX + i, playerY + 1, playerZ + i2).isNormalCube())
+							{
+								setLocationAndAngles(playerX + i + 0.5F, playerY, playerZ + i2 + 0.5F, rotationYaw, rotationPitch);
+								getNavigator().clearPathEntity();
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
