@@ -80,7 +80,14 @@ public class EntitySpiderEgg extends EntityCreature
 		
 		if (!worldObj.isRemote)
 		{
-			if (timeUntilEggHatch >= 0)
+			//DEBUG
+			if (SpiderQueen.getInstance().inDebugMode && SpiderQueen.getInstance().debugDoRapidSpiderGrowth)
+			{
+				timeUntilEggHatch = 0;
+			}
+			//DEBUG
+			
+			if (timeUntilEggHatch <= 0)
 			{
 				final EntityCocoon cocoonToConsume = getConsumableCocoon();
 				final EntityHatchedSpider hatchedSpider = consumeCocoon(cocoonToConsume);

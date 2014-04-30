@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockWeb;
+import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.entity.EntityCocoon;
@@ -122,6 +123,8 @@ public class SpiderQueen implements IEnforcedCore
 	
 	public List<String> fakePlayerNames = new ArrayList<String>();
 	public boolean doDisplayPlayerSkins = true;
+	public boolean inDebugMode = false;
+	public boolean debugDoRapidSpiderGrowth = false;
 	
 	public SpiderQueen()
 	{
@@ -286,6 +289,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeCommands(FMLServerStartingEvent event) 
 	{
+		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandPlayerSkins());
 	}
 
