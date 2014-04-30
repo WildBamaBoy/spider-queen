@@ -16,6 +16,7 @@ import spiderqueen.blocks.BlockWeb;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
 import spiderqueen.core.forge.CommonProxy;
+import spiderqueen.core.forge.GuiHandlerInventory;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
@@ -54,6 +55,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -123,8 +125,8 @@ public class SpiderQueen implements IEnforcedCore
 	
 	public List<String> fakePlayerNames = new ArrayList<String>();
 	public boolean doDisplayPlayerSkins = true;
-	public boolean inDebugMode = false;
-	public boolean debugDoRapidSpiderGrowth = false;
+	public boolean inDebugMode = true;
+	public boolean debugDoRapidSpiderGrowth = true;
 	
 	public SpiderQueen()
 	{
@@ -147,6 +149,8 @@ public class SpiderQueen implements IEnforcedCore
 		logger = new ModLogger(this);
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 		fakePlayerNames = downloadFakePlayerNames();
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(this,  new GuiHandlerInventory());
 	}
 
 	@Override

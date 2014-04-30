@@ -12,15 +12,14 @@ package spiderqueen.network;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
+import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
-import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
 import com.radixshock.radixcore.network.Packet;
 
@@ -53,15 +52,15 @@ public final class PacketHandler extends AbstractPacketHandler
 			case GetInventory:
 				handleGetInventory(packet.arguments, player);
 				break;
-				
+
 			case SetInventory:
 				handleSetInventory(packet.arguments, player);
 				break;
-			
+
 			case SetEaten:
 				handleSetEaten(packet.arguments, player);
 				break;
-				
+
 			default:
 				SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -77,14 +76,20 @@ public final class PacketHandler extends AbstractPacketHandler
 	{
 		final int entityId = (Integer)arguments[0];
 		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
-		
+
 		if (entity instanceof EntityFakePlayer)
 		{
 			final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
 			mod.getPacketPipeline().sendPacketToPlayer(new Packet(EnumPacketType.SetInventory, entityId, fakePlayer.inventory), (EntityPlayerMP) player);
 		}
+
+		else if (entity instanceof EntityHatchedSpider)
+		{
+			final EntityHatchedSpider hatchedSpider = (EntityHatchedSpider)entity;
+			mod.getPacketPipeline().sendPacketToPlayer(new Packet(EnumPacketType.SetInventory, entityId, hatchedSpider.inventory), (EntityPlayerMP) player);
+		}
 	}
-	
+
 	private void handleSetInventory(Object[] arguments, EntityPlayer player) 
 	{
 		final int entityId = (Integer)arguments[0];
@@ -100,22 +105,28 @@ public final class PacketHandler extends AbstractPacketHandler
 			fakePlayer.inventory.setWornArmorItems();
 		}
 
+		else if (entity instanceof EntityHatchedSpider)
+		{
+			final EntityHatchedSpider hatchedSpider = (EntityHatchedSpider)entity;
+			hatchedSpider.inventory = inventory;
+		}
+
 		if (!player.worldObj.isRemote)
 		{
 			mod.getPacketPipeline().sendPacketToAllPlayersExcept(new Packet(EnumPacketType.SetInventory, entityId, inventory), (EntityPlayerMP)player);
 		}
-		
+
 		else
 		{
 			inventory.setWornArmorItems();
 		}
 	}
-	
+
 	private void handleSetEaten(Object[] arguments, EntityPlayer player)
 	{
 		final int entityId = (Integer)arguments[0];
 		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
-		
+
 		if (entity instanceof EntityCocoon)
 		{
 			final EntityCocoon cocoon = (EntityCocoon)entity;

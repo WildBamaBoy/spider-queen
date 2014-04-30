@@ -24,7 +24,15 @@ public class RenderHatchedSpider extends RenderSpider
 	
 	protected ResourceLocation getEntityTexture(EntityHatchedSpider entitySpider)
 	{
-		return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + entitySpider.level + ".png");
+		if (entitySpider.cocoonType == EnumCocoonType.VILLAGER)
+		{
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderVillager" + entitySpider.level + ".png");
+		}
+		
+		else
+		{
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + entitySpider.level + ".png");			
+		}
 	}
 	
 	@Override
