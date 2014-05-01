@@ -32,6 +32,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import spiderqueen.core.SpiderQueen;
+import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.logic.LogicHelper;
@@ -134,7 +135,16 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	@Override
 	public final int getSizeInventory()
 	{
-		return 40;
+		if (owner instanceof EntityHatchedSpider)
+		{
+			final EntityHatchedSpider spider = (EntityHatchedSpider) owner;
+			return (spider.level * 10);
+		}
+
+		else
+		{
+			return 40;
+		}
 	}
 
 	/**
@@ -147,7 +157,16 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	@Override
 	public ItemStack getStackInSlot(int slotId)
 	{
-		return inventoryItems[slotId];
+		if (slotId < getSizeInventory())
+		{
+			return inventoryItems[slotId];
+		}
+		
+		else
+		{
+			System.out.println(slotId);
+			return null;
+		}
 	}
 
 	/**
@@ -438,9 +457,17 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	 */
 	public void setWornArmorItems()
 	{	
-		for (int i = 0; i < 4; ++i)
+		try
 		{
-			armorItems[i] = inventoryItems[36 + i];
+			for (int i = 0; i < 4; ++i)
+			{
+				armorItems[i] = inventoryItems[36 + i];
+			}
+		}
+
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+
 		}
 	}
 
@@ -991,33 +1018,41 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 		for (int i = 0; i < getSizeInventory(); i++)
 		{
-			final String data = inStream.readObject().toString();
-
-			if (data.contains("null"))
+			try
 			{
-				inventoryItems[i] = null;
-			}
+				final String data = inStream.readObject().toString();
 
-			else
-			{
-				final int itemID = Integer.parseInt(data.split(":")[1]);
-				final int stackSize = Integer.parseInt(data.split(":")[2]);
-				final int damage = Integer.parseInt(data.split(":")[3]);
-				final int color = Integer.parseInt(data.split(":")[4]);
-
-				final ItemStack inventoryStack = new ItemStack(Item.getItemById(itemID), stackSize, damage);
-
-				if (inventoryStack.getItem() instanceof ItemArmor)
+				if (data.contains("null"))
 				{
-					final ItemArmor armor = (ItemArmor)inventoryStack.getItem();
-
-					if (armor.getArmorMaterial() == ArmorMaterial.CLOTH)
-					{
-						armor.func_82813_b(inventoryStack, color);
-					}
+					inventoryItems[i] = null;
 				}
 
-				inventoryItems[i] = inventoryStack;
+				else
+				{
+					final int itemID = Integer.parseInt(data.split(":")[1]);
+					final int stackSize = Integer.parseInt(data.split(":")[2]);
+					final int damage = Integer.parseInt(data.split(":")[3]);
+					final int color = Integer.parseInt(data.split(":")[4]);
+
+					final ItemStack inventoryStack = new ItemStack(Item.getItemById(itemID), stackSize, damage);
+
+					if (inventoryStack.getItem() instanceof ItemArmor)
+					{
+						final ItemArmor armor = (ItemArmor)inventoryStack.getItem();
+
+						if (armor.getArmorMaterial() == ArmorMaterial.CLOTH)
+						{
+							armor.func_82813_b(inventoryStack, color);
+						}
+					}
+
+					inventoryItems[i] = inventoryStack;
+				}
+			}
+
+			catch (Throwable e)
+			{
+				continue;
 			}
 		}
 	}

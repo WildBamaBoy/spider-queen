@@ -23,7 +23,7 @@ import spiderqueen.entity.EntityHatchedSpider;
 public class ContainerSpiderInventory extends Container
 {
 	protected final EntityHatchedSpider entity;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -33,7 +33,7 @@ public class ContainerSpiderInventory extends Container
 	public ContainerSpiderInventory(IInventory inventoryPlayer, IInventory inventoryEntity, EntityHatchedSpider entity)
 	{
 		this.entity = entity;
-		for (int inventoryHeight = 0; inventoryHeight < 4; ++inventoryHeight)
+		for (int inventoryHeight = 0; inventoryHeight < inventoryEntity.getSizeInventory() / 9; ++inventoryHeight)
 		{
 			for (int inventoryWidth = 0; inventoryWidth < 9; ++inventoryWidth)
 			{
@@ -69,7 +69,7 @@ public class ContainerSpiderInventory extends Container
 					return null;
 				}
 			}
-			
+
 			else if (!this.mergeItemStack(slotStack, 0, 4 * 9, false))
 			{
 				return null;
@@ -79,7 +79,7 @@ public class ContainerSpiderInventory extends Container
 			{
 				slot.putStack((ItemStack)null);
 			}
-			
+
 			else
 			{
 				slot.onSlotChanged();
@@ -96,17 +96,28 @@ public class ContainerSpiderInventory extends Container
 	 */
 	private void bindPlayerInventory(InventoryPlayer inventoryPlayer) 
 	{
-		for (int inventoryHeight = 0; inventoryHeight < 3; inventoryHeight++) 
+		final int heldItemsHeightMod = entity.level == 1 ? 107 : entity.level == 2 ? 125 : 143;
+		final int storedItemsHeightMod = entity.level == 1 ? 49 : entity.level == 2 ? 67 : 85;;
+		
+		try
 		{
-			for (int inventoryWidth = 0; inventoryWidth < 9; inventoryWidth++) 
+			for (int inventoryHeight = 0; inventoryHeight < 3; inventoryHeight++) 
 			{
-				addSlotToContainer(new Slot(inventoryPlayer, inventoryWidth + inventoryHeight * 9 + 9, 8 + inventoryWidth * 18, 103 + inventoryHeight * 18));
+				for (int inventoryWidth = 0; inventoryWidth < 9; inventoryWidth++) 
+				{
+					addSlotToContainer(new Slot(inventoryPlayer, inventoryWidth + inventoryHeight * 9 + 9, 8 + inventoryWidth * 18, storedItemsHeightMod + inventoryHeight * 18));
+				}
+			}
+
+			for (int i = 0; i < 9; i++) 
+			{
+				addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, heldItemsHeightMod));
 			}
 		}
 
-		for (int i = 0; i < 9; i++) 
+		catch (Throwable e)
 		{
-			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 161));
-		}	
+			e.printStackTrace();
+		}
 	}
 }

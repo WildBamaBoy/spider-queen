@@ -60,6 +60,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		this.tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		this.tasks.addTask(3, new EntityAIWander(this, 0.4D));
 		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+
+		this.updateEntityAttributes();
 	}
 
 	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
@@ -94,21 +96,26 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
 
+			if (getHealth() > 0)
+			{
+				updateEntityAttributes();
+			}
+			
 			if (!tryFollowOwnerPlayer(false))
 			{
 				tryMoveToSpiderRod();
 			}
-			
+
 			if (timeUntilNextTeleport > 0)
 			{
 				timeUntilNextTeleport--;
 			}
-			
+
 			if (timeUntilNextExplosion > 0)
 			{
 				timeUntilNextExplosion--;
 			}
-			
+
 			if (timeUntilNextWebshot > 0)
 			{
 				timeUntilNextWebshot--;
@@ -127,10 +134,34 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(16.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
-		
+	}
+
+	private void updateEntityAttributes()
+	{
 		if (cocoonType == EnumCocoonType.SKELETON)
 		{
-			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);	
+			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D);	
+		}
+
+		else if (cocoonType == EnumCocoonType.WOLF)
+		{
+			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.8D);	
+		}
+
+		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + (level * 10))
+		{
+			this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + (level * 10));
+			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);	
+			this.setHealth((float) this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+		}
+	}
+
+	private float getAttackDamage()
+	{
+		switch (cocoonType)
+		{
+		case WOLF: return 1.0F;
+		default: return 2.5F;
 		}
 	}
 
@@ -149,16 +180,16 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
 				{
 					resetTimeUntilTeleport();
-					
+
 					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
 					setPosition(entityAttacking.posX, entityAttacking.posY, entityAttacking.posZ);
 					worldObj.playSound(entityAttacking.posX, entityAttacking.posY, entityAttacking.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
 				}
-				
+
 				return entityAttacking;	
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -196,6 +227,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	 */
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
+		damageAmount = getAttackDamage();
+		
 		if (damageAmount > 2.0F && damageAmount < 6.0F && this.rand.nextInt(10) == 0)
 		{
 			if (this.onGround)
@@ -217,7 +250,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 				worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase)entityBeingAttacked, 2.6F));
 			}
-			
+
 			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 			{
 				final EntityLiving entityLiving = (EntityLiving)entityBeingAttacked;
@@ -228,24 +261,24 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					resetTimeUntilExplosion();
 					worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
 				}
-				
+
 				if (entityLiving.getHealth() <= 0.0F)
 				{
 					killsUntilLevelUp--;
-					
+
 					if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
 					{
 						timeUntilNextTeleport = 0;
 						timeUntilNextExplosion = 0;
 						timeUntilNextWebshot = 0;
-						
+
 						worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 						killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
 						level++;
-						
+
 						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
 					}
-					
+
 					entityToAttack = null;
 				}
 			}
@@ -405,6 +438,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				{
 					if (!checkOnly)
 					{
+						entityToAttack = null;
 						moveToPlayer(ownerPlayer);
 					}
 
@@ -482,7 +516,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					(rand.nextDouble() - 0.5D) * 2.0D);
 		}
 	}
-	
+
 	private void resetTimeUntilTeleport()
 	{
 		switch (level)
@@ -492,7 +526,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		case 3: timeUntilNextTeleport = Time.SECOND * 10; break;
 		}
 	}
-	
+
 	private void resetTimeUntilExplosion()
 	{
 		switch (level)
@@ -502,7 +536,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		case 3: timeUntilNextExplosion = Time.SECOND * 10; break;
 		}
 	}
-	
+
 	private void resetTimeUntilWebshot()
 	{
 		switch (level)

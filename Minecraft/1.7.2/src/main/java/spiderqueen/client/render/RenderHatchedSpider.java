@@ -59,6 +59,11 @@ public class RenderHatchedSpider extends RenderLiving
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderSkeleton" + entitySpider.level + ".png");
 		}
 		
+		else if (entitySpider.cocoonType == EnumCocoonType.ZOMBIE)
+		{
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderZombie" + entitySpider.level + ".png");
+		}
+		
 		else
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + entitySpider.level + ".png");			
@@ -79,6 +84,21 @@ public class RenderHatchedSpider extends RenderLiving
 		if (hatchedSpider.cocoonType == EnumCocoonType.EMPTY)
 		{
 			GL11.glScaled(0.5D, 0.5D, 0.5D);	
+		}
+		
+		else if (hatchedSpider.cocoonType == EnumCocoonType.ZOMBIE)
+		{
+			double scale = 1.0D;
+			
+			switch (hatchedSpider.level)
+			{
+			case 1: scale = 1.0D; break;
+			case 2: scale = 1.3D; break;
+			case 3: scale = 1.5D; break;
+			default: scale = 1.3D; break;
+			}
+			
+			GL11.glScaled(scale, scale, scale);
 		}
 		
 		else

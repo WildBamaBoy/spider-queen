@@ -60,12 +60,29 @@ public class ModelHatchedSpider extends ModelBase
 	public ModelRenderer thinSpiderLeg7;
 	public ModelRenderer thinSpiderLeg8;
 
+	public ModelRenderer hugeSpiderHead;
+	public ModelRenderer hugeSpiderBody;
+	public ModelRenderer hugeSpiderRearEnd;
+	public ModelRenderer hugeSpiderLeg1;
+	public ModelRenderer hugeSpiderLeg2;
+	public ModelRenderer hugeSpiderLeg3;
+	public ModelRenderer hugeSpiderLeg4;
+	public ModelRenderer hugeSpiderLeg5;
+	public ModelRenderer hugeSpiderLeg6;
+	public ModelRenderer hugeSpiderLeg7;
+	public ModelRenderer hugeSpiderLeg8;
+	public ModelRenderer hugeSpiderTopBulk;
+	public ModelRenderer hugeSpiderBackBulk;
+	public ModelRenderer hugeSpiderRightBulk;
+	public ModelRenderer hugeSpiderLeftBulk;
+
 	public ModelHatchedSpider()
 	{
 		initDefaultSpider();
 		initRaisedSpider();
 		initTinySpider();
 		initThinSpider();
+		initHugeSpider();
 	}
 
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
@@ -73,7 +90,7 @@ public class ModelHatchedSpider extends ModelBase
 		final EntityHatchedSpider spider = (EntityHatchedSpider)par1Entity;
 		this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 
-		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY)
+		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER)
 		{
 			this.defaultSpiderHead.render(par7);
 			this.defaultSpiderNeck.render(par7);
@@ -132,13 +149,32 @@ public class ModelHatchedSpider extends ModelBase
 			this.thinSpiderLeg7.render(par7);
 			this.thinSpiderLeg8.render(par7);
 		}
+
+		else if (spider.cocoonType == EnumCocoonType.ZOMBIE)
+		{
+			this.hugeSpiderHead.render(par7);
+			this.hugeSpiderRearEnd.render(par7);
+			this.hugeSpiderBody.render(par7);
+			this.hugeSpiderLeftBulk.render(par7);
+			this.hugeSpiderTopBulk.render(par7);
+			this.hugeSpiderBackBulk.render(par7);
+			this.hugeSpiderRightBulk.render(par7);
+			this.hugeSpiderLeg1.render(par7);
+			this.hugeSpiderLeg2.render(par7);
+			this.hugeSpiderLeg3.render(par7);
+			this.hugeSpiderLeg4.render(par7);
+			this.hugeSpiderLeg5.render(par7);
+			this.hugeSpiderLeg6.render(par7);
+			this.hugeSpiderLeg7.render(par7);
+			this.hugeSpiderLeg8.render(par7);
+		}
 	}
 
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
 	{
 		final EntityHatchedSpider spider = (EntityHatchedSpider)par7Entity;
 
-		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY)
+		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER)
 		{
 			this.defaultSpiderHead.rotateAngleY = par4 / (180F / (float)Math.PI);
 			this.defaultSpiderHead.rotateAngleX = par5 / (180F / (float)Math.PI);
@@ -333,6 +369,55 @@ public class ModelHatchedSpider extends ModelBase
 			thinSpiderLeg7.rotateAngleZ += f16;
 			thinSpiderLeg8.rotateAngleZ += -f16;
 		}
+
+		else if (spider.cocoonType == EnumCocoonType.ZOMBIE)
+		{
+			hugeSpiderHead.rotateAngleY = par4 / 57.29578F;
+			hugeSpiderHead.rotateAngleX = par5 / 57.29578F;
+			float f6 = 0.7853982F;
+			hugeSpiderLeg1.rotateAngleZ = -f6;
+			hugeSpiderLeg2.rotateAngleZ = f6;
+			hugeSpiderLeg3.rotateAngleZ = -f6 * 0.74F;
+			hugeSpiderLeg4.rotateAngleZ = f6 * 0.74F;
+			hugeSpiderLeg5.rotateAngleZ = -f6 * 0.74F;
+			hugeSpiderLeg6.rotateAngleZ = f6 * 0.74F;
+			hugeSpiderLeg7.rotateAngleZ = -f6;
+			hugeSpiderLeg8.rotateAngleZ = f6;
+			float f7 = -0F;
+			float f8 = 0.3926991F;
+			hugeSpiderLeg1.rotateAngleY = f8 * 2.0F + f7;
+			hugeSpiderLeg2.rotateAngleY = -f8 * 2.0F - f7;
+			hugeSpiderLeg3.rotateAngleY = f8 * 1.0F + f7;
+			hugeSpiderLeg4.rotateAngleY = -f8 * 1.0F - f7;
+			hugeSpiderLeg5.rotateAngleY = -f8 * 1.0F + f7;
+			hugeSpiderLeg6.rotateAngleY = f8 * 1.0F - f7;
+			hugeSpiderLeg7.rotateAngleY = -f8 * 2.0F + f7;
+			hugeSpiderLeg8.rotateAngleY = f8 * 2.0F - f7;
+			float f9 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
+			float f10 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 3.141593F) * 0.4F) * par2;
+			float f11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 1.570796F) * 0.4F) * par2;
+			float f12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 4.712389F) * 0.4F) * par2;
+			float f13 = Math.abs(MathHelper.sin(par1 * 0.6662F + 0.0F) * 0.4F) * par2;
+			float f14 = Math.abs(MathHelper.sin(par1 * 0.6662F + 3.141593F) * 0.4F) * par2;
+			float f15 = Math.abs(MathHelper.sin(par1 * 0.6662F + 1.570796F) * 0.4F) * par2;
+			float f16 = Math.abs(MathHelper.sin(par1 * 0.6662F + 4.712389F) * 0.4F) * par2;
+			hugeSpiderLeg1.rotateAngleY += f9;
+			hugeSpiderLeg2.rotateAngleY += -f9;
+			hugeSpiderLeg3.rotateAngleY += f10;
+			hugeSpiderLeg4.rotateAngleY += -f10;
+			hugeSpiderLeg5.rotateAngleY += f11;
+			hugeSpiderLeg6.rotateAngleY += -f11;
+			hugeSpiderLeg7.rotateAngleY += f12;
+			hugeSpiderLeg8.rotateAngleY += -f12;
+			hugeSpiderLeg1.rotateAngleZ += f13;
+			hugeSpiderLeg2.rotateAngleZ += -f13;
+			hugeSpiderLeg3.rotateAngleZ += f14;
+			hugeSpiderLeg4.rotateAngleZ += -f14;
+			hugeSpiderLeg5.rotateAngleZ += f15;
+			hugeSpiderLeg6.rotateAngleZ += -f15;
+			hugeSpiderLeg7.rotateAngleZ += f16;
+			hugeSpiderLeg8.rotateAngleZ += -f16;
+		}
 	}
 
 	private void initDefaultSpider()
@@ -514,62 +599,143 @@ public class ModelHatchedSpider extends ModelBase
 		this.thinSpiderHead = new ModelRenderer(this,32, 4);
 		this.thinSpiderHead.addBox(-4F, -6F, -8F, 8, 8, 8, 0.0F);
 		this.thinSpiderHead.setRotationPoint(0F, 14F, -3F);
-		
+
 		this.thinSpiderBody = new ModelRenderer(this,0, 0);
 		this.thinSpiderBody.addBox(-3F, -3F, -3F, 6, 4, 6, 0.0F);
 		this.thinSpiderBody.setRotationPoint(0F, 16F, 0F);
-		
+
 		this.thinSpiderRearEnd = new ModelRenderer(this,0, 12);
 		this.thinSpiderRearEnd.addBox(-5F, -4F, -6F, 8, 6, 10, 0.0F);
 		this.thinSpiderRearEnd.setRotationPoint(1F, 13F, 8F);
 		this.thinSpiderRearEnd.rotateAngleX = 0.32023F;
-		
+
 		this.thinSpiderLeg1 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg1.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg1.setRotationPoint(-4F, 15F, 2F);
 		this.thinSpiderLeg1.rotateAngleX = 0.57596F;
 		this.thinSpiderLeg1.rotateAngleY = 0.19199F;
-		
+
 		this.thinSpiderLeg2 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg2.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg2.setRotationPoint(4F, 15F, 2F);
 		this.thinSpiderLeg2.rotateAngleX = -0.57596F;
 		this.thinSpiderLeg2.rotateAngleY = -0.19199F;
-		
+
 		this.thinSpiderLeg3 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg3.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg3.setRotationPoint(-4F, 15F, 1F);
 		this.thinSpiderLeg3.rotateAngleX = 0.27925F;
 		this.thinSpiderLeg3.rotateAngleY = 0.19199F;
-		
+
 		this.thinSpiderLeg4 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg4.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg4.setRotationPoint(4F, 15F, 1F);
 		this.thinSpiderLeg4.rotateAngleX = -0.27925F;
 		this.thinSpiderLeg4.rotateAngleY = -0.19199F;
-		
+
 		this.thinSpiderLeg5 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg5.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg5.setRotationPoint(-4F, 15F, 0F);
 		this.thinSpiderLeg5.rotateAngleX = -0.27925F;
 		this.thinSpiderLeg5.rotateAngleY = 0.19199F;
-		
+
 		this.thinSpiderLeg6 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg6.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg6.setRotationPoint(4F, 15F, 0F);
 		this.thinSpiderLeg6.rotateAngleX = 0.27925F;
 		this.thinSpiderLeg6.rotateAngleY = -0.19199F;
-		
+
 		this.thinSpiderLeg7 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg7.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg7.setRotationPoint(-4F, 15F, -1F);
 		this.thinSpiderLeg7.rotateAngleX = -0.57596F;
 		this.thinSpiderLeg7.rotateAngleY = 0.19199F;
-		
+
 		this.thinSpiderLeg8 = new ModelRenderer(this,18, 0);
 		this.thinSpiderLeg8.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
 		this.thinSpiderLeg8.setRotationPoint(4F, 15F, -1F);
 		this.thinSpiderLeg8.rotateAngleX = 0.57596F;
 		this.thinSpiderLeg8.rotateAngleY = -0.19199F;
+	}
+
+	private void initHugeSpider()
+	{
+		hugeSpiderHead = new ModelRenderer(this,32, 4);
+		hugeSpiderHead.addBox(-4F, -4F, -8F, 8, 8, 8, 0.0F);
+		hugeSpiderHead.setRotationPoint(0F, 15F, -3F);
+		hugeSpiderHead.rotateAngleX = 0.18081F;
+		hugeSpiderHead.rotateAngleZ = -0.27122F;
+
+		hugeSpiderBody = new ModelRenderer(this,0, 0);
+		hugeSpiderBody.addBox(-3F, -3F, -3F, 6, 6, 6, 0.0F);
+		hugeSpiderBody.setRotationPoint(0F, 15F, 0F);
+
+		hugeSpiderRearEnd = new ModelRenderer(this,0, 12);
+		hugeSpiderRearEnd.addBox(-5F, -4F, -6F, 12, 9, 12, 0.0F);
+		hugeSpiderRearEnd.setRotationPoint(-1F, 14F, 9F);
+
+		hugeSpiderLeg1 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg1.addBox(-15F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg1.setRotationPoint(-4F, 15F, 2F);
+		hugeSpiderLeg1.rotateAngleX = 0.57596F;
+		hugeSpiderLeg1.rotateAngleY = 0.19199F;
+
+		hugeSpiderLeg2 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg2.addBox(-1F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg2.setRotationPoint(4F, 15F, 2F);
+		hugeSpiderLeg2.rotateAngleX = -0.57596F;
+		hugeSpiderLeg2.rotateAngleY = -0.19199F;
+
+		hugeSpiderLeg3 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg3.addBox(-15F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg3.setRotationPoint(-4F, 15F, 1F);
+		hugeSpiderLeg3.rotateAngleX = 0.27925F;
+		hugeSpiderLeg3.rotateAngleY = 0.19199F;
+
+		hugeSpiderLeg4 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg4.addBox(-1F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg4.setRotationPoint(4F, 15F, 1F);
+		hugeSpiderLeg4.rotateAngleX = -0.27925F;
+		hugeSpiderLeg4.rotateAngleY = -0.19199F;
+
+		hugeSpiderLeg5 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg5.addBox(-15F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg5.setRotationPoint(-4F, 15F, 0F);
+		hugeSpiderLeg5.rotateAngleX = -0.27925F;
+		hugeSpiderLeg5.rotateAngleY = 0.19199F;
+
+		hugeSpiderLeg6 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg6.addBox(-1F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg6.setRotationPoint(4F, 15F, 0F);
+		hugeSpiderLeg6.rotateAngleX = 0.27925F;
+		hugeSpiderLeg6.rotateAngleY = -0.19199F;
+
+		hugeSpiderLeg7 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg7.addBox(-15F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg7.setRotationPoint(-4F, 15F, -1F);
+		hugeSpiderLeg7.rotateAngleX = -0.57596F;
+		hugeSpiderLeg7.rotateAngleY = 0.19199F;
+
+		hugeSpiderLeg8 = new ModelRenderer(this,18, 0);
+		hugeSpiderLeg8.addBox(-1F, -1F, -1F, 16, 2, 2, 0.0F);
+		hugeSpiderLeg8.setRotationPoint(4F, 15F, -1F);
+		hugeSpiderLeg8.rotateAngleX = 0.57596F;
+		hugeSpiderLeg8.rotateAngleY = -0.19199F;
+
+		hugeSpiderTopBulk = new ModelRenderer(this,0, 12);
+		hugeSpiderTopBulk.addBox(0F, 0F, 0F, 8, 2, 9, 0.0F);
+		hugeSpiderTopBulk.setRotationPoint(-4F, 8F, 4F);
+
+		hugeSpiderBackBulk = new ModelRenderer(this,0, 12);
+		hugeSpiderBackBulk.addBox(-4F, -2F, 0F, 7, 6, 2, 0.0F);
+		hugeSpiderBackBulk.setRotationPoint(0F, 14F, 15F);
+
+		hugeSpiderLeftBulk = new ModelRenderer(this,0, 12);
+		hugeSpiderLeftBulk.addBox(0F, -2F, -3F, 2, 4, 9, 0.0F);
+		hugeSpiderLeftBulk.setRotationPoint(6F, 15F, 7F);
+
+		hugeSpiderRightBulk = new ModelRenderer(this,0, 12);
+		hugeSpiderRightBulk.addBox(-2F, -2F, -3F, 2, 4, 10, 0.0F);
+		hugeSpiderRightBulk.setRotationPoint(-6F, 15F, 7F);
 	}
 }
