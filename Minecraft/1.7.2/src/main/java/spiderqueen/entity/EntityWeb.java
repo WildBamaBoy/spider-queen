@@ -379,11 +379,6 @@ public class EntityWeb extends Entity implements IProjectile
 					accelerationZ = motionZ * 0.1D;
 				}
 
-				if (damageSource.getEntity() instanceof EntityLivingBase)
-				{
-					shooter = (EntityPlayer)damageSource.getEntity();
-				}
-
 				return true;
 			}
 
