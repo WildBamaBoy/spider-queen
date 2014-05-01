@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Constants.java
+ * EnumSpiderSize.java
  * Copyright (c) 2014 Radix-Shock Entertainment.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
@@ -7,22 +7,13 @@
  * http://www.gnu.org/licenses/gpl.html
  ******************************************************************************/
 
-package spiderqueen.core;
+package spiderqueen.enums;
 
-public final class Constants 
+public enum EnumSpiderSize 
 {
-	/** Will be beginning version. 
-	 *  -0.7.0.Alpha + minor fixes
-	 *  -0.8.0.Beta  + minor fixes
-	 *  -0.9.0.PreRelease + minor fixes
-	 *  -1.0.0.*/
-	public static final String VERSION = "0.7.0.Alpha";
-
-	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
-	
-	public static final int ID_GUI_INVENTORY = 0;
-	
-	private Constants()
-	{
-	}
+	TINY,
+	THIN,
+	NORMAL,
+	RAISED,
+	HUGE;
 }

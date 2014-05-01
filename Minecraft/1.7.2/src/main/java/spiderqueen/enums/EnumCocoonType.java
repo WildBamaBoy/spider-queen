@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * EnumCocoonType.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
+
 package spiderqueen.enums;
 
 import net.minecraft.entity.monster.EntityCreeper;
@@ -17,24 +26,19 @@ import com.radixshock.radixcore.logic.LogicHelper;
 
 public enum EnumCocoonType 
 {
-	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL),
-	PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL),
-	SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL),
-	CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL),
-	CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL),
-	ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL),
-	SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL),
-	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL),
-	HUMAN(null, 0, "null", EnumCocoonSize.NORMAL),
-	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL),
-	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL),
-	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL),
-//	GATHERERBEE(null, 4, "null", EnumCocoonSize.NORMAL),
-//	WARRIORBEE(null, 4, "null", EnumCocoonSize.NORMAL),
-//	QUEENBEE(null, 1, "null", EnumCocoonSize.NORMAL),
-//	WASP(null, 4, "null", EnumCocoonSize.NORMAL),
-//	ANT(null, 4, "null", EnumCocoonSize.NORMAL),
-	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL);
+	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL, EnumSpiderSize.RAISED),
+	CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL, EnumSpiderSize.NORMAL),
+	ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL, EnumSpiderSize.HUGE),
+	SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL, EnumSpiderSize.THIN),
+	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	HUMAN(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
+	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
+	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY);
 	
 	private Class entityClass;
 	private Item itemCocoon;
@@ -43,13 +47,15 @@ public enum EnumCocoonType
 	private int entityCatchDifficulty;
 	private String deathSound;
 	private EnumCocoonSize cocoonSize;
+	private EnumSpiderSize spiderSize;
 	
-	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound, EnumCocoonSize cocoonSize)
+	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound, EnumCocoonSize cocoonSize, EnumSpiderSize spiderSize)
 	{
 		this.entityClass = entityClass;
 		this.entityCatchDifficulty = entityCatchDifficulty;
 		this.deathSound = deathSound;
 		this.cocoonSize = cocoonSize;
+		this.spiderSize = spiderSize;
 	}
 	
 	public Class getEntityClass()
@@ -82,6 +88,11 @@ public enum EnumCocoonType
 		return cocoonSize;
 	}
 
+	public EnumSpiderSize getSpiderSize()
+	{
+		return spiderSize;
+	}
+	
 	public static boolean isAnimalBased(EnumCocoonType cocoonType)
 	{
 		return cocoonType == PIG || cocoonType == SHEEP || cocoonType == CHICKEN || cocoonType == COW;

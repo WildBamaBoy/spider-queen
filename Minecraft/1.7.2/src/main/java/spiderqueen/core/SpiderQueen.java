@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * SpiderQueen.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
+
 package spiderqueen.core;
 
 import java.net.URL;
@@ -243,6 +252,8 @@ public class SpiderQueen implements IEnforcedCore
 				"GTG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'T', Blocks.torch);
 		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), 
 				"GTG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'T', Blocks.torch);
+		GameRegistry.addRecipe(new ItemStack(itemWeb),
+				"SS ", "S  ", 'S', Items.string);
 	}
 
 	@Override
@@ -294,7 +305,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public String getLongModName() 
 	{
-		return "Spider Queen Remastered";
+		return "Spider Queen Reborn";
 	}
 
 	@Override

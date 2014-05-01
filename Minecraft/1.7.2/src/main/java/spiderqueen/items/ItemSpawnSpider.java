@@ -9,14 +9,18 @@
 
 package spiderqueen.items;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumCocoonType;
 
+import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
 
 public class ItemSpawnSpider extends AbstractItemSpawner
@@ -57,5 +61,12 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 
 			return true;
 		}
+	}
+	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+	{	
+		par3List.add("Spawns a random spider");
+		par3List.add("at a random level.");
 	}
 }

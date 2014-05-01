@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ContainerInventory.java
+ * ContainerSpiderInventory.java
  * Copyright (c) 2014 Radix-Shock Entertainment.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import spiderqueen.entity.EntityHatchedSpider;
 
 /**
- *	Handles player interaction of an inventory in MCA.
+ *	Handles player interaction of an inventory in Spider Queen.
  */
 public class ContainerSpiderInventory extends Container
 {

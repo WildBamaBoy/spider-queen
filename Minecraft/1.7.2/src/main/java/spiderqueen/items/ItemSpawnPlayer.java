@@ -9,8 +9,13 @@
 
 package spiderqueen.items;
 
+import java.util.List;
+
+import com.radixshock.radixcore.constant.Font.Color;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityFakePlayer;
@@ -49,5 +54,11 @@ public class ItemSpawnPlayer extends AbstractItemSpawner
 
 			return true;
 		}
+	}
+	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+	{	
+		par3List.add("Spawns a random player.");
 	}
 }

@@ -63,7 +63,7 @@ def build():
     print ""
 
     copyRadixSourceToMod()
-    updateLanguageFiles()
+    #updateLanguageFiles()
 
     if choice == "Y" or choice == "y":
         callGradleSubprocess()

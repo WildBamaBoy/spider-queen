@@ -1,4 +1,17 @@
+/*******************************************************************************
+ * ItemSpiderRod.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
+
 package spiderqueen.items;
+
+import java.util.List;
+
+import com.radixshock.radixcore.constant.Font.Color;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,5 +48,15 @@ public class ItemSpiderRod extends Item
 	public void registerIcons(IIconRegister iconRegister)
 	{
 		itemIcon = iconRegister.registerIcon("spiderqueen:SpiderRod");
+	}
+	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+	{	
+		par3List.add("Lead your spiders");
+		par3List.add("with this item eqipped.");
+		par3List.add("");
+		par3List.add("Place on the ground to"); 
+		par3List.add("keep them stationary.");
 	}
 }

@@ -1,4 +1,17 @@
+/*******************************************************************************
+ * ItemWeb.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
+
 package spiderqueen.items;
+
+import java.util.List;
+
+import com.radixshock.radixcore.constant.Font.Color;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +68,18 @@ public class ItemWeb extends Item
 		else
 		{
 			itemIcon = iconRegister.registerIcon("spiderqueen:Web");
+		}
+	}
+	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
+	{			
+		par3List.add("Cocoons enemies and");
+		par3List.add("creates climbable webs.");
+
+		if (isPoison)
+		{
+			par3List.add(Color.GREEN + "Poison");
 		}
 	}
 }
