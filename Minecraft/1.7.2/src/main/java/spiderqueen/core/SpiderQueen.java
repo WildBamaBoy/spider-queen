@@ -17,7 +17,9 @@ import spiderqueen.blocks.BlockWeb;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
 import spiderqueen.core.forge.CommonProxy;
+import spiderqueen.core.forge.EventHooks;
 import spiderqueen.core.forge.GuiHandlerInventory;
+import spiderqueen.core.forge.ServerTickHandler;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
@@ -67,14 +69,14 @@ public class SpiderQueen implements IEnforcedCore
 	private static SpiderQueen instance;
 	@SidedProxy(clientSide="spiderqueen.core.forge.ClientProxy", serverSide="spiderqueen.core.forge.CommonProxy")
 	public static CommonProxy proxy;
-	
+
+	public static ServerTickHandler serverTickHandler;
 	public static PacketPipeline packetPipeline;
 	private static PacketCodec packetCodec;
 	private static PacketHandler packetHandler;
+	
 	private ModLogger logger;
-	
 	public ModPropertiesManager modPropertiesManager;
-	
 	public CreativeTabs tabSpiderQueen;
 	
 	//Items
@@ -133,7 +135,8 @@ public class SpiderQueen implements IEnforcedCore
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 		fakePlayerNames = downloadFakePlayerNames();
 		
-		NetworkRegistry.INSTANCE.registerGuiHandler(this,  new GuiHandlerInventory());
+		serverTickHandler = new ServerTickHandler();
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
 	}
 
 	@Override
@@ -351,7 +354,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public Class getEventHookClass() 
 	{
-		return null;
+		return EventHooks.class;
 	}
 
 	@Override
