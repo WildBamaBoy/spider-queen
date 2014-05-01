@@ -10,6 +10,9 @@
 package spiderqueen.entity;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -109,7 +112,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			{
 				updateEntityAttributes();
 			}
-			
+
 			if (!tryFollowOwnerPlayer(false))
 			{
 				updateEntityActionState();
@@ -170,8 +173,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (cocoonType)
 		{
+		case EMPTY: return 0.5F;
 		case WOLF: return 1.0F;
-		default: return 2.5F;
+		default: return 2.5F + level / 2;
 		}
 	}
 
@@ -181,26 +185,33 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	 */
 	protected Entity findPlayerToAttack()
 	{
-		EntityLiving entityAttacking = (EntityLiving)LogicHelper.getNearestEntityOfType(this, EntitySheep.class, 20);
-
-		if (entityAttacking != null && this.canEntityBeSeen(entityAttacking))
+		List<Entity> entitiesAroundMe = LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15);
+		EntityLivingBase closestValidTarget = null;
+		double distanceToTarget = 100D;
+		
+		for (Entity entity : entitiesAroundMe)
 		{
-			if (entityAttacking.getHealth() > 0.0F)
+			final double distanceToThisEntity = getDistanceToEntity(entity);
+			
+			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity)) ||
+				(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity))
+				&& distanceToThisEntity < distanceToTarget)
 			{
-				if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
-				{
-					resetTimeUntilTeleport();
-
-					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
-					setPosition(entityAttacking.posX, entityAttacking.posY, entityAttacking.posZ);
-					worldObj.playSound(entityAttacking.posX, entityAttacking.posY, entityAttacking.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
-				}
-
-				return entityAttacking;	
+				closestValidTarget = (EntityLivingBase)entity;
+				distanceToTarget = distanceToThisEntity;
 			}
 		}
+		
+		if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
+		{
+			resetTimeUntilTeleport();
 
-		return null;
+			worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+			setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
+			worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
+		}
+
+		return closestValidTarget;
 	}
 
 	/**
@@ -232,6 +243,44 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		this.playSound("mob.spider.step", 0.15F, 1.0F);
 	}
 
+
+	@Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) 
+	{
+		final Entity attackingEntity = par1DamageSource.getEntity();
+
+		if (attackingEntity != null)
+		{
+			if (attackingEntity instanceof EntityPlayer)
+			{
+				return super.attackEntityFrom(par1DamageSource, par2); 
+			}
+
+			else if (attackingEntity instanceof EntityHatchedSpider)
+			{
+				final EntityHatchedSpider spider = (EntityHatchedSpider) attackingEntity;
+
+				if (spider.owner.equals(this.owner))
+				{
+					return super.attackEntityFrom(par1DamageSource, par2);
+				}
+			}
+
+			final List<EntityHatchedSpider> nearbySpiders = (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
+			this.entityToAttack = attackingEntity;
+
+			for (EntityHatchedSpider spider : nearbySpiders)
+			{
+				if (spider.owner.equals(this.owner))
+				{
+					spider.entityToAttack = attackingEntity;
+				}
+			}
+		}
+
+		return super.attackEntityFrom(par1DamageSource, par2);
+	}
+
 	/**
 	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
 	 */
@@ -239,7 +288,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		damageAmount = getAttackDamage();
 		getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
-		
+
 		if (rand.nextInt(10) == 0)
 		{
 			if (this.onGround)
@@ -313,7 +362,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			this.dropItem(Items.spider_eye, 1);
 		}
-		
+
 		inventory.dropAllItems();
 	}
 
@@ -558,5 +607,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		case 2: timeUntilNextWebshot = Time.SECOND * 3; break;
 		case 3: timeUntilNextWebshot = Time.SECOND * 1; break;
 		}
+	}
+	
+	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
+	{
+		return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider);
 	}
 }
