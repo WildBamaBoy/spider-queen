@@ -24,6 +24,11 @@ public class EntitySpiderEgg extends EntityCreature
 	private int timeSinceHit;
 	private int rockDirection = 1;
 
+	public EntitySpiderEgg(World world)
+	{
+		super(world);
+	}
+	
 	public EntitySpiderEgg(World world, String owner)
 	{
 		super(world);

@@ -12,6 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import spiderqueen.blocks.BlockPoisonWeb;
+import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
@@ -114,7 +115,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Block blockWebBed;
 	public Block blockBeehive;
 	public Block blockAntHill;
-	public Block blockSpiderBait;
+	public Block blockSpiderRod;
 	public Block blockMandragoraSeeds;
 	public Block blockHumanHeart;
 	public Block blockHumanBrain;
@@ -243,9 +244,11 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		blockWeb = new BlockWeb();
 		blockPoisonWeb = new BlockPoisonWeb();
+		blockSpiderRod = new BlockSpiderRod();
 		
 		GameRegistry.registerBlock(blockWeb, "Web");
 		GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
+		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
 	}
 
 	@Override

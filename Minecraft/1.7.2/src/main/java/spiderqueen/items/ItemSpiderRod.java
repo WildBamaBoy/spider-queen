@@ -15,9 +15,20 @@ public class ItemSpiderRod extends Item
 		this.setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 	}
 
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
+	@Override
+	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int posX, int posY, int posZ, int meta, float unknown1, float unknown2, float unknown3) 
 	{
-		return itemStack;
+		if (world.isAirBlock(posX, posY + 1, posZ))
+		{
+			world.setBlock(posX, posY + 1, posZ, SpiderQueen.getInstance().blockSpiderRod);
+			
+			if (!entityPlayer.capabilities.isCreativeMode)
+			{
+				itemStack.stackSize--;
+			}
+		}
+		
+		return super.onItemUse(itemStack, entityPlayer, world, posX, posY, posZ, meta, unknown1, unknown2, unknown3);
 	}
 
 	@Override

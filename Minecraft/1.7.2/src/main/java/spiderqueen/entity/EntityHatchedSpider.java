@@ -23,6 +23,7 @@ import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.NBTHelper;
+import com.radixshock.radixcore.logic.Point3D;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -69,10 +70,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		super.onUpdate();
 
 		//Server-side only
-		if (!worldObj.isRemote) 
+		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
-			tryFollowOwnerPlayer();
+			
+			if (!tryFollowOwnerPlayer())
+			{
+				tryMoveToSpiderRod();
+			}
 		}
 
 		else //Client-side only
@@ -310,7 +315,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		this.dataWatcher.updateObject(16, Byte.valueOf(b0));
 	}
 
-	private void tryFollowOwnerPlayer()
+	private boolean tryFollowOwnerPlayer()
 	{
 		final EntityPlayer ownerPlayer = worldObj.getPlayerEntityByName(owner);
 
@@ -322,10 +327,23 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (currentItemStack != null && distanceToOwner < 30.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
 			{
 				moveToPlayer(ownerPlayer);
+				return true;
 			}
 		}
+		
+		return false;
 	}
 
+	private void tryMoveToSpiderRod()
+	{
+		final Point3D nearestRod = LogicHelper.getNearbyBlock_StartAtTop(this, SpiderQueen.getInstance().blockSpiderRod, 10);
+
+		if (nearestRod != null && LogicHelper.getDistanceToXYZ(nearestRod.posX, nearestRod.posY, nearestRod.posZ, posX, posY, posZ) > 5.0D)
+		{
+			getNavigator().tryMoveToXYZ(nearestRod.posX, nearestRod.posY, nearestRod.posZ, 0.4D);
+		}
+	}
+	
 	private void moveToPlayer(EntityPlayer player)
 	{
 		if (player != null && (player.onGround))
