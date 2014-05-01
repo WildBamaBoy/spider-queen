@@ -75,7 +75,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	@Override
 	public boolean isAIEnabled()
 	{
-		return tryFollowOwnerPlayer(true);
+		return true;
 	}
 
 	protected void entityInit()
@@ -103,6 +103,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			
 			if (!tryFollowOwnerPlayer(false))
 			{
+				updateEntityActionState();
 				tryMoveToSpiderRod();
 			}
 
@@ -173,7 +174,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		EntityLiving entityAttacking = (EntityLiving)LogicHelper.getNearestEntityOfType(this, EntitySheep.class, 20);
 
-		if (entityAttacking != null)
+		if (entityAttacking != null && this.canEntityBeSeen(entityAttacking))
 		{
 			if (entityAttacking.getHealth() > 0.0F)
 			{
@@ -228,8 +229,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
 		damageAmount = getAttackDamage();
+		getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
 		
-		if (damageAmount > 2.0F && damageAmount < 6.0F && this.rand.nextInt(10) == 0)
+		if (rand.nextInt(10) == 0)
 		{
 			if (this.onGround)
 			{
