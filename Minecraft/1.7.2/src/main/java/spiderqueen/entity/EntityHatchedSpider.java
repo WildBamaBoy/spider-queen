@@ -44,6 +44,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public int level = 1;
 	public int killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
 	public int timeUntilNextTeleport = 0;
+	public int timeUntilNextExplosion = 0;
 	public Inventory inventory = new Inventory(this);
 
 	public transient boolean hasSyncedInventory = false;
@@ -99,6 +100,11 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (timeUntilNextTeleport > 0)
 			{
 				timeUntilNextTeleport--;
+			}
+			
+			if (timeUntilNextExplosion > 0)
+			{
+				timeUntilNextExplosion--;
 			}
 		}
 
@@ -197,6 +203,12 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			{
 				final EntityLiving entityLiving = (EntityLiving)entityBeingAttacked;
 				entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
+
+				if (timeUntilNextExplosion <= 0)
+				{
+					resetTimeUntilExplosion();
+					worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
+				}
 				
 				if (entityLiving.getHealth() <= 0.0F)
 				{
@@ -205,6 +217,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
 					{
 						timeUntilNextTeleport = 0;
+						timeUntilNextExplosion = 0;
+						
 						worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 						killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
 						level++;
@@ -456,6 +470,16 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		case 1: timeUntilNextTeleport = Time.MINUTE; break;
 		case 2: timeUntilNextTeleport = Time.SECOND * 30; break;
 		case 3: timeUntilNextTeleport = Time.SECOND * 10; break;
+		}
+	}
+	
+	private void resetTimeUntilExplosion()
+	{
+		switch (level)
+		{
+		case 1: timeUntilNextExplosion = Time.MINUTE; break;
+		case 2: timeUntilNextExplosion = Time.SECOND * 30; break;
+		case 3: timeUntilNextExplosion = Time.SECOND * 10; break;
 		}
 	}
 }

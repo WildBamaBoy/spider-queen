@@ -1,18 +1,30 @@
 package spiderqueen.client.render;
 
-import net.minecraft.client.renderer.entity.RenderSpider;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import spiderqueen.client.model.ModelHatchedSpider;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumCocoonType;
 
-public class RenderHatchedSpider extends RenderSpider
+public class RenderHatchedSpider extends RenderLiving
 {
-    private static final ResourceLocation spiderEyesTextures = new ResourceLocation("textures/entity/spider_eyes.png");
+    public RenderHatchedSpider()
+    {
+        super(new ModelHatchedSpider(), 1.0F);
+        this.setRenderPassModel(new ModelHatchedSpider());
+    }
+    
+    protected float getDeathMaxRotation(EntityLivingBase par1EntityLivingBase)
+    {
+        return 180.0F;
+    }
     
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity) 
@@ -30,6 +42,11 @@ public class RenderHatchedSpider extends RenderSpider
 		else if (entitySpider.cocoonType == EnumCocoonType.ENDERMAN)
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderEnderman" + entitySpider.level + ".png");
+		}
+		
+		else if (entitySpider.cocoonType == EnumCocoonType.CREEPER)
+		{
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderCreeper" + entitySpider.level + ".png");
 		}
 		
 		else
