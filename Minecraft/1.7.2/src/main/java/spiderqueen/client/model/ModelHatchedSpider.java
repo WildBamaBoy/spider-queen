@@ -125,7 +125,7 @@ public class ModelHatchedSpider extends ModelBase
 	{
 		final EntityHatchedSpider spider = (EntityHatchedSpider)par7Entity;
 
-		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER)
+		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER || spider.cocoonType == EnumCocoonType.ENDERMAN || spider.cocoonType == EnumCocoonType.HUMAN)
 		{
 			this.defaultSpiderHead.rotateAngleY = par4 / (180F / (float)Math.PI);
 			this.defaultSpiderHead.rotateAngleX = par5 / (180F / (float)Math.PI);
