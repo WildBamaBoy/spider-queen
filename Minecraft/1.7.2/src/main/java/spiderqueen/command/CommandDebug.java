@@ -9,11 +9,11 @@
 
 package spiderqueen.command;
 
-import spiderqueen.core.SpiderQueen;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
+import spiderqueen.core.SpiderQueen;
 
 import com.radixshock.radixcore.constant.Font.Color;
 

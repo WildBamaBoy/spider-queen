@@ -1,7 +1,5 @@
 package spiderqueen.enums;
 
-import com.radixshock.radixcore.logic.LogicHelper;
-
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -14,6 +12,8 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.item.Item;
+
+import com.radixshock.radixcore.logic.LogicHelper;
 
 public enum EnumCocoonType 
 {

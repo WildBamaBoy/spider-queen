@@ -9,8 +9,6 @@
 
 package spiderqueen.items;
 
-import com.radixshock.radixcore.logic.LogicHelper;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -18,6 +16,8 @@ import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumCocoonType;
+
+import com.radixshock.radixcore.logic.LogicHelper;
 
 public class ItemSpawnSpider extends AbstractItemSpawner
 {
