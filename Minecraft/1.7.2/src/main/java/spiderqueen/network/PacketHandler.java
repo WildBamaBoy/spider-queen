@@ -9,6 +9,8 @@
 
 package spiderqueen.network;
 
+import java.util.Random;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -60,7 +62,11 @@ public final class PacketHandler extends AbstractPacketHandler
 			case SetEaten:
 				handleSetEaten(packet.arguments, player);
 				break;
-
+				
+			case SetLevel:
+				handleSetLevel(packet.arguments, player);
+				break;
+				
 			default:
 				SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -133,6 +139,30 @@ public final class PacketHandler extends AbstractPacketHandler
 			cocoon.worldObj.spawnParticle("largesmoke", cocoon.posX, cocoon.posY + 2, cocoon.posZ, cocoon.motionX, cocoon.motionY, cocoon.motionZ);
 			cocoon.worldObj.spawnParticle("largesmoke", cocoon.posX, cocoon.posY + 2, cocoon.posZ, cocoon.motionX, cocoon.motionY, cocoon.motionZ);
 			cocoon.setEaten(true);
+		}
+	}
+	
+	private void handleSetLevel(Object[] arguments, EntityPlayer player)
+	{
+		final int entityId = (Integer)arguments[0];
+		final int level = (Integer)arguments[1];
+		final EntityHatchedSpider spider = (EntityHatchedSpider)player.worldObj.getEntityByID(entityId);
+		
+		if (spider != null)
+		{
+			final Random rand = new Random();
+			
+			for (int i = 0; i < 16; i++)
+			{
+			spider.worldObj.spawnParticle("smoke", 
+					spider.posX + (rand.nextDouble() - 0.5D) * (double)spider.width, 
+					spider.posY + 0.5D + rand.nextDouble() * (double)0.25D, 
+					spider.posZ + rand.nextDouble() - 0.5D * (double)spider.width, 
+					(rand.nextDouble() - 0.5D) * 2.0D, 
+					-rand.nextDouble(), 
+					(rand.nextDouble() - 0.5D) * 2.0D);
+			}
+			spider.level = level;
 		}
 	}
 }

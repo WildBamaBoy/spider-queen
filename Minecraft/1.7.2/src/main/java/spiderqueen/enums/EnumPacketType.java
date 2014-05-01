@@ -13,5 +13,6 @@ public enum EnumPacketType
 {
 	GetInventory,
 	SetInventory,
-	SetEaten
+	SetEaten,
+	SetLevel;
 }

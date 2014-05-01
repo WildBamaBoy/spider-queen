@@ -4,8 +4,15 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -13,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import spiderqueen.core.Constants;
@@ -21,6 +29,7 @@ import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
+import com.radixshock.radixcore.constant.Time;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.NBTHelper;
 import com.radixshock.radixcore.logic.Point3D;
@@ -33,6 +42,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public String owner;
 	public EnumCocoonType cocoonType = EnumCocoonType.EMPTY;
 	public int level = 1;
+	public int killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
+	public int timeUntilNextTeleport = 0;
 	public Inventory inventory = new Inventory(this);
 
 	public transient boolean hasSyncedInventory = false;
@@ -40,11 +51,17 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public EntityHatchedSpider(World world)
 	{
 		super(world);
+
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
+		this.tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		this.tasks.addTask(3, new EntityAIWander(this, 0.4D));
+		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
 
 	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
 	{
-		super(world);
+		this(world);
 		this.owner = owner;
 		this.setSize(1.4F, 0.9F);
 		this.cocoonType = cocoonType;
@@ -53,7 +70,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	@Override
 	public boolean isAIEnabled()
 	{
-		return true;
+		return tryFollowOwnerPlayer(true);
 	}
 
 	protected void entityInit()
@@ -73,20 +90,22 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
-			
-			if (!tryFollowOwnerPlayer())
+
+			if (!tryFollowOwnerPlayer(false))
 			{
 				tryMoveToSpiderRod();
+			}
+			
+			if (timeUntilNextTeleport > 0)
+			{
+				timeUntilNextTeleport--;
 			}
 		}
 
 		else //Client-side only
 		{
-			if (!hasSyncedInventory)
-			{
-				SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
-				hasSyncedInventory = true;
-			}
+			syncInventory();
+			displayParticles();
 		}
 	}
 
@@ -103,17 +122,26 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	 */
 	protected Entity findPlayerToAttack()
 	{
-		float f = this.getBrightness(1.0F);
+		EntityLiving entityAttacking = (EntityLiving)LogicHelper.getNearestEntityOfType(this, EntitySheep.class, 20);
 
-		if (f < 0.5F)
+		if (entityAttacking != null)
 		{
-			double d0 = 16.0D;
-			return this.worldObj.getClosestVulnerablePlayerToEntity(this, d0);
+			if (entityAttacking.getHealth() > 0.0F)
+			{
+				if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
+				{
+					resetTimeUntilTeleport();
+					
+					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+					setPosition(entityAttacking.posX, entityAttacking.posY, entityAttacking.posZ);
+					worldObj.playSound(entityAttacking.posX, entityAttacking.posY, entityAttacking.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
+				}
+				
+				return entityAttacking;	
+			}
 		}
-		else
-		{
-			return null;
-		}
+		
+		return null;
 	}
 
 	/**
@@ -148,31 +176,44 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	/**
 	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
 	 */
-	protected void attackEntity(Entity par1Entity, float par2)
+	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
-		float f1 = this.getBrightness(1.0F);
-
-		if (f1 > 0.5F && this.rand.nextInt(100) == 0)
+		if (damageAmount > 2.0F && damageAmount < 6.0F && this.rand.nextInt(10) == 0)
 		{
-			this.entityToAttack = null;
+			if (this.onGround)
+			{
+				double d0 = entityBeingAttacked.posX - this.posX;
+				double d1 = entityBeingAttacked.posZ - this.posZ;
+				float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+				this.motionX = d0 / (double)f2 * 0.5D * 0.8D + this.motionX * 0.2D;
+				this.motionZ = d1 / (double)f2 * 0.5D * 0.8D + this.motionZ * 0.2D;
+				this.motionY = 0.4D;
+			}
 		}
+
 		else
 		{
-			if (par2 > 2.0F && par2 < 6.0F && this.rand.nextInt(10) == 0)
+			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 			{
-				if (this.onGround)
+				final EntityLiving entityLiving = (EntityLiving)entityBeingAttacked;
+				entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
+				
+				if (entityLiving.getHealth() <= 0.0F)
 				{
-					double d0 = par1Entity.posX - this.posX;
-					double d1 = par1Entity.posZ - this.posZ;
-					float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-					this.motionX = d0 / (double)f2 * 0.5D * 0.800000011920929D + this.motionX * 0.20000000298023224D;
-					this.motionZ = d1 / (double)f2 * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
-					this.motionY = 0.4000000059604645D;
+					killsUntilLevelUp--;
+					
+					if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
+					{
+						timeUntilNextTeleport = 0;
+						worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
+						killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
+						level++;
+						
+						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
+					}
+					
+					entityToAttack = null;
 				}
-			}
-			else
-			{
-				super.attackEntity(par1Entity, par2);
 			}
 		}
 	}
@@ -315,22 +356,29 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		this.dataWatcher.updateObject(16, Byte.valueOf(b0));
 	}
 
-	private boolean tryFollowOwnerPlayer()
+	private boolean tryFollowOwnerPlayer(boolean checkOnly)
 	{
-		final EntityPlayer ownerPlayer = worldObj.getPlayerEntityByName(owner);
-
-		if (ownerPlayer != null)
+		if (owner != null)
 		{
-			final double distanceToOwner = LogicHelper.getDistanceToEntity(this, ownerPlayer);
-			final ItemStack currentItemStack = ownerPlayer.inventory.mainInventory[ownerPlayer.inventory.currentItem];
+			final EntityPlayer ownerPlayer = worldObj.getPlayerEntityByName(owner);
 
-			if (currentItemStack != null && distanceToOwner < 30.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+			if (ownerPlayer != null)
 			{
-				moveToPlayer(ownerPlayer);
-				return true;
+				final double distanceToOwner = LogicHelper.getDistanceToEntity(this, ownerPlayer);
+				final ItemStack currentItemStack = ownerPlayer.inventory.mainInventory[ownerPlayer.inventory.currentItem];
+
+				if (currentItemStack != null && distanceToOwner < 30.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+				{
+					if (!checkOnly)
+					{
+						moveToPlayer(ownerPlayer);
+					}
+
+					return true;
+				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -343,7 +391,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			getNavigator().tryMoveToXYZ(nearestRod.posX, nearestRod.posY, nearestRod.posZ, 0.4D);
 		}
 	}
-	
+
 	private void moveToPlayer(EntityPlayer player)
 	{
 		if (player != null && (player.onGround))
@@ -375,6 +423,39 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					}
 				}
 			}
+		}
+	}
+
+	private void syncInventory() 
+	{
+		if (!hasSyncedInventory)
+		{
+			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
+			hasSyncedInventory = true;
+		}
+	}
+
+	private void displayParticles() 
+	{
+		if (cocoonType == EnumCocoonType.ENDERMAN)
+		{
+			worldObj.spawnParticle("portal", 
+					posX + (rand.nextDouble() - 0.5D) * (double)width, 
+					posY + 0.5D + rand.nextDouble() * (double)0.25D, 
+					posZ + rand.nextDouble() - 0.5D * (double)width, 
+					(rand.nextDouble() - 0.5D) * 2.0D, 
+					-rand.nextDouble(), 
+					(rand.nextDouble() - 0.5D) * 2.0D);
+		}
+	}
+	
+	private void resetTimeUntilTeleport()
+	{
+		switch (level)
+		{
+		case 1: timeUntilNextTeleport = Time.MINUTE; break;
+		case 2: timeUntilNextTeleport = Time.SECOND * 30; break;
+		case 3: timeUntilNextTeleport = Time.SECOND * 10; break;
 		}
 	}
 }
