@@ -54,6 +54,11 @@ public class RenderHatchedSpider extends RenderLiving
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderWolf" + entitySpider.level + ".png");
 		}
 		
+		else if (entitySpider.cocoonType == EnumCocoonType.SKELETON)
+		{
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderSkeleton" + entitySpider.level + ".png");
+		}
+		
 		else
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + entitySpider.level + ".png");			

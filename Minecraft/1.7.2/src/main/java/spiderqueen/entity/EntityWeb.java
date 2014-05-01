@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -18,7 +19,7 @@ import spiderqueen.enums.EnumCocoonType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityWeb extends Entity
+public class EntityWeb extends Entity implements IProjectile
 {
 	private int ticksInAir;
 	private boolean isInactive;
@@ -60,6 +61,30 @@ public class EntityWeb extends Entity
 		this.isPoison = isPoison;
 	}
 	
+    public EntityWeb(EntityLivingBase shooter, EntityLivingBase target, float speed)
+    {
+        super(shooter.worldObj);
+        this.renderDistanceWeight = 10.0D;
+
+        this.posY = shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D;
+        double d0 = target.posX - shooter.posX;
+        double d1 = target.boundingBox.minY + (double)(target.height / 3.0F) - this.posY;
+        double d2 = target.posZ - shooter.posZ;
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+
+        if (d3 >= 1.0E-7D)
+        {
+            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+            double d4 = d0 / d3;
+            double d5 = d2 / d3;
+            this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f2, f3);
+            this.yOffset = 0.0F;
+            float f4 = (float)d3 * 0.2F;
+            this.setThrowableHeading(d0, d1 + (double)f4, d2, speed, 16F);
+        }
+    }
+    
 	@Override
 	protected void entityInit() 
 	{
@@ -373,5 +398,25 @@ public class EntityWeb extends Entity
 	public int getBrightnessForRender(float unknown)
 	{
 		return 15728880;
+	}
+
+	@Override
+	public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8) 
+	{
+        float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
+        par1 /= (double)f2;
+        par3 /= (double)f2;
+        par5 /= (double)f2;
+        par1 += this.rand.nextGaussian() * (double)(this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * (double)par8;
+        par3 += this.rand.nextGaussian() * (double)(this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * (double)par8;
+        par5 += this.rand.nextGaussian() * (double)(this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * (double)par8;
+        par1 *= (double)par7;
+        par3 *= (double)par7;
+        par5 *= (double)par7;
+        this.motionX = par1;
+        this.motionZ = par5;
+        float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)f3) * 180.0D / Math.PI);
 	}
 }

@@ -48,11 +48,24 @@ public class ModelHatchedSpider extends ModelBase
 	public ModelRenderer tinySpiderLeg7;
 	public ModelRenderer tinySpiderLeg8;
 
+	public ModelRenderer thinSpiderHead;
+	public ModelRenderer thinSpiderBody;
+	public ModelRenderer thinSpiderRearEnd;
+	public ModelRenderer thinSpiderLeg1;
+	public ModelRenderer thinSpiderLeg2;
+	public ModelRenderer thinSpiderLeg3;
+	public ModelRenderer thinSpiderLeg4;
+	public ModelRenderer thinSpiderLeg5;
+	public ModelRenderer thinSpiderLeg6;
+	public ModelRenderer thinSpiderLeg7;
+	public ModelRenderer thinSpiderLeg8;
+
 	public ModelHatchedSpider()
 	{
 		initDefaultSpider();
 		initRaisedSpider();
 		initTinySpider();
+		initThinSpider();
 	}
 
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
@@ -89,7 +102,7 @@ public class ModelHatchedSpider extends ModelBase
 			this.raisedSpiderLeg7.render(par7);
 			this.raisedSpiderLeg8.render(par7);
 		}
-		
+
 		else if (spider.cocoonType == EnumCocoonType.WOLF)
 		{
 			this.tinySpiderHead.render(par7);
@@ -103,6 +116,21 @@ public class ModelHatchedSpider extends ModelBase
 			this.tinySpiderLeg6.render(par7);
 			this.tinySpiderLeg7.render(par7);
 			this.tinySpiderLeg8.render(par7);
+		}
+
+		else if (spider.cocoonType == EnumCocoonType.SKELETON)
+		{
+			this.thinSpiderHead.render(par7);
+			this.thinSpiderBody.render(par7);
+			this.thinSpiderRearEnd.render(par7);
+			this.thinSpiderLeg1.render(par7);
+			this.thinSpiderLeg2.render(par7);
+			this.thinSpiderLeg3.render(par7);
+			this.thinSpiderLeg4.render(par7);
+			this.thinSpiderLeg5.render(par7);
+			this.thinSpiderLeg6.render(par7);
+			this.thinSpiderLeg7.render(par7);
+			this.thinSpiderLeg8.render(par7);
 		}
 	}
 
@@ -256,6 +284,55 @@ public class ModelHatchedSpider extends ModelBase
 			tinySpiderLeg7.rotateAngleZ += f16;
 			tinySpiderLeg8.rotateAngleZ += -f16;
 		}
+
+		else if (spider.cocoonType == EnumCocoonType.SKELETON)
+		{
+			thinSpiderHead.rotateAngleY = par4 / 57.29578F;
+			thinSpiderHead.rotateAngleX = par5 / 57.29578F;
+			float f6 = 0.7853982F;
+			thinSpiderLeg1.rotateAngleZ = -f6;
+			thinSpiderLeg2.rotateAngleZ = f6;
+			thinSpiderLeg3.rotateAngleZ = -f6 * 0.74F;
+			thinSpiderLeg4.rotateAngleZ = f6 * 0.74F;
+			thinSpiderLeg5.rotateAngleZ = -f6 * 0.74F;
+			thinSpiderLeg6.rotateAngleZ = f6 * 0.74F;
+			thinSpiderLeg7.rotateAngleZ = -f6;
+			thinSpiderLeg8.rotateAngleZ = f6;
+			float f7 = -0F;
+			float f8 = 0.3926991F;
+			thinSpiderLeg1.rotateAngleY = f8 * 2.0F + f7;
+			thinSpiderLeg2.rotateAngleY = -f8 * 2.0F - f7;
+			thinSpiderLeg3.rotateAngleY = f8 * 1.0F + f7;
+			thinSpiderLeg4.rotateAngleY = -f8 * 1.0F - f7;
+			thinSpiderLeg5.rotateAngleY = -f8 * 1.0F + f7;
+			thinSpiderLeg6.rotateAngleY = f8 * 1.0F - f7;
+			thinSpiderLeg7.rotateAngleY = -f8 * 2.0F + f7;
+			thinSpiderLeg8.rotateAngleY = f8 * 2.0F - f7;
+			float f9 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
+			float f10 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 3.141593F) * 0.4F) * par2;
+			float f11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 1.570796F) * 0.4F) * par2;
+			float f12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 4.712389F) * 0.4F) * par2;
+			float f13 = Math.abs(MathHelper.sin(par1 * 0.6662F + 0.0F) * 0.4F) * par2;
+			float f14 = Math.abs(MathHelper.sin(par1 * 0.6662F + 3.141593F) * 0.4F) * par2;
+			float f15 = Math.abs(MathHelper.sin(par1 * 0.6662F + 1.570796F) * 0.4F) * par2;
+			float f16 = Math.abs(MathHelper.sin(par1 * 0.6662F + 4.712389F) * 0.4F) * par2;
+			thinSpiderLeg1.rotateAngleY += f9;
+			thinSpiderLeg2.rotateAngleY += -f9;
+			thinSpiderLeg3.rotateAngleY += f10;
+			thinSpiderLeg4.rotateAngleY += -f10;
+			thinSpiderLeg5.rotateAngleY += f11;
+			thinSpiderLeg6.rotateAngleY += -f11;
+			thinSpiderLeg7.rotateAngleY += f12;
+			thinSpiderLeg8.rotateAngleY += -f12;
+			thinSpiderLeg1.rotateAngleZ += f13;
+			thinSpiderLeg2.rotateAngleZ += -f13;
+			thinSpiderLeg3.rotateAngleZ += f14;
+			thinSpiderLeg4.rotateAngleZ += -f14;
+			thinSpiderLeg5.rotateAngleZ += f15;
+			thinSpiderLeg6.rotateAngleZ += -f15;
+			thinSpiderLeg7.rotateAngleZ += f16;
+			thinSpiderLeg8.rotateAngleZ += -f16;
+		}
 	}
 
 	private void initDefaultSpider()
@@ -371,64 +448,128 @@ public class ModelHatchedSpider extends ModelBase
 
 	private void initTinySpider()
 	{	
-		tinySpiderHead = new ModelRenderer(this,0, 8);
-		tinySpiderHead.addBox(-3F, -2F, -4F, 4, 3, 4, 0.0F);
-		tinySpiderHead.setRotationPoint(0F, 19F, -3F);
+		this.tinySpiderHead = new ModelRenderer(this,0, 8);
+		this.tinySpiderHead.addBox(-3F, -2F, -4F, 4, 3, 4, 0.0F);
+		this.tinySpiderHead.setRotationPoint(0F, 19F, -3F);
 
-		tinySpiderBody = new ModelRenderer(this,0, 0);
-		tinySpiderBody.addBox(-3F, -3F, -3F, 4, 4, 4, 0.0F);
-		tinySpiderBody.setRotationPoint(0F, 19F, 0F);
+		this.tinySpiderBody = new ModelRenderer(this,0, 0);
+		this.tinySpiderBody.addBox(-3F, -3F, -3F, 4, 4, 4, 0.0F);
+		this.tinySpiderBody.setRotationPoint(0F, 19F, 0F);
 
-		tinySpiderRearEnd = new ModelRenderer(this,0, 15);
-		tinySpiderRearEnd.addBox(-3F, -4F, 0F, 6, 6, 6, 0.0F);
-		tinySpiderRearEnd.setRotationPoint(-1F, 18F, 1F);
+		this.tinySpiderRearEnd = new ModelRenderer(this,0, 15);
+		this.tinySpiderRearEnd.addBox(-3F, -4F, 0F, 6, 6, 6, 0.0F);
+		this.tinySpiderRearEnd.setRotationPoint(-1F, 18F, 1F);
 
-		tinySpiderLeg1 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg1.addBox(-9F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg1.setRotationPoint(-3F, 19F, 1F);
-		tinySpiderLeg1.rotateAngleX = 0.57596F;
-		tinySpiderLeg1.rotateAngleY = 0.19199F;
+		this.tinySpiderLeg1 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg1.addBox(-9F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg1.setRotationPoint(-3F, 19F, 1F);
+		this.tinySpiderLeg1.rotateAngleX = 0.57596F;
+		this.tinySpiderLeg1.rotateAngleY = 0.19199F;
 
-		tinySpiderLeg2 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg2.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg2.setRotationPoint(1F, 19F, 1F);
-		tinySpiderLeg2.rotateAngleX = -0.57596F;
-		tinySpiderLeg2.rotateAngleY = -0.19199F;
+		this.tinySpiderLeg2 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg2.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg2.setRotationPoint(1F, 19F, 1F);
+		this.tinySpiderLeg2.rotateAngleX = -0.57596F;
+		this.tinySpiderLeg2.rotateAngleY = -0.19199F;
 
-		tinySpiderLeg3 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg3.addBox(-9F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg3.setRotationPoint(-3F, 19F, 0F);
-		tinySpiderLeg3.rotateAngleX = 0.27925F;
-		tinySpiderLeg3.rotateAngleY = 0.19199F;
+		this.tinySpiderLeg3 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg3.addBox(-9F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg3.setRotationPoint(-3F, 19F, 0F);
+		this.tinySpiderLeg3.rotateAngleX = 0.27925F;
+		this.tinySpiderLeg3.rotateAngleY = 0.19199F;
 
-		tinySpiderLeg4 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg4.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg4.setRotationPoint(1F, 19F, 0F);
-		tinySpiderLeg4.rotateAngleX = -0.27925F;
-		tinySpiderLeg4.rotateAngleY = -0.19199F;
+		this.tinySpiderLeg4 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg4.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg4.setRotationPoint(1F, 19F, 0F);
+		this.tinySpiderLeg4.rotateAngleX = -0.27925F;
+		this.tinySpiderLeg4.rotateAngleY = -0.19199F;
 
-		tinySpiderLeg5 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg5.addBox(-9F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg5.setRotationPoint(-3F, 19F, -1F);
-		tinySpiderLeg5.rotateAngleX = -0.27925F;
-		tinySpiderLeg5.rotateAngleY = 0.19199F;
+		this.tinySpiderLeg5 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg5.addBox(-9F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg5.setRotationPoint(-3F, 19F, -1F);
+		this.tinySpiderLeg5.rotateAngleX = -0.27925F;
+		this.tinySpiderLeg5.rotateAngleY = 0.19199F;
 
-		tinySpiderLeg6 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg6.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg6.setRotationPoint(1F, 19F, -1F);
-		tinySpiderLeg6.rotateAngleX = 0.27925F;
-		tinySpiderLeg6.rotateAngleY = -0.19199F;
+		this.tinySpiderLeg6 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg6.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg6.setRotationPoint(1F, 19F, -1F);
+		this.tinySpiderLeg6.rotateAngleX = 0.27925F;
+		this.tinySpiderLeg6.rotateAngleY = -0.19199F;
 
-		tinySpiderLeg7 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg7.addBox(-10F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg7.setRotationPoint(-2F, 19F, -2F);
-		tinySpiderLeg7.rotateAngleX = -0.57596F;
-		tinySpiderLeg7.rotateAngleY = 0.19199F;
+		this.tinySpiderLeg7 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg7.addBox(-10F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg7.setRotationPoint(-2F, 19F, -2F);
+		this.tinySpiderLeg7.rotateAngleX = -0.57596F;
+		this.tinySpiderLeg7.rotateAngleY = 0.19199F;
 
-		tinySpiderLeg8 = new ModelRenderer(this,18, 0);
-		tinySpiderLeg8.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
-		tinySpiderLeg8.setRotationPoint(1F, 19F, -2F);
-		tinySpiderLeg8.rotateAngleX = 0.57596F;
-		tinySpiderLeg8.rotateAngleY = -0.19199F;
+		this.tinySpiderLeg8 = new ModelRenderer(this,18, 0);
+		this.tinySpiderLeg8.addBox(-1F, -1F, -1F, 10, 1, 1, 0.0F);
+		this.tinySpiderLeg8.setRotationPoint(1F, 19F, -2F);
+		this.tinySpiderLeg8.rotateAngleX = 0.57596F;
+		this.tinySpiderLeg8.rotateAngleY = -0.19199F;
+	}
+
+	private void initThinSpider()
+	{
+		this.thinSpiderHead = new ModelRenderer(this,32, 4);
+		this.thinSpiderHead.addBox(-4F, -6F, -8F, 8, 8, 8, 0.0F);
+		this.thinSpiderHead.setRotationPoint(0F, 14F, -3F);
+		
+		this.thinSpiderBody = new ModelRenderer(this,0, 0);
+		this.thinSpiderBody.addBox(-3F, -3F, -3F, 6, 4, 6, 0.0F);
+		this.thinSpiderBody.setRotationPoint(0F, 16F, 0F);
+		
+		this.thinSpiderRearEnd = new ModelRenderer(this,0, 12);
+		this.thinSpiderRearEnd.addBox(-5F, -4F, -6F, 8, 6, 10, 0.0F);
+		this.thinSpiderRearEnd.setRotationPoint(1F, 13F, 8F);
+		this.thinSpiderRearEnd.rotateAngleX = 0.32023F;
+		
+		this.thinSpiderLeg1 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg1.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg1.setRotationPoint(-4F, 15F, 2F);
+		this.thinSpiderLeg1.rotateAngleX = 0.57596F;
+		this.thinSpiderLeg1.rotateAngleY = 0.19199F;
+		
+		this.thinSpiderLeg2 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg2.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg2.setRotationPoint(4F, 15F, 2F);
+		this.thinSpiderLeg2.rotateAngleX = -0.57596F;
+		this.thinSpiderLeg2.rotateAngleY = -0.19199F;
+		
+		this.thinSpiderLeg3 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg3.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg3.setRotationPoint(-4F, 15F, 1F);
+		this.thinSpiderLeg3.rotateAngleX = 0.27925F;
+		this.thinSpiderLeg3.rotateAngleY = 0.19199F;
+		
+		this.thinSpiderLeg4 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg4.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg4.setRotationPoint(4F, 15F, 1F);
+		this.thinSpiderLeg4.rotateAngleX = -0.27925F;
+		this.thinSpiderLeg4.rotateAngleY = -0.19199F;
+		
+		this.thinSpiderLeg5 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg5.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg5.setRotationPoint(-4F, 15F, 0F);
+		this.thinSpiderLeg5.rotateAngleX = -0.27925F;
+		this.thinSpiderLeg5.rotateAngleY = 0.19199F;
+		
+		this.thinSpiderLeg6 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg6.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg6.setRotationPoint(4F, 15F, 0F);
+		this.thinSpiderLeg6.rotateAngleX = 0.27925F;
+		this.thinSpiderLeg6.rotateAngleY = -0.19199F;
+		
+		this.thinSpiderLeg7 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg7.addBox(-15F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg7.setRotationPoint(-4F, 15F, -1F);
+		this.thinSpiderLeg7.rotateAngleX = -0.57596F;
+		this.thinSpiderLeg7.rotateAngleY = 0.19199F;
+		
+		this.thinSpiderLeg8 = new ModelRenderer(this,18, 0);
+		this.thinSpiderLeg8.addBox(-1F, -1F, -1F, 16, 1, 1, 0.0F);
+		this.thinSpiderLeg8.setRotationPoint(4F, 15F, -1F);
+		this.thinSpiderLeg8.rotateAngleX = 0.57596F;
+		this.thinSpiderLeg8.rotateAngleY = -0.19199F;
 	}
 }
