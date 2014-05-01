@@ -204,7 +204,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				final EntityLiving entityLiving = (EntityLiving)entityBeingAttacked;
 				entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
 
-				if (timeUntilNextExplosion <= 0)
+				if (cocoonType == EnumCocoonType.CREEPER && timeUntilNextExplosion <= 0)
 				{
 					resetTimeUntilExplosion();
 					worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
