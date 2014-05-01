@@ -83,7 +83,6 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemWebslinger;
 	public Item itemSpiderRod;
 	public Item itemSpiderEgg;
-	public Item itemGhastEgg;
 	public Item itemCocoon;
 	public Item itemCocoonChicken;
 	public Item itemCocoonPig;
@@ -96,16 +95,8 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemCocoonHorse;
 	public Item itemCocoonEnderman;
 	public Item itemCocoonHuman;
-	public Item itemCocoonGathererBee;
-	public Item itemCocoonWarriorBee;
-	public Item itemCocoonQueenBee;
-	public Item itemCocoonWasp;
-	public Item itemCocoonAnt;
 	public Item itemCocoonWolf;
-	public Item itemNectar;
-	public Item itemRareFruit;
-	public Item itemHumanSkull;
-	
+
 	public Item itemSpawnPlayer;
 	public Item itemSpawnSpider;
 	
@@ -113,16 +104,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Block blockWeb;
 	public Block blockPoisonWeb;
 	public Block blockWebBed;
-	public Block blockBeehive;
-	public Block blockAntHill;
 	public Block blockSpiderRod;
-	public Block blockMandragoraSeeds;
-	public Block blockHumanHeart;
-	public Block blockHumanBrain;
-	public Block blockRoyalBlood;
-	public Block blockJack;
-	public Block blockLantern;
-	public Block blockStinger;
 	
 	public List<String> fakePlayerNames = new ArrayList<String>();
 	public boolean doDisplayPlayerSkins = true;
