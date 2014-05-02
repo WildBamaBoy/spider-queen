@@ -20,7 +20,6 @@ import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumCocoonType;
 
-import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
 
 public class ItemSpawnSpider extends AbstractItemSpawner

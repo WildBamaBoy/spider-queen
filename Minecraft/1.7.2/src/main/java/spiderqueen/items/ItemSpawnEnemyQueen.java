@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityEnemyQueen;
-import spiderqueen.entity.EntityFakePlayer;
 
 public class ItemSpawnEnemyQueen extends AbstractItemSpawner
 {

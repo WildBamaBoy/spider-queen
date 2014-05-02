@@ -11,9 +11,6 @@ package spiderqueen.items;
 
 import java.util.List;
 
-import com.radixshock.radixcore.constant.Font.Color;
-import com.radixshock.radixcore.constant.Font.Format;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +19,8 @@ import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.enums.EnumCocoonType;
+
+import com.radixshock.radixcore.constant.Font.Color;
 
 public class ItemCocoon extends Item
 {

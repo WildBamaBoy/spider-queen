@@ -11,8 +11,6 @@ package spiderqueen.items;
 
 import java.util.List;
 
-import com.radixshock.radixcore.constant.Font.Color;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
