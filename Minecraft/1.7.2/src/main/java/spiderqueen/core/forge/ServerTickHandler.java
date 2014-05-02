@@ -66,6 +66,7 @@ public class ServerTickHandler
 				}
 			}
 		}
+		
 		if (timeUntilSpawnWeb <= 0)
 		{
 			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
