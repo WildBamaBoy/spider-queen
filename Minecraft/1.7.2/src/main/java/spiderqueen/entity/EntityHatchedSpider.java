@@ -201,14 +201,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 		}
 
-			if (closestValidTarget != null && cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
-			{
-				resetTimeUntilTeleport();
+		if (closestValidTarget != null && cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
+		{
+			resetTimeUntilTeleport();
 
-				worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
-				setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
-				worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
-			}
+			worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+			setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
+			worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
+		}
 
 		return closestValidTarget;
 	}
