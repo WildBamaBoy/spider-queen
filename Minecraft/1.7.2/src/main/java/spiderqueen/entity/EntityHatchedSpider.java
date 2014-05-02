@@ -410,7 +410,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	@Override
 	public boolean interact(EntityPlayer entityPlayer)
 	{
-		if (cocoonType == EnumCocoonType.VILLAGER)
+		if (cocoonType == EnumCocoonType.VILLAGER && owner.equals(entityPlayer.getCommandSenderName()))
 		{
 			entityPlayer.openGui(SpiderQueen.getInstance(), Constants.ID_GUI_INVENTORY, worldObj, (int)posX, (int)posY, (int)posZ);
 		}
