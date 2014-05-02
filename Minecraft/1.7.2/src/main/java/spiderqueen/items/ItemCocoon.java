@@ -40,6 +40,11 @@ public class ItemCocoon extends Item
 	{
 		if (!world.isRemote)
 		{
+			if (!player.capabilities.isCreativeMode)
+			{
+				itemStack.stackSize--;
+			}
+			
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
 			entityCocoon.setPositionAndRotation(posX, posY + 1, posZ, entityCocoon.rotationYaw - 90F, 0F);
 			world.spawnEntityInWorld(entityCocoon);
