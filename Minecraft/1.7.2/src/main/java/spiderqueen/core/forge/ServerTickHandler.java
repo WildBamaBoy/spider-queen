@@ -68,14 +68,14 @@ public class ServerTickHandler
 				final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
 
 				modifyReputations(reputationHandler);
-				notifyReputations(player, reputationHandler);
+				applyReputations(player, reputationHandler);
 			}
 
 			hasCalculatedReputationForDay = true;
 		}
 	}
 
-	private void notifyReputations(EntityPlayer player, PlayerReputationHandler reputationHandler) 
+	private void applyReputations(EntityPlayer player, PlayerReputationHandler reputationHandler) 
 	{
 		//Creepers
 		if (reputationHandler.reputationCreepers == -2 && !reputationHandler.isAtWarWithCreepers)
