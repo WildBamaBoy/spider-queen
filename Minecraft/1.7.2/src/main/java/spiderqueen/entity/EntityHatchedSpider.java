@@ -201,9 +201,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 		}
 
-		if (closestValidTarget != null)
-		{
-			if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
+			if (closestValidTarget != null && cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
 			{
 				resetTimeUntilTeleport();
 
@@ -211,7 +209,6 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
 				worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
 			}
-		}
 
 		return closestValidTarget;
 	}
