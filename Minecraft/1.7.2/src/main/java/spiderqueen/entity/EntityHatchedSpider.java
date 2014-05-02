@@ -58,6 +58,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public int timeUntilWebshot = 0;
 	public int timeUntilTeleport = 0;
 	public int timeUntilExplosion = 0;
+	public boolean isHostile = false;
 	public Inventory inventory = new Inventory(this);
 
 	public transient boolean hasSyncedInventory = false;
@@ -205,11 +206,11 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			final double distanceToThisEntity = getDistanceToEntity(entity);
 
-			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity)) ||
-					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) ||
-							(entity instanceof EntityEnemyQueen) && isQueenValidTarget((EntityEnemyQueen)entity) ||
-							(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity))
-							&& distanceToThisEntity < distanceToTarget)
+			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity) && isHostile) ||
+					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile) ||
+					(entity instanceof EntityEnemyQueen) && isQueenValidTarget((EntityEnemyQueen)entity) ||
+					(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity)
+						&& distanceToThisEntity < distanceToTarget)
 			{
 				closestValidTarget = (EntityLivingBase)entity;
 				distanceToTarget = distanceToThisEntity;
@@ -625,16 +626,16 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
-		return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider);
+		return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider) && (spider.isHostile || this.isHostile);
 	}
 
 	private boolean isQueenValidTarget(EntityEnemyQueen queen)
 	{
-		return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen);
+		return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen) && queen.isHostile;
 	}
 
 	private boolean isPlayerValidTarget(EntityPlayer player)
 	{
-		return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player);
+		return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player) && this.isHostile;
 	}
 }

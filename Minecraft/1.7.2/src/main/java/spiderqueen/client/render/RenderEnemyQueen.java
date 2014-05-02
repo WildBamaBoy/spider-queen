@@ -9,12 +9,12 @@
 
 package spiderqueen.client.render;
 
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import spiderqueen.client.model.ModelSpiderQueen;
+import spiderqueen.entity.EntityEnemyQueen;
 
 public class RenderEnemyQueen extends RenderLiving
 {
@@ -100,7 +100,17 @@ public class RenderEnemyQueen extends RenderLiving
 	@Override
 	protected void bindEntityTexture(Entity entity) 
 	{
-		bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen.png"));
+		final EntityEnemyQueen enemyQueen = (EntityEnemyQueen)entity;
+		
+		if (enemyQueen.isHostile)
+		{
+			bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueenHostile.png"));
+		}
+		
+		else
+		{
+			bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen" + enemyQueen.friendlySkinIndex + ".png"));
+		}
 	}
 
 	@Override

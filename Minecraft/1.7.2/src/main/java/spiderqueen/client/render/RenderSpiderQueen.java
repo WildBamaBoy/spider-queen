@@ -310,6 +310,6 @@ public class RenderSpiderQueen extends RenderPlayer
 	@Override
 	protected void bindEntityTexture(Entity entity) 
 	{
-		bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen.png"));
+		bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen1.png"));
 	}
 }

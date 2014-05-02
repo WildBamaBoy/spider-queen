@@ -9,6 +9,8 @@
 
 package spiderqueen.entity;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -42,18 +44,24 @@ import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.NBTHelper;
 import com.radixshock.radixcore.network.Packet;
 
-public class EntityEnemyQueen extends EntityCreature
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+
+public class EntityEnemyQueen extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	public Inventory inventory = new Inventory(this);
 	public String identifier;
 	public Entity target;
-	
+	public int friendlySkinIndex;
+	public boolean isHostile;
+
 	public transient boolean hasSyncedInventory = false;
 
 	public EntityEnemyQueen(World world)
 	{
 		super(world);
 
+		this.isHostile = LogicHelper.getBooleanWithProbability(10);
+		this.friendlySkinIndex = LogicHelper.getNumberInRange(1, 4);
 		this.identifier = HashGenerator.getMD5Hash(String.valueOf(LogicHelper.getNumberInRange(0, 100) * getEntityId()));
 
 		this.setSize(1.4F, 0.9F);
@@ -84,7 +92,6 @@ public class EntityEnemyQueen extends EntityCreature
 		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
-			
 			target = findPlayerToAttack();
 
 			if (target != null)
@@ -116,11 +123,11 @@ public class EntityEnemyQueen extends EntityCreature
 		{
 			final double distanceToThisEntity = getDistanceToEntity(entity);
 
-			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity)) ||
-					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) ||
-							(entity instanceof EntityEnemyQueen) ||
-							(entity instanceof EntityPlayer))
-							&& distanceToThisEntity < distanceToTarget)
+			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity) && isHostile) ||
+				(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile) ||
+				(entity instanceof EntityEnemyQueen) && isQueenValidTarget((EntityEnemyQueen)entity) ||
+				(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity)
+					&& distanceToThisEntity < distanceToTarget)
 			{
 				closestValidTarget = (EntityLivingBase)entity;
 				distanceToTarget = distanceToThisEntity;
@@ -234,7 +241,7 @@ public class EntityEnemyQueen extends EntityCreature
 					final EntityPlayer player = (EntityPlayer)entityBeingAttacked;
 					player.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
 				}
-				
+
 				else
 				{
 					final EntityLivingBase entityLiving = (EntityLivingBase)entityBeingAttacked;
@@ -343,7 +350,7 @@ public class EntityEnemyQueen extends EntityCreature
 	{
 		for (int i = 0; i < LogicHelper.getNumberInRange(1, 16); i++)
 		{
-			final boolean spawnBoomSpider = LogicHelper.getBooleanWithProbability(20);
+			final boolean spawnBoomSpider = false; //LogicHelper.getBooleanWithProbability(20);
 			final boolean spawnPackSpider = LogicHelper.getBooleanWithProbability(30);
 			final boolean spawnSlingerSpider = LogicHelper.getBooleanWithProbability(20);
 			final boolean spawnNovaSpider = LogicHelper.getBooleanWithProbability(25);
@@ -398,7 +405,7 @@ public class EntityEnemyQueen extends EntityCreature
 			}
 
 			spiderToSpawn.level = spiderLevel;
-
+			spiderToSpawn.isHostile = this.isHostile;
 			spiderToSpawn.setPosition(posX, posY, posZ);
 			worldObj.spawnEntityInWorld(spiderToSpawn);
 		}
@@ -413,8 +420,30 @@ public class EntityEnemyQueen extends EntityCreature
 		}
 	}
 
-	private boolean isSpiderValidTarget(EntityHatchedSpider entity)
+	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
-		return !entity.owner.equals(this.identifier) && this.canEntityBeSeen(entity);
+		return !spider.owner.equals(this.identifier) && this.canEntityBeSeen(spider) && spider.isHostile && this.isHostile;
+	}
+
+	private boolean isQueenValidTarget(EntityEnemyQueen queen)
+	{
+		return queen.isHostile;
+	}
+
+	private boolean isPlayerValidTarget(EntityPlayer player)
+	{
+		return this.canEntityBeSeen(player) && this.isHostile;
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buffer) 
+	{
+		buffer.writeBoolean(isHostile);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf additionalData) 
+	{
+		isHostile = additionalData.readBoolean();
 	}
 }
