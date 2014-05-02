@@ -53,7 +53,7 @@ public class EntityEnemyQueen extends EntityCreature implements IEntityAdditiona
 	public Entity target;
 	public int friendlySkinIndex;
 	public boolean isHostile;
-
+	
 	public transient boolean hasSyncedInventory = false;
 
 	public EntityEnemyQueen(World world)

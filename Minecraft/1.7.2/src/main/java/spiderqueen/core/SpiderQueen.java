@@ -25,6 +25,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
+import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
 import spiderqueen.core.forge.CommonProxy;
@@ -311,6 +312,7 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandPlayerSkins());
+		event.registerServerCommand(new CommandCheckReputation());
 	}
 
 	@Override
