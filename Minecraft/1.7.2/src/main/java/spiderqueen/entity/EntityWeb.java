@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -288,7 +289,7 @@ public class EntityWeb extends Entity implements IProjectile
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 
-				if (blockHit != SpiderQueen.getInstance().blockWeb && blockHit != SpiderQueen.getInstance().blockPoisonWeb)
+				if (blockHit != SpiderQueen.getInstance().blockWeb && blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
 				{
 					if (doBlockSpawn)
 					{
