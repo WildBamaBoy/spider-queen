@@ -77,17 +77,17 @@ public class ItemCocoon extends Item
 		
 		else if (this == SpiderQueen.getInstance().itemCocoonSkeleton)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.WHITE + "Shooter Spider" + Color.GRAY + ".");
+			par3List.add(Color.GRAY + "Produces a " + Color.WHITE + "Slinger Spider" + Color.GRAY + ".");
 		}
 		
 		else if (this == SpiderQueen.getInstance().itemCocoonTestificate)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.GOLD + "Carrier Spider" + Color.GRAY + ".");
+			par3List.add(Color.GRAY + "Produces a " + Color.GOLD + "Pack Spider" + Color.GRAY + ".");
 		}
 		
 		else if (this == SpiderQueen.getInstance().itemCocoonWolf)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.WHITE + "Fast Spider" + Color.GRAY + ".");
+			par3List.add(Color.GRAY + "Produces a " + Color.WHITE + "Nova Spider" + Color.GRAY + ".");
 		}
 		
 		else if (this == SpiderQueen.getInstance().itemCocoonZombie)
