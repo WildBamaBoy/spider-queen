@@ -21,6 +21,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.item.Item;
+import spiderqueen.entity.EntityFakePlayer;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 
@@ -34,7 +35,7 @@ public enum EnumCocoonType
 	ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL, EnumSpiderSize.HUGE),
 	SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL, EnumSpiderSize.THIN),
 	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	HUMAN(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
+	HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
 	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
 	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
