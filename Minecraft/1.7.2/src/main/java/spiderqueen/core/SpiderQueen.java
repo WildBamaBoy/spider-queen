@@ -30,6 +30,7 @@ import spiderqueen.core.forge.EventHooks;
 import spiderqueen.core.forge.GuiHandlerInventory;
 import spiderqueen.core.forge.ServerTickHandler;
 import spiderqueen.entity.EntityCocoon;
+import spiderqueen.entity.EntityEnemyQueen;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.entity.EntitySpiderEgg;
@@ -37,6 +38,7 @@ import spiderqueen.entity.EntityWeb;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.items.ItemCocoon;
+import spiderqueen.items.ItemSpawnEnemyQueen;
 import spiderqueen.items.ItemSpawnPlayer;
 import spiderqueen.items.ItemSpawnSpider;
 import spiderqueen.items.ItemSpiderEgg;
@@ -110,6 +112,7 @@ public class SpiderQueen implements IEnforcedCore
 
 	public Item itemSpawnPlayer;
 	public Item itemSpawnSpider;
+	public Item itemSpawnEnemyQueen;
 	
 	//Blocks
 	public Block blockWeb;
@@ -211,6 +214,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemSpiderEgg = new ItemSpiderEgg().setUnlocalizedName("spideregg");
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
+		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
 		
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
@@ -231,6 +235,7 @@ public class SpiderQueen implements IEnforcedCore
 		
 		GameRegistry.registerItem(itemSpawnPlayer, itemSpawnPlayer.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnSpider, itemSpawnSpider.getUnlocalizedName());
+		GameRegistry.registerItem(itemSpawnEnemyQueen, itemSpawnEnemyQueen.getUnlocalizedName());
 	}
 
 	@Override
@@ -276,6 +281,8 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityFakePlayer.class, EntityFakePlayer.class.getSimpleName(), 3, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityEnemyQueen.class, EntityEnemyQueen.class.getSimpleName(), 6, this, 50, 2, true);
+		
 	}
 
 	@Override
@@ -405,32 +412,32 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public ModPropertiesManager getModPropertiesManager() {
-		// TODO Auto-generated method stub
+	public ModPropertiesManager getModPropertiesManager() 
+	{
 		return null;
 	}
 
 	@Override
-	public boolean getSetModPropertyCommandEnabled() {
-		// TODO Auto-generated method stub
+	public boolean getSetModPropertyCommandEnabled() 
+	{
 		return false;
 	}
 
 	@Override
-	public boolean getGetModPropertyCommandEnabled() {
-		// TODO Auto-generated method stub
+	public boolean getGetModPropertyCommandEnabled() 
+	{
 		return false;
 	}
 
 	@Override
-	public boolean getListModPropertiesCommandEnabled() {
-		// TODO Auto-generated method stub
+	public boolean getListModPropertiesCommandEnabled() 
+	{
 		return false;
 	}
 
 	@Override
-	public String getPropertyCommandPrefix() {
-		// TODO Auto-generated method stub
+	public String getPropertyCommandPrefix() 
+	{
 		return null;
 	}
 

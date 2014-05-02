@@ -55,12 +55,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public EnumCocoonType cocoonType = EnumCocoonType.EMPTY;
 	public int level = 1;
 	public int killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
-	public int timeUntilNextWebshot = 0;
-	public int timeUntilNextTeleport = 0;
-	public int timeUntilNextExplosion = 0;
+	public int timeUntilWebshot = 0;
+	public int timeUntilTeleport = 0;
+	public int timeUntilExplosion = 0;
 	public Inventory inventory = new Inventory(this);
 
 	public transient boolean hasSyncedInventory = false;
+	public Entity target;
 
 	public EntityHatchedSpider(World world)
 	{
@@ -113,24 +114,30 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 
 			if (!tryFollowOwnerPlayer(false))
-			{
-				updateEntityActionState();
+			{	
+				target = findPlayerToAttack();
+
+				if (target != null)
+				{
+					attackEntity(target, 3.5F);
+				}
+
 				tryMoveToSpiderRod();
 			}
 
-			if (timeUntilNextTeleport > 0)
+			if (timeUntilTeleport > 0)
 			{
-				timeUntilNextTeleport--;
+				timeUntilTeleport--;
 			}
 
-			if (timeUntilNextExplosion > 0)
+			if (timeUntilExplosion > 0)
 			{
-				timeUntilNextExplosion--;
+				timeUntilExplosion--;
 			}
 
-			if (timeUntilNextWebshot > 0)
+			if (timeUntilWebshot > 0)
 			{
-				timeUntilNextWebshot--;
+				timeUntilWebshot--;
 			}
 		}
 
@@ -139,6 +146,12 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			syncInventory();
 			displayParticles();
 		}
+	}
+
+	@Override
+	protected void updateEntityActionState() 
+	{
+		return;
 	}
 
 	protected void applyEntityAttributes()
@@ -193,15 +206,17 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			final double distanceToThisEntity = getDistanceToEntity(entity);
 
 			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity)) ||
-					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity))
-					&& distanceToThisEntity < distanceToTarget)
+					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) ||
+							(entity instanceof EntityEnemyQueen) && isQueenValidTarget((EntityEnemyQueen)entity) ||
+							(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity))
+							&& distanceToThisEntity < distanceToTarget)
 			{
 				closestValidTarget = (EntityLivingBase)entity;
 				distanceToTarget = distanceToThisEntity;
 			}
 		}
 
-		if (closestValidTarget != null && cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
+		if (closestValidTarget != null && cocoonType == EnumCocoonType.ENDERMAN && timeUntilTeleport <= 0)
 		{
 			resetTimeUntilTeleport();
 
@@ -266,13 +281,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 
 			final List<EntityHatchedSpider> nearbySpiders = (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
-			this.entityToAttack = attackingEntity;
+			this.target = attackingEntity;
 
 			for (EntityHatchedSpider spider : nearbySpiders)
 			{
 				if (spider.owner.equals(this.owner))
 				{
-					spider.entityToAttack = attackingEntity;
+					spider.target = attackingEntity;
 				}
 			}
 		}
@@ -303,7 +318,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		else
 		{
-			if (cocoonType == EnumCocoonType.SKELETON && timeUntilNextWebshot <= 0)
+			if (cocoonType == EnumCocoonType.SKELETON && timeUntilWebshot <= 0)
 			{
 				resetTimeUntilWebshot();
 				worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
@@ -312,10 +327,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 			{
-				final EntityLiving entityLiving = (EntityLiving)entityBeingAttacked;
+				final EntityLivingBase entityLiving = (EntityLivingBase)entityBeingAttacked;
 				entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
 
-				if (cocoonType == EnumCocoonType.CREEPER && timeUntilNextExplosion <= 0)
+				if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
 				{
 					resetTimeUntilExplosion();
 					worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
@@ -327,9 +342,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 					if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
 					{
-						timeUntilNextTeleport = 0;
-						timeUntilNextExplosion = 0;
-						timeUntilNextWebshot = 0;
+						timeUntilTeleport = 0;
+						timeUntilExplosion = 0;
+						timeUntilWebshot = 0;
 
 						worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 						killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
@@ -338,7 +353,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
 					}
 
-					entityToAttack = null;
+					target = null;
 				}
 			}
 		}
@@ -499,7 +514,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				{
 					if (!checkOnly)
 					{
-						entityToAttack = null;
+						target = null;
 						moveToPlayer(ownerPlayer);
 					}
 
@@ -582,9 +597,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-		case 1: timeUntilNextTeleport = Time.MINUTE; break;
-		case 2: timeUntilNextTeleport = Time.SECOND * 30; break;
-		case 3: timeUntilNextTeleport = Time.SECOND * 10; break;
+		case 1: timeUntilTeleport = Time.MINUTE; break;
+		case 2: timeUntilTeleport = Time.SECOND * 30; break;
+		case 3: timeUntilTeleport = Time.SECOND * 10; break;
 		}
 	}
 
@@ -592,9 +607,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-		case 1: timeUntilNextExplosion = Time.MINUTE; break;
-		case 2: timeUntilNextExplosion = Time.SECOND * 30; break;
-		case 3: timeUntilNextExplosion = Time.SECOND * 10; break;
+		case 1: timeUntilExplosion = Time.MINUTE; break;
+		case 2: timeUntilExplosion = Time.SECOND * 30; break;
+		case 3: timeUntilExplosion = Time.SECOND * 10; break;
 		}
 	}
 
@@ -602,14 +617,24 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-		case 1: timeUntilNextWebshot = Time.SECOND * 5; break;
-		case 2: timeUntilNextWebshot = Time.SECOND * 3; break;
-		case 3: timeUntilNextWebshot = Time.SECOND * 1; break;
+		case 1: timeUntilWebshot = Time.SECOND * 5; break;
+		case 2: timeUntilWebshot = Time.SECOND * 3; break;
+		case 3: timeUntilWebshot = Time.SECOND * 1; break;
 		}
 	}
 
 	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
 		return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider);
+	}
+
+	private boolean isQueenValidTarget(EntityEnemyQueen queen)
+	{
+		return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen);
+	}
+
+	private boolean isPlayerValidTarget(EntityPlayer player)
+	{
+		return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player);
 	}
 }
