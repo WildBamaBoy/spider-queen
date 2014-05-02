@@ -187,27 +187,30 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		List<Entity> entitiesAroundMe = LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15);
 		EntityLivingBase closestValidTarget = null;
 		double distanceToTarget = 100D;
-		
+
 		for (Entity entity : entitiesAroundMe)
 		{
 			final double distanceToThisEntity = getDistanceToEntity(entity);
-			
+
 			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity)) ||
-				(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity))
-				&& distanceToThisEntity < distanceToTarget)
+					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity))
+					&& distanceToThisEntity < distanceToTarget)
 			{
 				closestValidTarget = (EntityLivingBase)entity;
 				distanceToTarget = distanceToThisEntity;
 			}
 		}
-		
-		if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
-		{
-			resetTimeUntilTeleport();
 
-			worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
-			setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
-			worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
+		if (closestValidTarget != null)
+		{
+			if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilNextTeleport <= 0)
+			{
+				resetTimeUntilTeleport();
+
+				worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+				setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
+				worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
+			}
 		}
 
 		return closestValidTarget;
@@ -607,7 +610,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		case 3: timeUntilNextWebshot = Time.SECOND * 1; break;
 		}
 	}
-	
+
 	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
 		return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider);
