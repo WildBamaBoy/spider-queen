@@ -9,6 +9,7 @@
 
 package spiderqueen.core.forge;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.PlayerEatEntry;
@@ -72,7 +74,7 @@ public class EventHooks
 			PlayerReputationHandler.register((EntityPlayer) event.entity);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
@@ -85,49 +87,76 @@ public class EventHooks
 			{
 				reputationHandler.creepersKilled++;
 			}
-			
+
 			else if (event.entityLiving instanceof EntityFakePlayer)
 			{
 				reputationHandler.humansKilled++;
 			}
-			
+
 			else if (event.entityLiving instanceof EntitySkeleton)
 			{
 				reputationHandler.skeletonsKilled++;
 			}
-			
+
 			else if (event.entityLiving instanceof EntityZombie)
 			{
 				reputationHandler.zombiesKilled++;
 			}
-			
+
 			else if (event.entityLiving instanceof EntityEnemyQueen || event.entityLiving instanceof EntityHatchedSpider)
 			{
 				if (event.entityLiving instanceof EntityEnemyQueen)
 				{
 					final EntityEnemyQueen queen = (EntityEnemyQueen)event.entityLiving;
-					
+
 					if (!queen.isHostile)
 					{
 						reputationHandler.friendlySpidersKilled++;
 					}
 				}
-				
+
 				else
 				{
 					final EntityHatchedSpider spider = (EntityHatchedSpider)event.entityLiving;
-					
+
 					if (spider.owner.length() == 32)
 					{
 						reputationHandler.friendlySpidersKilled++;
 					}
 				}
 			}
-			
+
 			else if (event.entityLiving instanceof EntitySpider)
 			{
 				reputationHandler.spidersKilled++;
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onLivingSetTarget(LivingSetAttackTargetEvent event)
+	{
+		try
+		{
+			if (event.target instanceof EntityPlayer)
+			{
+				final EntityLiving entity = (EntityLiving)event.entityLiving;
+				final EntityPlayer player = (EntityPlayer)event.target;
+				final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+				
+				if (entity instanceof EntityCreeper && reputationHandler.reputationCreepers >= 0 ||
+					entity instanceof EntityZombie && reputationHandler.reputationZombies >= 0 ||
+					entity instanceof EntityFakePlayer && reputationHandler.reputationHumans >= 0 ||
+					entity instanceof EntitySkeleton && reputationHandler.reputationSkeletons >= 0)
+				{
+					entity.setAttackTarget(null);
+				}
+			}
+		}
+
+		catch (Throwable e)
+		{
+			e.printStackTrace();
 		}
 	}
 }
