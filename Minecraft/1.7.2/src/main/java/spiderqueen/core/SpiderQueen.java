@@ -16,10 +16,12 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
@@ -283,6 +285,14 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityEnemyQueen.class, EntityEnemyQueen.class.getSimpleName(), 6, this, 50, 2, true);
 		
+		EntityRegistry.addSpawn(EntityEnemyQueen.class, 5, 1, 1, EnumCreatureType.creature,
+				BiomeGenBase.desert, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills,
+				BiomeGenBase.forest, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.jungle,
+				BiomeGenBase.megaTaiga, BiomeGenBase.savanna, BiomeGenBase.roofedForest, BiomeGenBase.river);
+		EntityRegistry.addSpawn(EntityFakePlayer.class, 8, 1, 3, EnumCreatureType.creature, 
+				BiomeGenBase.desert, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills,
+				BiomeGenBase.forest, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.jungle,
+				BiomeGenBase.megaTaiga, BiomeGenBase.savanna, BiomeGenBase.roofedForest, BiomeGenBase.river);
 	}
 
 	@Override
