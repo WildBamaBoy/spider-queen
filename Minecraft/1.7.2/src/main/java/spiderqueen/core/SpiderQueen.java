@@ -121,6 +121,10 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemSpawnSpider;
 	public Item itemSpawnEnemyQueen;
 
+	public Item itemBrain;
+	public Item itemSkull;
+	public Item itemHeart;
+
 	//Blocks
 	public Block blockWeb;
 	public Block blockPoisonWeb;
@@ -219,6 +223,10 @@ public class SpiderQueen implements IEnforcedCore
 		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
 		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
 		itemSpiderEgg = new ItemSpiderEgg().setUnlocalizedName("spideregg");
+		itemBrain = new Item().setUnlocalizedName("brain").setTextureName("spiderqueen:Brain").setCreativeTab(tabSpiderQueen);
+		itemSkull = new Item().setUnlocalizedName("skull").setTextureName("spiderqueen:Skull").setCreativeTab(tabSpiderQueen);
+		itemHeart = new Item().setUnlocalizedName("heart").setTextureName("spiderqueen:Heart").setCreativeTab(tabSpiderQueen);
+
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
@@ -239,6 +247,9 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderEgg, itemSpiderEgg.getUnlocalizedName());
+		GameRegistry.registerItem(itemBrain, itemBrain.getUnlocalizedName());
+		GameRegistry.registerItem(itemSkull, itemSkull.getUnlocalizedName());
+		GameRegistry.registerItem(itemHeart, itemHeart.getUnlocalizedName());
 
 		GameRegistry.registerItem(itemSpawnPlayer, itemSpawnPlayer.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnSpider, itemSpawnSpider.getUnlocalizedName());
@@ -510,8 +521,20 @@ public class SpiderQueen implements IEnforcedCore
 		}
 	}
 
-	public static void spawnFriendlyEntityAtPlayer(EntityPlayer player, Class entityClass) 
+	public static void spawnEntityAtPlayer(EntityPlayer player, Class entityClass) 
 	{
+		try
+		{
+			final EntityLivingBase entity = (EntityLivingBase) entityClass.getDeclaredConstructor(World.class).newInstance(player.worldObj);
+			final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(player, Blocks.air);
 
+			entity.setPosition(spawnPoint.posX, spawnPoint.posY, spawnPoint.posZ);
+			player.worldObj.spawnEntityInWorld(entity);
+		}
+
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

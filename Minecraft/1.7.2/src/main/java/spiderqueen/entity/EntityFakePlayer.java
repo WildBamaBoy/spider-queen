@@ -35,6 +35,7 @@ import spiderqueen.core.util.ByteBufIO;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
+import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.NBTHelper;
 import com.radixshock.radixcore.network.Packet;
 
@@ -101,6 +102,31 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		inventory.dropAllItems();
 	}
 	
+	
+	@Override
+	protected void dropFewItems(boolean recentlyHitByPlayer, int lootingLevel) 
+	{
+		final int amountToDrop = lootingLevel > 0 ? lootingLevel : 1;
+		final boolean dropHeart = LogicHelper.getBooleanWithProbability(30);
+		final boolean dropBrain = LogicHelper.getBooleanWithProbability(30);
+		final boolean dropSkull = LogicHelper.getBooleanWithProbability(30);
+		
+		if (dropHeart)
+		{
+			dropItem(SpiderQueen.getInstance().itemHeart, amountToDrop);
+		}
+		
+		if (dropBrain)
+		{
+			dropItem(SpiderQueen.getInstance().itemBrain, amountToDrop);
+		}
+		
+		if (dropSkull)
+		{
+			dropItem(SpiderQueen.getInstance().itemSkull, amountToDrop);
+		}
+	}
+
 	@Override
 	protected void applyEntityAttributes()
 	{

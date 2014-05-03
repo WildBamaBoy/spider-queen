@@ -111,7 +111,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationCreepers == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The creepers are pleased with you. They have sent you one of their own."));
-			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityCreeper.class);
+			SpiderQueen.spawnEntityAtPlayer(player, EntityCreeper.class);
 		}
 
 		//Humans
@@ -142,7 +142,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationHumans == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The humans are pleased with you. They have sent you one of their own."));
-			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityFakePlayer.class);
+			SpiderQueen.spawnEntityAtPlayer(player, EntityFakePlayer.class);
 		}
 
 		//Skeletons
@@ -173,7 +173,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationSkeletons == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The skeletons are pleased with you. They have sent you one of their own."));
-			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntitySkeleton.class);
+			SpiderQueen.spawnEntityAtPlayer(player, EntitySkeleton.class);
 		}
 
 		//Zombies
@@ -204,7 +204,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationZombies == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The zombies are pleased with you. They have sent you one of their own."));
-			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityZombie.class);
+			SpiderQueen.spawnEntityAtPlayer(player, EntityZombie.class);
 		}
 
 		//Friendly Spiders
@@ -235,7 +235,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationFriendlySpiderQueens == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The other spider queens are pleased with you. They have sent you a group of spiders."));
-			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityHatchedSpider.class);
+			SpiderQueen.spawnEntityAtPlayer(player, EntityHatchedSpider.class);
 		}
 
 		//Evil Spider Queen

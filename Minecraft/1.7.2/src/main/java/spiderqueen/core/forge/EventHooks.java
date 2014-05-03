@@ -9,6 +9,8 @@
 
 package spiderqueen.core.forge;
 
+import java.util.List;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -16,15 +18,20 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.PlayerEatEntry;
 import spiderqueen.entity.EntityEnemyQueen;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
+
+import com.radixshock.radixcore.logic.LogicHelper;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
@@ -134,29 +141,107 @@ public class EventHooks
 	}
 
 	@SubscribeEvent
-	public void onLivingSetTarget(LivingSetAttackTargetEvent event)
+	public void onEntityInteract(EntityInteractEvent event)
 	{
-		try
+		final EntityPlayer player = event.entityPlayer;
+
+		if (!player.worldObj.isRemote)
 		{
-			if (event.target instanceof EntityPlayer)
+			final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+			final ItemStack currentItem = player.getCurrentEquippedItem();
+
+			if (currentItem != null)
 			{
-				final EntityLiving entity = (EntityLiving)event.entityLiving;
-				final EntityPlayer player = (EntityPlayer)event.target;
-				final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
-				
-				if (entity instanceof EntityCreeper && reputationHandler.reputationCreepers >= 0 ||
-					entity instanceof EntityZombie && reputationHandler.reputationZombies >= 0 ||
-					entity instanceof EntityFakePlayer && reputationHandler.reputationHumans >= 0 ||
-					entity instanceof EntitySkeleton && reputationHandler.reputationSkeletons >= 0)
+				if (event.target instanceof EntityCreeper && currentItem.getItem() == SpiderQueen.getInstance().itemHeart)
 				{
-					entity.setAttackTarget(null);
+					reputationHandler.reputationCreepers = reputationHandler.reputationCreepers == 5 ? 5 : reputationHandler.reputationCreepers + 1;
+					currentItem.stackSize--;
+				}
+
+				if (event.target instanceof EntityZombie && currentItem.getItem() == SpiderQueen.getInstance().itemBrain)
+				{
+					reputationHandler.reputationZombies = reputationHandler.reputationZombies == 5 ? 5 : reputationHandler.reputationZombies + 1;
+					currentItem.stackSize--;
+				}
+
+				if (event.target instanceof EntitySkeleton && currentItem.getItem() == SpiderQueen.getInstance().itemSkull)
+				{
+					reputationHandler.reputationSkeletons = reputationHandler.reputationSkeletons == 5 ? 5 : reputationHandler.reputationSkeletons + 1;
+					currentItem.stackSize--;
 				}
 			}
 		}
+	}
 
-		catch (Throwable e)
+	@SubscribeEvent
+	public void onLivingSetTarget(LivingSetAttackTargetEvent event)
+	{
+		if (event.target instanceof EntityPlayer)
 		{
-			e.printStackTrace();
+			final EntityLiving entity = (EntityLiving)event.entityLiving;
+			final EntityPlayer player = (EntityPlayer)event.target;
+			final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+
+			if (entity instanceof EntityCreeper && reputationHandler.reputationCreepers >= 0 ||
+					entity instanceof EntityZombie && reputationHandler.reputationZombies >= 0 ||
+					entity instanceof EntityFakePlayer && reputationHandler.reputationHumans >= 0 ||
+					entity instanceof EntitySkeleton && reputationHandler.reputationSkeletons >= 0)
+			{
+				entity.setAttackTarget(null);
+			}
+
+			else //Player is a valid target.
+			{
+				if (reputationHandler.reputationCreepers > 0)
+				{
+					final List<EntityCreeper> nearbyCreepers = (List<EntityCreeper>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityCreeper.class, 10);
+
+					for (EntityCreeper creeper : nearbyCreepers)
+					{
+						creeper.setAttackTarget(entity);
+					}
+				}
+
+				if (reputationHandler.reputationHumans > 0)
+				{
+					final List<EntityFakePlayer> nearbyFakePlayers = (List<EntityFakePlayer>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityFakePlayer.class, 10);
+
+					for (EntityFakePlayer fakePlayer : nearbyFakePlayers)
+					{
+						fakePlayer.setAttackTarget(entity);
+					}
+				}
+
+				if (reputationHandler.reputationSkeletons > 0)
+				{
+					final List<EntitySkeleton> nearbySkeletons = (List<EntitySkeleton>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntitySkeleton.class, 10);
+
+					for (EntitySkeleton skeleton : nearbySkeletons)
+					{
+						skeleton.setAttackTarget(entity);
+					}
+				}
+
+				if (reputationHandler.reputationZombies > 0)
+				{
+					final List<EntityZombie> nearbyZombies = (List<EntityZombie>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityZombie.class, 10);
+
+					for (EntityZombie zombie : nearbyZombies)
+					{
+						zombie.setAttackTarget(entity);
+					}
+				}
+
+				if (reputationHandler.reputationFriendlySpiderQueens > 0)
+				{
+					final List<EntityEnemyQueen> nearbyEnemyQueens = (List<EntityEnemyQueen>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityEnemyQueen.class, 10);
+
+					for (EntityEnemyQueen queen : nearbyEnemyQueens)
+					{
+						queen.setAttackTarget(entity);
+					}
+				}
+			}
 		}
 	}
 }
