@@ -12,6 +12,9 @@ package spiderqueen.core.forge;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -23,6 +26,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.PlayerEatEntry;
+import spiderqueen.entity.EntityEnemyQueen;
+import spiderqueen.entity.EntityFakePlayer;
+import spiderqueen.entity.EntityHatchedSpider;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.constant.Time;
@@ -68,14 +74,14 @@ public class ServerTickHandler
 				final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
 
 				modifyReputations(reputationHandler);
-				applyReputations(player, reputationHandler);
+				applyReputationEffects(player, reputationHandler);
 			}
 
 			hasCalculatedReputationForDay = true;
 		}
 	}
 
-	private void applyReputations(EntityPlayer player, PlayerReputationHandler reputationHandler) 
+	private void applyReputationEffects(EntityPlayer player, PlayerReputationHandler reputationHandler) 
 	{
 		//Creepers
 		if (reputationHandler.reputationCreepers == -2 && !reputationHandler.isAtWarWithCreepers)
@@ -87,6 +93,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The creepers are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+			SpiderQueen.spawnGroupOfEntitiesAtPlayer(player, EntityCreeper.class);
 		}
 
 		else if (reputationHandler.reputationCreepers == -5 && !reputationHandler.isAtWarWithCreepers)
@@ -104,6 +111,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationCreepers == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The creepers are pleased with you. They have sent you one of their own."));
+			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityCreeper.class);
 		}
 
 		//Humans
@@ -116,6 +124,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The humans are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+			SpiderQueen.spawnGroupOfEntitiesAtPlayer(player, EntityFakePlayer.class);
 		}
 
 		else if (reputationHandler.reputationHumans == -5 && !reputationHandler.isAtWarWithHumans)
@@ -133,6 +142,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationHumans == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The humans are pleased with you. They have sent you one of their own."));
+			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityFakePlayer.class);
 		}
 
 		//Skeletons
@@ -145,6 +155,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The skeletons are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+			SpiderQueen.spawnGroupOfEntitiesAtPlayer(player, EntitySkeleton.class);
 		}
 
 		else if (reputationHandler.reputationSkeletons == -5 && !reputationHandler.isAtWarWithSkeletons)
@@ -162,6 +173,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationSkeletons == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The skeletons are pleased with you. They have sent you one of their own."));
+			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntitySkeleton.class);
 		}
 
 		//Zombies
@@ -174,6 +186,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The zombies are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+			SpiderQueen.spawnGroupOfEntitiesAtPlayer(player, EntityZombie.class);
 		}
 
 		else if (reputationHandler.reputationZombies == -5 && !reputationHandler.isAtWarWithZombies)
@@ -191,6 +204,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationZombies == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The zombies are pleased with you. They have sent you one of their own."));
+			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityZombie.class);
 		}
 
 		//Friendly Spiders
@@ -203,6 +217,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The other spider queens are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+			SpiderQueen.spawnGroupOfEntitiesAtPlayer(player, EntityEnemyQueen.class);
 		}
 
 		else if (reputationHandler.reputationFriendlySpiderQueens == -5 && !reputationHandler.isAtWarWithFriendlySpiderQueens)
@@ -220,6 +235,7 @@ public class ServerTickHandler
 		else if (reputationHandler.reputationFriendlySpiderQueens == 3)
 		{
 			player.addChatMessage(new ChatComponentText(Color.GREEN + "The other spider queens are pleased with you. They have sent you a group of spiders."));
+			SpiderQueen.spawnFriendlyEntityAtPlayer(player, EntityHatchedSpider.class);
 		}
 
 		//Evil Spider Queen
@@ -227,6 +243,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "You have angered the evil spider queen!"));
 			player.addChatMessage(new ChatComponentText(Color.RED + "She has come to seek vengeance!"));
+			//TODO
 		}
 	}
 

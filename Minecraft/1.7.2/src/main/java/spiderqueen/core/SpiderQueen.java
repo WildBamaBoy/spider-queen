@@ -16,11 +16,14 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
@@ -59,6 +62,7 @@ import com.radixshock.radixcore.lang.ILanguageLoaderHook;
 import com.radixshock.radixcore.lang.ILanguageParser;
 import com.radixshock.radixcore.lang.LanguageLoader;
 import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.logic.Point3D;
 import com.radixshock.radixcore.network.AbstractPacketCodec;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
 import com.radixshock.radixcore.network.Packet;
@@ -88,11 +92,11 @@ public class SpiderQueen implements IEnforcedCore
 	public static PacketPipeline packetPipeline;
 	private static PacketCodec packetCodec;
 	private static PacketHandler packetHandler;
-	
+
 	private ModLogger logger;
 	public ModPropertiesManager modPropertiesManager;
 	public CreativeTabs tabSpiderQueen;
-	
+
 	//Items
 	public Item itemWeb;
 	public Item itemPoisonWeb;
@@ -116,40 +120,40 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemSpawnPlayer;
 	public Item itemSpawnSpider;
 	public Item itemSpawnEnemyQueen;
-	
+
 	//Blocks
 	public Block blockWeb;
 	public Block blockPoisonWeb;
 	public Block blockWebBed;
 	public Block blockSpiderRod;
-	
+
 	public List<String> fakePlayerNames = new ArrayList<String>();
 	public boolean doDisplayPlayerSkins = true;
 	public boolean inDebugMode = true;
 	public boolean debugDoRapidSpiderGrowth = true;
-	
+
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
 	}
-	
+
 	public static SpiderQueen getInstance()
 	{
 		return instance;
 	}
-	
+
 	public ModPropertiesList getModProperties()
 	{
 		return (ModPropertiesList)modPropertiesManager.modPropertiesInstance;
 	}
-	
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event) 
 	{
 		logger = new ModLogger(this);
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 		fakePlayerNames = downloadFakePlayerNames();
-		
+
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
 	}
@@ -157,25 +161,25 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void init(FMLInitializationEvent event) 
 	{
-		
+
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) 
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event) 
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event) 
 	{
-		
+
 	}
 
 	@Override
@@ -198,7 +202,7 @@ public class SpiderQueen implements IEnforcedCore
 			}
 		};
 		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
-		
+
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER).setUnlocalizedName("cocoon.creeper");
@@ -210,7 +214,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemCocoonTestificate = new ItemCocoon(EnumCocoonType.VILLAGER).setUnlocalizedName("cocoon.testificate");
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.WOLF).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE).setUnlocalizedName("cocoon.zombie");
-	
+
 		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
 		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
@@ -218,7 +222,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
-		
+
 		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonCreeper, itemCocoonCreeper.getUnlocalizedName());
@@ -230,12 +234,12 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerItem(itemCocoonTestificate, itemCocoonTestificate.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonWolf, itemCocoonWolf.getUnlocalizedName());
 		GameRegistry.registerItem(itemCocoonZombie, itemCocoonZombie.getUnlocalizedName());
-		
+
 		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderEgg, itemSpiderEgg.getUnlocalizedName());
-		
+
 		GameRegistry.registerItem(itemSpawnPlayer, itemSpawnPlayer.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnSpider, itemSpawnSpider.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnEnemyQueen, itemSpawnEnemyQueen.getUnlocalizedName());
@@ -247,7 +251,7 @@ public class SpiderQueen implements IEnforcedCore
 		blockWeb = new BlockWeb();
 		blockPoisonWeb = new BlockPoisonWeb();
 		blockSpiderRod = new BlockSpiderRod();
-		
+
 		GameRegistry.registerBlock(blockWeb, "Web");
 		GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
@@ -267,13 +271,13 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeSmeltings()
 	{
-		
+
 	}
 
 	@Override
 	public void initializeAchievements() 
 	{
-		
+
 	}
 
 	@Override
@@ -285,7 +289,7 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityEnemyQueen.class, EntityEnemyQueen.class.getSimpleName(), 6, this, 50, 2, true);
-		
+
 		EntityRegistry.addSpawn(EntityEnemyQueen.class, 5, 1, 1, EnumCreatureType.creature,
 				BiomeGenBase.desert, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills,
 				BiomeGenBase.forest, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.jungle,
@@ -414,7 +418,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void setLanguageLoaded(boolean value) 
 	{
-		
+
 	}
 
 	@Override
@@ -456,7 +460,7 @@ public class SpiderQueen implements IEnforcedCore
 	public List<String> downloadFakePlayerNames() 
 	{
 		final List<String> returnList = new ArrayList<String>();
-		
+
 		try
 		{
 			final URL url = new URL(Constants.SKINS_URL);
@@ -469,18 +473,45 @@ public class SpiderQueen implements IEnforcedCore
 
 			scanner.close();
 		}
-		
+
 		catch (Throwable e)
 		{
 			getLogger().log("Failed to download fake player names.");
 		}
-		
+
 		return returnList;
 	}
-	
+
 	public String getRandomPlayerName()
 	{
 		final int index = LogicHelper.getNumberInRange(0, fakePlayerNames.size() - 1);
 		return fakePlayerNames.get(index);
+	}
+
+	public static void spawnGroupOfEntitiesAtPlayer(EntityPlayer player, Class entityClass) 
+	{
+		try
+		{
+			final int amountToSpawn = LogicHelper.getNumberInRange(2, 5);
+
+			for (int i = 0; i < amountToSpawn; i++)
+			{
+				final EntityLivingBase entity = (EntityLivingBase) entityClass.getDeclaredConstructor(World.class).newInstance(player.worldObj);
+				final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(player, Blocks.air);
+
+				entity.setPosition(spawnPoint.posX, spawnPoint.posY, spawnPoint.posZ);
+				player.worldObj.spawnEntityInWorld(entity);
+			}
+		}
+
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static void spawnFriendlyEntityAtPlayer(EntityPlayer player, Class entityClass) 
+	{
+
 	}
 }
