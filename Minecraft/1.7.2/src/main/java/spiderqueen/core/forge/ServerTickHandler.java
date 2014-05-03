@@ -12,6 +12,7 @@ package spiderqueen.core.forge;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -33,6 +34,7 @@ import spiderqueen.entity.EntityHatchedSpider;
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.constant.Time;
 import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.logic.Point3D;
 
 /**
  * Handles ticking server-side.
@@ -41,7 +43,8 @@ public class ServerTickHandler
 {
 	/** The number of ticks since the loop has been ran. */
 	private int serverTicks = 20;
-	private int timeUntilSpawnWeb = Time.MINUTE * 1;
+	private int timeUntilSpawnWeb = Time.MINUTE * 3;
+	private int timeUntilSpawnPlayers = Time.SECOND * 30; 
 	private boolean hasCalculatedReputationForDay = false;
 	public List<PlayerEatEntry> playersEating = new ArrayList<PlayerEatEntry>();
 	private List<PlayerEatEntry> playersNoLongerEating = new ArrayList<PlayerEatEntry>();
@@ -55,6 +58,7 @@ public class ServerTickHandler
 		updateSpawnWeb();
 		updatePlayerEat();
 		updateReputation();
+		updateSpawnPlayers();
 	}
 
 	private void updateReputation()
@@ -386,7 +390,7 @@ public class ServerTickHandler
 				}
 			}
 
-			timeUntilSpawnWeb = Time.MINUTE * 1;
+			timeUntilSpawnWeb = Time.MINUTE * 3;
 		}
 	}
 
@@ -416,6 +420,43 @@ public class ServerTickHandler
 		for (PlayerEatEntry eatEntry : playersNoLongerEating)
 		{
 			playersEating.remove(eatEntry);
+		}
+	}
+	
+	private void updateSpawnPlayers()
+	{
+		timeUntilSpawnPlayers--;
+
+		if (timeUntilSpawnPlayers <= 0)
+		{
+			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+			{
+				for (Object obj : worldServer.playerEntities)
+				{
+					final EntityPlayer player = (EntityPlayer)obj;
+					final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
+					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
+					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
+					
+					final List<Entity> nearbyEntities = ((List<Entity>)LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30));
+					int numberOfPlayersNearby = 0;
+					
+					for (final Object entity : nearbyEntities)
+					{
+						if (entity instanceof EntityFakePlayer)
+						{
+							numberOfPlayersNearby++;
+						}
+					}
+					
+					if (doSpawnPlayers && numberOfPlayersNearby < 5)
+					{
+						SpiderQueen.spawnGroupOfEntitiesAtPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class);
+					}
+				}
+			}
+
+			timeUntilSpawnPlayers = Time.SECOND * 30;
 		}
 	}
 }

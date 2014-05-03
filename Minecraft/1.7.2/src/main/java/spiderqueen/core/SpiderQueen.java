@@ -11,13 +11,13 @@ package spiderqueen.core;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -300,15 +300,6 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityEnemyQueen.class, EntityEnemyQueen.class.getSimpleName(), 6, this, 50, 2, true);
-
-		EntityRegistry.addSpawn(EntityEnemyQueen.class, 5, 1, 1, EnumCreatureType.creature,
-				BiomeGenBase.desert, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills,
-				BiomeGenBase.forest, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.jungle,
-				BiomeGenBase.megaTaiga, BiomeGenBase.savanna, BiomeGenBase.roofedForest, BiomeGenBase.river);
-		EntityRegistry.addSpawn(EntityFakePlayer.class, 8, 1, 3, EnumCreatureType.creature, 
-				BiomeGenBase.desert, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills,
-				BiomeGenBase.forest, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.jungle,
-				BiomeGenBase.megaTaiga, BiomeGenBase.savanna, BiomeGenBase.roofedForest, BiomeGenBase.river);
 	}
 
 	@Override
@@ -499,6 +490,7 @@ public class SpiderQueen implements IEnforcedCore
 		return fakePlayerNames.get(index);
 	}
 
+	//TODO Candidate for inclusion in RadixCore
 	public static void spawnGroupOfEntitiesAtPlayer(EntityPlayer player, Class entityClass) 
 	{
 		try
@@ -521,6 +513,110 @@ public class SpiderQueen implements IEnforcedCore
 		}
 	}
 
+	//TODO Candidate for inclusion in RadixCore
+	public static void spawnGroupOfEntitiesAtPoint(World world, Point3D point, Class entityClass) 
+	{
+		try
+		{
+			final int amountToSpawn = LogicHelper.getNumberInRange(1, 5);
+
+			for (int i = 0; i < amountToSpawn; i++)
+			{
+				final EntityLivingBase entity = (EntityLivingBase) entityClass.getDeclaredConstructor(World.class).newInstance(world);
+				final Point3D spawnPoint = getRandomNearbyBlockCoordinatesOfType(point, world, Blocks.air);
+
+				if (spawnPoint != null)
+				{
+					int blocksUntilGround = 0;
+
+					while (world.isAirBlock((int)point.posX, (int)point.posY + blocksUntilGround, (int)point.posZ) && blocksUntilGround != 255)
+					{
+						blocksUntilGround--;
+					}
+
+					entity.setPosition(spawnPoint.posX, spawnPoint.posY + blocksUntilGround + 1, spawnPoint.posZ);
+					world.spawnEntityInWorld(entity);
+				}
+			}
+		}
+
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Gets the coordinates of a random block of the specified type within 10 blocks away from the provided entity.
+	 * 
+	 * @param 	point	The entity being used as a base point to start the search.
+	 * @param 	block	The block being searched for.
+	 * 
+	 * @return	An coordinates object containing the coordinates of the randomly selected block.
+	 */
+	//TODO Candidate for inclusion in RadixCore
+	public static Point3D getRandomNearbyBlockCoordinatesOfType(Point3D point, World world, Block block)
+	{
+		//Create a list to store valid coordinates and specify the maximum distance away.
+		List<Point3D> validCoordinatesList = new LinkedList<Point3D>();
+		int maxDistanceAway = 10;
+
+		//Assign entity's position.
+		int x = (int)point.posX;
+		int y = (int)point.posY;
+		int z = (int)point.posZ;
+
+		//Assign x, y, and z movement.
+		int xMov = 0 - maxDistanceAway;
+		int yMov = -3;
+		int zMov = 0 - maxDistanceAway;
+
+		while (true)
+		{
+			//If the block ID at the following coordinates matches the block ID being searched for...
+			if (world.getBlock(x + xMov, y + yMov, z + zMov) == block)
+			{
+				//Add the block's coordinates to the coordinates list.
+				validCoordinatesList.add(new Point3D(x + xMov, y + yMov, z + zMov));
+			}
+
+			//If z and x movement has reached the maximum distance and y movement has reached 2, then return the list as searching has completed.
+			if (zMov == maxDistanceAway && xMov == maxDistanceAway && yMov == 2)
+			{
+				if (!validCoordinatesList.isEmpty())
+				{
+					return validCoordinatesList.get(world.rand.nextInt(validCoordinatesList.size()));
+				}
+
+				else
+				{
+					return null;
+				}
+			}
+
+			//But if y movement isn't 2 then searching should continue.
+			else if (zMov == maxDistanceAway && xMov == maxDistanceAway)
+			{
+				//Increase y movement by 1 and reset x and z movement, bringing the search up another level.
+				yMov++;
+				xMov = 0 - maxDistanceAway;
+				zMov = 0 - maxDistanceAway;
+			}
+
+			//If x movement has reached the maximum distance...
+			if (xMov == maxDistanceAway)
+			{
+				//Increase z movement by one and reset x movement, restarting the loop.
+				zMov++;
+				xMov = 0 - maxDistanceAway;
+				continue;
+			}
+
+			xMov++;
+		}
+	}
+
+	//TODO Candidate for inclusion in RadixCore
 	public static void spawnEntityAtPlayer(EntityPlayer player, Class entityClass) 
 	{
 		try
@@ -536,5 +632,12 @@ public class SpiderQueen implements IEnforcedCore
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static boolean isValidSpawnBiome(BiomeGenBase biome)
+	{
+		return 	biome == BiomeGenBase.desert || biome == BiomeGenBase.birchForest || biome == BiomeGenBase.coldTaiga || biome == BiomeGenBase.extremeHills ||
+				biome == BiomeGenBase.forest || biome == BiomeGenBase.taiga || biome == BiomeGenBase.swampland || biome == BiomeGenBase.plains || biome == BiomeGenBase.jungle ||
+				biome == BiomeGenBase.megaTaiga|| biome == BiomeGenBase.savanna || biome == BiomeGenBase.roofedForest || biome == BiomeGenBase.river;
 	}
 }
