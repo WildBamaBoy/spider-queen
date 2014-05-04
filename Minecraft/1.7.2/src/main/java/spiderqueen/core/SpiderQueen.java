@@ -133,8 +133,8 @@ public class SpiderQueen implements IEnforcedCore
 
 	public List<String> fakePlayerNames = new ArrayList<String>();
 	public boolean doDisplayPlayerSkins = true;
-	public boolean inDebugMode = true;
-	public boolean debugDoRapidSpiderGrowth = true;
+	public boolean inDebugMode = false;
+	public boolean debugDoRapidSpiderGrowth = false;
 
 	public SpiderQueen()
 	{
