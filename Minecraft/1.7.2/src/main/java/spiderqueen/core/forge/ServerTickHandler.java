@@ -59,7 +59,7 @@ public class ServerTickHandler
 		updateSpawnWeb();
 		updatePlayerEat();
 		updateReputation();
-		updateSpawnPlayers();
+		//updateSpawnPlayers();
 	}
 
 	private void updateReputation()
@@ -99,7 +99,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The creepers are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAtPlayer(player, EntityCreeper.class, 2, 5);
+			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityCreeper.class, 2, 5);
 		}
 
 		else if (reputationHandler.reputationCreepers == -5 && !reputationHandler.isAtWarWithCreepers)
@@ -130,7 +130,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The humans are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAtPlayer(player, EntityFakePlayer.class, 3, 5);
+			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityFakePlayer.class, 3, 5);
 		}
 
 		else if (reputationHandler.reputationHumans == -5 && !reputationHandler.isAtWarWithHumans)
@@ -161,7 +161,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The skeletons are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAtPlayer(player, EntitySkeleton.class, 3, 5);
+			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntitySkeleton.class, 3, 5);
 		}
 
 		else if (reputationHandler.reputationSkeletons == -5 && !reputationHandler.isAtWarWithSkeletons)
@@ -192,7 +192,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The zombies are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAtPlayer(player, EntityZombie.class, 2, 4);
+			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityZombie.class, 2, 4);
 		}
 
 		else if (reputationHandler.reputationZombies == -5 && !reputationHandler.isAtWarWithZombies)
@@ -223,7 +223,7 @@ public class ServerTickHandler
 		{
 			player.addChatMessage(new ChatComponentText(Color.RED + "The other spider queens are threatening war."));
 			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAtPlayer(player, EntityEnemyQueen.class, 2, 3);
+			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityEnemyQueen.class, 2, 3);
 		}
 
 		else if (reputationHandler.reputationFriendlySpiderQueens == -5 && !reputationHandler.isAtWarWithFriendlySpiderQueens)
@@ -453,7 +453,7 @@ public class ServerTickHandler
 					
 					if (doSpawnPlayers && numberOfPlayersNearby < 5)
 					{
-						LogicHelper.spawnGroupOfEntitiesAtPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
+						LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
 					}
 				}
 			}
