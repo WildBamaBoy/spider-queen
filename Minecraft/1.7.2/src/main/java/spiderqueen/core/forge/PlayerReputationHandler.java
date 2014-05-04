@@ -9,6 +9,8 @@
 
 package spiderqueen.core.forge;
 
+import com.radixshock.radixcore.logic.NBTHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,51 +51,13 @@ public class PlayerReputationHandler implements IExtendedEntityProperties
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) 
 	{
-		nbt.setInteger("reputationCreepers", reputationCreepers);
-		nbt.setInteger("reputationHumans", reputationHumans);
-		nbt.setInteger("reputationSkeletons", reputationSkeletons);
-		nbt.setInteger("reputationZombies", reputationZombies);
-		nbt.setInteger("reputationFriendlySpiderQueens", reputationFriendlySpiderQueens);
-		nbt.setInteger("reputationEvilSpiderQueen", reputationEvilSpiderQueen);
-
-		nbt.setInteger("creepersKilled", creepersKilled);
-		nbt.setInteger("humansKilled", humansKilled);
-		nbt.setInteger("skeletonsKilled", skeletonsKilled);
-		nbt.setInteger("zombiesKilled", zombiesKilled);
-		nbt.setInteger("friendlySpidersKilled", friendlySpidersKilled);
-		nbt.setInteger("spidersKilled", spidersKilled);
-
-		nbt.setBoolean("isAtWarWithCreepers", isAtWarWithCreepers);
-		nbt.setBoolean("isAtWarWithHumans", isAtWarWithHumans);
-		nbt.setBoolean("isAtWarWithSkeletons", isAtWarWithSkeletons);
-		nbt.setBoolean("isAtWarWithZombies", isAtWarWithZombies);
-		nbt.setBoolean("isAtWarWithFriendlySpiderQueens", isAtWarWithFriendlySpiderQueens);
-		nbt.setBoolean("isAtWarWithEvilSpiderQueen", isAtWarWithEvilSpiderQueen);
+		NBTHelper.autoWriteClassFieldsToNBT(this.getClass(), this, nbt);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound nbt)
 	{
-		reputationCreepers = nbt.getInteger("reputationCreepers");
-		reputationHumans = nbt.getInteger("reputationHumans");
-		reputationSkeletons = nbt.getInteger("reputationSkeletons");
-		reputationZombies = nbt.getInteger("reputationZombies");
-		reputationFriendlySpiderQueens = nbt.getInteger("reputationFriendlySpiderQueens");
-		reputationEvilSpiderQueen = nbt.getInteger("reputationEvilSpiderQueen");
-
-		creepersKilled = nbt.getInteger("creepersKilled");
-		humansKilled = nbt.getInteger("humansKilled");
-		skeletonsKilled = nbt.getInteger("skeletonsKilled");
-		zombiesKilled = nbt.getInteger("zombiesKilled");
-		friendlySpidersKilled = nbt.getInteger("friendlySpidersKilled");
-		spidersKilled = nbt.getInteger("spidersKilled");
-
-		isAtWarWithCreepers = nbt.getBoolean("isAtWarWithCreepers");
-		isAtWarWithHumans = nbt.getBoolean("isAtWarWithHumans");
-		isAtWarWithSkeletons = nbt.getBoolean("isAtWarWithSkeletons");
-		isAtWarWithZombies = nbt.getBoolean("isAtWarWithZombies");
-		isAtWarWithFriendlySpiderQueens = nbt.getBoolean("isAtWarWithFriendlySpiderQueens");
-		isAtWarWithEvilSpiderQueen = nbt.getBoolean("isAtWarWithEvilSpiderQueen");
+		NBTHelper.autoReadClassFieldsFromNBT(this.getClass(), this, nbt);
 	}
 
 	@Override
