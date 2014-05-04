@@ -51,7 +51,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHatchedSpider extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	public String owner;
+	public String owner = ""; //FIXME
 	public EnumCocoonType cocoonType = EnumCocoonType.EMPTY;
 	public int level = 1;
 	public int killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
@@ -537,9 +537,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		final Point3D nearestRod = LogicHelper.getNearbyBlock_StartAtTop(this, SpiderQueen.getInstance().blockSpiderRod, 10);
 
-		if (nearestRod != null && LogicHelper.getDistanceToXYZ(nearestRod.posX, nearestRod.posY, nearestRod.posZ, posX, posY, posZ) > 5.0D)
+		if (nearestRod != null && LogicHelper.getDistanceToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, posX, posY, posZ) > 5.0D)
 		{
-			getNavigator().tryMoveToXYZ(nearestRod.posX, nearestRod.posY, nearestRod.posZ, 0.4D);
+			getNavigator().tryMoveToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, 0.4D);
 		}
 	}
 
