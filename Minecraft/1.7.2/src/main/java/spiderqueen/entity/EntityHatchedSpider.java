@@ -626,7 +626,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
-		return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider) && (spider.isHostile || this.isHostile);
+		if (spider != null)
+		{
+			return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider) && (spider.isHostile || this.isHostile);
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 
 	private boolean isQueenValidTarget(EntityEnemyQueen queen)

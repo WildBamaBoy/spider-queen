@@ -25,6 +25,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.PlayerEatEntry;
 import spiderqueen.entity.EntityEnemyQueen;
@@ -78,6 +79,7 @@ public class ServerTickHandler
 				final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
 
 				modifyReputations(reputationHandler);
+				new CommandCheckReputation().processCommand(player, null);
 				applyReputationEffects(player, reputationHandler);
 			}
 

@@ -15,14 +15,20 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIMoveIndoors;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -49,7 +55,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public ResourceLocation skinResourceLocation;
 	public ThreadDownloadImageData imageDownloadThread;
 	public Inventory inventory = new Inventory(this);
-	
+
 	public EntityFakePlayer(World world) 
 	{
 		super(world);
@@ -72,37 +78,91 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		this.getNavigator().setBreakDoors(true);
 		this.getNavigator().setAvoidsWater(false);
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIMoveIndoors(this));
-		this.tasks.addTask(2, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
-		this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 0.6F));
-		this.tasks.addTask(5, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(6, new EntityAIWander(this, 0.4F));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityCreeper.class, 0.6F, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 0.6F, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityZombie.class, 0.6F, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityEnemyQueen.class, 0.6F, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.6F, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySpider.class, 0.6F, false));
+		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(2, new EntityAIMoveIndoors(this));
+		this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
+		this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+		this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6F));
+		this.tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		this.tasks.addTask(7, new EntityAIWander(this, 0.4F));
+		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
+
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityCreeper.class, 16, false));
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16, false));
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16, false));
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityEnemyQueen.class, 16, false));
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16, false));
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySpider.class, 16, false));
 	}
 
 	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
-		
-		if (!worldObj.isRemote && !hasInventoryBeenPopulated)
+
+		if (!worldObj.isRemote)
 		{
-			Inventory.populateWithRandomEquipment(inventory);
-			hasInventoryBeenPopulated = true;
+			damageTarget();
+
+			if (!hasInventoryBeenPopulated)
+			{
+				Inventory.populateWithRandomEquipment(inventory);
+				hasInventoryBeenPopulated = true;				
+			}
 		}
 	}
-	
+
+	private void damageTarget()
+	{
+		if (this.getAttackTarget() instanceof EntityCreature)
+		{
+			final EntityCreature attackTarget = (EntityCreature)this.getAttackTarget();
+
+			if (attackTarget != null)
+			{
+				if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
+				{
+					if (attackTarget.attackEntityFrom(DamageSource.generic, inventory.getDamageVsEntity(attackTarget)))
+					{
+						attackTarget.setAttackTarget(this);
+						swingItem();
+					}
+				}
+			}
+		}
+
+		else if (this.getAttackTarget() instanceof EntityPlayer)
+		{
+			final EntityPlayer attackTarget = (EntityPlayer)this.getAttackTarget();
+
+			if (attackTarget != null)
+			{
+				if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
+				{
+					if (attackTarget.attackEntityFrom(DamageSource.generic, inventory.getDamageVsEntity(attackTarget)))
+					{
+						swingItem();
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void onDeath(DamageSource damageSource) 
 	{
 		super.onDeath(damageSource);
-		
+
 		inventory.dropAllItems();
 	}
-	
-	
+
+
 	@Override
 	protected void dropFewItems(boolean recentlyHitByPlayer, int lootingLevel) 
 	{
@@ -110,17 +170,17 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		final boolean dropHeart = LogicHelper.getBooleanWithProbability(30);
 		final boolean dropBrain = LogicHelper.getBooleanWithProbability(30);
 		final boolean dropSkull = LogicHelper.getBooleanWithProbability(30);
-		
+
 		if (dropHeart)
 		{
 			dropItem(SpiderQueen.getInstance().itemHeart, amountToDrop);
 		}
-		
+
 		if (dropBrain)
 		{
 			dropItem(SpiderQueen.getInstance().itemBrain, amountToDrop);
 		}
-		
+
 		if (dropSkull)
 		{
 			dropItem(SpiderQueen.getInstance().itemSkull, amountToDrop);
@@ -183,7 +243,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	{
 		SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
 	}
-	
+
 	private void setupCustomSkin()
 	{
 		if (!username.isEmpty())

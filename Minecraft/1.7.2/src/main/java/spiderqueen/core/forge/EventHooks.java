@@ -11,8 +11,12 @@ package spiderqueen.core.forge;
 
 import java.util.List;
 
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
@@ -20,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
@@ -82,6 +87,18 @@ public class EventHooks
 		}
 	}
 
+	@SubscribeEvent
+	public void entityJoinedWorldEventHandler(EntityJoinWorldEvent event)
+	{
+		if (!event.world.isRemote)
+		{
+			if (event.entity instanceof EntityMob)
+			{
+				doAddAttackTasks((EntityCreature)event.entity);
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
@@ -242,6 +259,33 @@ public class EventHooks
 					}
 				}
 			}
+		}
+	}
+	
+	private void doAddAttackTasks(EntityCreature mob)
+	{
+		if (mob instanceof EntityMob)
+		{
+			float moveSpeed = 0.7F;
+
+			if (mob instanceof EntitySpider)
+			{
+				moveSpeed = 1.2F;
+			}
+
+			else if (mob instanceof EntitySkeleton)
+			{
+				moveSpeed = 1.1F;
+			}
+
+			else if (mob instanceof EntityZombie)
+			{
+				moveSpeed = 0.9F;
+			}
+			
+			mob.tasks.addTask(2, new EntityAIAttackOnCollide(mob, EntityFakePlayer.class, moveSpeed, false));
+			mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityFakePlayer.class, 16, false));
+			
 		}
 	}
 }
