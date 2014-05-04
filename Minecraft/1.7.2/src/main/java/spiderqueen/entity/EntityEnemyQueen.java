@@ -325,6 +325,12 @@ public class EntityEnemyQueen extends EntityCreature implements IEntityAdditiona
 		inventory.readInventoryFromNBT(nbt);
 	}
 
+	@Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+	
 	public boolean isBesideClimbableBlock()
 	{
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;

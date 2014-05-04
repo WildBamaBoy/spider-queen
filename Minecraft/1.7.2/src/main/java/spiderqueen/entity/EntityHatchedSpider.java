@@ -471,6 +471,12 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		level = additionalData.readInt();
 	}
 
+	@Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+	
 	/**
 	 * Returns true if the WatchableObject (Byte) is 0x01 otherwise returns false. The WatchableObject is updated using
 	 * setBesideClimableBlock.

@@ -233,6 +233,12 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		return true;
 	}
 
+	@Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+	
 	public EnumCocoonType getCocoonType()
 	{
 		return cocoonType;

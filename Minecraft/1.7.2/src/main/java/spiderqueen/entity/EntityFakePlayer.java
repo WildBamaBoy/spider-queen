@@ -239,6 +239,12 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		getInventoryFromServer();
 	}
 
+	@Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+	
 	private void getInventoryFromServer()
 	{
 		SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));

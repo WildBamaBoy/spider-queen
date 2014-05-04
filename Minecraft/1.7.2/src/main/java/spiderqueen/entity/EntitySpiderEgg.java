@@ -143,6 +143,12 @@ public class EntitySpiderEgg extends EntityCreature
 		return true;
 	}
 
+	@Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+    
 	public int getTimeSinceHit()
 	{
 		return timeSinceHit;
