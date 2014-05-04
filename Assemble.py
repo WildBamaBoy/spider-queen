@@ -119,13 +119,13 @@ def moveBuildToBuildFolder():
         time.sleep(1)
 
     os.mkdir(dirBuild)
-    shutil.copy(fileFinishedBuild, dirBuild + "/_in_SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + ".zip")
+    shutil.copy(fileFinishedBuild, dirBuild + "/_in_SpiderQueenReborn-" + modVersion + " MC-" + minecraftVersion + ".zip")
 
 def cleanBuild():
     log("Cleaning Spider Queen...")
 
-    fileInArchive = dirBuild + "/_in_SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + ".zip"
-    fileOutArchive = dirBuild + "/_out_SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + ".zip"
+    fileInArchive = dirBuild + "/_in_SpiderQueenReborn-" + modVersion + " MC-" + minecraftVersion + ".zip"
+    fileOutArchive = dirBuild + "/_out_SpiderQueenReborn-" + modVersion + " MC-" + minecraftVersion + ".zip"
 
     zipInArchive = zipfile.ZipFile(fileInArchive, "r", zipfile.ZIP_DEFLATED)
     zipOutArchive = zipfile.ZipFile(fileOutArchive, "w", zipfile.ZIP_DEFLATED)
@@ -152,7 +152,7 @@ def createSourceArchive():
     log("Building source archive...")
 
     sourceFolder = dirGradleBase + "/src/main/java/spiderqueen/"
-    sourceArchive = zipfile.ZipFile(dirBuild + "/SpiderQueenRemastered-" + modVersion + " MC-" + minecraftVersion + " - Source.zip", "w", zipfile.ZIP_DEFLATED)
+    sourceArchive = zipfile.ZipFile(dirBuild + "/SpiderQueenReborn-" + modVersion + " MC-" + minecraftVersion + " - Source.zip", "w", zipfile.ZIP_DEFLATED)
     sourceFiles = os.listdir(sourceFolder)
 
     for root, dirs, files in os.walk(sourceFolder):
