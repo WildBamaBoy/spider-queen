@@ -645,11 +645,27 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private boolean isQueenValidTarget(EntityEnemyQueen queen)
 	{
-		return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen) && queen.isHostile;
+		if (queen != null)
+		{
+			return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen) && queen.isHostile;
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 
 	private boolean isPlayerValidTarget(EntityPlayer player)
 	{
-		return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player) && this.isHostile;
+		if (player != null)
+		{
+			return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player) && this.isHostile;
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 }

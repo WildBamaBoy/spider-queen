@@ -428,17 +428,41 @@ public class EntityEnemyQueen extends EntityCreature implements IEntityAdditiona
 
 	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
-		return !spider.owner.equals(this.identifier) && this.canEntityBeSeen(spider) && spider.isHostile && this.isHostile;
+		if (spider != null)
+		{
+			return !spider.owner.equals(this.identifier) && this.canEntityBeSeen(spider) && spider.isHostile && this.isHostile;
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 
 	private boolean isQueenValidTarget(EntityEnemyQueen queen)
 	{
-		return queen.isHostile;
+		if (queen != null)
+		{
+			return queen.isHostile;
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 
 	private boolean isPlayerValidTarget(EntityPlayer player)
 	{
-		return this.canEntityBeSeen(player) && this.isHostile;
+		if (player != null)
+		{
+			return this.canEntityBeSeen(player) && this.isHostile;
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 
 	@Override
