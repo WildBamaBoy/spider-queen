@@ -31,6 +31,7 @@ import spiderqueen.blocks.BlockWeb;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
+import spiderqueen.core.forge.ClientTickHandler;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.core.forge.EventHooks;
 import spiderqueen.core.forge.GuiHandlerInventory;
@@ -88,6 +89,7 @@ public class SpiderQueen implements IEnforcedCore
 	@SidedProxy(clientSide="spiderqueen.core.forge.ClientProxy", serverSide="spiderqueen.core.forge.CommonProxy")
 	public static CommonProxy proxy;
 
+	public static ClientTickHandler clientTickHandler;
 	public static ServerTickHandler serverTickHandler;
 	public static PacketPipeline packetPipeline;
 	private static PacketCodec packetCodec;
@@ -158,6 +160,7 @@ public class SpiderQueen implements IEnforcedCore
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 		fakePlayerNames = downloadFakePlayerNames();
 
+		clientTickHandler = new ClientTickHandler();
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
 	}

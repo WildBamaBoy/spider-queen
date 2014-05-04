@@ -56,7 +56,10 @@ public class ItemCocoon extends Item
 	@Override
 	public void registerIcons(IIconRegister iconRegister)
 	{
-		itemIcon = iconRegister.registerIcon("spiderqueen:Cocoon" + cocoonType.toString());
+		String name = cocoonType.toString();
+		name = Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();
+
+		itemIcon = iconRegister.registerIcon("spiderqueen:Cocoon" + name);
 	}
 
 	@Override

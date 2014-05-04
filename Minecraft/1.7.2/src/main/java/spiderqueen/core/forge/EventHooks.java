@@ -38,6 +38,7 @@ import spiderqueen.entity.EntityHatchedSpider;
 import com.radixshock.radixcore.logic.LogicHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 /**
@@ -45,6 +46,17 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
  */
 public class EventHooks 
 {
+	/**
+	 * Ticks the client tick handler.
+	 * 
+	 * @param 	event	The event.
+	 */
+	@SubscribeEvent
+	public void clientTickEventHandler(ClientTickEvent event)
+	{
+		SpiderQueen.getInstance().clientTickHandler.onTick();
+	}
+	
 	/**
 	 * Ticks the server tick handler.
 	 * 

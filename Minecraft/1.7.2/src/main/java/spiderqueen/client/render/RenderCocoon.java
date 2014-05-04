@@ -66,7 +66,11 @@ public class RenderCocoon extends Render
 	protected ResourceLocation getEntityTexture(Entity entity) 
 	{
 		final EntityCocoon entityCocoon = (EntityCocoon)entity;
-		String resourceLocation = "spiderqueen:textures/entity/cocoons/" + entityCocoon.getCocoonType();
+
+		String name = entityCocoon.getCocoonType().toString();
+		name = Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();
+		
+		String resourceLocation = "spiderqueen:textures/entity/" + name;
 
 		if (entityCocoon.isEaten())
 		{
