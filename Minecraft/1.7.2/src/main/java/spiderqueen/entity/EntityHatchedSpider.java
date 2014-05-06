@@ -51,7 +51,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHatchedSpider extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	public String owner = ""; //FIXME
+	public String owner = "";
 	public EnumCocoonType cocoonType = EnumCocoonType.EMPTY;
 	public int level = 1;
 	public int killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
@@ -211,7 +211,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity) && isHostile) ||
 					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile) ||
-					(entity instanceof EntityEnemyQueen) && isQueenValidTarget((EntityEnemyQueen)entity) ||
+					(entity instanceof EntityOtherQueen) && isQueenValidTarget((EntityOtherQueen)entity) ||
 					(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity)
 						&& distanceToThisEntity < distanceToTarget)
 			{
@@ -635,7 +635,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private boolean isSpiderValidTarget(EntityHatchedSpider spider)
 	{
-		if (spider != null)
+		if (owner != null && spider.owner != null)
 		{
 			return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider) && (spider.isHostile || this.isHostile);
 		}
@@ -646,9 +646,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 	}
 
-	private boolean isQueenValidTarget(EntityEnemyQueen queen)
+	private boolean isQueenValidTarget(EntityOtherQueen queen)
 	{
-		if (queen != null)
+		if (owner != null)
 		{
 			return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen) && queen.isHostile;
 		}
@@ -661,8 +661,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private boolean isPlayerValidTarget(EntityPlayer player)
 	{
-		if (player != null)
-		{
+		if (owner != null)
+		{	
 			return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player) && this.isHostile;
 		}
 		

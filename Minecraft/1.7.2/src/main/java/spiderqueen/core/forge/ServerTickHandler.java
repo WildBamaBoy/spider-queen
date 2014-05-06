@@ -29,7 +29,7 @@ import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
-import spiderqueen.entity.EntityEnemyQueen;
+import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
 

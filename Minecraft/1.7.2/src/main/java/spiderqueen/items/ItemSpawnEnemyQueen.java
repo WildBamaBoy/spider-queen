@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
-import spiderqueen.entity.EntityEnemyQueen;
+import spiderqueen.entity.EntityOtherQueen;
 
 public class ItemSpawnEnemyQueen extends AbstractItemSpawner
 {
@@ -42,7 +42,7 @@ public class ItemSpawnEnemyQueen extends AbstractItemSpawner
 
 		else
 		{
-			final EntityEnemyQueen entityEnemyQueen = new EntityEnemyQueen(world);
+			final EntityOtherQueen entityEnemyQueen = new EntityOtherQueen(world);
 			entityEnemyQueen.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);
 
 			if (!world.isRemote)

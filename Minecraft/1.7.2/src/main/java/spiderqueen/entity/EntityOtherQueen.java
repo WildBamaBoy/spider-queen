@@ -1,5 +1,5 @@
 /*******************************************************************************
- * EntityEnemyQueen.java
+ * EntityOtherQueen.java
  * Copyright (c) 2014 Radix-Shock Entertainment.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
@@ -46,7 +46,7 @@ import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityEnemyQueen extends EntityCreature implements IEntityAdditionalSpawnData
+public class EntityOtherQueen extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	public Inventory inventory = new Inventory(this);
 	public String identifier;
@@ -56,7 +56,7 @@ public class EntityEnemyQueen extends EntityCreature implements IEntityAdditiona
 	
 	public transient boolean hasSyncedInventory = false;
 
-	public EntityEnemyQueen(World world)
+	public EntityOtherQueen(World world)
 	{
 		super(world);
 
@@ -125,7 +125,7 @@ public class EntityEnemyQueen extends EntityCreature implements IEntityAdditiona
 
 			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity) && isHostile) ||
 				(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile) ||
-				(entity instanceof EntityEnemyQueen) && isQueenValidTarget((EntityEnemyQueen)entity) ||
+				(entity instanceof EntityOtherQueen) && isQueenValidTarget((EntityOtherQueen)entity) ||
 				(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity)
 					&& distanceToThisEntity < distanceToTarget)
 			{
@@ -439,7 +439,7 @@ public class EntityEnemyQueen extends EntityCreature implements IEntityAdditiona
 		}
 	}
 
-	private boolean isQueenValidTarget(EntityEnemyQueen queen)
+	private boolean isQueenValidTarget(EntityOtherQueen queen)
 	{
 		if (queen != null)
 		{

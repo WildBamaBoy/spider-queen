@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.enums.EnumCocoonType;
@@ -59,7 +60,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public boolean isAIEnabled()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -115,6 +116,18 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		{
 			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + 1 + rand.nextDouble() * (double)0.25D, posZ + rand.nextDouble() - 0.5D * (double)width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
+	}
+	
+	@Override
+	public void onEntityUpdate() 
+	{
+		super.onEntityUpdate();
+	}
+
+	@Override
+	public void onLivingUpdate() 
+	{
+		super.onLivingUpdate();
 	}
 
 	@Override

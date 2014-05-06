@@ -35,7 +35,7 @@ public class RenderCocoon extends Render
 		GL11.glPushMatrix();
 		{
 			GL11.glTranslated(posX, posY, posZ);
-			GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(entityCocoon.rotationYaw, 0.0F, 1.0F, 0.0F);
 			float rotateAdjustForHit = (float) entityCocoon.getTimeSinceHit() - rotationPitch / 2;
 			float rotateAdjustForDamage = (float) entityCocoon.getCurrentDamage() - rotationPitch / 2;
 
@@ -51,7 +51,7 @@ public class RenderCocoon extends Render
 
 			this.bindTexture(getEntityTexture(entityCocoon));
 			GL11.glScalef(-1F, -1F, 1.0F);
-			modelCocoon.render((Entity)entityCocoon,0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+			modelCocoon.render((Entity)entityCocoon,0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		}
 		GL11.glPopMatrix();
 	}

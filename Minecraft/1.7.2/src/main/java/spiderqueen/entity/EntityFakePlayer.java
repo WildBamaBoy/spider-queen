@@ -81,7 +81,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityCreeper.class, 0.6F, false));
 		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 0.6F, false));
 		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityZombie.class, 0.6F, false));
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityEnemyQueen.class, 0.6F, false));
+		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityOtherQueen.class, 0.6F, false));
 		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.6F, false));
 		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySpider.class, 0.6F, false));
 		this.tasks.addTask(1, new EntityAISwimming(this));
@@ -96,7 +96,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityCreeper.class, 16, false));
 		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16, false));
 		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16, false));
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityEnemyQueen.class, 16, false));
+		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityOtherQueen.class, 16, false));
 		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16, false));
 		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySpider.class, 16, false));
 	}

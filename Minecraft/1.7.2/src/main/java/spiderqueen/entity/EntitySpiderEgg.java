@@ -10,6 +10,7 @@
 package spiderqueen.entity;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -29,9 +30,6 @@ public class EntitySpiderEgg extends EntityCreature
 {
 	private String owner;
 	private int timeUntilEggHatch;
-	private int currentDamage;
-	private int timeSinceHit;
-	private int rockDirection = 1;
 
 	public EntitySpiderEgg(World world)
 	{
@@ -124,20 +122,7 @@ public class EntitySpiderEgg extends EntityCreature
 
 		if (entity instanceof EntityPlayer)
 		{
-			timeSinceHit = 10;
-			currentDamage += damage * 10;
-
 			setBeenAttacked();
-
-			if (currentDamage > 30)
-			{
-				if (!worldObj.isRemote)
-				{
-					dropItem(SpiderQueen.getInstance().itemSpiderEgg, 1);
-				}
-
-				setDead();
-			}
 		}
 
 		return true;
@@ -149,16 +134,6 @@ public class EntitySpiderEgg extends EntityCreature
         return false;
     }
     
-	public int getTimeSinceHit()
-	{
-		return timeSinceHit;
-	}
-
-	public int getCurrentDamage()
-	{
-		return currentDamage;
-	}
-
 	private EntityCocoon getConsumableCocoon()
 	{
 		final List<EntityCocoon> nearbyCocoons = (List<EntityCocoon>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityCocoon.class, 5);

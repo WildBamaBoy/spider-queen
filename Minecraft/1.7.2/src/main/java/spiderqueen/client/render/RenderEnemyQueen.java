@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import spiderqueen.client.model.ModelSpiderQueen;
-import spiderqueen.entity.EntityEnemyQueen;
+import spiderqueen.entity.EntityOtherQueen;
 
 public class RenderEnemyQueen extends RenderLiving
 {
@@ -100,7 +100,7 @@ public class RenderEnemyQueen extends RenderLiving
 	@Override
 	protected void bindEntityTexture(Entity entity) 
 	{
-		final EntityEnemyQueen enemyQueen = (EntityEnemyQueen)entity;
+		final EntityOtherQueen enemyQueen = (EntityOtherQueen)entity;
 		
 		if (enemyQueen.isHostile)
 		{

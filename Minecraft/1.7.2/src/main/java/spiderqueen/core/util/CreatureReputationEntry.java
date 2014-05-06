@@ -8,7 +8,7 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import spiderqueen.entity.EntityEnemyQueen;
+import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntityFakePlayer;
 
 public class CreatureReputationEntry 
@@ -26,7 +26,7 @@ public class CreatureReputationEntry
 		returnList.add(new CreatureReputationEntry(EntityCreeper.class, "Creepers"));
 		returnList.add(new CreatureReputationEntry(EntitySkeleton.class, "Skeletons"));
 		returnList.add(new CreatureReputationEntry(EntityFakePlayer.class, "Humans"));
-		returnList.add(new CreatureReputationEntry(EntityEnemyQueen.class, "Other Queens"));
+		returnList.add(new CreatureReputationEntry(EntityOtherQueen.class, "Other Queens"));
 		returnList.add(new CreatureReputationEntry(EntityZombie.class, "Zombies"));
 		returnList.add(new CreatureReputationEntry(EntityEnderman.class, "Endermen"));
 		returnList.add(new CreatureReputationEntry(EntitySpider.class, "Evil Queen"));

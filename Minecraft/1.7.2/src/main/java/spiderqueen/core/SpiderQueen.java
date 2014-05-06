@@ -37,7 +37,7 @@ import spiderqueen.core.forge.EventHooks;
 import spiderqueen.core.forge.GuiHandlerInventory;
 import spiderqueen.core.forge.ServerTickHandler;
 import spiderqueen.entity.EntityCocoon;
-import spiderqueen.entity.EntityEnemyQueen;
+import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.entity.EntitySpiderEgg;
@@ -314,7 +314,7 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityFakePlayer.class, EntityFakePlayer.class.getSimpleName(), 3, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntityEnemyQueen.class, EntityEnemyQueen.class.getSimpleName(), 6, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityOtherQueen.class, EntityOtherQueen.class.getSimpleName(), 6, this, 50, 2, true);
 	}
 
 	@Override

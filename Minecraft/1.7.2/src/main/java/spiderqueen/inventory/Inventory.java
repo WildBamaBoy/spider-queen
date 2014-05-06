@@ -164,7 +164,6 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		
 		else
 		{
-			System.out.println(slotId);
 			return null;
 		}
 	}

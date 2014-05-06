@@ -35,6 +35,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
+import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
 
@@ -115,9 +116,22 @@ public class EventHooks
 
 			for (EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
 			{
-				if (spider.owner.equals(event.entityPlayer.getCommandSenderName()))
+				if (spider.owner != null)
 				{
-					spider.target = event.target;
+					if (spider.owner.equals(event.entityPlayer.getCommandSenderName()) && !(event.target instanceof EntityCocoon))
+					{
+						if (event.target instanceof EntityHatchedSpider)
+						{
+							final EntityHatchedSpider targetSpider = (EntityHatchedSpider)event.target;
+
+							if (targetSpider.owner.equals(player.getCommandSenderName()))
+							{
+								continue;
+							}
+						}
+
+						spider.target = event.target;
+					}
 				}
 			}
 		}
@@ -162,7 +176,7 @@ public class EventHooks
 				if (event.entityLiving.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{
 					entry.creaturesKilled++;
-					
+
 					if (entry.creaturesKilled % 10 == 0 && entry.reputationValue > -5)
 					{
 						entry.reputationValue--;

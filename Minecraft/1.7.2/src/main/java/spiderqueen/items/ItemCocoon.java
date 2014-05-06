@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityCocoon;
@@ -45,8 +46,12 @@ public class ItemCocoon extends Item
 				itemStack.stackSize--;
 			}
 			
+			posX += Facing.offsetsXForSide[meta];
+			posY += Facing.offsetsYForSide[meta];
+			posZ += Facing.offsetsZForSide[meta];
+			
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-			entityCocoon.setPositionAndRotation(posX, posY + 1, posZ, entityCocoon.rotationYaw - 90F, 0F);
+			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
 			world.spawnEntityInWorld(entityCocoon);
 		}
 		
