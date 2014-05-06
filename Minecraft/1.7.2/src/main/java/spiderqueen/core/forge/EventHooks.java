@@ -24,6 +24,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -34,10 +35,10 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
-import spiderqueen.entity.EntityEnemyQueen;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
 
+import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -161,6 +162,12 @@ public class EventHooks
 				if (event.entityLiving.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{
 					entry.creaturesKilled++;
+					
+					if (entry.creaturesKilled % 10 == 0 && entry.reputationValue > -5)
+					{
+						entry.reputationValue--;
+						player.addChatMessage(new ChatComponentText(Color.RED + "Your reputation with the " + entry.creatureGroupName + " has dropped to " + entry.reputationValue + "."));
+					}
 				}
 			}
 		}
