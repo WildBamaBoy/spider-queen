@@ -355,6 +355,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 						level++;
 
 						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
+						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
 					}
 
 					target = null;

@@ -80,7 +80,7 @@ public class GuiSpiderInventory extends InventoryEffectRenderer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRendererObj.drawString("Carrier Spider", 8, 6, 4210752);
+		fontRendererObj.drawString("Pack Spider", 8, 6, 4210752);
 	}
 
 	@Override

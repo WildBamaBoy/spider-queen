@@ -9,13 +9,20 @@
 
 package spiderqueen.command;
 
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import spiderqueen.core.SpiderQueen;
+import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.constant.Font.Color;
+import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.network.Packet;
 
 /**
  * Defines the debug rule command and what it does.
@@ -73,6 +80,32 @@ public class CommandDebug extends CommandBase
 				{
 					SpiderQueen.getInstance().debugDoRapidSpiderGrowth = setValue;
 					sender.addChatMessage(new ChatComponentText(Color.YELLOW + "Rule doRapidSpiderGrowth set to " + setValue + "."));
+				}
+
+				else if (arguments[0].equalsIgnoreCase("levelupallspiders"))
+				{
+					try
+					{
+						EntityPlayer player = (EntityPlayer)sender;
+
+						for (EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityHatchedSpider.class, 20))
+						{
+							if (spider.level < 3)
+							{
+								spider.worldObj.playSoundAtEntity(spider, "random.levelup", 0.75F, 1.0F);
+								spider.killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
+								spider.level++;
+
+								SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, spider.getEntityId(), spider.level));
+								SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, spider.getEntityId(), spider.inventory));
+							}
+						}
+					}
+
+					catch (Throwable e)
+					{
+						e.printStackTrace();
+					}
 				}
 
 				else
