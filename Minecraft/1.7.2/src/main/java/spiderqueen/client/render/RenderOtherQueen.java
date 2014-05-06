@@ -16,11 +16,11 @@ import net.minecraft.util.ResourceLocation;
 import spiderqueen.client.model.ModelSpiderQueen;
 import spiderqueen.entity.EntityOtherQueen;
 
-public class RenderEnemyQueen extends RenderLiving
+public class RenderOtherQueen extends RenderLiving
 {
 	private ModelSpiderQueen modelBipedMain;
 
-	public RenderEnemyQueen()
+	public RenderOtherQueen()
 	{
 		super(new ModelSpiderQueen(), 0.0F);
 		this.modelBipedMain = new ModelSpiderQueen();

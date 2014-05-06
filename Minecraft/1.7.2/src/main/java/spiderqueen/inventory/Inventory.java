@@ -1098,7 +1098,9 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		final boolean giveChestplate = LogicHelper.getBooleanWithProbability(30);
 		final boolean giveLeggings = LogicHelper.getBooleanWithProbability(40);
 		final boolean giveBoots = LogicHelper.getBooleanWithProbability(70);
-
+		final int armorLevel = LogicHelper.getNumberInRange(1, 4);
+		final int weaponLevel = LogicHelper.getNumberInRange(1, 4);
+		
 		if (giveBow)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.bow, 1));
@@ -1107,27 +1109,57 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 		if (giveSword)
 		{
-			inventory.addItemStackToInventory(new ItemStack(Items.diamond_sword, 1));
+			switch (weaponLevel)
+			{
+			case 1: inventory.addItemStackToInventory(new ItemStack(Items.wooden_sword, 1)); break;
+			case 2: inventory.addItemStackToInventory(new ItemStack(Items.stone_sword, 1)); break;
+			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_sword, 1)); break;
+			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_sword, 1)); break;
+			}
 		}
 
 		if (giveHelmet)
 		{
-			inventory.addItemStackToInventory(new ItemStack(Items.iron_helmet, 1));
+			switch (armorLevel)
+			{
+			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_helmet, 1)); break;
+			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_helmet, 1)); break;
+			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_helmet, 1)); break;
+			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_helmet, 1)); break;
+			}
 		}
 
 		if (giveChestplate)
 		{
-			inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1));
+			switch (armorLevel)
+			{
+			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1)); break;
+			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1)); break;
+			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1)); break;
+			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1)); break;
+			}
 		}
 
 		if (giveLeggings)
 		{
-			inventory.addItemStackToInventory(new ItemStack(Items.iron_leggings, 1));
+			switch (armorLevel)
+			{
+			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_leggings, 1)); break;
+			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_leggings, 1)); break;
+			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_leggings, 1)); break;
+			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_leggings, 1)); break;
+			}
 		}
 
 		if (giveBoots)
 		{
-			inventory.addItemStackToInventory(new ItemStack(Items.iron_boots, 1));
+			switch (armorLevel)
+			{
+			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1)); break;
+			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1)); break;
+			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1)); break;
+			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1)); break;
+			}
 		}
 
 		inventory.setWornArmorItems();
