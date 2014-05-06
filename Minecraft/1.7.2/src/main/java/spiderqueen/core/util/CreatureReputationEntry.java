@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import spiderqueen.entity.EntityEnemyQueen;
 import spiderqueen.entity.EntityFakePlayer;
@@ -28,6 +29,7 @@ public class CreatureReputationEntry
 		returnList.add(new CreatureReputationEntry(EntityEnemyQueen.class, "Other Queens"));
 		returnList.add(new CreatureReputationEntry(EntityZombie.class, "Zombies"));
 		returnList.add(new CreatureReputationEntry(EntityEnderman.class, "Endermen"));
+		returnList.add(new CreatureReputationEntry(EntitySpider.class, "Evil Queen"));
 		
 		return returnList;
 	}
