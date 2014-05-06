@@ -43,6 +43,8 @@ public class ServerTickHandler
 	private int serverTicks = 20;
 	private int timeUntilSpawnWeb = Time.MINUTE * 3;
 	private int timeUntilSpawnPlayers = Time.SECOND * 30; 
+	private int timeUntilSpawnWarParties = Time.MINUTE * 2;
+
 	private boolean hasCalculatedReputationForDay = false;
 	public List<PlayerEatEntry> playersEating = new ArrayList<PlayerEatEntry>();
 	private List<PlayerEatEntry> playersNoLongerEating = new ArrayList<PlayerEatEntry>();
@@ -56,7 +58,8 @@ public class ServerTickHandler
 		updateSpawnWeb();
 		updatePlayerEat();
 		updateReputation();
-		//updateSpawnPlayers();
+		updateSpawnPlayers();
+		updateSpawnWarParties();
 	}
 
 	private void updateReputation()
@@ -123,7 +126,7 @@ public class ServerTickHandler
 	private void modifyReputations(PlayerReputationHandler reputationHandler) 
 	{
 		final EntityPlayer player = reputationHandler.getPlayer();
-		
+
 		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
 		{
 			if (entry.creaturesKilled >= 3)
@@ -139,7 +142,7 @@ public class ServerTickHandler
 						entry.reputationValue == 5 ? 5 :
 							entry.reputationValue + 1;
 			}
-			
+
 			entry.creaturesKilled = 0;
 		}
 	}
@@ -221,7 +224,7 @@ public class ServerTickHandler
 			playersEating.remove(eatEntry);
 		}
 	}
-	
+
 	private void updateSpawnPlayers()
 	{
 		timeUntilSpawnPlayers--;
@@ -236,10 +239,10 @@ public class ServerTickHandler
 					final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
 					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
-					
+
 					final List<Entity> nearbyEntities = ((List<Entity>)LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30));
 					int numberOfPlayersNearby = 0;
-					
+
 					for (final Object entity : nearbyEntities)
 					{
 						if (entity instanceof EntityFakePlayer)
@@ -247,7 +250,7 @@ public class ServerTickHandler
 							numberOfPlayersNearby++;
 						}
 					}
-					
+
 					if (doSpawnPlayers && numberOfPlayersNearby < 5)
 					{
 						LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
@@ -256,6 +259,40 @@ public class ServerTickHandler
 			}
 
 			timeUntilSpawnPlayers = Time.SECOND * 30;
+		}
+	}
+
+	private void updateSpawnWarParties() 
+	{
+		timeUntilSpawnWarParties--;
+
+		if (timeUntilSpawnWarParties <= 0)
+		{
+			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+			{
+				for (Object obj : worldServer.playerEntities)
+				{
+					final EntityPlayer player = (EntityPlayer)obj;
+					final PlayerReputationHandler reputationHandler = (PlayerReputationHandler)player.getExtendedProperties(PlayerReputationHandler.ID);
+
+					for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+					{
+						if (entry.isAtWar)
+						{
+							final boolean doSpawnWarParty = LogicHelper.getBooleanWithProbability(70);
+							final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(10, 25) : LogicHelper.getNumberInRange(10, 25) * -1;
+							final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(10, 25) : LogicHelper.getNumberInRange(10, 25) * -1;
+
+							if (doSpawnWarParty)
+							{
+								LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), entry.getCreatureClass(), 3, 6);
+							}
+						}
+					}
+				}
+			}
+
+			timeUntilSpawnWarParties = LogicHelper.getNumberInRange(2, 15) * Time.MINUTE;
 		}
 	}
 }
