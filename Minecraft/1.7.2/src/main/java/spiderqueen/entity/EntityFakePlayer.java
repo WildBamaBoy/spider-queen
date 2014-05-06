@@ -36,6 +36,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.ByteBufIO;
 import spiderqueen.enums.EnumPacketType;
@@ -116,8 +117,23 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 				hasInventoryBeenPopulated = true;				
 			}
 		}
+		
+		inventory.setWornArmorItems();
 	}
 
+	@Override
+	protected void damageEntity(DamageSource damageSource, float damageAmount) 
+	{
+		final float unabsorbedDamage = ISpecialArmor.ArmorProperties.ApplyArmor(this, inventory.armorItems, damageSource, damageAmount);
+		super.damageEntity(damageSource, unabsorbedDamage);
+	}
+
+	@Override
+	public ItemStack func_130225_q(int armorId)
+	{
+		return inventory.armorItemInSlot(3 - armorId);
+	}
+	
 	private void damageTarget()
 	{
 		if (this.getAttackTarget() instanceof EntityCreature)

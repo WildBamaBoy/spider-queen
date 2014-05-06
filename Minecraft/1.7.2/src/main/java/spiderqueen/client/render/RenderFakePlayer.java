@@ -39,7 +39,7 @@ public class RenderFakePlayer extends RenderBiped
 
 	public RenderFakePlayer() 
 	{
-		super(new ModelBiped(), 0.5F);
+		super(new ModelBiped(0.0F), 0.5F);
 
 		modelBipedMain  = (ModelBiped)mainModel;
 		modelArmorPlate = new ModelBiped(1.0F);
