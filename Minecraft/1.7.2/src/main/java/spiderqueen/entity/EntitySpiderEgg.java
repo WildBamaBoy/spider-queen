@@ -10,7 +10,6 @@
 package spiderqueen.entity;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

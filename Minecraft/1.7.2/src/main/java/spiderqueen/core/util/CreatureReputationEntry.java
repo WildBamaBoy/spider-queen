@@ -8,8 +8,8 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntityFakePlayer;
+import spiderqueen.entity.EntityOtherQueen;
 
 public class CreatureReputationEntry 
 {

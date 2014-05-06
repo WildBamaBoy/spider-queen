@@ -14,8 +14,6 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -29,9 +27,7 @@ import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
-import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntityFakePlayer;
-import spiderqueen.entity.EntityHatchedSpider;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.constant.Time;
