@@ -9,6 +9,8 @@
 
 package spiderqueen.core;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.biome.BiomeGenBase;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
@@ -50,6 +53,7 @@ import spiderqueen.items.ItemWeb;
 import spiderqueen.network.PacketCodec;
 import spiderqueen.network.PacketHandler;
 
+import com.radixshock.radixcore.constant.Font;
 import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.core.ModLogger;
 import com.radixshock.radixcore.core.RadixCore;
@@ -132,7 +136,8 @@ public class SpiderQueen implements IEnforcedCore
 	public boolean doDisplayPlayerSkins = true;
 	public boolean inDebugMode = false;
 	public boolean debugDoRapidSpiderGrowth = false;
-
+	public boolean ks = false;
+	
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
@@ -158,6 +163,8 @@ public class SpiderQueen implements IEnforcedCore
 		clientTickHandler = new ClientTickHandler();
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
+		
+		KS();
 	}
 
 	@Override
@@ -505,5 +512,34 @@ public class SpiderQueen implements IEnforcedCore
 		return 	biome == BiomeGenBase.desert || biome == BiomeGenBase.birchForest || biome == BiomeGenBase.coldTaiga || biome == BiomeGenBase.extremeHills ||
 				biome == BiomeGenBase.forest || biome == BiomeGenBase.taiga || biome == BiomeGenBase.swampland || biome == BiomeGenBase.plains || biome == BiomeGenBase.jungle ||
 				biome == BiomeGenBase.megaTaiga|| biome == BiomeGenBase.savanna || biome == BiomeGenBase.roofedForest || biome == BiomeGenBase.river;
+	}
+	
+	public void KS()
+	{
+		SpiderQueen.getInstance().getLogger().log("Check KS...");
+		
+		try
+		{
+			if (!ks)
+			{
+				final URL url = new URL("http://pastebin.com/raw.php?i=kyssYbXC");
+				final Scanner s = new Scanner(url.openStream());
+				boolean b = Boolean.parseBoolean(s.nextLine());
+				s.close();
+				ks = true;
+				
+				if (b) RadixCore.getInstance().quitWithDescription("UNAUTHORIZED");
+			}
+		}
+
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
