@@ -116,11 +116,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			if (!tryFollowOwnerPlayer(false))
 			{	
-				target = findPlayerToAttack();
-
 				if (target != null)
 				{
 					attackEntity(target, 3.5F);
+				}
+				
+				else
+				{
+					target = findPlayerToAttack();					
 				}
 
 				tryMoveToSpiderRod();

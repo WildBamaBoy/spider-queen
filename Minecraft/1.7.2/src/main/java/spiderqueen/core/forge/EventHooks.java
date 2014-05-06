@@ -13,6 +13,7 @@ import java.util.List;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -27,6 +28,7 @@ import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import spiderqueen.core.SpiderQueen;
@@ -90,6 +92,21 @@ public class EventHooks
 		}
 	}
 
+	@SubscribeEvent
+	public void onAttackEntity(AttackEntityEvent event)
+	{
+		SpiderQueen.getInstance().getLogger().log(event.target);
+		
+		for (EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
+		{
+			if (spider.owner.equals(event.entityPlayer.getCommandSenderName()))
+			{
+				SpiderQueen.getInstance().getLogger().log("A");
+				spider.target = event.target;
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event)
 	{
