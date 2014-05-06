@@ -9,55 +9,45 @@
 
 package spiderqueen.core.forge;
 
-import com.radixshock.radixcore.logic.NBTHelper;
+import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import spiderqueen.core.util.CreatureReputationEntry;
+
+import com.radixshock.radixcore.logic.NBTHelper;
 
 public class PlayerReputationHandler implements IExtendedEntityProperties
 {
 	public static final String ID = "SpiderQueenReputationHandler";
 	private final EntityPlayer player;
-
-	public int reputationCreepers;
-	public int reputationHumans;
-	public int reputationSkeletons;
-	public int reputationZombies;
-	public int reputationFriendlySpiderQueens;
-	public int reputationEvilSpiderQueen;
-
-	public int creepersKilled;
-	public int humansKilled;
-	public int skeletonsKilled;
-	public int zombiesKilled;
-	public int friendlySpidersKilled;
-	public int spidersKilled;
-
-	public boolean isAtWarWithCreepers;
-	public boolean isAtWarWithHumans;
-	public boolean isAtWarWithSkeletons;
-	public boolean isAtWarWithZombies;
-	public boolean isAtWarWithFriendlySpiderQueens;
-	public boolean isAtWarWithEvilSpiderQueen;
+	private final List<CreatureReputationEntry> reputationEntries;
 
 	public PlayerReputationHandler(EntityPlayer player)
 	{
 		this.player = player;
+		this.reputationEntries = CreatureReputationEntry.getListOfCleanEntries();
 	}
 
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) 
 	{
-		NBTHelper.autoWriteClassFieldsToNBT(this.getClass(), this, nbt);
+		for (CreatureReputationEntry entry : reputationEntries)
+		{
+			NBTHelper.autoWriteClassFieldsToNBT(entry.getClass(), entry, nbt, entry.creatureGroupName);
+		}
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound nbt)
 	{
-		NBTHelper.autoReadClassFieldsFromNBT(this.getClass(), this, nbt);
+		for (CreatureReputationEntry entry : reputationEntries)
+		{
+			NBTHelper.autoReadClassFieldsFromNBT(entry.getClass(), entry, nbt, entry.creatureGroupName);
+		}
 	}
 
 	@Override
@@ -68,5 +58,28 @@ public class PlayerReputationHandler implements IExtendedEntityProperties
 	public static final void register(EntityPlayer player)
 	{
 		player.registerExtendedProperties(PlayerReputationHandler.ID, new PlayerReputationHandler(player));
+	}
+	
+	public final List<CreatureReputationEntry> getReputationEntries()
+	{
+		return reputationEntries;
+	}
+	
+	public final CreatureReputationEntry getReputationEntry(Class clazz)
+	{
+		for (CreatureReputationEntry entry : reputationEntries)
+		{
+			if (entry.getCreatureClass().toString().equals(clazz.toString()))
+			{
+				return entry;
+			}
+		}
+		
+		return null;
+	}
+	
+	public EntityPlayer getPlayer()
+	{
+		return player;
 	}
 }

@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.core.SpiderQueen;
+import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
 import spiderqueen.entity.EntityEnemyQueen;
 import spiderqueen.entity.EntityFakePlayer;
@@ -89,262 +90,62 @@ public class ServerTickHandler
 
 	private void applyReputationEffects(EntityPlayer player, PlayerReputationHandler reputationHandler) 
 	{
-		//Creepers
-		if (reputationHandler.reputationCreepers == -2 && !reputationHandler.isAtWarWithCreepers)
+		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
 		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The creepers are not pleased with your latest actions."));
-		}
+			if (entry.reputationValue == -2 && !entry.isAtWar)
+			{
+				player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are not pleased with your latest actions."));
+			}
 
-		else if (reputationHandler.reputationCreepers == -4 && !reputationHandler.isAtWarWithCreepers)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The creepers are threatening war."));
-			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityCreeper.class, 2, 5);
-		}
+			else if (entry.reputationValue == -4 && !entry.isAtWar)
+			{
+				player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are threatening war."));
+				player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+				LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, entry.getCreatureClass(), 2, 5);
+			}
 
-		else if (reputationHandler.reputationCreepers == -5 && !reputationHandler.isAtWarWithCreepers)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The creepers have declared war on you for your actions."));
-			reputationHandler.isAtWarWithCreepers = true;
-		}
+			else if (entry.reputationValue == -5 && !entry.isAtWar)
+			{
+				player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " have declared war on you for your actions."));
+				entry.isAtWar = true;
+			}
 
-		else if (reputationHandler.reputationCreepers == 0 && reputationHandler.isAtWarWithCreepers)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The creepers have ended their war with you."));
-			reputationHandler.isAtWarWithCreepers = false;
-		}
+			else if (entry.reputationValue == 0 && entry.isAtWar)
+			{
+				player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " have ended their war with you."));
+				entry.isAtWar = false;
+			}
 
-		else if (reputationHandler.reputationCreepers == 3)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The creepers are pleased with you. They have sent you one of their own."));
-			LogicHelper.spawnEntityAtPlayer(player, EntityCreeper.class);
-		}
-
-		//Humans
-		if (reputationHandler.reputationHumans == -2 && !reputationHandler.isAtWarWithHumans)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The humans are not pleased with your latest actions."));
-		}
-
-		else if (reputationHandler.reputationHumans == -4 && !reputationHandler.isAtWarWithHumans)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The humans are threatening war."));
-			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityFakePlayer.class, 3, 5);
-		}
-
-		else if (reputationHandler.reputationHumans == -5 && !reputationHandler.isAtWarWithHumans)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The humans have declared war on you for your actions."));
-			reputationHandler.isAtWarWithHumans = true;
-		}
-
-		else if (reputationHandler.reputationHumans == 0 && reputationHandler.isAtWarWithHumans)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The humans have ended their war with you."));
-			reputationHandler.isAtWarWithHumans = false;
-		}
-
-		else if (reputationHandler.reputationHumans == 3)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The humans are pleased with you. They have sent you one of their own."));
-			LogicHelper.spawnEntityAtPlayer(player, EntityFakePlayer.class);
-		}
-
-		//Skeletons
-		if (reputationHandler.reputationSkeletons == -2 && !reputationHandler.isAtWarWithSkeletons)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The skeletons are not pleased with your latest actions."));
-		}
-
-		else if (reputationHandler.reputationSkeletons == -4 && !reputationHandler.isAtWarWithSkeletons)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The skeletons are threatening war."));
-			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntitySkeleton.class, 3, 5);
-		}
-
-		else if (reputationHandler.reputationSkeletons == -5 && !reputationHandler.isAtWarWithSkeletons)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The skeletons have declared war on you for your actions."));
-			reputationHandler.isAtWarWithSkeletons = true;
-		}
-
-		else if (reputationHandler.reputationSkeletons == 0 && reputationHandler.isAtWarWithSkeletons)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The skeletons have ended their war with you."));
-			reputationHandler.isAtWarWithSkeletons = false;
-		}
-
-		else if (reputationHandler.reputationSkeletons == 3)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The skeletons are pleased with you. They have sent you one of their own."));
-			LogicHelper.spawnEntityAtPlayer(player, EntitySkeleton.class);
-		}
-
-		//Zombies
-		if (reputationHandler.reputationZombies == -2 && !reputationHandler.isAtWarWithZombies)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The zombies are not pleased with your latest actions."));
-		}
-
-		else if (reputationHandler.reputationZombies == -4 && !reputationHandler.isAtWarWithZombies)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The zombies are threatening war."));
-			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityZombie.class, 2, 4);
-		}
-
-		else if (reputationHandler.reputationZombies == -5 && !reputationHandler.isAtWarWithZombies)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The zombies have declared war on you for your actions."));
-			reputationHandler.isAtWarWithZombies = true;
-		}
-
-		else if (reputationHandler.reputationZombies == 0 && reputationHandler.isAtWarWithZombies)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The zombies have ended their war with you."));
-			reputationHandler.isAtWarWithZombies = false;
-		}
-
-		else if (reputationHandler.reputationZombies == 3)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The zombies are pleased with you. They have sent you one of their own."));
-			LogicHelper.spawnEntityAtPlayer(player, EntityZombie.class);
-		}
-
-		//Friendly Spiders
-		if (reputationHandler.reputationFriendlySpiderQueens == -2 && !reputationHandler.isAtWarWithFriendlySpiderQueens)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The other spider queens are not pleased with your latest actions."));
-		}
-
-		else if (reputationHandler.reputationFriendlySpiderQueens == -4 && !reputationHandler.isAtWarWithFriendlySpiderQueens)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The other spider queens are threatening war."));
-			player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-			LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, EntityEnemyQueen.class, 2, 3);
-		}
-
-		else if (reputationHandler.reputationFriendlySpiderQueens == -5 && !reputationHandler.isAtWarWithFriendlySpiderQueens)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "The other spider queens have declared war on you for your actions."));
-			reputationHandler.isAtWarWithFriendlySpiderQueens = true;
-		}
-
-		else if (reputationHandler.reputationFriendlySpiderQueens == 0 && reputationHandler.isAtWarWithFriendlySpiderQueens)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The other spider queens have ended their war with you."));
-			reputationHandler.isAtWarWithFriendlySpiderQueens = false;
-		}
-
-		else if (reputationHandler.reputationFriendlySpiderQueens == 3)
-		{
-			player.addChatMessage(new ChatComponentText(Color.GREEN + "The other spider queens are pleased with you. They have sent you a group of spiders."));
-			LogicHelper.spawnEntityAtPlayer(player, EntityHatchedSpider.class);
-		}
-
-		//Evil Spider Queen
-		if (reputationHandler.reputationEvilSpiderQueen == -5 && !reputationHandler.isAtWarWithEvilSpiderQueen)
-		{
-			player.addChatMessage(new ChatComponentText(Color.RED + "You have angered the evil spider queen!"));
-			player.addChatMessage(new ChatComponentText(Color.RED + "She has come to seek vengeance!"));
-			//TODO
+			else if (entry.reputationValue == 3)
+			{
+				player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " are pleased with you. They have sent you one of their own."));
+				LogicHelper.spawnEntityAtPlayer(player, EntityCreeper.class);
+			}
 		}
 	}
 
 	private void modifyReputations(PlayerReputationHandler reputationHandler) 
 	{
-		if (reputationHandler.creepersKilled > 3)
+		final EntityPlayer player = reputationHandler.getPlayer();
+		
+		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
 		{
-			reputationHandler.reputationCreepers = 
-					reputationHandler.reputationCreepers == -5 ? -5 :
-						reputationHandler.reputationCreepers - 1;
-		}
+			if (entry.creaturesKilled >= 3)
+			{
+				entry.reputationValue = 
+						entry.reputationValue == -5 ? -5 :
+							entry.reputationValue - 1;
+			}
 
-		else if (reputationHandler.creepersKilled == 0)
-		{
-			reputationHandler.reputationCreepers = 
-					reputationHandler.reputationCreepers == 5 ? 5 :
-						reputationHandler.reputationCreepers + 1;
+			else if (entry.creaturesKilled == 0)
+			{
+				entry.reputationValue = 
+						entry.reputationValue == 5 ? 5 :
+							entry.reputationValue + 1;
+			}
+			
+			entry.creaturesKilled = 0;
 		}
-
-		if (reputationHandler.humansKilled > 3)
-		{
-			reputationHandler.reputationHumans = 
-					reputationHandler.reputationHumans == -5 ? -5 :
-						reputationHandler.reputationHumans - 1;
-		}
-
-		else if (reputationHandler.humansKilled == 0)
-		{
-			reputationHandler.reputationHumans = 
-					reputationHandler.reputationHumans == 5 ? 5 :
-						reputationHandler.reputationHumans + 1;
-		}
-
-		if (reputationHandler.skeletonsKilled > 3)
-		{
-			reputationHandler.reputationSkeletons = 
-					reputationHandler.reputationSkeletons == -5 ? -5 :
-						reputationHandler.reputationSkeletons - 1;
-		}
-
-		else if (reputationHandler.skeletonsKilled == 0)
-		{
-			reputationHandler.reputationSkeletons = 
-					reputationHandler.reputationSkeletons == 5 ? 5 :
-						reputationHandler.reputationSkeletons + 1;
-		}
-
-		if (reputationHandler.zombiesKilled > 3)
-		{
-			reputationHandler.reputationZombies = 
-					reputationHandler.reputationZombies == -5 ? -5 :
-						reputationHandler.reputationZombies - 1;
-		}
-
-		else if (reputationHandler.zombiesKilled == 0)
-		{
-			reputationHandler.reputationZombies = 
-					reputationHandler.reputationZombies == 5 ? 5 :
-						reputationHandler.reputationZombies + 1;
-		}
-
-		if (reputationHandler.friendlySpidersKilled > 3)
-		{
-			reputationHandler.reputationFriendlySpiderQueens = 
-					reputationHandler.reputationFriendlySpiderQueens == -5 ? -5 :
-						reputationHandler.reputationFriendlySpiderQueens - 1;
-		}
-
-		else if (reputationHandler.friendlySpidersKilled == 0)
-		{
-			reputationHandler.reputationFriendlySpiderQueens = 
-					reputationHandler.reputationFriendlySpiderQueens == 5 ? 5 :
-						reputationHandler.reputationFriendlySpiderQueens + 1;
-		}
-
-		if (reputationHandler.spidersKilled > 3)
-		{
-			reputationHandler.reputationEvilSpiderQueen = 
-					reputationHandler.reputationEvilSpiderQueen == -5 ? -5 :
-						reputationHandler.reputationEvilSpiderQueen - 1;
-		}
-
-		else if (reputationHandler.spidersKilled == 0)
-		{
-			reputationHandler.reputationEvilSpiderQueen = 
-					reputationHandler.reputationEvilSpiderQueen == 5 ? 5 :
-						reputationHandler.reputationEvilSpiderQueen + 1;
-		}
-
-		reputationHandler.creepersKilled = 0;
-		reputationHandler.friendlySpidersKilled = 0;
-		reputationHandler.spidersKilled = 0;
-		reputationHandler.humansKilled = 0;
-		reputationHandler.zombiesKilled = 0;
-		reputationHandler.skeletonsKilled = 0;
 	}
 
 	private void updateNightVision()

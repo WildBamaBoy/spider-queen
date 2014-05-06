@@ -14,6 +14,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import spiderqueen.core.forge.PlayerReputationHandler;
+import spiderqueen.core.util.CreatureReputationEntry;
 
 import com.radixshock.radixcore.constant.Font.Color;
 
@@ -49,100 +50,28 @@ public class CommandCheckReputation extends CommandBase
 		final EntityPlayer player = (EntityPlayer)sender;
 		final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
 		final StringBuilder SB = new StringBuilder();
-		
+
 		player.addChatMessage(new ChatComponentText(Color.YELLOW + "Spider Queen Reputations"));
 		player.addChatMessage(new ChatComponentText(Color.WHITE + "-----------------------------"));
-		
-		if (reputationHandler.isAtWarWithCreepers)
+
+		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
 		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Creepers: " + Color.RED + reputationHandler.reputationCreepers + "(WAR)"));
+			if (entry.isAtWar)
+			{
+				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.RED + entry.reputationValue + "(WAR)"));
+			}
+
+			else if (entry.reputationValue < 0)
+			{
+				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.RED + entry.reputationValue));
+			}
+
+			else if (entry.reputationValue >= 0)
+			{
+				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.GREEN + entry.reputationValue));
+			}	
 		}
-		
-		else if (reputationHandler.reputationCreepers < 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Creepers: " + Color.RED + reputationHandler.reputationCreepers));
-		}
-		
-		else if (reputationHandler.reputationCreepers >= 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Creepers: " + Color.GREEN + reputationHandler.reputationCreepers));
-		}
-		
-		if (reputationHandler.isAtWarWithHumans)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Humans: " + Color.RED + reputationHandler.reputationHumans + "(WAR)"));
-		}
-		
-		else if (reputationHandler.reputationHumans < 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Humans: " + Color.RED + reputationHandler.reputationHumans));
-		}
-		
-		else if (reputationHandler.reputationHumans >= 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Humans: " + Color.GREEN + reputationHandler.reputationHumans));
-		}
-		
-		if (reputationHandler.isAtWarWithSkeletons)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Skeletons: " + Color.RED + reputationHandler.reputationSkeletons + "(WAR)"));
-		}
-		
-		else if (reputationHandler.reputationSkeletons < 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Skeletons: " + Color.RED + reputationHandler.reputationSkeletons));
-		}
-		
-		else if (reputationHandler.reputationSkeletons >= 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Skeletons: " + Color.GREEN + reputationHandler.reputationSkeletons));
-		}
-		
-		if (reputationHandler.isAtWarWithZombies)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Zombies: " + Color.RED + reputationHandler.reputationZombies + "(WAR)"));
-		}
-		
-		else if (reputationHandler.reputationZombies < 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Zombies: " + Color.RED + reputationHandler.reputationZombies));
-		}
-		
-		else if (reputationHandler.reputationZombies >= 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Zombies: " + Color.GREEN + reputationHandler.reputationZombies));
-		}
-		
-		if (reputationHandler.isAtWarWithFriendlySpiderQueens)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Other Queens: " + Color.RED + reputationHandler.reputationFriendlySpiderQueens + "(WAR)"));
-		}
-		
-		else if (reputationHandler.reputationFriendlySpiderQueens < 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Other Queens: " + Color.RED + reputationHandler.reputationFriendlySpiderQueens));
-		}
-		
-		else if (reputationHandler.reputationFriendlySpiderQueens >= 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Other Queens: " + Color.GREEN + reputationHandler.reputationFriendlySpiderQueens));
-		}
-		
-		if (reputationHandler.isAtWarWithEvilSpiderQueen)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Evil Queen: " + Color.RED + reputationHandler.reputationEvilSpiderQueen + "(WAR)"));
-		}
-		
-		else if (reputationHandler.reputationEvilSpiderQueen < 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Evil Queen: " + Color.RED + reputationHandler.reputationEvilSpiderQueen));
-		}
-		
-		else if (reputationHandler.reputationEvilSpiderQueen >= 0)
-		{
-			player.addChatMessage(new ChatComponentText(Color.WHITE + "Evil Queen: " + Color.GREEN + reputationHandler.reputationEvilSpiderQueen));
-		}
-		
+
 		player.addChatMessage(new ChatComponentText(Color.WHITE + "-----------------------------"));
 	}
 }
