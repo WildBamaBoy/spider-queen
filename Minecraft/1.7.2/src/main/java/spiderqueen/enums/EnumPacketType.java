@@ -14,5 +14,8 @@ public enum EnumPacketType
 	GetInventory,
 	SetInventory,
 	SetEaten,
-	SetLevel;
+	SetLevel,
+	SetPlayerMotion,
+	SetDistance,
+	DestroySlinger;
 }

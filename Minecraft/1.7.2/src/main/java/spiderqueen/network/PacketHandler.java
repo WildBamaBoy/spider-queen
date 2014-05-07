@@ -15,9 +15,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import spiderqueen.core.SpiderQueen;
+import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.entity.EntityWebslinger;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
@@ -65,6 +67,18 @@ public final class PacketHandler extends AbstractPacketHandler
 				
 			case SetLevel:
 				handleSetLevel(packet.arguments, player);
+				break;
+				
+			case SetPlayerMotion:
+				handleSetPlayerMotion(packet.arguments, player);
+				break;
+			
+			case SetDistance:
+				handleSetDistance(packet.arguments, player);
+				break;
+				
+			case DestroySlinger:
+				handleDestroySlinger(packet.arguments, player);
 				break;
 				
 			default:
@@ -164,5 +178,56 @@ public final class PacketHandler extends AbstractPacketHandler
 			}
 			spider.level = level;
 		}
+	}
+	
+	private void handleSetPlayerMotion(Object[] arguments, EntityPlayer player)
+	{
+		final String playerName = (String)arguments[0];
+		final double motionX = (Double)arguments[1];
+		final double motionY = (Double)arguments[2];
+		final double motionZ = (Double)arguments[3];
+		
+		for (Object obj : player.worldObj.loadedEntityList)
+		{
+			if (obj instanceof EntityPlayer)
+			{
+				final EntityPlayer clientPlayer = (EntityPlayer)obj;
+				
+				if (clientPlayer.getCommandSenderName().equals(playerName))
+				{
+					clientPlayer.setVelocity(motionX, motionY, motionZ);
+				}
+			}
+		}
+	}
+	
+	private void handleSetDistance(Object[] arguments, EntityPlayer player)
+	{
+		final double distance = (Double)arguments[0];
+		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		
+		playerExtension.webEntity.distance = distance;
+	}
+	
+	private void handleDestroySlinger(Object[] arguments, EntityPlayer player)
+	{
+		final int slingerId = (Integer)arguments[0];
+		final double clientPosX = (Double)arguments[1];
+		final double clientPosY = (Double)arguments[2];
+		final double clientPosZ = (Double)arguments[3];
+
+		final EntityWebslinger webslinger = (EntityWebslinger) player.worldObj.getEntityByID(slingerId);
+		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		
+		playerExtension.webEntity.player = null;
+		playerExtension.webEntity = null;
+		
+		if (webslinger != null)
+		{
+			webslinger.setDead();
+		}
+		
+		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetPlayerMotion, 
+				player.getCommandSenderName(), player.motionX, player.motionY, player.motionZ));
 	}
 }

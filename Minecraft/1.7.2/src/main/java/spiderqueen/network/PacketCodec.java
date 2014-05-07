@@ -12,6 +12,7 @@ package spiderqueen.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import spiderqueen.core.SpiderQueen;
+import spiderqueen.core.util.ByteBufIO;
 import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
@@ -59,6 +60,24 @@ public final class PacketCodec extends AbstractPacketCodec
 				buffer.writeInt((Integer)packet.arguments[1]);
 				break;
 				
+			case SetPlayerMotion:
+				ByteBufIO.writeObject(buffer, packet.arguments[0].toString());
+				buffer.writeDouble((Double)packet.arguments[1]);
+				buffer.writeDouble((Double)packet.arguments[2]);
+				buffer.writeDouble((Double)packet.arguments[3]);
+				break;
+			
+			case SetDistance:
+				buffer.writeDouble((Double)packet.arguments[0]);
+				break;
+				
+			case DestroySlinger:
+				buffer.writeInt((Integer)packet.arguments[0]);
+				buffer.writeDouble((Double)packet.arguments[1]);
+				buffer.writeDouble((Double)packet.arguments[2]);
+				buffer.writeDouble((Double)packet.arguments[3]);
+				break;
+			
 			default:
 				break;
 			}
@@ -94,6 +113,24 @@ public final class PacketCodec extends AbstractPacketCodec
 			case SetLevel:
 				packet.arguments[0] = buffer.readInt();
 				packet.arguments[1] = buffer.readInt();
+				break;
+			
+			case SetPlayerMotion:
+				packet.arguments[0] = ByteBufIO.readObject(buffer);
+				packet.arguments[1] = buffer.readDouble();
+				packet.arguments[2] = buffer.readDouble();
+				packet.arguments[3] = buffer.readDouble();
+				break;
+			
+			case SetDistance:
+				packet.arguments[0] = buffer.readDouble();
+				break;
+				
+			case DestroySlinger:
+				packet.arguments[0] = buffer.readInt();
+				packet.arguments[1] = buffer.readDouble();
+				packet.arguments[2] = buffer.readDouble();
+				packet.arguments[3] = buffer.readDouble();
 				break;
 				
 			default:

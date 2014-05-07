@@ -1,5 +1,5 @@
 /*******************************************************************************
- * PlayerReputationHandler.java
+ * PlayerplayerExtension.java
  * Copyright (c) 2014 Radix-Shock Entertainment.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
@@ -17,16 +17,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import spiderqueen.core.util.CreatureReputationEntry;
+import spiderqueen.entity.EntityWebslinger;
 
 import com.radixshock.radixcore.logic.NBTHelper;
 
-public class PlayerReputationHandler implements IExtendedEntityProperties
+public class PlayerExtension implements IExtendedEntityProperties
 {
-	public static final String ID = "SpiderQueenReputationHandler";
+	public static final String ID = "SpiderQueenplayerExtension";
+	public EntityWebslinger webEntity;
 	private final EntityPlayer player;
 	private final List<CreatureReputationEntry> reputationEntries;
 
-	public PlayerReputationHandler(EntityPlayer player)
+	public PlayerExtension(EntityPlayer player)
 	{
 		this.player = player;
 		this.reputationEntries = CreatureReputationEntry.getListOfCleanEntries();
@@ -57,7 +59,7 @@ public class PlayerReputationHandler implements IExtendedEntityProperties
 
 	public static final void register(EntityPlayer player)
 	{
-		player.registerExtendedProperties(PlayerReputationHandler.ID, new PlayerReputationHandler(player));
+		player.registerExtendedProperties(PlayerExtension.ID, new PlayerExtension(player));
 	}
 	
 	public final List<CreatureReputationEntry> getReputationEntries()

@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -223,7 +224,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				final boolean doDropEgg = LogicHelper.getBooleanWithProbability(15);
 				final int dropAmount = LogicHelper.getNumberInRange(1, 2);
 				
-				entityDropItem(new ItemStack(SpiderQueen.getInstance().itemWeb, LogicHelper.getNumberInRange(0, 5), 0), 0);
+				entityDropItem(new ItemStack(Items.string, LogicHelper.getNumberInRange(0, 5), 0), 0);
 				
 				if (doDropEgg)
 				{

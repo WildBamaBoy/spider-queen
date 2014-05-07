@@ -22,7 +22,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.biome.BiomeGenBase;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
@@ -41,6 +40,7 @@ import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntitySpiderEgg;
 import spiderqueen.entity.EntityWeb;
+import spiderqueen.entity.EntityWebslinger;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.items.ItemCocoon;
@@ -50,10 +50,10 @@ import spiderqueen.items.ItemSpawnSpider;
 import spiderqueen.items.ItemSpiderEgg;
 import spiderqueen.items.ItemSpiderRod;
 import spiderqueen.items.ItemWeb;
+import spiderqueen.items.ItemWebslinger;
 import spiderqueen.network.PacketCodec;
 import spiderqueen.network.PacketHandler;
 
-import com.radixshock.radixcore.constant.Font;
 import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.core.ModLogger;
 import com.radixshock.radixcore.core.RadixCore;
@@ -226,6 +226,7 @@ public class SpiderQueen implements IEnforcedCore
 
 		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
+		itemWebslinger = new ItemWebslinger().setUnlocalizedName("webslinger");
 		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
 		itemSpiderEgg = new ItemSpiderEgg().setUnlocalizedName("spideregg");
 		itemBrain = new Item().setUnlocalizedName("brain").setTextureName("spiderqueen:Brain").setCreativeTab(tabSpiderQueen);
@@ -250,6 +251,7 @@ public class SpiderQueen implements IEnforcedCore
 
 		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
 		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
+		GameRegistry.registerItem(itemWebslinger, itemWebslinger.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpiderEgg, itemSpiderEgg.getUnlocalizedName());
 		GameRegistry.registerItem(itemBrain, itemBrain.getUnlocalizedName());
@@ -294,6 +296,13 @@ public class SpiderQueen implements IEnforcedCore
 		
 		GameRegistry.addRecipe(new ItemStack(itemWeb),
 				"SS ", "S  ", 'S', Items.string);
+		
+		GameRegistry.addRecipe(new ItemStack(itemWebslinger),
+				"TS ", 
+				"SS ",
+				"  S",
+				'S', Items.string,
+				'T', itemWeb);
 	}
 
 	@Override
@@ -317,6 +326,7 @@ public class SpiderQueen implements IEnforcedCore
 		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityOtherQueen.class, EntityOtherQueen.class.getSimpleName(), 6, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityWebslinger.class, EntityWebslinger.class.getSimpleName(), 7, this, 50, 2, true);
 	}
 
 	@Override

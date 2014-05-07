@@ -15,6 +15,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -58,7 +59,7 @@ public class ServerTickHandler
 		updateSpawnWeb();
 		updatePlayerEat();
 		updateReputation();
-		updateSpawnPlayers();
+		//updateSpawnPlayers();
 		updateSpawnWarParties();
 	}
 
@@ -76,20 +77,20 @@ public class ServerTickHandler
 			for (Object obj : worldServer.playerEntities)
 			{	
 				final EntityPlayer player = (EntityPlayer)obj;
-				final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-				modifyReputations(reputationHandler);
+				modifyReputations(playerExtension);
 				new CommandCheckReputation().processCommand(player, null);
-				applyReputationEffects(player, reputationHandler);
+				applyReputationEffects(player, playerExtension);
 			}
 
 			hasCalculatedReputationForDay = true;
 		}
 	}
 
-	private void applyReputationEffects(EntityPlayer player, PlayerReputationHandler reputationHandler) 
+	private void applyReputationEffects(EntityPlayer player, PlayerExtension playerExtension) 
 	{
-		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+		for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (entry.reputationValue == -2 && !entry.isAtWar)
 			{
@@ -123,11 +124,11 @@ public class ServerTickHandler
 		}
 	}
 
-	private void modifyReputations(PlayerReputationHandler reputationHandler) 
+	private void modifyReputations(PlayerExtension playerExtension) 
 	{
-		final EntityPlayer player = reputationHandler.getPlayer();
+		final EntityPlayer player = playerExtension.getPlayer();
 
-		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+		for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (entry.creaturesKilled >= 3)
 			{
@@ -188,7 +189,7 @@ public class ServerTickHandler
 				for (Object obj : worldServer.playerEntities)
 				{
 					EntityPlayer player = (EntityPlayer)obj;
-					player.inventory.addItemStackToInventory(new ItemStack(SpiderQueen.getInstance().itemWeb, LogicHelper.getNumberInRange(1, 3)));
+					player.inventory.addItemStackToInventory(new ItemStack(Items.string, LogicHelper.getNumberInRange(1, 3)));
 				}
 			}
 
@@ -207,7 +208,7 @@ public class ServerTickHandler
 
 				if (currentItemStack == null || (currentItemStack.stackSize < eatEntry.getCount() && currentItemStack.getItem() instanceof ItemFood))
 				{
-					eatEntry.getPlayer().inventory.addItemStackToInventory(new ItemStack(SpiderQueen.getInstance().itemWeb, LogicHelper.getNumberInRange(1, 3)));
+					eatEntry.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.string, LogicHelper.getNumberInRange(1, 3)));
 					playersNoLongerEating.add(eatEntry);
 				}
 			}
@@ -273,9 +274,9 @@ public class ServerTickHandler
 				for (Object obj : worldServer.playerEntities)
 				{
 					final EntityPlayer player = (EntityPlayer)obj;
-					final PlayerReputationHandler reputationHandler = (PlayerReputationHandler)player.getExtendedProperties(PlayerReputationHandler.ID);
+					final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
 
-					for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+					for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 					{
 						if (entry.isAtWar)
 						{

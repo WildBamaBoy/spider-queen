@@ -13,7 +13,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
-import spiderqueen.core.forge.PlayerReputationHandler;
+import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.core.util.CreatureReputationEntry;
 
 import com.radixshock.radixcore.constant.Font.Color;
@@ -48,13 +48,13 @@ public class CommandCheckReputation extends CommandBase
 	public void processCommand(ICommandSender sender, String[] arguments) 
 	{
 		final EntityPlayer player = (EntityPlayer)sender;
-		final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 		final StringBuilder SB = new StringBuilder();
 
 		player.addChatMessage(new ChatComponentText(Color.YELLOW + "Spider Queen Reputations"));
 		player.addChatMessage(new ChatComponentText(Color.WHITE + "-----------------------------"));
 
-		for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+		for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (entry.isAtWar)
 			{

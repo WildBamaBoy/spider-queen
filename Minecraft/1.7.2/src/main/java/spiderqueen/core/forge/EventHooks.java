@@ -99,11 +99,11 @@ public class EventHooks
 	public void onAttackEntity(AttackEntityEvent event)
 	{
 		final EntityPlayer player = event.entityPlayer;
-		final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
 		try
 		{
-			for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+			for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 			{
 				if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass())
 				{
@@ -145,9 +145,9 @@ public class EventHooks
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event)
 	{
-		if (event.entity instanceof EntityPlayer && event.entity.getExtendedProperties(PlayerReputationHandler.ID) == null)
+		if (event.entity instanceof EntityPlayer && event.entity.getExtendedProperties(PlayerExtension.ID) == null)
 		{
-			PlayerReputationHandler.register((EntityPlayer) event.entity);
+			PlayerExtension.register((EntityPlayer) event.entity);
 		}
 	}
 
@@ -169,9 +169,9 @@ public class EventHooks
 		if (event.source.getEntity() instanceof EntityPlayer)
 		{
 			final EntityPlayer player = (EntityPlayer) event.source.getEntity();
-			final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-			for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+			for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 			{
 				if (event.entityLiving.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{
@@ -194,7 +194,7 @@ public class EventHooks
 
 		if (!player.worldObj.isRemote)
 		{
-			final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 			final ItemStack currentItem = player.getCurrentEquippedItem();
 			CreatureReputationEntry entry = null;
 
@@ -202,17 +202,17 @@ public class EventHooks
 			{
 				if (event.target instanceof EntityCreeper && currentItem.getItem() == SpiderQueen.getInstance().itemHeart)
 				{
-					entry = reputationHandler.getReputationEntry(EntityCreeper.class);
+					entry = playerExtension.getReputationEntry(EntityCreeper.class);
 				}
 
 				if (event.target instanceof EntityZombie && currentItem.getItem() == SpiderQueen.getInstance().itemBrain)
 				{
-					entry = reputationHandler.getReputationEntry(EntityZombie.class);
+					entry = playerExtension.getReputationEntry(EntityZombie.class);
 				}
 
 				if (event.target instanceof EntitySkeleton && currentItem.getItem() == SpiderQueen.getInstance().itemSkull)
 				{
-					entry = reputationHandler.getReputationEntry(EntitySkeleton.class);
+					entry = playerExtension.getReputationEntry(EntitySkeleton.class);
 				}
 
 				if (entry != null)
@@ -231,9 +231,9 @@ public class EventHooks
 		{
 			final EntityLiving entity = (EntityLiving)event.entityLiving;
 			final EntityPlayer player = (EntityPlayer)event.target;
-			final PlayerReputationHandler reputationHandler = (PlayerReputationHandler) player.getExtendedProperties(PlayerReputationHandler.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-			for (CreatureReputationEntry entry : reputationHandler.getReputationEntries())
+			for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
 			{
 				if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{
