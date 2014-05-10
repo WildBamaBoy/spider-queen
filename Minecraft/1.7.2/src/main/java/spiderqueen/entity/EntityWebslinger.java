@@ -20,6 +20,7 @@ import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.enums.EnumPacketType;
 
+import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -217,10 +218,11 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		if (player != null & (inGround || entityStruck != null))
 		{
 			player.fallDistance = 0.0F;
-
+			player.motionY = player.motionY;
+			
 			if (player.isSneaking())
 			{
-				distance++;
+				distance += 4;
 			}
 
 			final Vec3 vectorSlinger = Vec3.createVectorHelper(posX, posY, posZ);
@@ -248,8 +250,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			{
 				final Vec3 nextPosition = Vec3.createVectorHelper(player.motionX * 1.2D + (posX - player.posX) / 2, player.motionY * 1.2D + (posY - player.posY) / 2, player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
 
-				double multiplier = 0.3D;// + (ww.squareDistanceTo(aa) - ddist)
-											// / (ddist);
+				double multiplier = 0.45D;
 
 				if (entityStruck != null)
 				{
