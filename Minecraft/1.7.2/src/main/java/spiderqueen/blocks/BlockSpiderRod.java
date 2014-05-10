@@ -33,7 +33,7 @@ public class BlockSpiderRod extends Block
 		return false;
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{
 		return null;
 	}
