@@ -171,7 +171,9 @@ public final class PacketHandler extends AbstractPacketHandler
 			{
 				spider.worldObj.spawnParticle("smoke", spider.posX + (rand.nextDouble() - 0.5D) * spider.width, spider.posY + 0.5D + rand.nextDouble() * 0.25D, spider.posZ + rand.nextDouble() - 0.5D * spider.width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 			}
+			
 			spider.level = level;
+			spider.setHitboxSize();
 		}
 	}
 

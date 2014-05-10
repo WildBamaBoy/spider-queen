@@ -81,8 +81,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		this(world);
 		this.owner = owner;
-		setSize(1.4F, 0.9F);
 		this.cocoonType = cocoonType;
+		setHitboxSize();
 	}
 
 	@Override
@@ -144,12 +144,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 		}
 
-		else
 		// Client-side only
+		else
 		{
 			syncInventory();
 			displayParticles();
 		}
+		
+		setHitboxSize();
 	}
 
 	@Override
@@ -310,7 +312,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 						worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 						killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
 						level++;
-
+						setHitboxSize();
+						
 						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
 						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
 					}
@@ -402,6 +405,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 
 		inventory.readInventoryFromNBT(nbt);
+		setHitboxSize();
 	}
 
 	@Override
@@ -425,12 +429,32 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 
 		level = additionalData.readInt();
+		setHitboxSize();
 	}
 
 	@Override
 	protected boolean canDespawn()
 	{
 		return false;
+	}
+
+	public void setHitboxSize()
+	{
+		switch (cocoonType.getSpiderSize())
+		{
+			case HUGE:
+				setSize(1.6F + (0.20F * level), 0.75F + (0.25F * level));
+			case NORMAL:
+				setSize(1.6F, 0.75F);
+			case RAISED:
+				setSize(1.6F, 0.95F);
+			case THIN:
+				setSize(0.8F, 0.5F);
+			case TINY:
+				setSize(0.8F, 0.375F);
+			default:
+				break;
+		}
 	}
 
 	private boolean isBesideClimbableBlock()
