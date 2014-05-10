@@ -4,6 +4,8 @@
 
 package spiderqueen.items;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +17,7 @@ import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.entity.EntityWebslinger;
 import spiderqueen.enums.EnumPacketType;
 
+import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.network.Packet;
 
 // Referenced classes of package net.minecraft.src:
@@ -95,5 +98,14 @@ public class ItemWebslinger extends Item
 	public void registerIcons(IIconRegister iconRegister)
 	{
 		itemIcon = iconRegister.registerIcon("spiderqueen:Webslinger");
+	}
+	
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
+	{
+		list.add("Swing from walls and ceilings.");
+		list.add("");
+		list.add("JUMP to reel in.");
+		list.add("SNEAK to drop down.");
 	}
 }
