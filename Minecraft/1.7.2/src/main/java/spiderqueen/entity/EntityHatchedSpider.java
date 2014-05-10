@@ -51,18 +51,18 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHatchedSpider extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	public String owner = "";
-	public EnumCocoonType cocoonType = EnumCocoonType.EMPTY;
-	public int level = 1;
-	public int killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
-	public int timeUntilWebshot = 0;
-	public int timeUntilTeleport = 0;
-	public int timeUntilExplosion = 0;
-	public boolean isHostile = false;
-	public Inventory inventory = new Inventory(this);
+	public String				owner				= "";
+	public EnumCocoonType		cocoonType			= EnumCocoonType.EMPTY;
+	public int					level				= 1;
+	public int					killsUntilLevelUp	= LogicHelper.getNumberInRange(5, 15);
+	public int					timeUntilWebshot	= 0;
+	public int					timeUntilTeleport	= 0;
+	public int					timeUntilExplosion	= 0;
+	public boolean				isHostile			= false;
+	public Inventory			inventory			= new Inventory(this);
 
-	public transient boolean hasSyncedInventory = false;
-	public Entity target;
+	public transient boolean	hasSyncedInventory	= false;
+	public Entity				target;
 
 	public EntityHatchedSpider(World world)
 	{
@@ -95,7 +95,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	protected void entityInit()
 	{
 		super.entityInit();
-		dataWatcher.addObject(16, new Byte((byte)0));
+		dataWatcher.addObject(16, new Byte((byte) 0));
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		super.onUpdate();
 
-		//Server-side only
+		// Server-side only
 		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
@@ -144,7 +144,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 		}
 
-		else //Client-side only
+		else
+		// Client-side only
 		{
 			syncInventory();
 			displayParticles();
@@ -176,13 +177,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			final double distanceToThisEntity = getDistanceToEntity(entity);
 
-			if (entity instanceof EntityFakePlayer && canEntityBeSeen(entity) && isHostile ||
-					entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile ||
-					entity instanceof EntityOtherQueen && isQueenValidTarget((EntityOtherQueen)entity) ||
-					entity instanceof EntityPlayer && isPlayerValidTarget((EntityPlayer)entity)
-					&& distanceToThisEntity < distanceToTarget)
+			if (entity instanceof EntityFakePlayer && canEntityBeSeen(entity) && isHostile || entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider) entity) && isHostile || entity instanceof EntityOtherQueen && isQueenValidTarget((EntityOtherQueen) entity) || entity instanceof EntityPlayer && isPlayerValidTarget((EntityPlayer) entity) && distanceToThisEntity < distanceToTarget)
 			{
-				closestValidTarget = (EntityLivingBase)entity;
+				closestValidTarget = (EntityLivingBase) entity;
 				distanceToTarget = distanceToThisEntity;
 			}
 		}
@@ -223,7 +220,6 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		playSound("mob.spider.step", 0.15F, 1.0F);
 	}
 
-
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
@@ -240,13 +236,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			{
 				final EntityHatchedSpider spider = (EntityHatchedSpider) attackingEntity;
 
-				if (spider.owner.equals(owner))
-				{
-					return super.attackEntityFrom(damageSource, damageAmount);
-				}
+				if (spider.owner.equals(owner)) { return super.attackEntityFrom(damageSource, damageAmount); }
 			}
 
-			final List<EntityHatchedSpider> nearbySpiders = (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
+			final List<EntityHatchedSpider> nearbySpiders = (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
 			target = attackingEntity;
 
 			for (final EntityHatchedSpider spider : nearbySpiders)
@@ -262,7 +255,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	/**
-	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
+	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden
+	 * by each mob to define their attack.
 	 */
 	@Override
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
@@ -289,12 +283,12 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			{
 				resetTimeUntilWebshot();
 				worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-				worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase)entityBeingAttacked, 2.6F));
+				worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
 			}
 
 			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 			{
-				final EntityLivingBase entityLiving = (EntityLivingBase)entityBeingAttacked;
+				final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
 				entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
 
 				if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
@@ -353,7 +347,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-	public void setInWeb() {}
+	public void setInWeb()
+	{
+	}
 
 	@Override
 	public EnumCreatureAttribute getCreatureAttribute()
@@ -372,7 +368,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (cocoonType == EnumCocoonType.VILLAGER && owner.equals(entityPlayer.getCommandSenderName()))
 		{
-			entityPlayer.openGui(SpiderQueen.getInstance(), Constants.ID_GUI_INVENTORY, worldObj, (int)posX, (int)posY, (int)posZ);
+			entityPlayer.openGui(SpiderQueen.getInstance(), Constants.ID_GUI_INVENTORY, worldObj, (int) posX, (int) posY, (int) posZ);
 		}
 
 		return true;
@@ -397,7 +393,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		try
 		{
-			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
+			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
 		}
 
 		catch (final IllegalAccessException e)
@@ -420,7 +416,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		try
 		{
-			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[additionalData.readInt()].get(EnumCocoonType.class);
+			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[additionalData.readInt()].get(EnumCocoonType.class);
 		}
 
 		catch (final IllegalAccessException e)
@@ -448,7 +444,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		if (setBoolean == true)
 		{
-			value = (byte)(value | 1);
+			value = (byte) (value | 1);
 		}
 		else
 		{
@@ -482,9 +478,12 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (cocoonType)
 		{
-		case EMPTY: return 0.5F;
-		case WOLF: return 1.0F;
-		default: return 2.5F + level / 2;
+			case EMPTY:
+				return 0.5F;
+			case WOLF:
+				return 1.0F;
+			default:
+				return 2.5F + level / 2;
 		}
 	}
 
@@ -572,13 +571,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (cocoonType == EnumCocoonType.ENDERMAN)
 		{
-			worldObj.spawnParticle("portal",
-					posX + (rand.nextDouble() - 0.5D) * width,
-					posY + 0.5D + rand.nextDouble() * 0.25D,
-					posZ + rand.nextDouble() - 0.5D * width,
-					(rand.nextDouble() - 0.5D) * 2.0D,
-					-rand.nextDouble(),
-					(rand.nextDouble() - 0.5D) * 2.0D);
+			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 0.5D + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
 	}
 
@@ -586,9 +579,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-		case 1: timeUntilTeleport = Time.MINUTE; break;
-		case 2: timeUntilTeleport = Time.SECOND * 30; break;
-		case 3: timeUntilTeleport = Time.SECOND * 10; break;
+			case 1:
+				timeUntilTeleport = Time.MINUTE;
+				break;
+			case 2:
+				timeUntilTeleport = Time.SECOND * 30;
+				break;
+			case 3:
+				timeUntilTeleport = Time.SECOND * 10;
+				break;
 		}
 	}
 
@@ -596,9 +595,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-		case 1: timeUntilExplosion = Time.MINUTE; break;
-		case 2: timeUntilExplosion = Time.SECOND * 30; break;
-		case 3: timeUntilExplosion = Time.SECOND * 10; break;
+			case 1:
+				timeUntilExplosion = Time.MINUTE;
+				break;
+			case 2:
+				timeUntilExplosion = Time.SECOND * 30;
+				break;
+			case 3:
+				timeUntilExplosion = Time.SECOND * 10;
+				break;
 		}
 	}
 
@@ -606,9 +611,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-		case 1: timeUntilWebshot = Time.SECOND * 5; break;
-		case 2: timeUntilWebshot = Time.SECOND * 3; break;
-		case 3: timeUntilWebshot = Time.SECOND * 1; break;
+			case 1:
+				timeUntilWebshot = Time.SECOND * 5;
+				break;
+			case 2:
+				timeUntilWebshot = Time.SECOND * 3;
+				break;
+			case 3:
+				timeUntilWebshot = Time.SECOND * 1;
+				break;
 		}
 	}
 

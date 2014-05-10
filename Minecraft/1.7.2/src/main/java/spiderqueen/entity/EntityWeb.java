@@ -32,14 +32,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityWeb extends Entity implements IProjectile
 {
-	private int ticksInAir;
-	private boolean isPoison;
-	private boolean doBlockSpawn;
+	private int			ticksInAir;
+	private boolean		isPoison;
+	private boolean		doBlockSpawn;
 
-	public EntityPlayer shooter;
-	public double accelerationX;
-	public double accelerationY;
-	public double accelerationZ;
+	public EntityPlayer	shooter;
+	public double		accelerationX;
+	public double		accelerationY;
+	public double		accelerationZ;
 
 	public EntityWeb(World worldObj)
 	{
@@ -84,15 +84,15 @@ public class EntityWeb extends Entity implements IProjectile
 
 		if (distanceXZ >= 1.0E-7D)
 		{
-			final float rotationYaw = (float)(Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI) - 90.0F;
-			final float rotationPitch = (float)-(Math.atan2(deltaY, distanceXZ) * 180.0D / Math.PI);
+			final float rotationYaw = (float) (Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI) - 90.0F;
+			final float rotationPitch = (float) -(Math.atan2(deltaY, distanceXZ) * 180.0D / Math.PI);
 			final double modX = deltaX / distanceXZ;
 			final double modY = deltaZ / distanceXZ;
-			
+
 			setLocationAndAngles(shooter.posX + modX, posY, shooter.posZ + modY, rotationYaw, rotationPitch);
 			yOffset = 0.0F;
-			
-			final float modDeltaY = (float)distanceXZ * 0.2F;
+
+			final float modDeltaY = (float) distanceXZ * 0.2F;
 			setThrowableHeading(deltaX, deltaY + modDeltaY, deltaZ, speed, 16F);
 		}
 	}
@@ -115,7 +115,7 @@ public class EntityWeb extends Entity implements IProjectile
 	@Override
 	public void onUpdate()
 	{
-		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.blockExists((int)posX, (int)posY, (int)posZ)))
+		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.blockExists((int) posX, (int) posY, (int) posZ)))
 		{
 			setDead();
 		}
@@ -141,13 +141,13 @@ public class EntityWeb extends Entity implements IProjectile
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		//No data to write.
+		// No data to write.
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		//No data to read.
+		// No data to read.
 	}
 
 	@Override
@@ -238,8 +238,8 @@ public class EntityWeb extends Entity implements IProjectile
 		motionZ = posZ;
 
 		final float distanceXZ = MathHelper.sqrt_double(posX * posX + posZ * posZ);
-		prevRotationYaw = rotationYaw = (float)(Math.atan2(posX, posZ) * 180.0D / Math.PI);
-		prevRotationPitch = rotationPitch = (float)(Math.atan2(posY, distanceXZ) * 180.0D / Math.PI);
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(posX, posZ) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(posY, distanceXZ) * 180.0D / Math.PI);
 	}
 
 	private void updateCollision()
@@ -261,7 +261,7 @@ public class EntityWeb extends Entity implements IProjectile
 
 		for (int counter = 0; counter < entitiesInAABB.size(); ++counter)
 		{
-			final Entity entityInList = (Entity)entitiesInAABB.get(counter);
+			final Entity entityInList = (Entity) entitiesInAABB.get(counter);
 
 			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(shooter) || ticksInAir >= 25))
 			{
@@ -300,9 +300,9 @@ public class EntityWeb extends Entity implements IProjectile
 		posY += motionY;
 		posZ += motionZ;
 		final float f1 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-		rotationYaw = (float)(Math.atan2(motionZ, motionX) * 180.0D / Math.PI) + 90.0F;
+		rotationYaw = (float) (Math.atan2(motionZ, motionX) * 180.0D / Math.PI) + 90.0F;
 
-		for (rotationPitch = (float)(Math.atan2(f1, motionY) * 180.0D / Math.PI) - 90.0F; rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F)
+		for (rotationPitch = (float) (Math.atan2(f1, motionY) * 180.0D / Math.PI) - 90.0F; rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F)
 		{
 			;
 		}
@@ -324,18 +324,14 @@ public class EntityWeb extends Entity implements IProjectile
 
 		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
 		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
-		float motionFactor =  0.95F;
+		float motionFactor = 0.95F;
 
 		if (isInWater())
 		{
 			for (int counter = 0; counter < 4; ++counter)
 			{
 				final float speedFactor = 0.25F;
-				worldObj.spawnParticle("bubble",
-						posX - motionX * speedFactor,
-						posY - motionY * speedFactor,
-						posZ - motionZ * speedFactor,
-						motionX, motionY, motionZ);
+				worldObj.spawnParticle("bubble", posX - motionX * speedFactor, posY - motionY * speedFactor, posZ - motionZ * speedFactor, motionX, motionY, motionZ);
 			}
 
 			motionFactor = 0.8F;
@@ -367,7 +363,7 @@ public class EntityWeb extends Entity implements IProjectile
 					if (entityHit.getHealth() > 0.4F)
 					{
 						final Random rand = new Random();
-						final int intHealth = (int)entityHit.getHealth();
+						final int intHealth = (int) entityHit.getHealth();
 						final int captureDifficulty = cocoonType.getEntityCatchDifficulty();
 
 						if (captureDifficulty != 0 && rand.nextInt(intHealth / captureDifficulty + 1) != 0)
@@ -390,37 +386,37 @@ public class EntityWeb extends Entity implements IProjectile
 				}
 			}
 
-			else //Hit a block.
+			else
+			// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int i = impactPoint.blockX;
 				int j = impactPoint.blockY;
 				int k = impactPoint.blockZ;
 
-				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround &&
-						blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
+				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround && blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
 				{
 					if (doBlockSpawn)
 					{
 						switch (impactPoint.sideHit)
 						{
-						case 0:
-							--j;
-							break;
-						case 1:
-							++j;
-							break;
-						case 2:
-							--k;
-							break;
-						case 3:
-							++k;
-							break;
-						case 4:
-							--i;
-							break;
-						case 5:
-							++i;
+							case 0:
+								--j;
+								break;
+							case 1:
+								++j;
+								break;
+							case 2:
+								--k;
+								break;
+							case 3:
+								++k;
+								break;
+							case 4:
+								--i;
+								break;
+							case 5:
+								++i;
 						}
 
 						if (worldObj.isAirBlock(i, j, k))
@@ -428,12 +424,24 @@ public class EntityWeb extends Entity implements IProjectile
 							int meta = 0;
 							switch (impactPoint.sideHit)
 							{
-							case 0: meta = 0; break;
-							case 1: meta = -1; break;
-							case 2: meta = 1; break;
-							case 3: meta = 4; break;
-							case 4: meta = 8; break;
-							case 5: meta = 2; break;
+								case 0:
+									meta = 0;
+									break;
+								case 1:
+									meta = -1;
+									break;
+								case 2:
+									meta = 1;
+									break;
+								case 3:
+									meta = 4;
+									break;
+								case 4:
+									meta = 8;
+									break;
+								case 5:
+									meta = 2;
+									break;
 							}
 
 							if (meta == -1)
@@ -462,9 +470,18 @@ public class EntityWeb extends Entity implements IProjectile
 	private void setToInactive()
 	{
 		final Random rand = new Random();
-		if (rand.nextInt(2) == 0) { motionX = motionX * -0.2F; }
-		if (rand.nextInt(2) == 0) { motionY = motionY * -0.2F; }
-		if (rand.nextInt(2) == 0) { motionZ = motionZ * -0.2F; }
+		if (rand.nextInt(2) == 0)
+		{
+			motionX = motionX * -0.2F;
+		}
+		if (rand.nextInt(2) == 0)
+		{
+			motionY = motionY * -0.2F;
+		}
+		if (rand.nextInt(2) == 0)
+		{
+			motionZ = motionZ * -0.2F;
+		}
 	}
 
 	private void setNoBlockSpawn()

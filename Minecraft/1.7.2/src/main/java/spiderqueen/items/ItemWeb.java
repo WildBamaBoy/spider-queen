@@ -23,7 +23,7 @@ import com.radixshock.radixcore.constant.Font.Color;
 
 public class ItemWeb extends Item
 {
-	private final boolean isPoison;
+	private final boolean	isPoison;
 
 	public ItemWeb(boolean isPoison)
 	{

@@ -32,10 +32,11 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	private EnumCocoonType cocoonType;
-	private boolean isEaten;
-	private int currentDamage;
-	private int timeSinceHit;
+	private EnumCocoonType	cocoonType;
+	private boolean			isEaten;
+	private int				currentDamage;
+	private int				timeSinceHit;
+
 	public EntityCocoon(World world)
 	{
 		super(world);
@@ -164,7 +165,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		try
 		{
-			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
+			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
 		}
 
 		catch (final IllegalAccessException e)
@@ -194,7 +195,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		try
 		{
-			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[buffer.readInt()].get(EnumCocoonType.class);
+			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[buffer.readInt()].get(EnumCocoonType.class);
 		}
 
 		catch (final IllegalAccessException e)
@@ -208,7 +209,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public boolean interact(EntityPlayer entityPlayer)
 	{
-		if(!isEaten)
+		if (!isEaten)
 		{
 			entityPlayer.heal(3);
 			entityPlayer.getFoodStats().addStats(4, 0.4f);

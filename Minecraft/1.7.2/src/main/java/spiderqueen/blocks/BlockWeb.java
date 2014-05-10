@@ -192,72 +192,72 @@ public class BlockWeb extends Block
 
 	private void checkForBed(World world, int x, int y, int z, int itr)
 	{
-		//FIXME
-		//		Block ww = SpiderQueen.getInstance().blockWeb;
-		//		Block ll = Blocks.log;
+		// FIXME
+		// Block ww = SpiderQueen.getInstance().blockWeb;
+		// Block ll = Blocks.log;
 		//
-		//		if(world.getBlock(x,y,z) != ww) { return; }
+		// if(world.getBlock(x,y,z) != ww) { return; }
 		//
-		//		int cc = 0;
-		//		int wc = 0;
+		// int cc = 0;
+		// int wc = 0;
 		//
-		//		if(world.getBlock(x-1,y,z-1) == ww) { cc++; }
-		//		if(world.getBlock(x-1,y,z) == ww) { cc++; }
-		//		if(world.getBlock(x-1,y,z+1) == ww) { cc++; }
-		//		if(world.getBlock(x,y,z-1) == ww) { cc++; }
-		//		if(world.getBlock(x,y,z) == ww) { cc++; }
-		//		if(world.getBlock(x,y,z+1) == ww) { cc++; }
-		//		if(world.getBlock(x+1,y,z-1) == ww) { cc++; }
-		//		if(world.getBlock(x+1,y,z) == ww) { cc++; }
-		//		if(world.getBlock(x+1,y,z+1) == ww) { cc++; }
+		// if(world.getBlock(x-1,y,z-1) == ww) { cc++; }
+		// if(world.getBlock(x-1,y,z) == ww) { cc++; }
+		// if(world.getBlock(x-1,y,z+1) == ww) { cc++; }
+		// if(world.getBlock(x,y,z-1) == ww) { cc++; }
+		// if(world.getBlock(x,y,z) == ww) { cc++; }
+		// if(world.getBlock(x,y,z+1) == ww) { cc++; }
+		// if(world.getBlock(x+1,y,z-1) == ww) { cc++; }
+		// if(world.getBlock(x+1,y,z) == ww) { cc++; }
+		// if(world.getBlock(x+1,y,z+1) == ww) { cc++; }
 		//
-		//		if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x-2,y,z-1) == ll) { wc++; }
-		//		if(world.getBlock(x-2,y,z) == ll) { wc++; }
-		//		if(world.getBlock(x-2,y,z+1) == ll) { wc++; }
-		//		if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z-1) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z+1) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
-		//		if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x-1,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x+1,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
-		//		if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
-		//		if(world.getBlock(x-1,y,z+2) == ll) { wc++; }
-		//		if(world.getBlock(x,y,z+2) == ll) { wc++; }
-		//		if(world.getBlock(x+1,y,z+2) == ll) { wc++; }
-		//		if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z-1) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z+1) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z-1) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z+1) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x-1,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x+1,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
+		// if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x-1,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x+1,y,z+2) == ll) { wc++; }
+		// if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
 		//
-		//		if(cc == 9 & wc == 20)
-		//		{
-		//			world.setBlock(x-1,y,z-1,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x-1,y,z,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x-1,y,z+1,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x,y,z-1,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x,y,z,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x,y,z+1,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x+1,y,z-1,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x+1,y,z,SpiderQueen.getInstance().blockWebBed);
-		//			world.setBlock(x+1,y,z+1,SpiderQueen.getInstance().blockWebBed);
-		//		}
-		//		else
-		//		{
-		//			if (itr < 3)
-		//			{
-		//				checkForBed(world,x-1,y,z-1,itr+1);
-		//				checkForBed(world,x-1,y,z,itr+1);
-		//				checkForBed(world,x-1,y,z+1,itr+1);
-		//				checkForBed(world,x,y,z-1,itr+1);
-		//				checkForBed(world,x,y,z+1,itr+1);
-		//				checkForBed(world,x+1,y,z-1,itr+1);
-		//				checkForBed(world,x+1,y,z,itr+1);
-		//				checkForBed(world,x+1,y,z+1,itr+1);
-		//			}
-		//		}
+		// if(cc == 9 & wc == 20)
+		// {
+		// world.setBlock(x-1,y,z-1,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x-1,y,z,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x-1,y,z+1,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x,y,z-1,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x,y,z,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x,y,z+1,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x+1,y,z-1,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x+1,y,z,SpiderQueen.getInstance().blockWebBed);
+		// world.setBlock(x+1,y,z+1,SpiderQueen.getInstance().blockWebBed);
+		// }
+		// else
+		// {
+		// if (itr < 3)
+		// {
+		// checkForBed(world,x-1,y,z-1,itr+1);
+		// checkForBed(world,x-1,y,z,itr+1);
+		// checkForBed(world,x-1,y,z+1,itr+1);
+		// checkForBed(world,x,y,z-1,itr+1);
+		// checkForBed(world,x,y,z+1,itr+1);
+		// checkForBed(world,x+1,y,z-1,itr+1);
+		// checkForBed(world,x+1,y,z,itr+1);
+		// checkForBed(world,x+1,y,z+1,itr+1);
+		// }
+		// }
 	}
 
 	private boolean canBePlacedOn(Block block)

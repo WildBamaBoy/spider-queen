@@ -48,13 +48,13 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityOtherQueen extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	public Inventory inventory = new Inventory(this);
-	public String identifier;
-	public Entity target;
-	public int friendlySkinIndex;
-	public boolean isHostile;
+	public Inventory			inventory			= new Inventory(this);
+	public String				identifier;
+	public Entity				target;
+	public int					friendlySkinIndex;
+	public boolean				isHostile;
 
-	public transient boolean hasSyncedInventory = false;
+	public transient boolean	hasSyncedInventory	= false;
 
 	public EntityOtherQueen(World world)
 	{
@@ -82,7 +82,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	protected void entityInit()
 	{
 		super.entityInit();
-		dataWatcher.addObject(16, new Byte((byte)0));
+		dataWatcher.addObject(16, new Byte((byte) 0));
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	{
 		super.onUpdate();
 
-		//Server-side only
+		// Server-side only
 		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
@@ -102,7 +102,8 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			}
 		}
 
-		else //Client-side only
+		else
+		// Client-side only
 		{
 			syncInventory();
 		}
@@ -127,13 +128,9 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		{
 			final double distanceToThisEntity = getDistanceToEntity(entity);
 
-			if (entity instanceof EntityFakePlayer && canEntityBeSeen(entity) && isHostile ||
-					entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile ||
-					entity instanceof EntityOtherQueen && isQueenValidTarget((EntityOtherQueen)entity) ||
-					entity instanceof EntityPlayer && isPlayerValidTarget((EntityPlayer)entity)
-					&& distanceToThisEntity < distanceToTarget)
+			if (entity instanceof EntityFakePlayer && canEntityBeSeen(entity) && isHostile || entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider) entity) && isHostile || entity instanceof EntityOtherQueen && isQueenValidTarget((EntityOtherQueen) entity) || entity instanceof EntityPlayer && isPlayerValidTarget((EntityPlayer) entity) && distanceToThisEntity < distanceToTarget)
 			{
-				closestValidTarget = (EntityLivingBase)entity;
+				closestValidTarget = (EntityLivingBase) entity;
 				distanceToTarget = distanceToThisEntity;
 				alertSpidersOfTarget();
 			}
@@ -182,10 +179,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			{
 				final EntityHatchedSpider spider = (EntityHatchedSpider) attackingEntity;
 
-				if (spider.owner.equals(identifier))
-				{
-					return super.attackEntityFrom(damageSource, damageAmount);
-				}
+				if (spider.owner.equals(identifier)) { return super.attackEntityFrom(damageSource, damageAmount); }
 			}
 
 			target = attackingEntity;
@@ -221,13 +215,13 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			{
 				if (entityBeingAttacked instanceof EntityPlayer)
 				{
-					final EntityPlayer player = (EntityPlayer)entityBeingAttacked;
+					final EntityPlayer player = (EntityPlayer) entityBeingAttacked;
 					player.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
 				}
 
 				else
 				{
-					final EntityLivingBase entityLiving = (EntityLivingBase)entityBeingAttacked;
+					final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
 					entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
 
 					if (entityLiving.getHealth() <= 0.0F)
@@ -257,6 +251,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 
 		inventory.dropAllItems();
 	}
+
 	@Override
 	public boolean isOnLadder()
 	{
@@ -264,7 +259,9 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void setInWeb() {}
+	public void setInWeb()
+	{
+	}
 
 	@Override
 	public EnumCreatureAttribute getCreatureAttribute()
@@ -310,7 +307,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	{
 		for (int i = 0; i < LogicHelper.getNumberInRange(1, 16); i++)
 		{
-			final boolean spawnBoomSpider = false; //LogicHelper.getBooleanWithProbability(20);
+			final boolean spawnBoomSpider = false; // LogicHelper.getBooleanWithProbability(20);
 			final boolean spawnPackSpider = LogicHelper.getBooleanWithProbability(30);
 			final boolean spawnSlingerSpider = LogicHelper.getBooleanWithProbability(20);
 			final boolean spawnNovaSpider = LogicHelper.getBooleanWithProbability(25);
@@ -328,7 +325,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			else if (spawnPackSpider)
 			{
 				spiderToSpawn = new EntityHatchedSpider(worldObj, identifier, EnumCocoonType.VILLAGER);
-				//TODO fillSpiderInventory(spiderToSpawn);
+				// TODO fillSpiderInventory(spiderToSpawn);
 			}
 
 			else if (spawnSlingerSpider)
@@ -382,7 +379,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 
 		if (setBoolean == true)
 		{
-			value = (byte)(value | 1);
+			value = (byte) (value | 1);
 		}
 		else
 		{
@@ -394,7 +391,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 
 	private void alertSpidersOfTarget()
 	{
-		final List<EntityHatchedSpider> spidersAroundMe = (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
+		final List<EntityHatchedSpider> spidersAroundMe = (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
 
 		for (final EntityHatchedSpider spider : spidersAroundMe)
 		{

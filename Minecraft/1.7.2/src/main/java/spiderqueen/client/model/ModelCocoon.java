@@ -18,30 +18,30 @@ import spiderqueen.enums.EnumCocoonType;
 
 public class ModelCocoon extends ModelBase
 {
-	private final ModelRenderer modelWrappedHead;
-	private final ModelRenderer modelWrappedBody;
-	private final ModelRenderer modelWrappedBodyTall;
-	private final ModelRenderer modelVisibleFlatHead;
+	private final ModelRenderer	modelWrappedHead;
+	private final ModelRenderer	modelWrappedBody;
+	private final ModelRenderer	modelWrappedBodyTall;
+	private final ModelRenderer	modelVisibleFlatHead;
 
-	private final ModelRenderer modelSheepFlatHead;
+	private final ModelRenderer	modelSheepFlatHead;
 
-	private final ModelRenderer modelWolfHead;
-	private final ModelRenderer modelWolfEarLeft;
-	private final ModelRenderer modelWolfEarRight;
-	private final ModelRenderer modelWolfNose;
+	private final ModelRenderer	modelWolfHead;
+	private final ModelRenderer	modelWolfEarLeft;
+	private final ModelRenderer	modelWolfEarRight;
+	private final ModelRenderer	modelWolfNose;
 
-	private final ModelRenderer modelChickenBeak;
-	private final ModelRenderer modelChickenHead;
+	private final ModelRenderer	modelChickenBeak;
+	private final ModelRenderer	modelChickenHead;
 
-	private final ModelRenderer modelEndermanHead;
+	private final ModelRenderer	modelEndermanHead;
 
-	private final ModelRenderer modelVillagerHead;
-	private final ModelRenderer modelVillagerNose;
+	private final ModelRenderer	modelVillagerHead;
+	private final ModelRenderer	modelVillagerNose;
 
-	private final ModelRenderer modelHorseHeadStart;
-	private final ModelRenderer modelHorseMuzzleUp;
-	private final ModelRenderer modelHorseMuzzleDown;
-	private final ModelRenderer modelHorseWeb;
+	private final ModelRenderer	modelHorseHeadStart;
+	private final ModelRenderer	modelHorseMuzzleUp;
+	private final ModelRenderer	modelHorseMuzzleDown;
+	private final ModelRenderer	modelHorseWeb;
 
 	public ModelCocoon()
 	{
@@ -127,7 +127,7 @@ public class ModelCocoon extends ModelBase
 	@Override
 	public void render(Entity entity, float posX, float posY, float posZ, float rotationYaw, float rotationPitch, float partialTickTime)
 	{
-		final EntityCocoon entityCocoon = (EntityCocoon)entity;
+		final EntityCocoon entityCocoon = (EntityCocoon) entity;
 		final EnumCocoonType cocoonType = entityCocoon.getCocoonType();
 		final EnumCocoonSize cocoonSize = cocoonType.getCocoonSize();
 

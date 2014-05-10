@@ -23,10 +23,10 @@ import com.radixshock.radixcore.logic.NBTHelper;
 
 public class PlayerExtension implements IExtendedEntityProperties
 {
-	public static final String ID = "SpiderQueenplayerExtension";
-	public EntityWebslinger webEntity;
-	private final EntityPlayer player;
-	private final List<CreatureReputationEntry> reputationEntries;
+	public static final String					ID	= "SpiderQueenplayerExtension";
+	public EntityWebslinger						webEntity;
+	private final EntityPlayer					player;
+	private final List<CreatureReputationEntry>	reputationEntries;
 
 	public PlayerExtension(EntityPlayer player)
 	{
@@ -71,10 +71,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 	{
 		for (final CreatureReputationEntry entry : reputationEntries)
 		{
-			if (entry.getCreatureClass().toString().equals(clazz.toString()))
-			{
-				return entry;
-			}
+			if (entry.getCreatureClass().toString().equals(clazz.toString())) { return entry; }
 		}
 
 		return null;

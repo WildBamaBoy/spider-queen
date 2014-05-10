@@ -27,28 +27,20 @@ import com.radixshock.radixcore.logic.LogicHelper;
 
 public enum EnumCocoonType
 {
-	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL, EnumSpiderSize.RAISED),
-	CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL, EnumSpiderSize.NORMAL),
-	ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL, EnumSpiderSize.HUGE),
-	SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL, EnumSpiderSize.THIN),
-	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
-	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
-	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
-	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY);
+	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL, EnumSpiderSize.RAISED), CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL, EnumSpiderSize.NORMAL), ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL, EnumSpiderSize.HUGE), SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL, EnumSpiderSize.THIN), COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL,
+			EnumSpiderSize.NORMAL), VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY);
 
-	private Class entityClass;
-	private Item itemCocoon;
+	private Class			entityClass;
+	private Item			itemCocoon;
 
-	/** How difficult it is to catch this entity. Lower factor is more difficult, unless 0. */
-	private int entityCatchDifficulty;
-	private String deathSound;
-	private EnumCocoonSize cocoonSize;
-	private EnumSpiderSize spiderSize;
+	/**
+	 * How difficult it is to catch this entity. Lower factor is more difficult,
+	 * unless 0.
+	 */
+	private int				entityCatchDifficulty;
+	private String			deathSound;
+	private EnumCocoonSize	cocoonSize;
+	private EnumSpiderSize	spiderSize;
 
 	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound, EnumCocoonSize cocoonSize, EnumSpiderSize spiderSize)
 	{
@@ -103,10 +95,7 @@ public enum EnumCocoonType
 	{
 		for (final EnumCocoonType type : EnumCocoonType.values())
 		{
-			if (type.getEntityClass() == entityClass)
-			{
-				return type;
-			}
+			if (type.getEntityClass() == entityClass) { return type; }
 		}
 
 		return null;

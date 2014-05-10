@@ -54,7 +54,8 @@ public class EventHooks
 	/**
 	 * Ticks the client tick handler.
 	 * 
-	 * @param 	event	The event.
+	 * @param event
+	 *            The event.
 	 */
 	@SubscribeEvent
 	public void clientTickEventHandler(ClientTickEvent event)
@@ -66,7 +67,8 @@ public class EventHooks
 	/**
 	 * Ticks the server tick handler.
 	 * 
-	 * @param 	event	The event.
+	 * @param event
+	 *            The event.
 	 */
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
@@ -78,7 +80,8 @@ public class EventHooks
 	/**
 	 * Fired when the player right-clicks something.
 	 * 
-	 * @param 	event	An instance of the PlayerInteractEvent.
+	 * @param event
+	 *            An instance of the PlayerInteractEvent.
 	 */
 	@SubscribeEvent
 	public void playerInteractEventHandler(PlayerInteractEvent event)
@@ -111,14 +114,14 @@ public class EventHooks
 			{
 				if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass())
 				{
-					for (final EntityLiving entity : (List<EntityLiving>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
+					for (final EntityLiving entity : (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
 					{
 						entity.setAttackTarget((EntityLivingBase) event.target);
 					}
 				}
 			}
 
-			for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
+			for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
 			{
 				if (spider.owner != null)
 				{
@@ -126,7 +129,7 @@ public class EventHooks
 					{
 						if (event.target instanceof EntityHatchedSpider)
 						{
-							final EntityHatchedSpider targetSpider = (EntityHatchedSpider)event.target;
+							final EntityHatchedSpider targetSpider = (EntityHatchedSpider) event.target;
 
 							if (targetSpider.owner.equals(player.getCommandSenderName()))
 							{
@@ -162,7 +165,7 @@ public class EventHooks
 		{
 			if (event.entity instanceof EntityMob)
 			{
-				doAddAttackTasks((EntityCreature)event.entity);
+				doAddAttackTasks((EntityCreature) event.entity);
 			}
 		}
 	}
@@ -233,8 +236,8 @@ public class EventHooks
 	{
 		if (event.target instanceof EntityPlayer)
 		{
-			final EntityLiving entity = (EntityLiving)event.entityLiving;
-			final EntityPlayer player = (EntityPlayer)event.target;
+			final EntityLiving entity = (EntityLiving) event.entityLiving;
+			final EntityPlayer player = (EntityPlayer) event.target;
 			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
 			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())

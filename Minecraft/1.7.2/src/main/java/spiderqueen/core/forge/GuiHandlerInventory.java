@@ -28,7 +28,8 @@ public class GuiHandlerInventory implements IGuiHandler
 	/**
 	 * Constructor
 	 * 
-	 * @param 	entityId	The ID of the entity whose inventory is being edited.
+	 * @param entityId
+	 *            The ID of the entity whose inventory is being edited.
 	 */
 	public GuiHandlerInventory()
 	{
@@ -37,7 +38,7 @@ public class GuiHandlerInventory implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ)
 	{
-		final EntityHatchedSpider entity = (EntityHatchedSpider)LogicHelper.getEntityOfTypeAtXYZ(EntityHatchedSpider.class, world, posX, posY, posZ);
+		final EntityHatchedSpider entity = (EntityHatchedSpider) LogicHelper.getEntityOfTypeAtXYZ(EntityHatchedSpider.class, world, posX, posY, posZ);
 
 		if (guiId == Constants.ID_GUI_INVENTORY)
 		{
@@ -53,7 +54,7 @@ public class GuiHandlerInventory implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ)
 	{
-		final EntityHatchedSpider entity = (EntityHatchedSpider)LogicHelper.getEntityOfTypeAtXYZ(EntityHatchedSpider.class, world, posX, posY, posZ);
+		final EntityHatchedSpider entity = (EntityHatchedSpider) LogicHelper.getEntityOfTypeAtXYZ(EntityHatchedSpider.class, world, posX, posY, posZ);
 
 		if (guiId == Constants.ID_GUI_INVENTORY)
 		{

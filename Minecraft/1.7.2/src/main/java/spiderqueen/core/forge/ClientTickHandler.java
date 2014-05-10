@@ -28,7 +28,7 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
  */
 public class ClientTickHandler
 {
-	private boolean hasCompletedMainMenuTick;
+	private boolean	hasCompletedMainMenuTick;
 
 	/**
 	 * Runs this tick handler if appropriate.
@@ -57,7 +57,8 @@ public class ClientTickHandler
 	/**
 	 * Fires once per tick when a GUI screen is open.
 	 * 
-	 * @param 	guiScreen	The GUI that is currently open.
+	 * @param guiScreen
+	 *            The GUI that is currently open.
 	 */
 	public void onTickInGui(GuiScreen guiScreen)
 	{
@@ -65,7 +66,7 @@ public class ClientTickHandler
 		{
 			if (LogicHelper.getBooleanWithProbability(10) && !hasCompletedMainMenuTick)
 			{
-				ObfuscationReflectionHelper.setPrivateValue(GuiMainMenu.class, (GuiMainMenu)guiScreen, "Does whatever a spider queen does!", 4);
+				ObfuscationReflectionHelper.setPrivateValue(GuiMainMenu.class, (GuiMainMenu) guiScreen, "Does whatever a spider queen does!", 4);
 			}
 
 			hasCompletedMainMenuTick = true;
@@ -83,10 +84,10 @@ public class ClientTickHandler
 
 		for (final Object obj : world.playerEntities)
 		{
-			final EntityPlayer player = (EntityPlayer)obj;
-			final int x = (int)player.posX;
-			final int y = (int)player.posY;
-			final int z = (int)player.posZ;
+			final EntityPlayer player = (EntityPlayer) obj;
+			final int x = (int) player.posX;
+			final int y = (int) player.posY;
+			final int z = (int) player.posZ;
 
 			if (world.getBlock(x, y + 1, z) == SpiderQueen.getInstance().blockWebSide)
 			{
@@ -136,7 +137,7 @@ public class ClientTickHandler
 
 		for (final Object obj : world.playerEntities)
 		{
-			final EntityPlayer player = (EntityPlayer)obj;
+			final EntityPlayer player = (EntityPlayer) obj;
 			if (LogicHelper.isBlockNearby(player, Blocks.web, 2))
 			{
 				ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);

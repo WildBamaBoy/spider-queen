@@ -81,65 +81,65 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="spiderqueen", name="Spider Queen", version = Constants.VERSION, dependencies="required-after:radixcore")
+@Mod(modid = "spiderqueen", name = "Spider Queen", version = Constants.VERSION, dependencies = "required-after:radixcore")
 public class SpiderQueen implements IEnforcedCore
 {
 	@Instance("spiderqueen")
-	private static SpiderQueen instance;
-	@SidedProxy(clientSide="spiderqueen.core.forge.ClientProxy", serverSide="spiderqueen.core.forge.CommonProxy")
-	public static CommonProxy proxy;
+	private static SpiderQueen		instance;
+	@SidedProxy(clientSide = "spiderqueen.core.forge.ClientProxy", serverSide = "spiderqueen.core.forge.CommonProxy")
+	public static CommonProxy		proxy;
 
-	public static ClientTickHandler clientTickHandler;
-	public static ServerTickHandler serverTickHandler;
-	public static PacketPipeline packetPipeline;
-	private static PacketCodec packetCodec;
-	private static PacketHandler packetHandler;
+	public static ClientTickHandler	clientTickHandler;
+	public static ServerTickHandler	serverTickHandler;
+	public static PacketPipeline	packetPipeline;
+	private static PacketCodec		packetCodec;
+	private static PacketHandler	packetHandler;
 
-	private ModLogger logger;
-	public ModPropertiesManager modPropertiesManager;
-	public CreativeTabs tabSpiderQueen;
+	private ModLogger				logger;
+	public ModPropertiesManager		modPropertiesManager;
+	public CreativeTabs				tabSpiderQueen;
 
-	//Items
-	public Item itemWeb;
-	public Item itemPoisonWeb;
-	public Item itemWebslinger;
-	public Item itemSpiderRod;
-	public Item itemSpiderEgg;
-	public Item itemCocoon;
-	public Item itemCocoonChicken;
-	public Item itemCocoonPig;
-	public Item itemCocoonSheep;
-	public Item itemCocoonCreeper;
-	public Item itemCocoonZombie;
-	public Item itemCocoonSkeleton;
-	public Item itemCocoonCow;
-	public Item itemCocoonTestificate;
-	public Item itemCocoonHorse;
-	public Item itemCocoonEnderman;
-	public Item itemCocoonHuman;
-	public Item itemCocoonWolf;
+	// Items
+	public Item						itemWeb;
+	public Item						itemPoisonWeb;
+	public Item						itemWebslinger;
+	public Item						itemSpiderRod;
+	public Item						itemSpiderEgg;
+	public Item						itemCocoon;
+	public Item						itemCocoonChicken;
+	public Item						itemCocoonPig;
+	public Item						itemCocoonSheep;
+	public Item						itemCocoonCreeper;
+	public Item						itemCocoonZombie;
+	public Item						itemCocoonSkeleton;
+	public Item						itemCocoonCow;
+	public Item						itemCocoonTestificate;
+	public Item						itemCocoonHorse;
+	public Item						itemCocoonEnderman;
+	public Item						itemCocoonHuman;
+	public Item						itemCocoonWolf;
 
-	public Item itemSpawnPlayer;
-	public Item itemSpawnSpider;
-	public Item itemSpawnEnemyQueen;
+	public Item						itemSpawnPlayer;
+	public Item						itemSpawnSpider;
+	public Item						itemSpawnEnemyQueen;
 
-	public Item itemBrain;
-	public Item itemSkull;
-	public Item itemHeart;
+	public Item						itemBrain;
+	public Item						itemSkull;
+	public Item						itemHeart;
 
-	//Blocks
-	public Block blockWebFull;
-	public Block blockWebGround;
-	public Block blockWebSide;
-	public Block blockPoisonWeb;
-	public Block blockWebBed;
-	public Block blockSpiderRod;
+	// Blocks
+	public Block					blockWebFull;
+	public Block					blockWebGround;
+	public Block					blockWebSide;
+	public Block					blockPoisonWeb;
+	public Block					blockWebBed;
+	public Block					blockSpiderRod;
 
-	public List<String> fakePlayerNames = new ArrayList<String>();
-	public boolean doDisplayPlayerSkins = true;
-	public boolean inDebugMode = false;
-	public boolean debugDoRapidSpiderGrowth = false;
-	public boolean ks = false;
+	public List<String>				fakePlayerNames				= new ArrayList<String>();
+	public boolean					doDisplayPlayerSkins		= true;
+	public boolean					inDebugMode					= false;
+	public boolean					debugDoRapidSpiderGrowth	= false;
+	public boolean					ks							= false;
 
 	public SpiderQueen()
 	{
@@ -153,7 +153,7 @@ public class SpiderQueen implements IEnforcedCore
 
 	public ModPropertiesList getModProperties()
 	{
-		return (ModPropertiesList)modPropertiesManager.modPropertiesInstance;
+		return (ModPropertiesList) modPropertiesManager.modPropertiesInstance;
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeItems()
 	{
-		//Creative tab
+		// Creative tab
 		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
 		GameRegistry.registerItem(itemCocoonEnderman, itemCocoonEnderman.getUnlocalizedName());
 		tabSpiderQueen = new CreativeTabs("tabSpiderQueen")
@@ -273,44 +273,26 @@ public class SpiderQueen implements IEnforcedCore
 		blockWebGround = new BlockWebGround();
 		blockWebSide = new BlockWeb();
 		blockWebFull = new BlockWebFull();
-		//blockPoisonWeb = new BlockPoisonWeb();
+		// blockPoisonWeb = new BlockPoisonWeb();
 		blockSpiderRod = new BlockSpiderRod();
 
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
 		GameRegistry.registerBlock(blockWebFull, "Web Full");
-		//GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
+		// GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
 	}
 
 	@Override
 	public void initializeRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod),
-				"GTG",
-				" S ",
-				" S ",
-				'G', Blocks.glass,
-				'S', Items.stick,
-				'T', Blocks.torch);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'T', Blocks.torch);
 
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod),
-				"GTG",
-				" S ",
-				" S ",
-				'G', Blocks.glass_pane,
-				'S', Items.stick,
-				'T', Blocks.torch);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'T', Blocks.torch);
 
-		GameRegistry.addRecipe(new ItemStack(itemWeb),
-				"SS ", "S  ", 'S', Items.string);
+		GameRegistry.addRecipe(new ItemStack(itemWeb), "SS ", "S  ", 'S', Items.string);
 
-		GameRegistry.addRecipe(new ItemStack(itemWebslinger),
-				"TS ",
-				"SS ",
-				"  S",
-				'S', Items.string,
-				'T', itemWeb);
+		GameRegistry.addRecipe(new ItemStack(itemWebslinger), "TS ", "SS ", "  S", 'S', Items.string, 'T', itemWeb);
 	}
 
 	@Override
@@ -389,7 +371,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public String getRedirectURL()
 	{
-		return "{REDIR}"; //TODO
+		return "{REDIR}"; // TODO
 	}
 
 	@Override
@@ -527,9 +509,7 @@ public class SpiderQueen implements IEnforcedCore
 
 	public static boolean isValidSpawnBiome(BiomeGenBase biome)
 	{
-		return 	biome == BiomeGenBase.desert || biome == BiomeGenBase.birchForest || biome == BiomeGenBase.coldTaiga || biome == BiomeGenBase.extremeHills ||
-				biome == BiomeGenBase.forest || biome == BiomeGenBase.taiga || biome == BiomeGenBase.swampland || biome == BiomeGenBase.plains || biome == BiomeGenBase.jungle ||
-				biome == BiomeGenBase.megaTaiga|| biome == BiomeGenBase.savanna || biome == BiomeGenBase.roofedForest || biome == BiomeGenBase.river;
+		return biome == BiomeGenBase.desert || biome == BiomeGenBase.birchForest || biome == BiomeGenBase.coldTaiga || biome == BiomeGenBase.extremeHills || biome == BiomeGenBase.forest || biome == BiomeGenBase.taiga || biome == BiomeGenBase.swampland || biome == BiomeGenBase.plains || biome == BiomeGenBase.jungle || biome == BiomeGenBase.megaTaiga || biome == BiomeGenBase.savanna || biome == BiomeGenBase.roofedForest || biome == BiomeGenBase.river;
 	}
 
 	public void KS()

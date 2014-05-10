@@ -100,10 +100,18 @@ public class RenderHatchedSpider extends RenderLiving
 
 			switch (hatchedSpider.level)
 			{
-			case 1: scale = 1.0D; break;
-			case 2: scale = 1.3D; break;
-			case 3: scale = 1.5D; break;
-			default: scale = 1.3D; break;
+				case 1:
+					scale = 1.0D;
+					break;
+				case 2:
+					scale = 1.3D;
+					break;
+				case 3:
+					scale = 1.5D;
+					break;
+				default:
+					scale = 1.3D;
+					break;
 			}
 
 			GL11.glScaled(scale, scale, scale);

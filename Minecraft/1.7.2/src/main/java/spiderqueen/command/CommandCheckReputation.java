@@ -47,7 +47,7 @@ public class CommandCheckReputation extends CommandBase
 	@Override
 	public void processCommand(ICommandSender sender, String[] arguments)
 	{
-		final EntityPlayer player = (EntityPlayer)sender;
+		final EntityPlayer player = (EntityPlayer) sender;
 		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 		new StringBuilder();
 

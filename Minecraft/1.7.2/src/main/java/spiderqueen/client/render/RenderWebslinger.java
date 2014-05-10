@@ -60,7 +60,7 @@ public class RenderWebslinger extends Render
 			final float f9 = (entitysweb.player.prevRotationYaw + (entitysweb.player.rotationYaw - entitysweb.player.prevRotationYaw) * f1) * 3.141593F / 180F;
 			MathHelper.sin(f9);
 			MathHelper.cos(f9);
-			final float f11 = 0;//entitysweb.angler.getSwingProgress(f1);
+			final float f11 = 0;// entitysweb.angler.getSwingProgress(f1);
 			final float f12 = MathHelper.sin(MathHelper.sqrt_float(f11) * 3.141593F);
 
 			final Vec3 vec3d = Vec3.createVectorHelper(-0.5D, 0.03D, 0.8D);
@@ -86,30 +86,30 @@ public class RenderWebslinger extends Render
 			final double d10 = entitysweb.prevPosX + (entitysweb.posX - entitysweb.prevPosX) * f1;
 			final double d11 = entitysweb.prevPosY + (entitysweb.posY - entitysweb.prevPosY) * f1 + 0.25D;
 			final double d12 = entitysweb.prevPosZ + (entitysweb.posZ - entitysweb.prevPosZ) * f1;
-			final double d13 = (float)(correctedPosX - d10);
-			final double d14 = (float)(correctedPosY - d11);
-			final double d15 = (float)(correctedPosZ - d12);
-			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-			GL11.glDisable(2896 /*GL_LIGHTING*/);
+			final double d13 = (float) (correctedPosX - d10);
+			final double d14 = (float) (correctedPosY - d11);
+			final double d15 = (float) (correctedPosZ - d12);
+			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
+			GL11.glDisable(2896 /* GL_LIGHTING */);
 			tessellator.startDrawing(3);
 			tessellator.setColorOpaque_I(0x7c889d);
 			final int j = 16;
-			for(int k = 0; k <= j; k++)
+			for (int k = 0; k <= j; k++)
 			{
-				final float f13 = (float)k / (float)j;
+				final float f13 = (float) k / (float) j;
 				tessellator.addVertex(d + d13 * f13, d1 + d14 * f13 + 0.2F, d2 + d15 * f13);
 			}
 
 			tessellator.draw();
-			GL11.glEnable(2896 /*GL_LIGHTING*/);
-			GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+			GL11.glEnable(2896 /* GL_LIGHTING */);
+			GL11.glEnable(3553 /* GL_TEXTURE_2D */);
 		}
 	}
+
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2,
-			float f, float f1)
+	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1)
 	{
-		func_4011_a((EntityWebslinger)entity, d, d1, d2, f, f1);
+		func_4011_a((EntityWebslinger) entity, d, d1, d2, f, f1);
 	}
 
 	@Override

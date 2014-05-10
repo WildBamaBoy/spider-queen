@@ -27,8 +27,8 @@ import com.radixshock.radixcore.network.Packet;
 
 public class EntitySpiderEgg extends EntityCreature
 {
-	private String owner;
-	private int timeUntilEggHatch;
+	private String	owner;
+	private int		timeUntilEggHatch;
 
 	public EntitySpiderEgg(World world)
 	{
@@ -93,12 +93,12 @@ public class EntitySpiderEgg extends EntityCreature
 
 		if (!worldObj.isRemote)
 		{
-			//DEBUG
+			// DEBUG
 			if (SpiderQueen.getInstance().inDebugMode && SpiderQueen.getInstance().debugDoRapidSpiderGrowth)
 			{
 				timeUntilEggHatch = 0;
 			}
-			//DEBUG
+			// DEBUG
 
 			if (timeUntilEggHatch <= 0)
 			{

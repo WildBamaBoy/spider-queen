@@ -18,17 +18,19 @@ import net.minecraft.item.ItemStack;
 import spiderqueen.entity.EntityHatchedSpider;
 
 /**
- *	Handles player interaction of an inventory in Spider Queen.
+ * Handles player interaction of an inventory in Spider Queen.
  */
 public class ContainerSpiderInventory extends Container
 {
-	protected final EntityHatchedSpider entity;
+	protected final EntityHatchedSpider	entity;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param 	inventoryPlayer	An instance of a player's inventory.
-	 * @param 	inventoryEntity	An instance of an MCA entity's inventory.
+	 * @param inventoryPlayer
+	 *            An instance of a player's inventory.
+	 * @param inventoryEntity
+	 *            An instance of an MCA entity's inventory.
 	 */
 	public ContainerSpiderInventory(IInventory inventoryPlayer, IInventory inventoryEntity, EntityHatchedSpider entity)
 	{
@@ -38,11 +40,13 @@ public class ContainerSpiderInventory extends Container
 			for (int inventoryWidth = 0; inventoryWidth < 9; ++inventoryWidth)
 			{
 				addSlotToContainer(new Slot(inventoryEntity, inventoryWidth + inventoryHeight * 9, 8 + inventoryWidth * 18, 18 + inventoryHeight * 18));
-				//this.addSlotToContainer(new Slot(inventoryEntity, inventoryWidth + inventoryHeight * 8, 8 + (inventoryWidth + 1) * 18, 18 + inventoryHeight * 18));
+				// this.addSlotToContainer(new Slot(inventoryEntity,
+				// inventoryWidth + inventoryHeight * 8, 8 + (inventoryWidth +
+				// 1) * 18, 18 + inventoryHeight * 18));
 			}
 		}
 
-		bindPlayerInventory((InventoryPlayer)inventoryPlayer);
+		bindPlayerInventory((InventoryPlayer) inventoryPlayer);
 	}
 
 	@Override
@@ -54,7 +58,7 @@ public class ContainerSpiderInventory extends Container
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId)
 	{
-		final Slot slot = (Slot)inventorySlots.get(slotId);
+		final Slot slot = (Slot) inventorySlots.get(slotId);
 		ItemStack transferStack = null;
 
 		if (slot != null && slot.getHasStack())
@@ -64,20 +68,14 @@ public class ContainerSpiderInventory extends Container
 
 			if (slotId < 4 * 9)
 			{
-				if (!mergeItemStack(slotStack, 4 * 9, inventorySlots.size(), true))
-				{
-					return null;
-				}
+				if (!mergeItemStack(slotStack, 4 * 9, inventorySlots.size(), true)) { return null; }
 			}
 
-			else if (!mergeItemStack(slotStack, 0, 4 * 9, false))
-			{
-				return null;
-			}
+			else if (!mergeItemStack(slotStack, 0, 4 * 9, false)) { return null; }
 
 			if (slotStack.stackSize == 0)
 			{
-				slot.putStack((ItemStack)null);
+				slot.putStack((ItemStack) null);
 			}
 
 			else
@@ -92,12 +90,14 @@ public class ContainerSpiderInventory extends Container
 	/**
 	 * Adds the player's inventory to the container.
 	 * 
-	 * @param 	inventoryPlayer	An instance of the player's inventory.
+	 * @param inventoryPlayer
+	 *            An instance of the player's inventory.
 	 */
 	private void bindPlayerInventory(InventoryPlayer inventoryPlayer)
 	{
 		final int heldItemsHeightMod = entity.level == 1 ? 107 : entity.level == 2 ? 125 : 143;
-		final int storedItemsHeightMod = entity.level == 1 ? 49 : entity.level == 2 ? 67 : 85;;
+		final int storedItemsHeightMod = entity.level == 1 ? 49 : entity.level == 2 ? 67 : 85;
+		;
 
 		try
 		{

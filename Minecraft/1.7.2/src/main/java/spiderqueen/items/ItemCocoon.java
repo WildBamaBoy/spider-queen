@@ -25,7 +25,7 @@ import com.radixshock.radixcore.constant.Font.Color;
 
 public class ItemCocoon extends Item
 {
-	private final EnumCocoonType cocoonType;
+	private final EnumCocoonType	cocoonType;
 
 	public ItemCocoon(EnumCocoonType cocoonType)
 	{
@@ -70,9 +70,7 @@ public class ItemCocoon extends Item
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{
-		if (this == SpiderQueen.getInstance().itemCocoonChicken || this == SpiderQueen.getInstance().itemCocoonCow ||
-				this == SpiderQueen.getInstance().itemCocoonHorse || this == SpiderQueen.getInstance().itemCocoonPig ||
-				this == SpiderQueen.getInstance().itemCocoonSheep || this == SpiderQueen.getInstance().itemCocoonHuman)
+		if (this == SpiderQueen.getInstance().itemCocoonChicken || this == SpiderQueen.getInstance().itemCocoonCow || this == SpiderQueen.getInstance().itemCocoonHorse || this == SpiderQueen.getInstance().itemCocoonPig || this == SpiderQueen.getInstance().itemCocoonSheep || this == SpiderQueen.getInstance().itemCocoonHuman)
 		{
 			list.add(Color.GRAY + "Produces a typical spider.");
 		}

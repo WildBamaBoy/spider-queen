@@ -13,9 +13,9 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerEatEntry
 {
-	private final EntityPlayer player;
-	private final int slot;
-	private final int count;
+	private final EntityPlayer	player;
+	private final int			slot;
+	private final int			count;
 
 	public PlayerEatEntry(EntityPlayer player, int slot, int count)
 	{

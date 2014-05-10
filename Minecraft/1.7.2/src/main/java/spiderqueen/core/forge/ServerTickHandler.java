@@ -40,13 +40,13 @@ import com.radixshock.radixcore.logic.Point3D;
  */
 public class ServerTickHandler
 {
-	private int timeUntilSpawnWeb = Time.MINUTE * 3;
-	private int timeUntilSpawnPlayers = Time.SECOND * 30;
-	private int timeUntilSpawnWarParties = Time.MINUTE * 2;
+	private int							timeUntilSpawnWeb				= Time.MINUTE * 3;
+	private int							timeUntilSpawnPlayers			= Time.SECOND * 30;
+	private int							timeUntilSpawnWarParties		= Time.MINUTE * 2;
 
-	private boolean hasCalculatedReputationForDay = false;
-	public List<PlayerEatEntry> playersEating = new ArrayList<PlayerEatEntry>();
-	private final List<PlayerEatEntry> playersNoLongerEating = new ArrayList<PlayerEatEntry>();
+	private boolean						hasCalculatedReputationForDay	= false;
+	public List<PlayerEatEntry>			playersEating					= new ArrayList<PlayerEatEntry>();
+	private final List<PlayerEatEntry>	playersNoLongerEating			= new ArrayList<PlayerEatEntry>();
 
 	/**
 	 * Fires once per tick in-game.
@@ -75,7 +75,7 @@ public class ServerTickHandler
 		{
 			for (final Object obj : worldServer.playerEntities)
 			{
-				final EntityPlayer player = (EntityPlayer)obj;
+				final EntityPlayer player = (EntityPlayer) obj;
 				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
 				modifyReputations(playerExtension);
@@ -131,16 +131,12 @@ public class ServerTickHandler
 		{
 			if (entry.creaturesKilled >= 3)
 			{
-				entry.reputationValue =
-						entry.reputationValue == -5 ? -5 :
-							entry.reputationValue - 1;
+				entry.reputationValue = entry.reputationValue == -5 ? -5 : entry.reputationValue - 1;
 			}
 
 			else if (entry.creaturesKilled == 0)
 			{
-				entry.reputationValue =
-						entry.reputationValue == 5 ? 5 :
-							entry.reputationValue + 1;
+				entry.reputationValue = entry.reputationValue == 5 ? 5 : entry.reputationValue + 1;
 			}
 
 			entry.creaturesKilled = 0;
@@ -153,9 +149,9 @@ public class ServerTickHandler
 		{
 			for (final Object obj : worldServer.playerEntities)
 			{
-				final EntityPlayer player = (EntityPlayer)obj;
+				final EntityPlayer player = (EntityPlayer) obj;
 
-				if (player.worldObj.getBlockLightValue((int)player.posX, (int)player.posY, (int)player.posZ) <= 8)
+				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
 					if (player.getActivePotionEffect(Potion.nightVision) == null)
 					{
@@ -165,7 +161,7 @@ public class ServerTickHandler
 
 				else
 				{
-					if (player.worldObj.canBlockSeeTheSky((int)player.posX, (int)player.posY, (int)player.posZ))
+					if (player.worldObj.canBlockSeeTheSky((int) player.posX, (int) player.posY, (int) player.posZ))
 					{
 						if (player.getActivePotionEffect(Potion.nightVision) != null)
 						{
@@ -187,7 +183,7 @@ public class ServerTickHandler
 			{
 				for (final Object obj : worldServer.playerEntities)
 				{
-					final EntityPlayer player = (EntityPlayer)obj;
+					final EntityPlayer player = (EntityPlayer) obj;
 					player.inventory.addItemStackToInventory(new ItemStack(Items.string, LogicHelper.getNumberInRange(1, 3)));
 				}
 			}
@@ -200,7 +196,7 @@ public class ServerTickHandler
 	{
 		for (final PlayerEatEntry eatEntry : playersEating)
 		{
-			//Check if the player is still on the same slot.
+			// Check if the player is still on the same slot.
 			if (eatEntry.getPlayer().inventory.currentItem == eatEntry.getSlot())
 			{
 				final ItemStack currentItemStack = eatEntry.getPlayer().getCurrentEquippedItem();
@@ -212,13 +208,14 @@ public class ServerTickHandler
 				}
 			}
 
-			else //They've moved to a different slot. Ignore.
+			else
+			// They've moved to a different slot. Ignore.
 			{
 				playersNoLongerEating.add(eatEntry);
 			}
 		}
 
-		//Empty the playersEating list.
+		// Empty the playersEating list.
 		for (final PlayerEatEntry eatEntry : playersNoLongerEating)
 		{
 			playersEating.remove(eatEntry);
@@ -235,7 +232,7 @@ public class ServerTickHandler
 			{
 				for (final Object obj : worldServer.playerEntities)
 				{
-					final EntityPlayer player = (EntityPlayer)obj;
+					final EntityPlayer player = (EntityPlayer) obj;
 					final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
 					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
@@ -272,8 +269,8 @@ public class ServerTickHandler
 			{
 				for (final Object obj : worldServer.playerEntities)
 				{
-					final EntityPlayer player = (EntityPlayer)obj;
-					final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
+					final EntityPlayer player = (EntityPlayer) obj;
+					final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
 					for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 					{
@@ -302,10 +299,10 @@ public class ServerTickHandler
 		{
 			for (final Object obj : worldServer.playerEntities)
 			{
-				final EntityPlayer player = (EntityPlayer)obj;
-				final int x = (int)player.posX;
-				final int y = (int)player.posY;
-				final int z = (int)player.posZ;
+				final EntityPlayer player = (EntityPlayer) obj;
+				final int x = (int) player.posX;
+				final int y = (int) player.posY;
+				final int z = (int) player.posZ;
 
 				if (worldServer.getBlock(x, y + 1, z) == SpiderQueen.getInstance().blockWebSide)
 				{

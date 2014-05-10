@@ -27,7 +27,8 @@ public final class PacketCodec extends AbstractPacketCodec
 	/**
 	 * Constructor
 	 * 
-	 * @param	mod	The owner mod.
+	 * @param mod
+	 *            The owner mod.
 	 */
 	public PacketCodec(IEnforcedCore mod)
 	{
@@ -37,50 +38,50 @@ public final class PacketCodec extends AbstractPacketCodec
 	@Override
 	public void encode(Packet packet, ChannelHandlerContext context, ByteBuf buffer)
 	{
-		final EnumPacketType type = (EnumPacketType)packet.packetType;
+		final EnumPacketType type = (EnumPacketType) packet.packetType;
 
 		try
 		{
 			switch (type)
 			{
-			case GetInventory:
-				buffer.writeInt((Integer)packet.arguments[0]);
-				break;
+				case GetInventory:
+					buffer.writeInt((Integer) packet.arguments[0]);
+					break;
 
-			case SetInventory:
-				buffer.writeInt((Integer)packet.arguments[0]);
-				writeObject(buffer, packet.arguments[1]);
-				break;
+				case SetInventory:
+					buffer.writeInt((Integer) packet.arguments[0]);
+					writeObject(buffer, packet.arguments[1]);
+					break;
 
-			case SetEaten:
-				buffer.writeInt((Integer)packet.arguments[0]);
-				break;
+				case SetEaten:
+					buffer.writeInt((Integer) packet.arguments[0]);
+					break;
 
-			case SetLevel:
-				buffer.writeInt((Integer)packet.arguments[0]);
-				buffer.writeInt((Integer)packet.arguments[1]);
-				break;
+				case SetLevel:
+					buffer.writeInt((Integer) packet.arguments[0]);
+					buffer.writeInt((Integer) packet.arguments[1]);
+					break;
 
-			case SetPlayerMotion:
-				ByteBufIO.writeObject(buffer, packet.arguments[0].toString());
-				buffer.writeDouble((Double)packet.arguments[1]);
-				buffer.writeDouble((Double)packet.arguments[2]);
-				buffer.writeDouble((Double)packet.arguments[3]);
-				break;
+				case SetPlayerMotion:
+					ByteBufIO.writeObject(buffer, packet.arguments[0].toString());
+					buffer.writeDouble((Double) packet.arguments[1]);
+					buffer.writeDouble((Double) packet.arguments[2]);
+					buffer.writeDouble((Double) packet.arguments[3]);
+					break;
 
-			case SetDistance:
-				buffer.writeDouble((Double)packet.arguments[0]);
-				break;
+				case SetDistance:
+					buffer.writeDouble((Double) packet.arguments[0]);
+					break;
 
-			case DestroySlinger:
-				buffer.writeInt((Integer)packet.arguments[0]);
-				buffer.writeDouble((Double)packet.arguments[1]);
-				buffer.writeDouble((Double)packet.arguments[2]);
-				buffer.writeDouble((Double)packet.arguments[3]);
-				break;
+				case DestroySlinger:
+					buffer.writeInt((Integer) packet.arguments[0]);
+					buffer.writeDouble((Double) packet.arguments[1]);
+					buffer.writeDouble((Double) packet.arguments[2]);
+					buffer.writeDouble((Double) packet.arguments[3]);
+					break;
 
-			default:
-				break;
+				default:
+					break;
 			}
 		}
 
@@ -93,50 +94,50 @@ public final class PacketCodec extends AbstractPacketCodec
 	@Override
 	public void decode(Packet packet, ChannelHandlerContext context, ByteBuf buffer)
 	{
-		final EnumPacketType type = (EnumPacketType)packet.packetType;
+		final EnumPacketType type = (EnumPacketType) packet.packetType;
 
 		try
 		{
 			switch (type)
 			{
-			case GetInventory:
-				packet.arguments[0] = buffer.readInt();
-				break;
+				case GetInventory:
+					packet.arguments[0] = buffer.readInt();
+					break;
 
-			case SetInventory:
-				packet.arguments[0] = buffer.readInt();
-				packet.arguments[1] = readObject(buffer);
-				break;
+				case SetInventory:
+					packet.arguments[0] = buffer.readInt();
+					packet.arguments[1] = readObject(buffer);
+					break;
 
-			case SetEaten:
-				packet.arguments[0] = buffer.readInt();
-				break;
+				case SetEaten:
+					packet.arguments[0] = buffer.readInt();
+					break;
 
-			case SetLevel:
-				packet.arguments[0] = buffer.readInt();
-				packet.arguments[1] = buffer.readInt();
-				break;
+				case SetLevel:
+					packet.arguments[0] = buffer.readInt();
+					packet.arguments[1] = buffer.readInt();
+					break;
 
-			case SetPlayerMotion:
-				packet.arguments[0] = ByteBufIO.readObject(buffer);
-				packet.arguments[1] = buffer.readDouble();
-				packet.arguments[2] = buffer.readDouble();
-				packet.arguments[3] = buffer.readDouble();
-				break;
+				case SetPlayerMotion:
+					packet.arguments[0] = ByteBufIO.readObject(buffer);
+					packet.arguments[1] = buffer.readDouble();
+					packet.arguments[2] = buffer.readDouble();
+					packet.arguments[3] = buffer.readDouble();
+					break;
 
-			case SetDistance:
-				packet.arguments[0] = buffer.readDouble();
-				break;
+				case SetDistance:
+					packet.arguments[0] = buffer.readDouble();
+					break;
 
-			case DestroySlinger:
-				packet.arguments[0] = buffer.readInt();
-				packet.arguments[1] = buffer.readDouble();
-				packet.arguments[2] = buffer.readDouble();
-				packet.arguments[3] = buffer.readDouble();
-				break;
+				case DestroySlinger:
+					packet.arguments[0] = buffer.readInt();
+					packet.arguments[1] = buffer.readDouble();
+					packet.arguments[2] = buffer.readDouble();
+					packet.arguments[3] = buffer.readDouble();
+					break;
 
-			default:
-				break;
+				default:
+					break;
 			}
 		}
 

@@ -30,21 +30,26 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiSpiderInventory extends InventoryEffectRenderer
 {
-	private static final ResourceLocation resourceLocation = new ResourceLocation("textures/gui/container/generic_54.png");
+	private static final ResourceLocation	resourceLocation	= new ResourceLocation("textures/gui/container/generic_54.png");
 
-	private final EntityHatchedSpider owner;
-	private GuiButton exitButton;
+	private final EntityHatchedSpider		owner;
+	private GuiButton						exitButton;
 
 	/** The number of rows in the inventory. */
-	private final int inventoryRows;
+	private final int						inventoryRows;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param 	entity			The entity who owns the inventory being accessed.
-	 * @param 	playerInventory	The inventory of the player opening this GUI.
-	 * @param 	entityInventory	The inventory of the entity that the player is interacting with.
-	 * @param	fromEditor		Is this GUI being opened from the villager editor?
+	 * @param entity
+	 *            The entity who owns the inventory being accessed.
+	 * @param playerInventory
+	 *            The inventory of the player opening this GUI.
+	 * @param entityInventory
+	 *            The inventory of the entity that the player is interacting
+	 *            with.
+	 * @param fromEditor
+	 *            Is this GUI being opened from the villager editor?
 	 */
 	public GuiSpiderInventory(EntityHatchedSpider entity, IInventory playerInventory, IInventory entityInventory, boolean fromEditor)
 	{
@@ -90,11 +95,13 @@ public class GuiSpiderInventory extends InventoryEffectRenderer
 
 		final int addX = Minecraft.getMinecraft().thePlayer.getActivePotionEffects().size() > 0 ? 120 : 0;
 
-		//Draw the two inventories.
+		// Draw the two inventories.
 		final int x = (width - xSize + addX) / 2;
 		final int y = (height - ySize) / 2;
-		drawTexturedModalRect(x, y, 0, 0, xSize, inventoryRows * 18 + 17);			//Top inventory
-		drawTexturedModalRect(x, y + inventoryRows * 18 + 17, 0, 126, xSize, 96);	//Bottom inventory
+		drawTexturedModalRect(x, y, 0, 0, xSize, inventoryRows * 18 + 17); // Top
+																			// inventory
+		drawTexturedModalRect(x, y + inventoryRows * 18 + 17, 0, 126, xSize, 96); // Bottom
+																					// inventory
 	}
 
 	@Override

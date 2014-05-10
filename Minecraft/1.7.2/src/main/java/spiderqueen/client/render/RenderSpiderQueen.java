@@ -24,8 +24,8 @@ import spiderqueen.client.model.ModelSpiderQueen;
 
 public class RenderSpiderQueen extends RenderPlayer
 {
-	private static final ResourceLocation steveTextures = new ResourceLocation("textures/entity/steve.png");
-	private final ModelSpiderQueen modelBipedMain;
+	private static final ResourceLocation	steveTextures	= new ResourceLocation("textures/entity/steve.png");
+	private final ModelSpiderQueen			modelBipedMain;
 
 	public RenderSpiderQueen()
 	{
@@ -85,7 +85,7 @@ public class RenderSpiderQueen extends RenderPlayer
 
 				if (entity.isRiding() && entity.ridingEntity instanceof EntityLivingBase)
 				{
-					final EntityLivingBase entityRiding = (EntityLivingBase)entity.ridingEntity;
+					final EntityLivingBase entityRiding = (EntityLivingBase) entity.ridingEntity;
 					realRenderYaw = interpolateRotation(entityRiding.prevRenderYawOffset, entityRiding.renderYawOffset, rotationPitch);
 					wrappedRotation = MathHelper.wrapAngleTo180_float(realRenderYawHead - realRenderYaw);
 
@@ -110,8 +110,11 @@ public class RenderSpiderQueen extends RenderPlayer
 				renderLivingAt(entity, posX, posY, posZ);
 				rotateCorpse(entity, wrappedRotation, realRenderYaw, rotationPitch);
 
-				GL11.glTranslatef(0.0F, -0.10F, 0.0F);	//Move the model down slightly so that it touches the ground.
-				GL11.glScalef(0.7F, 0.7F, -0.7F);		//Scale and flip the new model.
+				GL11.glTranslatef(0.0F, -0.10F, 0.0F); // Move the model down
+														// slightly so that it
+														// touches the ground.
+				GL11.glScalef(0.7F, 0.7F, -0.7F); // Scale and flip the new
+													// model.
 
 				float limbSwing = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * rotationPitch;
 				final float limbAngle = entity.limbSwing - entity.limbSwingAmount * (1.0F - rotationPitch);
@@ -196,7 +199,7 @@ public class RenderSpiderQueen extends RenderPlayer
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		modelBipedMain.onGround = 0.0F;
 		modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, entityPlayer);
-		//modelBipedMain.armRight.render(0.0625F); //TODO
+		// modelBipedMain.armRight.render(0.0625F); //TODO
 	}
 
 	@Override
@@ -260,31 +263,31 @@ public class RenderSpiderQueen extends RenderPlayer
 	@Override
 	protected void rotateCorpse(EntityLivingBase entityLivingBase, float unknownFloat1, float unknownFloat2, float unknownFloat3)
 	{
-		rotateCorpse((AbstractClientPlayer)entityLivingBase, unknownFloat1, unknownFloat2, unknownFloat3);
+		rotateCorpse((AbstractClientPlayer) entityLivingBase, unknownFloat1, unknownFloat2, unknownFloat3);
 	}
 
 	@Override
 	protected void renderLivingAt(EntityLivingBase entityLivingBase, double posX, double posY, double posZ)
 	{
-		renderLivingAt((AbstractClientPlayer)entityLivingBase, posX, posY, posZ);
+		renderLivingAt((AbstractClientPlayer) entityLivingBase, posX, posY, posZ);
 	}
 
 	@Override
 	public void doRender(EntityLivingBase entityLivingBase, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		super.doRender((AbstractClientPlayer)entityLivingBase, posX, posY, posZ, rotationYaw, rotationPitch);
+		super.doRender((AbstractClientPlayer) entityLivingBase, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return getEntityTexture((AbstractClientPlayer)entity);
+		return getEntityTexture((AbstractClientPlayer) entity);
 	}
 
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		this.doRender((AbstractClientPlayer)entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		this.doRender((AbstractClientPlayer) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	private float interpolateRotation(float unknownFloat1, float unknownFloat2, float unknownFloat3)

@@ -37,7 +37,8 @@ public final class PacketHandler extends AbstractPacketHandler
 	/**
 	 * Constructor
 	 * 
-	 * @param 	mod	The owner mod.
+	 * @param mod
+	 *            The owner mod.
 	 */
 	public PacketHandler(IEnforcedCore mod)
 	{
@@ -47,42 +48,42 @@ public final class PacketHandler extends AbstractPacketHandler
 	@Override
 	public void onHandlePacket(Packet packet, EntityPlayer player, Side side)
 	{
-		final EnumPacketType type = (EnumPacketType)packet.packetType;
+		final EnumPacketType type = (EnumPacketType) packet.packetType;
 
 		try
 		{
 			switch (type)
 			{
-			case GetInventory:
-				handleGetInventory(packet.arguments, player);
-				break;
+				case GetInventory:
+					handleGetInventory(packet.arguments, player);
+					break;
 
-			case SetInventory:
-				handleSetInventory(packet.arguments, player);
-				break;
+				case SetInventory:
+					handleSetInventory(packet.arguments, player);
+					break;
 
-			case SetEaten:
-				handleSetEaten(packet.arguments, player);
-				break;
+				case SetEaten:
+					handleSetEaten(packet.arguments, player);
+					break;
 
-			case SetLevel:
-				handleSetLevel(packet.arguments, player);
-				break;
+				case SetLevel:
+					handleSetLevel(packet.arguments, player);
+					break;
 
-			case SetPlayerMotion:
-				handleSetPlayerMotion(packet.arguments, player);
-				break;
+				case SetPlayerMotion:
+					handleSetPlayerMotion(packet.arguments, player);
+					break;
 
-			case SetDistance:
-				handleSetDistance(packet.arguments, player);
-				break;
+				case SetDistance:
+					handleSetDistance(packet.arguments, player);
+					break;
 
-			case DestroySlinger:
-				handleDestroySlinger(packet.arguments, player);
-				break;
+				case DestroySlinger:
+					handleDestroySlinger(packet.arguments, player);
+					break;
 
-			default:
-				SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
+				default:
+					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
 		}
 
@@ -94,46 +95,46 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleGetInventory(Object[] arguments, EntityPlayer player)
 	{
-		final int entityId = (Integer)arguments[0];
-		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
+		final int entityId = (Integer) arguments[0];
+		final EntityLivingBase entity = (EntityLivingBase) player.worldObj.getEntityByID(entityId);
 
 		if (entity instanceof EntityFakePlayer)
 		{
-			final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
+			final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
 			mod.getPacketPipeline().sendPacketToPlayer(new Packet(EnumPacketType.SetInventory, entityId, fakePlayer.inventory), (EntityPlayerMP) player);
 		}
 
 		else if (entity instanceof EntityHatchedSpider)
 		{
-			final EntityHatchedSpider hatchedSpider = (EntityHatchedSpider)entity;
+			final EntityHatchedSpider hatchedSpider = (EntityHatchedSpider) entity;
 			mod.getPacketPipeline().sendPacketToPlayer(new Packet(EnumPacketType.SetInventory, entityId, hatchedSpider.inventory), (EntityPlayerMP) player);
 		}
 	}
 
 	private void handleSetInventory(Object[] arguments, EntityPlayer player)
 	{
-		final int entityId = (Integer)arguments[0];
-		final Inventory inventory = (Inventory)arguments[1];
+		final int entityId = (Integer) arguments[0];
+		final Inventory inventory = (Inventory) arguments[1];
 
-		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
+		final EntityLivingBase entity = (EntityLivingBase) player.worldObj.getEntityByID(entityId);
 		inventory.owner = entity;
 
 		if (entity instanceof EntityFakePlayer)
 		{
-			final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
+			final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
 			fakePlayer.inventory = inventory;
 			fakePlayer.inventory.setWornArmorItems();
 		}
 
 		else if (entity instanceof EntityHatchedSpider)
 		{
-			final EntityHatchedSpider hatchedSpider = (EntityHatchedSpider)entity;
+			final EntityHatchedSpider hatchedSpider = (EntityHatchedSpider) entity;
 			hatchedSpider.inventory = inventory;
 		}
 
 		if (!player.worldObj.isRemote)
 		{
-			mod.getPacketPipeline().sendPacketToAllPlayersExcept(new Packet(EnumPacketType.SetInventory, entityId, inventory), (EntityPlayerMP)player);
+			mod.getPacketPipeline().sendPacketToAllPlayersExcept(new Packet(EnumPacketType.SetInventory, entityId, inventory), (EntityPlayerMP) player);
 		}
 
 		else
@@ -144,12 +145,12 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleSetEaten(Object[] arguments, EntityPlayer player)
 	{
-		final int entityId = (Integer)arguments[0];
-		final EntityLivingBase entity = (EntityLivingBase)player.worldObj.getEntityByID(entityId);
+		final int entityId = (Integer) arguments[0];
+		final EntityLivingBase entity = (EntityLivingBase) player.worldObj.getEntityByID(entityId);
 
 		if (entity instanceof EntityCocoon)
 		{
-			final EntityCocoon cocoon = (EntityCocoon)entity;
+			final EntityCocoon cocoon = (EntityCocoon) entity;
 			cocoon.worldObj.spawnParticle("largesmoke", cocoon.posX, cocoon.posY + 2, cocoon.posZ, cocoon.motionX, cocoon.motionY, cocoon.motionZ);
 			cocoon.worldObj.spawnParticle("largesmoke", cocoon.posX, cocoon.posY + 2, cocoon.posZ, cocoon.motionX, cocoon.motionY, cocoon.motionZ);
 			cocoon.setEaten(true);
@@ -158,9 +159,9 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleSetLevel(Object[] arguments, EntityPlayer player)
 	{
-		final int entityId = (Integer)arguments[0];
-		final int level = (Integer)arguments[1];
-		final EntityHatchedSpider spider = (EntityHatchedSpider)player.worldObj.getEntityByID(entityId);
+		final int entityId = (Integer) arguments[0];
+		final int level = (Integer) arguments[1];
+		final EntityHatchedSpider spider = (EntityHatchedSpider) player.worldObj.getEntityByID(entityId);
 
 		if (spider != null)
 		{
@@ -168,13 +169,7 @@ public final class PacketHandler extends AbstractPacketHandler
 
 			for (int i = 0; i < 16; i++)
 			{
-				spider.worldObj.spawnParticle("smoke",
-						spider.posX + (rand.nextDouble() - 0.5D) * spider.width,
-						spider.posY + 0.5D + rand.nextDouble() * 0.25D,
-						spider.posZ + rand.nextDouble() - 0.5D * spider.width,
-						(rand.nextDouble() - 0.5D) * 2.0D,
-						-rand.nextDouble(),
-						(rand.nextDouble() - 0.5D) * 2.0D);
+				spider.worldObj.spawnParticle("smoke", spider.posX + (rand.nextDouble() - 0.5D) * spider.width, spider.posY + 0.5D + rand.nextDouble() * 0.25D, spider.posZ + rand.nextDouble() - 0.5D * spider.width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 			}
 			spider.level = level;
 		}
@@ -182,16 +177,16 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleSetPlayerMotion(Object[] arguments, EntityPlayer player)
 	{
-		final String playerName = (String)arguments[0];
-		final double motionX = (Double)arguments[1];
-		final double motionY = (Double)arguments[2];
-		final double motionZ = (Double)arguments[3];
+		final String playerName = (String) arguments[0];
+		final double motionX = (Double) arguments[1];
+		final double motionY = (Double) arguments[2];
+		final double motionZ = (Double) arguments[3];
 
 		for (final Object obj : player.worldObj.loadedEntityList)
 		{
 			if (obj instanceof EntityPlayer)
 			{
-				final EntityPlayer clientPlayer = (EntityPlayer)obj;
+				final EntityPlayer clientPlayer = (EntityPlayer) obj;
 
 				if (clientPlayer.getCommandSenderName().equals(playerName))
 				{
@@ -203,7 +198,7 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleSetDistance(Object[] arguments, EntityPlayer player)
 	{
-		final double distance = (Double)arguments[0];
+		final double distance = (Double) arguments[0];
 		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
 		playerExtension.webEntity.distance = distance;
@@ -211,7 +206,7 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleDestroySlinger(Object[] arguments, EntityPlayer player)
 	{
-		final int slingerId = (Integer)arguments[0];
+		final int slingerId = (Integer) arguments[0];
 		final EntityWebslinger webslinger = (EntityWebslinger) player.worldObj.getEntityByID(slingerId);
 		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
@@ -223,7 +218,6 @@ public final class PacketHandler extends AbstractPacketHandler
 			webslinger.setDead();
 		}
 
-		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetPlayerMotion,
-				player.getCommandSenderName(), player.motionX, player.motionY, player.motionZ));
+		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetPlayerMotion, player.getCommandSenderName(), player.motionX, player.motionY, player.motionZ));
 	}
 }

@@ -19,11 +19,10 @@ import org.lwjgl.opengl.GL11;
 import spiderqueen.client.model.ModelSpiderEgg;
 import spiderqueen.entity.EntitySpiderEgg;
 
-
 public class RenderSpiderEgg extends Render
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("spiderqueen:textures/entity/SpiderEgg.png");
-	private final ModelBase modelEgg;
+	private static final ResourceLocation	TEXTURE	= new ResourceLocation("spiderqueen:textures/entity/SpiderEgg.png");
+	private final ModelBase					modelEgg;
 
 	public RenderSpiderEgg()
 	{
@@ -50,7 +49,7 @@ public class RenderSpiderEgg extends Render
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		render((EntitySpiderEgg)entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		render((EntitySpiderEgg) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override

@@ -50,12 +50,12 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityFakePlayer extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	public String username;
-	public boolean isContributor;
-	public boolean hasInventoryBeenPopulated;
-	public ResourceLocation skinResourceLocation;
-	public ThreadDownloadImageData imageDownloadThread;
-	public Inventory inventory = new Inventory(this);
+	public String					username;
+	public boolean					isContributor;
+	public boolean					hasInventoryBeenPopulated;
+	public ResourceLocation			skinResourceLocation;
+	public ThreadDownloadImageData	imageDownloadThread;
+	public Inventory				inventory	= new Inventory(this);
 
 	public EntityFakePlayer(World world)
 	{
@@ -138,7 +138,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	{
 		if (getAttackTarget() instanceof EntityCreature)
 		{
-			final EntityCreature attackTarget = (EntityCreature)getAttackTarget();
+			final EntityCreature attackTarget = (EntityCreature) getAttackTarget();
 
 			if (attackTarget != null)
 			{
@@ -155,7 +155,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 		else if (getAttackTarget() instanceof EntityPlayer)
 		{
-			final EntityPlayer attackTarget = (EntityPlayer)getAttackTarget();
+			final EntityPlayer attackTarget = (EntityPlayer) getAttackTarget();
 
 			if (attackTarget != null)
 			{
@@ -177,7 +177,6 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 		inventory.dropAllItems();
 	}
-
 
 	@Override
 	protected void dropFewItems(boolean recentlyHitByPlayer, int lootingLevel)
@@ -249,7 +248,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	@Override
 	public void readSpawnData(ByteBuf additionalData)
 	{
-		username = (String)ByteBufIO.readObject(additionalData);
+		username = (String) ByteBufIO.readObject(additionalData);
 		isContributor = additionalData.readBoolean();
 		setupCustomSkin();
 		getInventoryFromServer();

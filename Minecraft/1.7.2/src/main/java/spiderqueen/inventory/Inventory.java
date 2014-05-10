@@ -44,13 +44,16 @@ import com.radixshock.radixcore.network.Packet;
 public class Inventory implements IInventory, IInvBasic, Serializable
 {
 	/** The owner of the inventory. */
-	public EntityLivingBase owner;
+	public EntityLivingBase	owner;
 
 	/** The armor items that are being worn. */
-	public ItemStack armorItems[];
+	public ItemStack		armorItems[];
 
-	/** The items in the main inventory. Armor items exist here and are copied to the other array.*/
-	public ItemStack inventoryItems[];
+	/**
+	 * The items in the main inventory. Armor items exist here and are copied to
+	 * the other array.
+	 */
+	public ItemStack		inventoryItems[];
 
 	/**
 	 * Constructor
@@ -63,7 +66,8 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Constructor
 	 * 
-	 * @param 	entity	The entity this inventory will belong to.
+	 * @param entity
+	 *            The entity this inventory will belong to.
 	 */
 	public Inventory(EntityLivingBase entity)
 	{
@@ -84,7 +88,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 			else
 			{
-				final Inventory otherInventory = (Inventory)obj;
+				final Inventory otherInventory = (Inventory) obj;
 
 				for (int i = 0; i < getSizeInventory(); i++)
 				{
@@ -92,27 +96,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 					{
 						if (inventoryItems[i] == null)
 						{
-							if (otherInventory.inventoryItems[i] != null)
-							{
-								return false;
-							}
+							if (otherInventory.inventoryItems[i] != null) { return false; }
 						}
 
 						else if (otherInventory.inventoryItems[i] == null)
 						{
-							if (inventoryItems[i] != null)
-							{
-								return false;
-							}
+							if (inventoryItems[i] != null) { return false; }
 						}
 					}
 
 					else
 					{
-						if (inventoryItems[i] != otherInventory.inventoryItems[i])
-						{
-							return false;
-						}
+						if (inventoryItems[i] != otherInventory.inventoryItems[i]) { return false; }
 					}
 				}
 
@@ -130,7 +125,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the number of slots in the inventory.
 	 * 
-	 * @return	The total number of slots in the inventory.
+	 * @return The total number of slots in the inventory.
 	 */
 	@Override
 	public final int getSizeInventory()
@@ -150,9 +145,11 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets an item stack from the inventory.
 	 * 
-	 * @param	slotId	The slot that the item stack instance should be created from.
+	 * @param slotId
+	 *            The slot that the item stack instance should be created from.
 	 * 
-	 * @return	The item stack in the specified slot. Null if there is no stack in that slot.
+	 * @return The item stack in the specified slot. Null if there is no stack
+	 *         in that slot.
 	 */
 	@Override
 	public ItemStack getStackInSlot(int slotId)
@@ -171,10 +168,12 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Decreases the size of the stack in a slot by a certain amount.
 	 * 
-	 * @param	slotId	The slot that contains the item stack to be decreased.
-	 * @param	removalAmount	The amount that should be removed from the item stack.
+	 * @param slotId
+	 *            The slot that contains the item stack to be decreased.
+	 * @param removalAmount
+	 *            The amount that should be removed from the item stack.
 	 * 
-	 * @return	The new item stack with the appropriate amount removed from it.
+	 * @return The new item stack with the appropriate amount removed from it.
 	 */
 	@Override
 	public ItemStack decrStackSize(int slotId, int removalAmount)
@@ -214,11 +213,15 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	/**
-	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem - like when you close a workbench GUI.
+	 * When some containers are closed they call this on each slot, then drop
+	 * whatever it returns as an EntityItem - like when you close a workbench
+	 * GUI.
 	 * 
-	 * @param	slotId	The ID of an inventory slot.
+	 * @param slotId
+	 *            The ID of an inventory slot.
 	 * 
-	 * @return	Item stack that should be dropped if it was being held while the GUI closed. Null if none should be dropped.
+	 * @return Item stack that should be dropped if it was being held while the
+	 *         GUI closed. Null if none should be dropped.
 	 */
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slotId)
@@ -237,10 +240,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	/**
-	 * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+	 * Sets the given item stack to the specified slot in the inventory (can be
+	 * crafting or armor sections).
 	 * 
-	 * @param	slotNumber	The slot in which the item stack is to be placed in.
-	 * @param	itemStack	The item stack that is being placed in the slot.
+	 * @param slotNumber
+	 *            The slot in which the item stack is to be placed in.
+	 * @param itemStack
+	 *            The item stack that is being placed in the slot.
 	 */
 	@Override
 	public void setInventorySlotContents(int slotNumber, ItemStack itemStack)
@@ -258,7 +264,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the name of the inventory which is displayed in the inventory GUI.
 	 * 
-	 * @return	Localized string that states the name of the inventory.
+	 * @return Localized string that states the name of the inventory.
 	 */
 	@Override
 	public String getInventoryName()
@@ -300,17 +306,15 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Can the player use this container?
 	 * 
-	 * @param	player	The player trying to access the container.
+	 * @param player
+	 *            The player trying to access the container.
 	 * 
-	 * @return 	True or false depending on if the player can use this container.
+	 * @return True or false depending on if the player can use this container.
 	 */
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		if (owner.isDead)
-		{
-			return false;
-		}
+		if (owner.isDead) { return false; }
 
 		return player.getDistanceSqToEntity(owner) <= 64D;
 	}
@@ -321,7 +325,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	@Override
 	public void openInventory()
 	{
-		//Nothing to do.
+		// Nothing to do.
 	}
 
 	/**
@@ -340,11 +344,14 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	/**
-	 * Counts the number of the specified item that is contained in the inventory.
+	 * Counts the number of the specified item that is contained in the
+	 * inventory.
 	 * 
-	 * @param	item	The item whose ID will be counted.
+	 * @param item
+	 *            The item whose ID will be counted.
 	 * 
-	 * @return	The total number of the specified items that are in the inventory.
+	 * @return The total number of the specified items that are in the
+	 *         inventory.
 	 */
 	public int getQuantityOfItem(Item item)
 	{
@@ -362,11 +369,14 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	/**
-	 * Counts the number of the specified item ID that is contained in the inventory.
+	 * Counts the number of the specified item ID that is contained in the
+	 * inventory.
 	 * 
-	 * @param 	itemId	The ID to be counted.
+	 * @param itemId
+	 *            The ID to be counted.
 	 * 
-	 * @return	The total number of items with the specified ID that are in the inventory.
+	 * @return The total number of items with the specified ID that are in the
+	 *         inventory.
 	 */
 	public int getQuantityOfItem(int itemId)
 	{
@@ -408,7 +418,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the entity's armor value from worn armor.
 	 * 
-	 * @return	int expressing the armor value of the entity's worn armor.
+	 * @return int expressing the armor value of the entity's worn armor.
 	 */
 	public int getTotalArmorValue()
 	{
@@ -419,7 +429,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			if (armorItemInSlot(slot) != null)
 			{
 				final ItemStack armorItem = armorItemInSlot(slot);
-				armorValue += ((ItemArmor)armorItem.getItem()).damageReduceAmount;
+				armorValue += ((ItemArmor) armorItem.getItem()).damageReduceAmount;
 			}
 		}
 
@@ -429,18 +439,16 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the armor item that is in the specified slot.
 	 * 
-	 * @param	slotId	The armor slot that the item stack should be retrieved from.
+	 * @param slotId
+	 *            The armor slot that the item stack should be retrieved from.
 	 * 
-	 * @return	The item stack contained in the specified armor slot.
+	 * @return The item stack contained in the specified armor slot.
 	 */
 	public ItemStack armorItemInSlot(int slotId)
 	{
 		try
 		{
-			if (slotId != -1 && armorItems[slotId] != null)
-			{
-				return inventoryItems[getFirstSlotContainingItem(armorItems[slotId].getItem())];
-			}
+			if (slotId != -1 && armorItems[slotId] != null) { return inventoryItems[getFirstSlotContainingItem(armorItems[slotId].getItem())]; }
 		}
 
 		catch (final ArrayIndexOutOfBoundsException e)
@@ -462,18 +470,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			{
 				if (stack.getItem() instanceof ItemArmor)
 				{
-					final ItemArmor itemAsArmor = (ItemArmor)stack.getItem();
+					final ItemArmor itemAsArmor = (ItemArmor) stack.getItem();
 					final int armorType = itemAsArmor.armorType;
 
 					try
 					{
-						if (((ItemArmor)armorItems[armorType].getItem()).damageReduceAmount < itemAsArmor.damageReduceAmount)
+						if (((ItemArmor) armorItems[armorType].getItem()).damageReduceAmount < itemAsArmor.damageReduceAmount)
 						{
 							armorItems[armorType] = stack;
 						}
 					}
 
-					//Hit when there's nothing in that armor slot.
+					// Hit when there's nothing in that armor slot.
 					catch (final NullPointerException e)
 					{
 						armorItems[armorType] = stack;
@@ -482,8 +490,9 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			}
 		}
 
-		//Check and be sure the inventory still contains each armor item in the armor slots.
-		//Set it to null if it is not contained in the main inventory.
+		// Check and be sure the inventory still contains each armor item in the
+		// armor slots.
+		// Set it to null if it is not contained in the main inventory.
 		for (int i = 0; i < 4; i++)
 		{
 			if (armorItems[i] != null)
@@ -497,11 +506,14 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	/**
-	 * Gets the best quality (max damage) item of the specified type that is in the inventory.
+	 * Gets the best quality (max damage) item of the specified type that is in
+	 * the inventory.
 	 * 
-	 * @param	type	The class of item that will be returned.
+	 * @param type
+	 *            The class of item that will be returned.
 	 * 
-	 * @return	The item stack containing the item of the specified type with the highest max damage .
+	 * @return The item stack containing the item of the specified type with the
+	 *         highest max damage .
 	 */
 	public ItemStack getBestItemOfType(Class type)
 	{
@@ -528,18 +540,16 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Stores the item stack in the inventory.
 	 * 
-	 * @param	itemStack	The item stack that is to be stored in the inventory.
+	 * @param itemStack
+	 *            The item stack that is to be stored in the inventory.
 	 * 
-	 * @return	The slot ID that the item stack was put in to.
+	 * @return The slot ID that the item stack was put in to.
 	 */
 	private int storeItemStack(ItemStack itemStack)
 	{
 		for (int i = 0; i < inventoryItems.length; ++i)
 		{
-			if (inventoryItems[i] != null && inventoryItems[i] == itemStack && inventoryItems[i].isStackable() && inventoryItems[i].stackSize < inventoryItems[i].getMaxStackSize() && inventoryItems[i].stackSize < getInventoryStackLimit() && (!inventoryItems[i].getHasSubtypes() || inventoryItems[i].getItemDamage() == itemStack.getItemDamage()) && ItemStack.areItemStacksEqual(inventoryItems[i], itemStack))
-			{
-				return i;
-			}
+			if (inventoryItems[i] != null && inventoryItems[i] == itemStack && inventoryItems[i].isStackable() && inventoryItems[i].stackSize < inventoryItems[i].getMaxStackSize() && inventoryItems[i].stackSize < getInventoryStackLimit() && (!inventoryItems[i].getHasSubtypes() || inventoryItems[i].getItemDamage() == itemStack.getItemDamage()) && ItemStack.areItemStacksEqual(inventoryItems[i], itemStack)) { return i; }
 		}
 
 		return -1;
@@ -548,16 +558,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the first empty slot in the inventory.
 	 * 
-	 * @return	The slot ID of the first empty slot in the inventory.
+	 * @return The slot ID of the first empty slot in the inventory.
 	 */
 	private int getFirstEmptyStack()
 	{
 		for (int i = 0; i < inventoryItems.length; i++)
 		{
-			if (inventoryItems[i] == null)
-			{
-				return i;
-			}
+			if (inventoryItems[i] == null) { return i; }
 		}
 
 		return -1;
@@ -566,9 +573,10 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Stores a partial item stack in the inventory.
 	 * 
-	 * @param	itemStack	The item stack that is to be placed in the inventory.
+	 * @param itemStack
+	 *            The item stack that is to be placed in the inventory.
 	 * 
-	 * @return	Any remainder left in the item stack.
+	 * @return Any remainder left in the item stack.
 	 */
 	private int storePartialItemStack(ItemStack itemStack)
 	{
@@ -578,10 +586,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			final int slotId = getFirstEmptyStack();
 
-			if (slotId < 0)
-			{
-				return stackSize;
-			}
+			if (slotId < 0) { return stackSize; }
 
 			if (inventoryItems[slotId] == null)
 			{
@@ -598,10 +603,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			slotId = getFirstEmptyStack();
 		}
 
-		if (slotId < 0)
-		{
-			return stackSize;
-		}
+		if (slotId < 0) { return stackSize; }
 
 		if (inventoryItems[slotId] == null)
 		{
@@ -609,7 +611,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 			if (itemStack.hasTagCompound())
 			{
-				inventoryItems[slotId].setTagCompound((NBTTagCompound)itemStack.getTagCompound().copy());
+				inventoryItems[slotId].setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
 			}
 		}
 
@@ -690,9 +692,11 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Adds a whole item stack to the inventory.
 	 * 
-	 * @param 	itemStack	The item stack to be added to the inventory.
+	 * @param itemStack
+	 *            The item stack to be added to the inventory.
 	 * 
-	 * @return	True or false depending on if adding the stack to the inventory was successful.
+	 * @return True or false depending on if adding the stack to the inventory
+	 *         was successful.
 	 */
 	public boolean addItemStackToInventory(ItemStack itemStack)
 	{
@@ -747,7 +751,8 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Damages the armor in the armor inventory by the specified amount.
 	 * 
-	 * @param	damageAmount	The amount that the armor should be damaged.
+	 * @param damageAmount
+	 *            The amount that the armor should be damaged.
 	 */
 	public void damageArmor(int damageAmount)
 	{
@@ -765,7 +770,8 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				continue;
 			}
 
-			//Damage the armor and update the main inventory with the damaged armor.
+			// Damage the armor and update the main inventory with the damaged
+			// armor.
 			armorItems[i].damageItem(newDamageAmount, owner);
 			setInventorySlotContents(getFirstSlotContainingItem(armorItems[i].getItem()), armorItems[i]);
 
@@ -774,7 +780,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				setInventorySlotContents(getFirstSlotContainingItem(armorItems[i].getItem()), null);
 				armorItems[i] = null;
 
-				//Get the next armor item to go in the slot, if there is one.
+				// Get the next armor item to go in the slot, if there is one.
 				setWornArmorItems();
 			}
 		}
@@ -783,16 +789,15 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets how much an entity should be damaged.
 	 * 
-	 * @param 	target	The entity being damaged.
+	 * @param target
+	 *            The entity being damaged.
 	 * 
-	 * @return	Integer amount that is the amount in half hearts that an entity should be damaged.
+	 * @return Integer amount that is the amount in half hearts that an entity
+	 *         should be damaged.
 	 */
 	public int getDamageVsEntity(EntityLivingBase target)
 	{
-		if (owner.getHeldItem() == null)
-		{
-			return 1;
-		}
+		if (owner.getHeldItem() == null) { return 1; }
 
 		return getDamageByHeldItemType(owner.getHeldItem());
 	}
@@ -800,9 +805,11 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the ID of the first slot that contains the specified item.
 	 * 
-	 * @param 	item	The item that must be in the slot.
+	 * @param item
+	 *            The item that must be in the slot.
 	 * 
-	 * @return	The ID of the slot containing the specified item. -1 if the item is not in any slot.
+	 * @return The ID of the slot containing the specified item. -1 if the item
+	 *         is not in any slot.
 	 */
 	public int getFirstSlotContainingItem(Item item)
 	{
@@ -810,10 +817,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 		for (final ItemStack stack : inventoryItems)
 		{
-			if (stack != null && stack.getItem() == item)
-			{
-				return slot;
-			}
+			if (stack != null && stack.getItem() == item) { return slot; }
 
 			slot++;
 		}
@@ -824,9 +828,11 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the ID of the first slot that contains the specified item ID.
 	 * 
-	 * @param 	itemId	The item ID that must be in the slot.
+	 * @param itemId
+	 *            The item ID that must be in the slot.
 	 * 
-	 * @return	The ID of the slot containing the specified item. -1 if the item is not in any slot.
+	 * @return The ID of the slot containing the specified item. -1 if the item
+	 *         is not in any slot.
 	 */
 	public int getFirstSlotContainingItem(int itemId)
 	{
@@ -834,10 +840,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 		for (final ItemStack stack : inventoryItems)
 		{
-			if (stack != null && stack.getItem() == Item.getItemById(itemId))
-			{
-				return slot;
-			}
+			if (stack != null && stack.getItem() == Item.getItemById(itemId)) { return slot; }
 
 			slot++;
 		}
@@ -848,7 +851,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Gets the ID of the first slot the contains a food item.
 	 * 
-	 * @return	The ID of the first slot containing a food item.
+	 * @return The ID of the first slot containing a food item.
 	 */
 	public int getFirstSlotContainingFood()
 	{
@@ -856,10 +859,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 		for (final ItemStack stack : inventoryItems)
 		{
-			if (stack != null && stack.getItem() instanceof ItemFood)
-			{
-				return slot;
-			}
+			if (stack != null && stack.getItem() instanceof ItemFood) { return slot; }
 
 			slot++;
 		}
@@ -870,18 +870,17 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Determines if this inventory contains the specified item.
 	 * 
-	 * @param 	item	The item that should be contained in the inventory.
+	 * @param item
+	 *            The item that should be contained in the inventory.
 	 * 
-	 * @return	True or false depending on if the item provided is in the inventory.
+	 * @return True or false depending on if the item provided is in the
+	 *         inventory.
 	 */
 	public boolean contains(Item item)
 	{
 		for (final ItemStack stack : inventoryItems)
 		{
-			if (stack != null && stack.getItem() == item)
-			{
-				return true;
-			}
+			if (stack != null && stack.getItem() == item) { return true; }
 		}
 
 		return false;
@@ -890,18 +889,17 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Determines if this inventory contains the specified block.
 	 * 
-	 * @param 	block	The block that should be contained in the inventory.
+	 * @param block
+	 *            The block that should be contained in the inventory.
 	 * 
-	 * @return	True or false depending on if the block provided is in the inventory.
+	 * @return True or false depending on if the block provided is in the
+	 *         inventory.
 	 */
 	public boolean contains(Block block)
 	{
 		for (final ItemStack stack : inventoryItems)
 		{
-			if (stack != null && stack.getItem() == Item.getItemFromBlock(block))
-			{
-				return true;
-			}
+			if (stack != null && stack.getItem() == Item.getItemFromBlock(block)) { return true; }
 		}
 
 		return false;
@@ -910,11 +908,12 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Writes the owner's inventory to NBT.
 	 * 
-	 * @param	nbt	The instance of the NBTTagCompound used to write info to NBT.
+	 * @param nbt
+	 *            The instance of the NBTTagCompound used to write info to NBT.
 	 */
 	public void writeInventoryToNBT(NBTTagCompound nbt)
 	{
-		//Write the main inventory to NBT.
+		// Write the main inventory to NBT.
 		NBTTagList nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < inventoryItems.length; i++)
@@ -922,7 +921,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			if (inventoryItems[i] != null)
 			{
 				final NBTTagCompound tagCompound = new NBTTagCompound();
-				tagCompound.setByte("Slot", (byte)i);
+				tagCompound.setByte("Slot", (byte) i);
 				inventoryItems[i].writeToNBT(tagCompound);
 				nbttaglist.appendTag(tagCompound);
 			}
@@ -930,7 +929,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 		nbt.setTag("Items", nbttaglist);
 
-		//Write the armor inventory to NBT.
+		// Write the armor inventory to NBT.
 		nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < armorItems.length; i++)
@@ -938,7 +937,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			if (armorItems[i] != null)
 			{
 				final NBTTagCompound tagCompound = new NBTTagCompound();
-				tagCompound.setByte("Slot", (byte)i);
+				tagCompound.setByte("Slot", (byte) i);
 				armorItems[i].writeToNBT(tagCompound);
 				nbttaglist.appendTag(tagCompound);
 			}
@@ -950,7 +949,8 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Reads the owner's inventory from NBT.
 	 * 
-	 * @param	nbt	The instance of the NBTTagCompound used to read info from NBT.
+	 * @param nbt
+	 *            The instance of the NBTTagCompound used to read info from NBT.
 	 */
 	public void readInventoryFromNBT(NBTTagCompound nbt)
 	{
@@ -988,9 +988,12 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Writes this object to an object output stream. (Serialization)
 	 * 
-	 * @param 	outStream	The object output stream that this object should be written to.
+	 * @param outStream
+	 *            The object output stream that this object should be written
+	 *            to.
 	 * 
-	 * @throws 	IOException	This exception should never happen.
+	 * @throws IOException
+	 *             This exception should never happen.
 	 */
 	private void writeObject(ObjectOutputStream outStream) throws IOException
 	{
@@ -1004,7 +1007,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 				if (stack.getItem() instanceof ItemArmor)
 				{
-					final ItemArmor armor = (ItemArmor)stack.getItem();
+					final ItemArmor armor = (ItemArmor) stack.getItem();
 					writeString += ":" + armor.getColor(stack);
 				}
 
@@ -1031,10 +1034,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Reads this object from an object input stream. (Deserialization)
 	 * 
-	 * @param 	inStream	The object input stream that this object should be read from.
+	 * @param inStream
+	 *            The object input stream that this object should be read from.
 	 * 
-	 * @throws 	IOException				This exception should never happen.
-	 * @throws 	ClassNotFoundException	This exception should never happen.
+	 * @throws IOException
+	 *             This exception should never happen.
+	 * @throws ClassNotFoundException
+	 *             This exception should never happen.
 	 */
 	private void readObject(ObjectInputStream inStream) throws IOException, ClassNotFoundException
 	{
@@ -1063,7 +1069,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 					if (inventoryStack.getItem() instanceof ItemArmor)
 					{
-						final ItemArmor armor = (ItemArmor)inventoryStack.getItem();
+						final ItemArmor armor = (ItemArmor) inventoryStack.getItem();
 
 						if (armor.getArmorMaterial() == ArmorMaterial.CLOTH)
 						{
@@ -1086,16 +1092,22 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	{
 		if (stack.getItem() instanceof ItemSword)
 		{
-			final ToolMaterial material = ToolMaterial.valueOf(((ItemSword)stack.getItem()).getToolMaterialName());
+			final ToolMaterial material = ToolMaterial.valueOf(((ItemSword) stack.getItem()).getToolMaterialName());
 
 			switch (material)
 			{
-			case WOOD: 		return 4;
-			case STONE: 	return 5;
-			case IRON: 		return 6;
-			case GOLD: 		return 4;
-			case EMERALD:	return 7;
-			default: 		return 5;
+				case WOOD:
+					return 4;
+				case STONE:
+					return 5;
+				case IRON:
+					return 6;
+				case GOLD:
+					return 4;
+				case EMERALD:
+					return 7;
+				default:
+					return 5;
 			}
 		}
 
@@ -1113,7 +1125,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	@Override
 	public void onInventoryChanged(InventoryBasic var1)
 	{
-		//Nothing to do here.
+		// Nothing to do here.
 	}
 
 	public static void populateWithRandomEquipment(Inventory inventory)
@@ -1137,10 +1149,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			switch (weaponLevel)
 			{
-			case 1: inventory.addItemStackToInventory(new ItemStack(Items.wooden_sword, 1)); break;
-			case 2: inventory.addItemStackToInventory(new ItemStack(Items.stone_sword, 1)); break;
-			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_sword, 1)); break;
-			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_sword, 1)); break;
+				case 1:
+					inventory.addItemStackToInventory(new ItemStack(Items.wooden_sword, 1));
+					break;
+				case 2:
+					inventory.addItemStackToInventory(new ItemStack(Items.stone_sword, 1));
+					break;
+				case 3:
+					inventory.addItemStackToInventory(new ItemStack(Items.iron_sword, 1));
+					break;
+				case 4:
+					inventory.addItemStackToInventory(new ItemStack(Items.diamond_sword, 1));
+					break;
 			}
 		}
 
@@ -1148,10 +1168,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			switch (armorLevel)
 			{
-			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_helmet, 1)); break;
-			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_helmet, 1)); break;
-			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_helmet, 1)); break;
-			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_helmet, 1)); break;
+				case 1:
+					inventory.addItemStackToInventory(new ItemStack(Items.leather_helmet, 1));
+					break;
+				case 2:
+					inventory.addItemStackToInventory(new ItemStack(Items.golden_helmet, 1));
+					break;
+				case 3:
+					inventory.addItemStackToInventory(new ItemStack(Items.iron_helmet, 1));
+					break;
+				case 4:
+					inventory.addItemStackToInventory(new ItemStack(Items.diamond_helmet, 1));
+					break;
 			}
 		}
 
@@ -1159,10 +1187,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			switch (armorLevel)
 			{
-			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1)); break;
-			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1)); break;
-			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1)); break;
-			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1)); break;
+				case 1:
+					inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1));
+					break;
+				case 2:
+					inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1));
+					break;
+				case 3:
+					inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1));
+					break;
+				case 4:
+					inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1));
+					break;
 			}
 		}
 
@@ -1170,10 +1206,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			switch (armorLevel)
 			{
-			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_leggings, 1)); break;
-			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_leggings, 1)); break;
-			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_leggings, 1)); break;
-			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_leggings, 1)); break;
+				case 1:
+					inventory.addItemStackToInventory(new ItemStack(Items.leather_leggings, 1));
+					break;
+				case 2:
+					inventory.addItemStackToInventory(new ItemStack(Items.golden_leggings, 1));
+					break;
+				case 3:
+					inventory.addItemStackToInventory(new ItemStack(Items.iron_leggings, 1));
+					break;
+				case 4:
+					inventory.addItemStackToInventory(new ItemStack(Items.diamond_leggings, 1));
+					break;
 			}
 		}
 
@@ -1181,10 +1225,18 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			switch (armorLevel)
 			{
-			case 1: inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1)); break;
-			case 2: inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1)); break;
-			case 3: inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1)); break;
-			case 4: inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1)); break;
+				case 1:
+					inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1));
+					break;
+				case 2:
+					inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1));
+					break;
+				case 3:
+					inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1));
+					break;
+				case 4:
+					inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1));
+					break;
 			}
 		}
 
@@ -1195,10 +1247,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	{
 		for (int i = 0; i < getSizeInventory(); i++)
 		{
-			if (inventoryItems[i] != null)
-			{
-				return false;
-			}
+			if (inventoryItems[i] != null) { return false; }
 		}
 
 		return true;

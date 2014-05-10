@@ -13,11 +13,11 @@ import spiderqueen.entity.EntityOtherQueen;
 
 public class CreatureReputationEntry
 {
-	private final Class creatureClass;
-	public String creatureGroupName;
-	public int reputationValue;
-	public int creaturesKilled;
-	public boolean isAtWar;
+	private final Class	creatureClass;
+	public String		creatureGroupName;
+	public int			reputationValue;
+	public int			creaturesKilled;
+	public boolean		isAtWar;
 
 	public static List<CreatureReputationEntry> getListOfCleanEntries()
 	{

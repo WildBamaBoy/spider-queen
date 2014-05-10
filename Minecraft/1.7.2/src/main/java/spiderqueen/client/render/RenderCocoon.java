@@ -22,7 +22,7 @@ import spiderqueen.entity.EntityCocoon;
 
 public class RenderCocoon extends Render
 {
-	private final ModelBase modelCocoon;
+	private final ModelBase	modelCocoon;
 
 	public RenderCocoon()
 	{
@@ -51,22 +51,21 @@ public class RenderCocoon extends Render
 
 			bindTexture(getEntityTexture(entityCocoon));
 			GL11.glScalef(-1F, -1F, 1.0F);
-			modelCocoon.render(entityCocoon,0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			modelCocoon.render(entityCocoon, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		}
 		GL11.glPopMatrix();
 	}
 
-
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		render((EntityCocoon)entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		render((EntityCocoon) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		final EntityCocoon entityCocoon = (EntityCocoon)entity;
+		final EntityCocoon entityCocoon = (EntityCocoon) entity;
 
 		String name = entityCocoon.getCocoonType().toString();
 		name = Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();

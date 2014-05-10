@@ -33,28 +33,28 @@ import com.radixshock.radixcore.constant.Font.Format;
 
 public class RenderFakePlayer extends RenderBiped
 {
-	private final ModelBiped modelArmorPlate;
-	private final ModelBiped modelArmor;
+	private final ModelBiped	modelArmorPlate;
+	private final ModelBiped	modelArmor;
 
 	public RenderFakePlayer()
 	{
 		super(new ModelBiped(0.0F), 0.5F);
 
-		modelBipedMain  = (ModelBiped)mainModel;
+		modelBipedMain = (ModelBiped) mainModel;
 		modelArmorPlate = new ModelBiped(1.0F);
-		modelArmor      = new ModelBiped(0.5F);
+		modelArmor = new ModelBiped(0.5F);
 	}
 
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		renderFakePlayer((EntityFakePlayer)entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		renderFakePlayer((EntityFakePlayer) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
 	public void doRender(EntityLiving entityLiving, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		renderFakePlayer((EntityFakePlayer)entityLiving, posX, posY, posZ, rotationYaw, rotationPitch);
+		renderFakePlayer((EntityFakePlayer) entityLiving, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class RenderFakePlayer extends RenderBiped
 	{
 		if (Minecraft.isGuiEnabled())
 		{
-			final EntityFakePlayer entityFakePlayer = (EntityFakePlayer)entityLivingBase;
+			final EntityFakePlayer entityFakePlayer = (EntityFakePlayer) entityLivingBase;
 
 			if (SpiderQueen.getInstance().doDisplayPlayerSkins)
 			{
@@ -80,7 +80,7 @@ public class RenderFakePlayer extends RenderBiped
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		final EntityFakePlayer player = (EntityFakePlayer)entity;
+		final EntityFakePlayer player = (EntityFakePlayer) entity;
 
 		if (SpiderQueen.getInstance().doDisplayPlayerSkins)
 		{
@@ -127,11 +127,16 @@ public class RenderFakePlayer extends RenderBiped
 	/**
 	 * Renders a label above an entity's head.
 	 * 
-	 * @param 	entityFakePlayer	The entity that the label should be rendered on.
-	 * @param 	posX				The entity's x position.
-	 * @param 	posY				The entity's y position.
-	 * @param 	posZ				The entity's z position.
-	 * @param 	labelText			The text that should appear on the label.
+	 * @param entityFakePlayer
+	 *            The entity that the label should be rendered on.
+	 * @param posX
+	 *            The entity's x position.
+	 * @param posY
+	 *            The entity's y position.
+	 * @param posZ
+	 *            The entity's z position.
+	 * @param labelText
+	 *            The text that should appear on the label.
 	 */
 	private void renderLabel(EntityFakePlayer entityFakePlayer, double posX, double posY, double posZ, String labelText)
 	{
@@ -149,13 +154,13 @@ public class RenderFakePlayer extends RenderBiped
 
 		if (distanceSq <= visibleDistance * visibleDistance)
 		{
-			final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
+			final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
 
 			final FontRenderer fontrenderer = getFontRendererFromRenderManager();
 			final float f = 1.6F;
 			final float f1 = 0.016666668F * f;
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)posX + 0.0F, (float)posY + entity.height + 0.5F, (float)posZ);
+			GL11.glTranslatef((float) posX + 0.0F, (float) posY + entity.height + 0.5F, (float) posZ);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

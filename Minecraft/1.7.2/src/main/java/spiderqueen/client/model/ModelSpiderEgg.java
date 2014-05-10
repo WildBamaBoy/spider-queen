@@ -15,10 +15,10 @@ import net.minecraft.entity.Entity;
 
 public class ModelSpiderEgg extends ModelBase
 {
-	//fields
-	ModelRenderer New_Shape0;
-	ModelRenderer New_Shape1;
-	ModelRenderer New_Shape2;
+	// fields
+	ModelRenderer	New_Shape0;
+	ModelRenderer	New_Shape1;
+	ModelRenderer	New_Shape2;
 
 	public ModelSpiderEgg()
 	{

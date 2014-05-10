@@ -18,7 +18,7 @@ import spiderqueen.entity.EntityOtherQueen;
 
 public class RenderOtherQueen extends RenderLiving
 {
-	private final ModelSpiderQueen modelBipedMain;
+	private final ModelSpiderQueen	modelBipedMain;
 
 	public RenderOtherQueen()
 	{
@@ -77,13 +77,13 @@ public class RenderOtherQueen extends RenderLiving
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		this.doRender((EntityLivingBase)entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		this.doRender((EntityLivingBase) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
 	protected void bindEntityTexture(Entity entity)
 	{
-		final EntityOtherQueen enemyQueen = (EntityOtherQueen)entity;
+		final EntityOtherQueen enemyQueen = (EntityOtherQueen) entity;
 
 		if (enemyQueen.isHostile)
 		{
@@ -97,7 +97,8 @@ public class RenderOtherQueen extends RenderLiving
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
+	protected ResourceLocation getEntityTexture(Entity var1)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}

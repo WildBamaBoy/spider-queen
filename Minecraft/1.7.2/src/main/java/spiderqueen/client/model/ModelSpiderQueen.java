@@ -16,27 +16,27 @@ import net.minecraft.util.MathHelper;
 
 public class ModelSpiderQueen extends ModelBase
 {
-	private final ModelRenderer head;
-	private final ModelRenderer body;
-	private final ModelRenderer torso;
-	private final ModelRenderer rear;
-	private final ModelRenderer leg1;
-	private final ModelRenderer leg2;
-	private final ModelRenderer leg3;
-	private final ModelRenderer leg4;
-	private final ModelRenderer leg5;
-	private final ModelRenderer leg6;
-	private final ModelRenderer leg7;
-	private final ModelRenderer leg8;
-	private final ModelRenderer armLeft;
-	public final ModelRenderer armRight;
-	private final ModelRenderer breasts;
-	private final ModelRenderer spinner1;
-	private final ModelRenderer spinner2;
+	private final ModelRenderer	head;
+	private final ModelRenderer	body;
+	private final ModelRenderer	torso;
+	private final ModelRenderer	rear;
+	private final ModelRenderer	leg1;
+	private final ModelRenderer	leg2;
+	private final ModelRenderer	leg3;
+	private final ModelRenderer	leg4;
+	private final ModelRenderer	leg5;
+	private final ModelRenderer	leg6;
+	private final ModelRenderer	leg7;
+	private final ModelRenderer	leg8;
+	private final ModelRenderer	armLeft;
+	public final ModelRenderer	armRight;
+	private final ModelRenderer	breasts;
+	private final ModelRenderer	spinner1;
+	private final ModelRenderer	spinner2;
 
 	public ModelSpiderQueen()
 	{
-		head = new ModelRenderer(this,32, 4);
+		head = new ModelRenderer(this, 32, 4);
 		head.addBox(-4, -8, -4, 8, 8, 8, 0F);
 		head.setRotationPoint(0, 3, -3);
 
@@ -45,7 +45,7 @@ public class ModelSpiderQueen extends ModelBase
 		head.rotateAngleZ = 0F;
 		head.mirror = false;
 
-		body = new ModelRenderer(this,1, 0);
+		body = new ModelRenderer(this, 1, 0);
 		body.addBox(-3, -3, -3, 6, 6, 5, 0F);
 		body.setRotationPoint(0, 15, 0);
 
@@ -54,7 +54,7 @@ public class ModelSpiderQueen extends ModelBase
 		body.rotateAngleZ = 0F;
 		body.mirror = false;
 
-		rear = new ModelRenderer(this,1, 11);
+		rear = new ModelRenderer(this, 1, 11);
 		rear.addBox(-5, -4, -6, 10, 10, 11, 0F);
 		rear.setRotationPoint(0, 11, 7);
 
@@ -63,7 +63,7 @@ public class ModelSpiderQueen extends ModelBase
 		rear.rotateAngleZ = 0F;
 		rear.mirror = false;
 
-		leg1 = new ModelRenderer(this,18, 0);
+		leg1 = new ModelRenderer(this, 18, 0);
 		leg1.addBox(-15, -1, -1, 16, 2, 2, 0F);
 		leg1.setRotationPoint(-4, 15, 2);
 
@@ -72,7 +72,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg1.rotateAngleZ = 0F;
 		leg1.mirror = false;
 
-		leg2 = new ModelRenderer(this,18, 0);
+		leg2 = new ModelRenderer(this, 18, 0);
 		leg2.addBox(-1, -1, -1, 16, 2, 2, 0F);
 		leg2.setRotationPoint(4, 15, 2);
 
@@ -81,7 +81,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg2.rotateAngleZ = 0F;
 		leg2.mirror = false;
 
-		leg3 = new ModelRenderer(this,18, 0);
+		leg3 = new ModelRenderer(this, 18, 0);
 		leg3.addBox(-15, -1, -1, 16, 2, 2, 0F);
 		leg3.setRotationPoint(-4, 15, 1);
 
@@ -90,7 +90,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg3.rotateAngleZ = 0F;
 		leg3.mirror = false;
 
-		leg4 = new ModelRenderer(this,18, 0);
+		leg4 = new ModelRenderer(this, 18, 0);
 		leg4.addBox(-1, -1, -1, 16, 2, 2, 0F);
 		leg4.setRotationPoint(4, 15, 1);
 
@@ -99,7 +99,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg4.rotateAngleZ = 0F;
 		leg4.mirror = false;
 
-		leg5 = new ModelRenderer(this,18, 0);
+		leg5 = new ModelRenderer(this, 18, 0);
 		leg5.addBox(-15, -1, -1, 16, 2, 2, 0F);
 		leg5.setRotationPoint(-4, 15, 0);
 
@@ -108,7 +108,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg5.rotateAngleZ = 0F;
 		leg5.mirror = false;
 
-		leg6 = new ModelRenderer(this,18, 0);
+		leg6 = new ModelRenderer(this, 18, 0);
 		leg6.addBox(-1, -1, -1, 16, 2, 2, 0F);
 		leg6.setRotationPoint(4, 15, 0);
 
@@ -117,7 +117,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg6.rotateAngleZ = 0F;
 		leg6.mirror = false;
 
-		leg7 = new ModelRenderer(this,18, 0);
+		leg7 = new ModelRenderer(this, 18, 0);
 		leg7.addBox(-15, -1, -1, 16, 2, 2, 0F);
 		leg7.setRotationPoint(-4, 15, -1);
 
@@ -126,7 +126,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg7.rotateAngleZ = 0F;
 		leg7.mirror = false;
 
-		leg8 = new ModelRenderer(this,18, 0);
+		leg8 = new ModelRenderer(this, 18, 0);
 		leg8.addBox(-1, -1, -1, 16, 2, 2, 0F);
 		leg8.setRotationPoint(4, 15, -1);
 
@@ -135,7 +135,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg8.rotateAngleZ = 0F;
 		leg8.mirror = false;
 
-		torso = new ModelRenderer(this,44, 18);
+		torso = new ModelRenderer(this, 44, 18);
 		torso.addBox(-3, -10, -2, 6, 10, 4, 0F);
 		torso.setRotationPoint(0, 13, -3);
 
@@ -144,7 +144,7 @@ public class ModelSpiderQueen extends ModelBase
 		torso.rotateAngleZ = 0F;
 		torso.mirror = false;
 
-		armLeft = new ModelRenderer(this,56, 0);
+		armLeft = new ModelRenderer(this, 56, 0);
 		armLeft.addBox(-1, -1, -1, 2, 10, 2, 0F);
 		armLeft.setRotationPoint(4, 4, -3);
 
@@ -153,7 +153,7 @@ public class ModelSpiderQueen extends ModelBase
 		armLeft.rotateAngleZ = 0F;
 		armLeft.mirror = false;
 
-		armRight = new ModelRenderer(this,56, 0);
+		armRight = new ModelRenderer(this, 56, 0);
 		armRight.addBox(-1, -1, -1, 2, 10, 2, 0F);
 		armRight.setRotationPoint(-4, 4, -3);
 
@@ -162,7 +162,7 @@ public class ModelSpiderQueen extends ModelBase
 		armRight.rotateAngleZ = 0F;
 		armRight.mirror = false;
 
-		breasts = new ModelRenderer(this,46, 20);
+		breasts = new ModelRenderer(this, 46, 20);
 		breasts.addBox(-3, -7, -7, 6, 3, 2, 0F);
 		breasts.setRotationPoint(0, 13, -3);
 
@@ -171,7 +171,7 @@ public class ModelSpiderQueen extends ModelBase
 		breasts.rotateAngleZ = 0F;
 		breasts.mirror = false;
 
-		spinner1 = new ModelRenderer(this,0, 0);
+		spinner1 = new ModelRenderer(this, 0, 0);
 		spinner1.addBox(-1, -3, 0, 2, 3, 1, 0F);
 		spinner1.setRotationPoint(2, 15, 11);
 
@@ -180,7 +180,7 @@ public class ModelSpiderQueen extends ModelBase
 		spinner1.rotateAngleZ = 0F;
 		spinner1.mirror = false;
 
-		spinner2 = new ModelRenderer(this,0, 0);
+		spinner2 = new ModelRenderer(this, 0, 0);
 		spinner2.addBox(-1, -3, 0, 2, 3, 1, 0F);
 		spinner2.setRotationPoint(-2, 15, 11);
 
@@ -216,8 +216,8 @@ public class ModelSpiderQueen extends ModelBase
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		head.rotateAngleY = f3 / (180F / (float)Math.PI);
-		head.rotateAngleX = f4 / (180F / (float)Math.PI);
+		head.rotateAngleY = f3 / (180F / (float) Math.PI);
+		head.rotateAngleX = f4 / (180F / (float) Math.PI);
 
 		final float f6 = 0.7853982F;
 		leg1.rotateAngleZ = -f6;
@@ -251,22 +251,20 @@ public class ModelSpiderQueen extends ModelBase
 		armLeft.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.5F;
 		armRight.rotateAngleZ = 0.0F;
 		armLeft.rotateAngleZ = 0.0F;
-		if(isRiding)
+		if (isRiding)
 		{
 			armRight.rotateAngleX += -0.6283185F;
 			armLeft.rotateAngleX += -0.6283185F;
 		}
-		/*if(field_1279_h)
-        {
-            bipedLeftArm.rotateAngleX = bipedLeftArm.rotateAngleX * 0.5F - 0.3141593F;
-        }
-        if(field_1278_i)
-        {
-            bipedRightArm.rotateAngleX = bipedRightArm.rotateAngleX * 0.5F - 0.3141593F;
-        }*/
+		/*
+		 * if(field_1279_h) { bipedLeftArm.rotateAngleX =
+		 * bipedLeftArm.rotateAngleX * 0.5F - 0.3141593F; } if(field_1278_i) {
+		 * bipedRightArm.rotateAngleX = bipedRightArm.rotateAngleX * 0.5F -
+		 * 0.3141593F; }
+		 */
 		armRight.rotateAngleY = 0.0F;
 		armLeft.rotateAngleY = 0.0F;
-		if(onGround > -9990F)
+		if (onGround > -9990F)
 		{
 			float ff6 = onGround;
 			body.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(ff6) * 3.141593F * 2.0F) * 0.2F;
@@ -287,17 +285,14 @@ public class ModelSpiderQueen extends ModelBase
 			armRight.rotateAngleY += body.rotateAngleY * 2.0F;
 			armRight.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
 		}
-		/*if(isSneak)
-        {
-            Body.rotateAngleX = 0.5F;
-            bipedRightArm.rotateAngleX += 0.4F;
-            bipedLeftArm.rotateAngleX += 0.4F;
-            bipedHead.rotationPointY = 1.0F;
-        } else
-        {*/
+		/*
+		 * if(isSneak) { Body.rotateAngleX = 0.5F; bipedRightArm.rotateAngleX +=
+		 * 0.4F; bipedLeftArm.rotateAngleX += 0.4F; bipedHead.rotationPointY =
+		 * 1.0F; } else {
+		 */
 		body.rotateAngleX = 0.0F;
 		head.rotationPointY = 3F;
-		//}
+		// }
 		armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
 		armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
 		armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;

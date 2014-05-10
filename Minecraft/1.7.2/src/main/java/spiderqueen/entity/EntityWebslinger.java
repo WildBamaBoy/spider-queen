@@ -27,28 +27,28 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnData
 {
-	public EntityPlayer player;
-	public Entity entityStruck;
-	public int shake;
+	public EntityPlayer	player;
+	public Entity		entityStruck;
+	public int			shake;
 
-	private int tileX;
-	private int tileY;
-	private int tileZ;
-	private int inTile;
-	private boolean inGround;
-	private int timeInGround;
-	private int timeInAir;
-	private int field_4088_k;
-	private int field_6388_l;
-	private double field_6387_m;
-	private double field_6386_n;
-	private double field_6385_o;
-	private double field_6384_p;
-	private double field_6383_q;
-	private double velocityX;
-	private double velocityY;
-	private double velocityZ;
-	public double distance;
+	private int			tileX;
+	private int			tileY;
+	private int			tileZ;
+	private int			inTile;
+	private boolean		inGround;
+	private int			timeInGround;
+	private int			timeInAir;
+	private int			field_4088_k;
+	private int			field_6388_l;
+	private double		field_6387_m;
+	private double		field_6386_n;
+	private double		field_6385_o;
+	private double		field_6384_p;
+	private double		field_6383_q;
+	private double		velocityX;
+	private double		velocityY;
+	private double		velocityZ;
+	public double		distance;
 
 	public EntityWebslinger(World world)
 	{
@@ -92,15 +92,15 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		setSize(0.25F, 0.25F);
 		setLocationAndAngles(entityPlayer.posX, entityPlayer.posY + 1.62D - entityPlayer.yOffset, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-		posX -= MathHelper.cos(rotationYaw / 180F * (float)Math.PI) * 0.16F;
+		posX -= MathHelper.cos(rotationYaw / 180F * (float) Math.PI) * 0.16F;
 		posY -= 0.1D;
-		posZ -= MathHelper.sin(rotationYaw / 180F * (float)Math.PI) * 0.16F;
+		posZ -= MathHelper.sin(rotationYaw / 180F * (float) Math.PI) * 0.16F;
 		setPosition(posX, posY, posZ);
 		yOffset = 0.0F;
 
-		motionX = -MathHelper.sin(rotationYaw / 180F * (float)Math.PI) * MathHelper.cos(rotationPitch / 180F * (float)Math.PI) * 8F;
-		motionZ = MathHelper.cos(rotationYaw / 180F * (float)Math.PI) * MathHelper.cos(rotationPitch / 180F * (float)Math.PI) * 8F;
-		motionY = -MathHelper.sin(rotationPitch / 180F * (float)Math.PI) * 8F;
+		motionX = -MathHelper.sin(rotationYaw / 180F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180F * (float) Math.PI) * 8F;
+		motionZ = MathHelper.cos(rotationYaw / 180F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180F * (float) Math.PI) * 8F;
+		motionY = -MathHelper.sin(rotationPitch / 180F * (float) Math.PI) * 8F;
 
 		func_4042_a(motionX, motionY, motionZ, 1.5F, 1.0F);
 	}
@@ -134,8 +134,8 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		motionY = d1;
 		motionZ = d2;
 		final float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
-		prevRotationYaw = rotationYaw = (float)(Math.atan2(d, d2) * 180D / 3.1415927410125732D);
-		prevRotationPitch = rotationPitch = (float)(Math.atan2(d1, f3) * 180D / 3.1415927410125732D);
+		prevRotationYaw = rotationYaw = (float) (Math.atan2(d, d2) * 180D / 3.1415927410125732D);
+		prevRotationPitch = rotationPitch = (float) (Math.atan2(d1, f3) * 180D / 3.1415927410125732D);
 		timeInGround = 0;
 	}
 
@@ -168,7 +168,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		if (player != null)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 			playerExtension.webEntity = null;
 		}
 	}
@@ -228,7 +228,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 			if (distance != 0)
 			{
-				if(distance < 2)
+				if (distance < 2)
 				{
 					distance = 2;
 				}
@@ -246,12 +246,10 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 			if (vectorSlinger.squareDistanceTo(vectorPlayer) > distance / 4 * 3)
 			{
-				final Vec3 nextPosition = Vec3.createVectorHelper(
-						player.motionX * 1.2D + (posX - player.posX) / 2,
-						player.motionY * 1.2D + (posY - player.posY) / 2,
-						player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
+				final Vec3 nextPosition = Vec3.createVectorHelper(player.motionX * 1.2D + (posX - player.posX) / 2, player.motionY * 1.2D + (posY - player.posY) / 2, player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
 
-				double multiplier = 0.3D;// + (ww.squareDistanceTo(aa) - ddist) / (ddist);
+				double multiplier = 0.3D;// + (ww.squareDistanceTo(aa) - ddist)
+											// / (ddist);
 
 				if (entityStruck != null)
 				{
@@ -280,7 +278,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 				if (player.posY > posY)
 				{
-					if(newMotionY < player.motionY)
+					if (newMotionY < player.motionY)
 					{
 						matchMotion(1, newMotionY);
 					}
@@ -333,8 +331,12 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			final double d2 = posZ + (field_6385_o - posZ) / field_6388_l;
 			double d4;
 
-			for(d4 = field_6384_p - rotationYaw; d4 < -180D; d4 += 360D) { }
-			for(; d4 >= 180D; d4 -= 360D) { }
+			for (d4 = field_6384_p - rotationYaw; d4 < -180D; d4 += 360D)
+			{
+			}
+			for (; d4 >= 180D; d4 -= 360D)
+			{
+			}
 
 			rotationYaw += d4 / field_6388_l;
 			rotationPitch += (field_6383_q - rotationPitch) / field_6388_l;
@@ -417,7 +419,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		for (int j = 0; j < list.size(); j++)
 		{
-			final Entity entity1 = (Entity)list.get(j);
+			final Entity entity1 = (Entity) list.get(j);
 			if (!entity1.canBeCollidedWith() || entity1 == player && timeInAir < 5)
 			{
 				continue;
@@ -457,7 +459,9 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 			else
 			{
-				motionX = motionX * 0.7; motionY = motionY * 0.7; motionZ = motionZ * 0.7;
+				motionX = motionX * 0.7;
+				motionY = motionY * 0.7;
+				motionZ = motionZ * 0.7;
 				inGround = true;
 				posX = posX + motionX;
 				posY = posY + motionY;
@@ -465,19 +469,24 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			}
 		}
 
-		if (inGround)
-		{
-			return;
-		}
+		if (inGround) { return; }
 
 		moveEntity(motionX, motionY, motionZ);
 		final float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-		rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180D / 3.1415927410125732D);
+		rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180D / 3.1415927410125732D);
 
-		for(rotationPitch = (float)(Math.atan2(motionY, f) * 180D / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
-		for(; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
-		for(; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
-		for(; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
+		for (rotationPitch = (float) (Math.atan2(motionY, f) * 180D / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F)
+		{
+		}
+		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F)
+		{
+		}
+		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F)
+		{
+		}
+		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F)
+		{
+		}
 
 		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
 		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
@@ -526,14 +535,14 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 					motionY -= 0.20000000298023224D;
 					worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
 					final float f3 = MathHelper.floor_double(boundingBox.minY);
-					for(int i1 = 0; i1 < 1.0F + width * 20F; i1++)
+					for (int i1 = 0; i1 < 1.0F + width * 20F; i1++)
 					{
 						final float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
 						final float f6 = (rand.nextFloat() * 2.0F - 1.0F) * width;
 						worldObj.spawnParticle("bubble", posX + f4, f3 + 1.0F, posZ + f6, motionX, motionY - rand.nextFloat() * 0.2F, motionZ);
 					}
 
-					for(int j1 = 0; j1 < 1.0F + width * 20F; j1++)
+					for (int j1 = 0; j1 < 1.0F + width * 20F; j1++)
 					{
 						final float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
 						final float f7 = (rand.nextFloat() * 2.0F - 1.0F) * width;
@@ -553,24 +562,24 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		if (d5 > 0.0D)
 		{
-			f1 = (float)(f1 * 0.90000000000000002D);
+			f1 = (float) (f1 * 0.90000000000000002D);
 			motionY *= 0.80000000000000004D;
 		}
-		/*motionX *= f1;
-        motionY *= f1;
-        motionZ *= f1;*/
+		/*
+		 * motionX *= f1; motionY *= f1; motionZ *= f1;
+		 */
 		setPosition(posX, posY, posZ);
 	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
-		nbttagcompound.setShort("xTile", (short)tileX);
-		nbttagcompound.setShort("yTile", (short)tileY);
-		nbttagcompound.setShort("zTile", (short)tileZ);
-		nbttagcompound.setByte("inTile", (byte)inTile);
-		nbttagcompound.setByte("shake", (byte)shake);
-		nbttagcompound.setByte("inGround", (byte)(inGround ? 1 : 0));
+		nbttagcompound.setShort("xTile", (short) tileX);
+		nbttagcompound.setShort("yTile", (short) tileY);
+		nbttagcompound.setShort("zTile", (short) tileZ);
+		nbttagcompound.setByte("inTile", (byte) inTile);
+		nbttagcompound.setByte("shake", (byte) shake);
+		nbttagcompound.setByte("inGround", (byte) (inGround ? 1 : 0));
 	}
 
 	@Override
@@ -596,7 +605,8 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) {
+	public void writeSpawnData(ByteBuf buffer)
+	{
 		// TODO Auto-generated method stub
 
 	}

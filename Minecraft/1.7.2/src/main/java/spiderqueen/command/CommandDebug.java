@@ -86,9 +86,9 @@ public class CommandDebug extends CommandBase
 				{
 					try
 					{
-						final EntityPlayer player = (EntityPlayer)sender;
+						final EntityPlayer player = (EntityPlayer) sender;
 
-						for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityHatchedSpider.class, 20))
+						for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityHatchedSpider.class, 20))
 						{
 							if (spider.level < 3)
 							{

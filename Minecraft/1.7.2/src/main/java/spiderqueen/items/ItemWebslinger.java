@@ -45,7 +45,7 @@ public class ItemWebslinger extends Item
 	@Override
 	public boolean hitEntity(ItemStack itemstack, EntityLivingBase entityliving, EntityLivingBase entityliving1)
 	{
-		if(entityliving1 instanceof EntityPlayer)
+		if (entityliving1 instanceof EntityPlayer)
 		{
 			final EntityPlayer ell = (EntityPlayer) entityliving1;
 			final PlayerExtension playerExtension = (PlayerExtension) ell.getExtendedProperties(PlayerExtension.ID);
@@ -71,8 +71,7 @@ public class ItemWebslinger extends Item
 		{
 			if (world.isRemote)
 			{
-				SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.DestroySlinger,
-						playerExtension.webEntity.getEntityId(), entityplayer.posX, entityplayer.posY, entityplayer.posZ));
+				SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.DestroySlinger, playerExtension.webEntity.getEntityId(), entityplayer.posX, entityplayer.posY, entityplayer.posZ));
 
 				playerExtension.webEntity.player = null;
 				playerExtension.webEntity = null;
