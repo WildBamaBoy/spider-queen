@@ -26,6 +26,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
+import spiderqueen.blocks.BlockWebFull;
+import spiderqueen.blocks.BlockWebGround;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
@@ -127,7 +129,9 @@ public class SpiderQueen implements IEnforcedCore
 	public Item itemHeart;
 
 	//Blocks
-	public Block blockWeb;
+	public Block blockWebFull;
+	public Block blockWebGround;
+	public Block blockWebSide;
 	public Block blockPoisonWeb;
 	public Block blockWebBed;
 	public Block blockSpiderRod;
@@ -266,11 +270,15 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeBlocks() 
 	{
-		blockWeb = new BlockWeb();
+		blockWebGround = new BlockWebGround();
+		blockWebSide = new BlockWeb();
+		blockWebFull = new BlockWebFull();
 		blockPoisonWeb = new BlockPoisonWeb();
 		blockSpiderRod = new BlockSpiderRod();
 
-		GameRegistry.registerBlock(blockWeb, "Web");
+		GameRegistry.registerBlock(blockWebGround, "Web Ground");
+		GameRegistry.registerBlock(blockWebSide, "Web Side");
+		GameRegistry.registerBlock(blockWebFull, "Web Full");
 		GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
 	}

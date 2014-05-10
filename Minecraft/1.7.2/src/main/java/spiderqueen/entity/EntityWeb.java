@@ -54,7 +54,7 @@ public class EntityWeb extends Entity implements IProjectile
 		final Vec3 vec = player.getLookVec();
 
 		this.shooter = player;
-		this.setPosition(player.posX + vec.xCoord * 2, player.posY + 1 + vec.yCoord * 2, player.posZ + vec.zCoord * 2);
+		this.setPosition(player.posX, player.posY + 1, player.posZ);
 		this.accelerationX = vec.xCoord * 1.5;
 		this.accelerationY = vec.yCoord * 1.5;
 		this.accelerationZ = vec.zCoord * 1.5;
@@ -288,30 +288,67 @@ public class EntityWeb extends Entity implements IProjectile
 			else //Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
-
-				if (blockHit != SpiderQueen.getInstance().blockWeb && blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
+				int i = impactPoint.blockX;
+				int j = impactPoint.blockY;
+				int k = impactPoint.blockZ;
+				
+				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround &&
+						blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
 				{
 					if (doBlockSpawn)
 					{
-						final int modX = accelerationX > 0.5 ? -1 : accelerationX < -0.5 ? 1 : 0;
-						final int modZ = accelerationZ > 0.5 ? -1 : accelerationZ < -0.5 ? 1 : 0;
-						final int modY = !worldObj.isAirBlock(impactPoint.blockX + modX, impactPoint.blockY, impactPoint.blockZ + modZ) ? 1 : 0;
-
-						if (worldObj.isAirBlock(impactPoint.blockX + modX, impactPoint.blockY + modY, impactPoint.blockZ + modZ))
+						switch (impactPoint.sideHit)
 						{
-							if (isPoison)
-							{
-								worldObj.setBlock(impactPoint.blockX, impactPoint.blockY + 1, impactPoint.blockZ, SpiderQueen.getInstance().blockPoisonWeb);
-							}
+						case 0:
+							--j;
+							break;
+						case 1:
+							++j;
+							break;
+						case 2:
+							--k;
+							break;
+						case 3:
+							++k;
+							break;
+						case 4:
+							--i;
+							break;
+						case 5:
+							++i;
+						}
 
+						if (this.worldObj.isAirBlock(i, j, k))
+						{
+							int meta = 0;
+							switch (impactPoint.sideHit)
+							{
+							case 0: meta = 0; break;
+							case 1: meta = -1; break;
+							case 2: meta = 1; break;
+							case 3: meta = 4; break;
+							case 4: meta = 8; break;
+							case 5: meta = 2; break;
+							}
+							
+							if (meta == -1)
+							{
+								this.worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
+							}
+							
 							else
 							{
-								worldObj.setBlock(impactPoint.blockX + modX, impactPoint.blockY + modY, impactPoint.blockZ + modZ, SpiderQueen.getInstance().blockWeb);
+								this.worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
 							}
 						}
-					}
 
-					setDead();
+						setDead();
+					}
+				}
+
+				else if (blockHit == SpiderQueen.getInstance().blockWebGround || blockHit == SpiderQueen.getInstance().blockWebSide)
+				{
+					this.worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
 				}
 			}
 		}

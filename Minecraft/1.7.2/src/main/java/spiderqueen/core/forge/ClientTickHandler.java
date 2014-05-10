@@ -13,6 +13,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
+import spiderqueen.core.SpiderQueen;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 
@@ -36,6 +41,17 @@ public class ClientTickHandler
 		{
 			onTickInGui(guiScreen);
 		}
+
+		else
+		{
+			onTickInGame();
+		}
+	}
+
+	public void onTickInGame()
+	{
+		updatePlayerWebClimb();
+		updatePlayerWebMovement();
 	}
 
 	/**
@@ -51,13 +67,83 @@ public class ClientTickHandler
 			{
 				ObfuscationReflectionHelper.setPrivateValue(GuiMainMenu.class, (GuiMainMenu)guiScreen, "Does whatever a spider queen does!", 4);
 			}
-			
+
 			hasCompletedMainMenuTick = true;
 		}
 
 		else if (guiScreen instanceof GuiIngameMenu)
 		{
 			hasCompletedMainMenuTick = false;
+		}
+	}
+
+	private void updatePlayerWebClimb()
+	{
+		final World world = Minecraft.getMinecraft().theWorld;
+
+		for (Object obj : world.playerEntities)
+		{
+			final EntityPlayer player = (EntityPlayer)obj;
+			final int x = (int)player.posX;
+			final int y = (int)player.posY;
+			final int z = (int)player.posZ;
+
+			if (world.getBlock(x, y + 1, z) == SpiderQueen.getInstance().blockWebSide)
+			{
+				if (player.isSneaking())
+				{
+					player.motionY = 0.4;
+				}
+			}
+
+			if (world.getBlock(x + 1, y, z) == SpiderQueen.getInstance().blockWebSide)
+			{
+				if (player.isSneaking())
+				{
+					player.motionY = 0.4;
+				}
+			}
+
+			if (world.getBlock(x - 1, y, z) == SpiderQueen.getInstance().blockWebSide)
+			{
+				if (player.isSneaking())
+				{
+					player.motionY = 0.4;
+				}
+			}
+
+			if (world.getBlock(x, y, z + 1) == SpiderQueen.getInstance().blockWebSide)
+			{
+				if (player.isSneaking())
+				{
+					player.motionY = 0.4;
+				}
+			}
+
+			if (world.getBlock(x, y, z - 1) == SpiderQueen.getInstance().blockWebSide)
+			{
+				if (player.isSneaking())
+				{
+					player.motionY = 0.4;
+				}
+			}
+		}
+	}
+
+	private void updatePlayerWebMovement()
+	{
+		final World world = Minecraft.getMinecraft().theWorld;
+
+		for (Object obj : world.playerEntities)
+		{
+			final EntityPlayer player = (EntityPlayer)obj;
+			final int x = (int)player.posX;
+			final int y = (int)player.posY;
+			final int z = (int)player.posZ;
+			if (LogicHelper.isBlockNearby(player, Blocks.web, 2))
+			{
+				ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);
+			}
 		}
 	}
 }
