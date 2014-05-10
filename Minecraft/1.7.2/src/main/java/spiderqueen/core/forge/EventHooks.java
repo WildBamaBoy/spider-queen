@@ -244,6 +244,16 @@ public class EventHooks
 			{
 				if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{
+					if (entity instanceof EntityFakePlayer)
+					{
+						final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
+						
+						if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName()))
+						{
+							return;
+						}
+					}
+					
 					if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
 					{
 						entity.setAttackTarget(null);

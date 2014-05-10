@@ -12,6 +12,7 @@ package spiderqueen.entity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -51,6 +52,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityFakePlayer extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	public String					username;
+	public String					lastAttackingPlayer;
 	public boolean					isContributor;
 	public boolean					hasInventoryBeenPopulated;
 	public ResourceLocation			skinResourceLocation;
@@ -168,6 +170,25 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
+	{
+		final Entity attackingEntity = damageSource.getEntity();
+
+		if (attackingEntity != null)
+		{
+			if (attackingEntity instanceof EntityPlayer)
+			{
+				final EntityPlayer player = (EntityPlayer)attackingEntity;
+				lastAttackingPlayer = player.getCommandSenderName();
+			}
+
+			setAttackTarget((EntityLivingBase) attackingEntity);
+		}
+
+		return super.attackEntityFrom(damageSource, damageAmount);
 	}
 
 	@Override
