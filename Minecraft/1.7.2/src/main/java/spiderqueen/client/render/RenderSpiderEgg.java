@@ -23,7 +23,7 @@ import spiderqueen.entity.EntitySpiderEgg;
 public class RenderSpiderEgg extends Render
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("spiderqueen:textures/entity/SpiderEgg.png");
-	private ModelBase modelEgg;
+	private final ModelBase modelEgg;
 
 	public RenderSpiderEgg()
 	{
@@ -37,12 +37,12 @@ public class RenderSpiderEgg extends Render
 		{
 			GL11.glTranslated(posX, posY + 1.11D, posZ);
 			GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
-			
+
 			GL11.glScalef(0.75F, 0.75F, 0.75F);
 			GL11.glScalef(-1F, -1F, 1.0F);
-			
+
 			bindTexture(getEntityTexture(entitySpiderEgg));
-			modelEgg.render((Entity)entitySpiderEgg, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+			modelEgg.render(entitySpiderEgg, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}
 		GL11.glPopMatrix();
 	}
@@ -54,7 +54,7 @@ public class RenderSpiderEgg extends Render
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) 
+	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		return TEXTURE;
 	}

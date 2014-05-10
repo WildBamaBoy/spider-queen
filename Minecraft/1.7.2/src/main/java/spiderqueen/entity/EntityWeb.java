@@ -33,7 +33,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityWeb extends Entity implements IProjectile
 {
 	private int ticksInAir;
-	private boolean isInactive;
 	private boolean isPoison;
 	private boolean doBlockSpawn;
 
@@ -47,23 +46,23 @@ public class EntityWeb extends Entity implements IProjectile
 		super(worldObj);
 	}
 
-	public EntityWeb(EntityPlayer player) 
+	public EntityWeb(EntityPlayer player)
 	{
 		this(player.worldObj);
 
 		final Vec3 vec = player.getLookVec();
 
-		this.shooter = player;
-		this.setPosition(player.posX, player.posY + 1, player.posZ);
-		this.accelerationX = vec.xCoord * 1.5;
-		this.accelerationY = vec.yCoord * 1.5;
-		this.accelerationZ = vec.zCoord * 1.5;
+		shooter = player;
+		setPosition(player.posX, player.posY + 1, player.posZ);
+		accelerationX = vec.xCoord * 1.5;
+		accelerationY = vec.yCoord * 1.5;
+		accelerationZ = vec.zCoord * 1.5;
 
-		this.motionX = accelerationX;
-		this.motionY = accelerationY;
-		this.motionZ = accelerationZ;
+		motionX = accelerationX;
+		motionY = accelerationY;
+		motionZ = accelerationZ;
 
-		this.doBlockSpawn = true;
+		doBlockSpawn = true;
 	}
 
 	public EntityWeb(EntityPlayer player, boolean isPoison)
@@ -75,29 +74,31 @@ public class EntityWeb extends Entity implements IProjectile
 	public EntityWeb(EntityLivingBase shooter, EntityLivingBase target, float speed)
 	{
 		super(shooter.worldObj);
-		this.renderDistanceWeight = 10.0D;
+		renderDistanceWeight = 10.0D;
 
-		this.posY = shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D;
-		double d0 = target.posX - shooter.posX;
-		double d1 = target.boundingBox.minY + (double)(target.height / 3.0F) - this.posY;
-		double d2 = target.posZ - shooter.posZ;
-		double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
+		final double deltaX = target.posX - shooter.posX;
+		final double deltaY = target.boundingBox.minY + target.height / 3.0F - posY;
+		final double deltaZ = target.posZ - shooter.posZ;
+		final double distanceXZ = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ);
 
-		if (d3 >= 1.0E-7D)
+		if (distanceXZ >= 1.0E-7D)
 		{
-			float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-			float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-			double d4 = d0 / d3;
-			double d5 = d2 / d3;
-			this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f2, f3);
-			this.yOffset = 0.0F;
-			float f4 = (float)d3 * 0.2F;
-			this.setThrowableHeading(d0, d1 + (double)f4, d2, speed, 16F);
+			final float rotationYaw = (float)(Math.atan2(deltaZ, deltaX) * 180.0D / Math.PI) - 90.0F;
+			final float rotationPitch = (float)-(Math.atan2(deltaY, distanceXZ) * 180.0D / Math.PI);
+			final double modX = deltaX / distanceXZ;
+			final double modY = deltaZ / distanceXZ;
+			
+			setLocationAndAngles(shooter.posX + modX, posY, shooter.posZ + modY, rotationYaw, rotationPitch);
+			yOffset = 0.0F;
+			
+			final float modDeltaY = (float)distanceXZ * 0.2F;
+			setThrowableHeading(deltaX, deltaY + modDeltaY, deltaZ, speed, 16F);
 		}
 	}
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
 		// No init.
 	}
@@ -137,243 +138,13 @@ public class EntityWeb extends Entity implements IProjectile
 		}
 	}
 
-	private void updateCollision()
-	{
-		Vec3 currentVector = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
-		Vec3 nextVector = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
-		MovingObjectPosition collisionPosition = worldObj.rayTraceBlocks(currentVector, nextVector);
-		currentVector = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
-		nextVector = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
-
-		if (collisionPosition != null)
-		{
-			nextVector = worldObj.getWorldVec3Pool().getVecFromPool(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
-		}
-
-		Entity collidedEntity = null;
-		List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
-		double lastDistance = 0.0D;
-
-		for (int counter = 0; counter < entitiesInAABB.size(); ++counter)
-		{
-			final Entity entityInList = (Entity)entitiesInAABB.get(counter);
-
-			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(shooter) || ticksInAir >= 25))
-			{
-				final AxisAlignedBB AABB = entityInList.boundingBox.expand(0.3D, 0.3D, 0.3D);
-				final MovingObjectPosition entityCollisionPosition = AABB.calculateIntercept(currentVector, nextVector);
-
-				if (entityCollisionPosition != null)
-				{
-					final double thisDistance = currentVector.distanceTo(entityCollisionPosition.hitVec);
-
-					if (thisDistance < lastDistance || lastDistance == 0.0D)
-					{
-						collidedEntity = entityInList;
-						lastDistance = thisDistance;
-					}
-				}
-			}
-		}
-
-		if (collidedEntity != null)
-		{
-			collisionPosition = new MovingObjectPosition(collidedEntity);
-		}
-
-		if (collisionPosition != null)
-		{
-			onImpact(collisionPosition);
-		}
-	}
-
-	private void updateMotion()
-	{
-		ticksInAir++;
-
-		posX += motionX;
-		posY += motionY;
-		posZ += motionZ;
-		float f1 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-		rotationYaw = (float)(Math.atan2(motionZ, motionX) * 180.0D / Math.PI) + 90.0F;
-
-		for (rotationPitch = (float)(Math.atan2((double)f1, motionY) * 180.0D / Math.PI) - 90.0F; rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F)
-		{
-			;
-		}
-
-		while (rotationPitch - prevRotationPitch >= 180.0F)
-		{
-			prevRotationPitch += 360.0F;
-		}
-
-		while (rotationYaw - prevRotationYaw < -180.0F)
-		{
-			prevRotationYaw -= 360.0F;
-		}
-
-		while (rotationYaw - prevRotationYaw >= 180.0F)
-		{
-			prevRotationYaw += 360.0F;
-		}
-
-		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
-		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
-		float motionFactor =  0.95F;
-
-		if (isInWater())
-		{
-			for (int counter = 0; counter < 4; ++counter)
-			{
-				float speedFactor = 0.25F;
-				worldObj.spawnParticle("bubble", 
-						posX - motionX * (double)speedFactor, 
-						posY - motionY * (double)speedFactor, 
-						posZ - motionZ * (double)speedFactor, 
-						motionX, motionY, motionZ);
-			}
-
-			motionFactor = 0.8F;
-		}
-
-		motionX += accelerationX;
-		motionY += accelerationY;
-		motionZ += accelerationZ;
-		motionX *= (double)motionFactor;
-		motionY *= (double)motionFactor;
-		motionZ *= (double)motionFactor;
-
-		setPosition(posX, posY, posZ);
-	}
-
-	private void onImpact(MovingObjectPosition impactPoint) 
-	{
-		if (!worldObj.isRemote)
-		{
-			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
-			{
-				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonTypeByCapturedClass(impactPoint.entityHit.getClass());
-				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
-				final float attackPower = isPoison ? 4.0F : 0.0F;
-				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), attackPower);
-
-				if (cocoonType != null)
-				{
-					if (entityHit.getHealth() > 0.4F)
-					{
-						final Random rand = new Random();
-						final int intHealth = (int)entityHit.getHealth();
-						final int captureDifficulty = cocoonType.getEntityCatchDifficulty();
-
-						if (captureDifficulty != 0 && rand.nextInt(intHealth / captureDifficulty + 1) != 0)
-						{
-							setToInactive();
-							setNoBlockSpawn();
-							return;
-						}
-
-						else
-						{
-							final EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
-
-							entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
-							worldObj.spawnEntityInWorld(entityCocoon);
-							entityHit.setDead();
-							setDead();
-						}
-					}
-				}
-			}
-
-			else //Hit a block.
-			{
-				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
-				int i = impactPoint.blockX;
-				int j = impactPoint.blockY;
-				int k = impactPoint.blockZ;
-				
-				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround &&
-						blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
-				{
-					if (doBlockSpawn)
-					{
-						switch (impactPoint.sideHit)
-						{
-						case 0:
-							--j;
-							break;
-						case 1:
-							++j;
-							break;
-						case 2:
-							--k;
-							break;
-						case 3:
-							++k;
-							break;
-						case 4:
-							--i;
-							break;
-						case 5:
-							++i;
-						}
-
-						if (this.worldObj.isAirBlock(i, j, k))
-						{
-							int meta = 0;
-							switch (impactPoint.sideHit)
-							{
-							case 0: meta = 0; break;
-							case 1: meta = -1; break;
-							case 2: meta = 1; break;
-							case 3: meta = 4; break;
-							case 4: meta = 8; break;
-							case 5: meta = 2; break;
-							}
-							
-							if (meta == -1)
-							{
-								this.worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
-							}
-							
-							else
-							{
-								this.worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
-							}
-						}
-
-						setDead();
-					}
-				}
-
-				else if (blockHit == SpiderQueen.getInstance().blockWebGround || blockHit == SpiderQueen.getInstance().blockWebSide)
-				{
-					this.worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
-				}
-			}
-		}
-	}
-
-	private void setToInactive()
-	{
-		isInactive = true;
-
-		final Random rand = new Random();
-		if (rand.nextInt(2) == 0) { motionX = motionX * -0.2F; }
-		if (rand.nextInt(2) == 0) { motionY = motionY * -0.2F; }
-		if (rand.nextInt(2) == 0) { motionZ = motionZ * -0.2F; }
-	}
-
-	private void setNoBlockSpawn()
-	{
-		doBlockSpawn = false;
-	}
-
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		//No data to write.
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		//No data to read.
@@ -448,22 +219,256 @@ public class EntityWeb extends Entity implements IProjectile
 	}
 
 	@Override
-	public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8) 
+	public void setThrowableHeading(double posX, double posY, double posZ, float speed, float unknown)
 	{
-		float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
-		par1 /= (double)f2;
-		par3 /= (double)f2;
-		par5 /= (double)f2;
-		par1 += this.rand.nextGaussian() * (double)(this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * (double)par8;
-		par3 += this.rand.nextGaussian() * (double)(this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * (double)par8;
-		par5 += this.rand.nextGaussian() * (double)(this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * (double)par8;
-		par1 *= (double)par7;
-		par3 *= (double)par7;
-		par5 *= (double)par7;
-		this.motionX = par1;
-		this.motionZ = par5;
-		float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)f3) * 180.0D / Math.PI);
+		final float distanceXYZ = MathHelper.sqrt_double(posX * posX + posY * posY + posZ * posZ);
+		posX /= distanceXYZ;
+		posY /= distanceXYZ;
+		posZ /= distanceXYZ;
+
+		posX += rand.nextGaussian() * (rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * unknown;
+		posY += rand.nextGaussian() * (rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * unknown;
+		posZ += rand.nextGaussian() * (rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * unknown;
+
+		posX *= speed;
+		posY *= speed;
+		posZ *= speed;
+
+		motionX = posX;
+		motionZ = posZ;
+
+		final float distanceXZ = MathHelper.sqrt_double(posX * posX + posZ * posZ);
+		prevRotationYaw = rotationYaw = (float)(Math.atan2(posX, posZ) * 180.0D / Math.PI);
+		prevRotationPitch = rotationPitch = (float)(Math.atan2(posY, distanceXZ) * 180.0D / Math.PI);
+	}
+
+	private void updateCollision()
+	{
+		Vec3 currentVector = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
+		Vec3 nextVector = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+		MovingObjectPosition collisionPosition = worldObj.rayTraceBlocks(currentVector, nextVector);
+		currentVector = worldObj.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
+		nextVector = worldObj.getWorldVec3Pool().getVecFromPool(posX + motionX, posY + motionY, posZ + motionZ);
+
+		if (collisionPosition != null)
+		{
+			nextVector = worldObj.getWorldVec3Pool().getVecFromPool(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
+		}
+
+		Entity collidedEntity = null;
+		final List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+		double lastDistance = 0.0D;
+
+		for (int counter = 0; counter < entitiesInAABB.size(); ++counter)
+		{
+			final Entity entityInList = (Entity)entitiesInAABB.get(counter);
+
+			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(shooter) || ticksInAir >= 25))
+			{
+				final AxisAlignedBB AABB = entityInList.boundingBox.expand(0.3D, 0.3D, 0.3D);
+				final MovingObjectPosition entityCollisionPosition = AABB.calculateIntercept(currentVector, nextVector);
+
+				if (entityCollisionPosition != null)
+				{
+					final double thisDistance = currentVector.distanceTo(entityCollisionPosition.hitVec);
+
+					if (thisDistance < lastDistance || lastDistance == 0.0D)
+					{
+						collidedEntity = entityInList;
+						lastDistance = thisDistance;
+					}
+				}
+			}
+		}
+
+		if (collidedEntity != null)
+		{
+			collisionPosition = new MovingObjectPosition(collidedEntity);
+		}
+
+		if (collisionPosition != null)
+		{
+			onImpact(collisionPosition);
+		}
+	}
+
+	private void updateMotion()
+	{
+		ticksInAir++;
+
+		posX += motionX;
+		posY += motionY;
+		posZ += motionZ;
+		final float f1 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+		rotationYaw = (float)(Math.atan2(motionZ, motionX) * 180.0D / Math.PI) + 90.0F;
+
+		for (rotationPitch = (float)(Math.atan2(f1, motionY) * 180.0D / Math.PI) - 90.0F; rotationPitch - prevRotationPitch < -180.0F; prevRotationPitch -= 360.0F)
+		{
+			;
+		}
+
+		while (rotationPitch - prevRotationPitch >= 180.0F)
+		{
+			prevRotationPitch += 360.0F;
+		}
+
+		while (rotationYaw - prevRotationYaw < -180.0F)
+		{
+			prevRotationYaw -= 360.0F;
+		}
+
+		while (rotationYaw - prevRotationYaw >= 180.0F)
+		{
+			prevRotationYaw += 360.0F;
+		}
+
+		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
+		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
+		float motionFactor =  0.95F;
+
+		if (isInWater())
+		{
+			for (int counter = 0; counter < 4; ++counter)
+			{
+				final float speedFactor = 0.25F;
+				worldObj.spawnParticle("bubble",
+						posX - motionX * speedFactor,
+						posY - motionY * speedFactor,
+						posZ - motionZ * speedFactor,
+						motionX, motionY, motionZ);
+			}
+
+			motionFactor = 0.8F;
+		}
+
+		motionX += accelerationX;
+		motionY += accelerationY;
+		motionZ += accelerationZ;
+		motionX *= motionFactor;
+		motionY *= motionFactor;
+		motionZ *= motionFactor;
+
+		setPosition(posX, posY, posZ);
+	}
+
+	private void onImpact(MovingObjectPosition impactPoint)
+	{
+		if (!worldObj.isRemote)
+		{
+			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
+			{
+				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonTypeByCapturedClass(impactPoint.entityHit.getClass());
+				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
+				final float attackPower = isPoison ? 4.0F : 0.0F;
+				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), attackPower);
+
+				if (cocoonType != null)
+				{
+					if (entityHit.getHealth() > 0.4F)
+					{
+						final Random rand = new Random();
+						final int intHealth = (int)entityHit.getHealth();
+						final int captureDifficulty = cocoonType.getEntityCatchDifficulty();
+
+						if (captureDifficulty != 0 && rand.nextInt(intHealth / captureDifficulty + 1) != 0)
+						{
+							setToInactive();
+							setNoBlockSpawn();
+							return;
+						}
+
+						else
+						{
+							final EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
+
+							entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
+							worldObj.spawnEntityInWorld(entityCocoon);
+							entityHit.setDead();
+							setDead();
+						}
+					}
+				}
+			}
+
+			else //Hit a block.
+			{
+				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
+				int i = impactPoint.blockX;
+				int j = impactPoint.blockY;
+				int k = impactPoint.blockZ;
+
+				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround &&
+						blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
+				{
+					if (doBlockSpawn)
+					{
+						switch (impactPoint.sideHit)
+						{
+						case 0:
+							--j;
+							break;
+						case 1:
+							++j;
+							break;
+						case 2:
+							--k;
+							break;
+						case 3:
+							++k;
+							break;
+						case 4:
+							--i;
+							break;
+						case 5:
+							++i;
+						}
+
+						if (worldObj.isAirBlock(i, j, k))
+						{
+							int meta = 0;
+							switch (impactPoint.sideHit)
+							{
+							case 0: meta = 0; break;
+							case 1: meta = -1; break;
+							case 2: meta = 1; break;
+							case 3: meta = 4; break;
+							case 4: meta = 8; break;
+							case 5: meta = 2; break;
+							}
+
+							if (meta == -1)
+							{
+								worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
+							}
+
+							else
+							{
+								worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
+							}
+						}
+
+						setDead();
+					}
+				}
+
+				else if (blockHit == SpiderQueen.getInstance().blockWebGround || blockHit == SpiderQueen.getInstance().blockWebSide)
+				{
+					worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
+				}
+			}
+		}
+	}
+
+	private void setToInactive()
+	{
+		final Random rand = new Random();
+		if (rand.nextInt(2) == 0) { motionX = motionX * -0.2F; }
+		if (rand.nextInt(2) == 0) { motionY = motionY * -0.2F; }
+		if (rand.nextInt(2) == 0) { motionZ = motionZ * -0.2F; }
+	}
+
+	private void setNoBlockSpawn()
+	{
+		doBlockSpawn = false;
 	}
 }

@@ -5,14 +5,14 @@ import net.minecraft.world.IBlockAccess;
 public class BlockWebGround extends BlockWeb
 {
 	@Override
-	public int getRenderType() 
+	public int getRenderType()
 	{
-		return 23;	
+		return 23;
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) 
+	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
 	{
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
 	}
 }

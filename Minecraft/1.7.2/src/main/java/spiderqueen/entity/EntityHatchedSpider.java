@@ -68,20 +68,20 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		super(world);
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
-		this.tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(3, new EntityAIWander(this, 0.4D));
-		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
+		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(3, new EntityAIWander(this, 0.4D));
+		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.updateEntityAttributes();
+		updateEntityAttributes();
 	}
 
 	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
 	{
 		this(world);
 		this.owner = owner;
-		this.setSize(1.4F, 0.9F);
+		setSize(1.4F, 0.9F);
 		this.cocoonType = cocoonType;
 	}
 
@@ -91,15 +91,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		return true;
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(16, new Byte((byte)0));
+		dataWatcher.addObject(16, new Byte((byte)0));
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
+	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
@@ -115,15 +114,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			}
 
 			if (!tryFollowOwnerPlayer(false))
-			{	
+			{
 				if (target != null)
 				{
 					attackEntity(target, 3.5F);
 				}
-				
+
 				else
 				{
-					target = findPlayerToAttack();					
+					target = findPlayerToAttack();
 				}
 
 				tryMoveToSpiderRod();
@@ -153,67 +152,35 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-	protected void updateEntityActionState() 
+	protected void updateEntityActionState()
 	{
 		return;
 	}
 
+	@Override
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(16.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(16.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.8D);
 	}
 
-	private void updateEntityAttributes()
-	{
-		if (cocoonType == EnumCocoonType.SKELETON)
-		{
-			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D);	
-		}
-
-		else if (cocoonType == EnumCocoonType.WOLF)
-		{
-			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.8D);	
-		}
-
-		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + (level * 10))
-		{
-			this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + (level * 10));
-			this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);	
-			this.setHealth((float) this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
-		}
-	}
-
-	private float getAttackDamage()
-	{
-		switch (cocoonType)
-		{
-		case EMPTY: return 0.5F;
-		case WOLF: return 1.0F;
-		default: return 2.5F + level / 2;
-		}
-	}
-
-	/**
-	 * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-	 * (Animals, Spiders at day, peaceful PigZombies).
-	 */
+	@Override
 	protected Entity findPlayerToAttack()
 	{
-		List<Entity> entitiesAroundMe = LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15);
+		final List<Entity> entitiesAroundMe = LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15);
 		EntityLivingBase closestValidTarget = null;
 		double distanceToTarget = 100D;
 
-		for (Entity entity : entitiesAroundMe)
+		for (final Entity entity : entitiesAroundMe)
 		{
 			final double distanceToThisEntity = getDistanceToEntity(entity);
 
-			if ((entity instanceof EntityFakePlayer && this.canEntityBeSeen(entity) && isHostile) ||
-					(entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile) ||
-					(entity instanceof EntityOtherQueen) && isQueenValidTarget((EntityOtherQueen)entity) ||
-					(entity instanceof EntityPlayer) && isPlayerValidTarget((EntityPlayer)entity)
-						&& distanceToThisEntity < distanceToTarget)
+			if (entity instanceof EntityFakePlayer && canEntityBeSeen(entity) && isHostile ||
+					entity instanceof EntityHatchedSpider && isSpiderValidTarget((EntityHatchedSpider)entity) && isHostile ||
+					entity instanceof EntityOtherQueen && isQueenValidTarget((EntityOtherQueen)entity) ||
+					entity instanceof EntityPlayer && isPlayerValidTarget((EntityPlayer)entity)
+					&& distanceToThisEntity < distanceToTarget)
 			{
 				closestValidTarget = (EntityLivingBase)entity;
 				distanceToTarget = distanceToThisEntity;
@@ -232,76 +199,72 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		return closestValidTarget;
 	}
 
-	/**
-	 * Returns the sound this mob makes while it's alive.
-	 */
+	@Override
 	protected String getLivingSound()
 	{
 		return "mob.spider.say";
 	}
 
-	/**
-	 * Returns the sound this mob makes when it is hurt.
-	 */
+	@Override
 	protected String getHurtSound()
 	{
 		return "mob.spider.say";
 	}
 
-	/**
-	 * Returns the sound this mob makes on death.
-	 */
+	@Override
 	protected String getDeathSound()
 	{
 		return "mob.spider.death";
 	}
 
+	@Override
 	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
 	{
-		this.playSound("mob.spider.step", 0.15F, 1.0F);
+		playSound("mob.spider.step", 0.15F, 1.0F);
 	}
 
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) 
+	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
-		final Entity attackingEntity = par1DamageSource.getEntity();
+		final Entity attackingEntity = damageSource.getEntity();
 
 		if (attackingEntity != null)
 		{
 			if (attackingEntity instanceof EntityPlayer)
 			{
-				return super.attackEntityFrom(par1DamageSource, par2); 
+				return super.attackEntityFrom(damageSource, damageAmount);
 			}
 
 			else if (attackingEntity instanceof EntityHatchedSpider)
 			{
 				final EntityHatchedSpider spider = (EntityHatchedSpider) attackingEntity;
 
-				if (spider.owner.equals(this.owner))
+				if (spider.owner.equals(owner))
 				{
-					return super.attackEntityFrom(par1DamageSource, par2);
+					return super.attackEntityFrom(damageSource, damageAmount);
 				}
 			}
 
 			final List<EntityHatchedSpider> nearbySpiders = (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
-			this.target = attackingEntity;
+			target = attackingEntity;
 
-			for (EntityHatchedSpider spider : nearbySpiders)
+			for (final EntityHatchedSpider spider : nearbySpiders)
 			{
-				if (spider.owner.equals(this.owner))
+				if (spider.owner.equals(owner))
 				{
 					spider.target = attackingEntity;
 				}
 			}
 		}
 
-		return super.attackEntityFrom(par1DamageSource, par2);
+		return super.attackEntityFrom(damageSource, damageAmount);
 	}
 
 	/**
 	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
 	 */
+	@Override
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
 		damageAmount = getAttackDamage();
@@ -309,14 +272,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		if (rand.nextInt(10) == 0)
 		{
-			if (this.onGround)
+			if (onGround)
 			{
-				double d0 = entityBeingAttacked.posX - this.posX;
-				double d1 = entityBeingAttacked.posZ - this.posZ;
-				float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-				this.motionX = d0 / (double)f2 * 0.5D * 0.8D + this.motionX * 0.2D;
-				this.motionZ = d1 / (double)f2 * 0.5D * 0.8D + this.motionZ * 0.2D;
-				this.motionY = 0.4D;
+				final double d0 = entityBeingAttacked.posX - posX;
+				final double d1 = entityBeingAttacked.posZ - posZ;
+				final float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+				motionX = d0 / f2 * 0.5D * 0.8D + motionX * 0.2D;
+				motionZ = d1 / f2 * 0.5D * 0.8D + motionZ * 0.2D;
+				motionY = 0.4D;
 			}
 		}
 
@@ -364,51 +327,44 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 	}
 
+	@Override
 	protected Item getDropItem()
 	{
 		return Items.string;
 	}
 
-	/**
-	 * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-	 * par2 - Level of Looting used to kill this mob.
-	 */
-	protected void dropFewItems(boolean par1, int par2)
+	@Override
+	protected void dropFewItems(boolean hitByPlayerRecently, int lootingLevel)
 	{
-		super.dropFewItems(par1, par2);
+		super.dropFewItems(hitByPlayerRecently, lootingLevel);
 
-		if (par1 && (this.rand.nextInt(3) == 0 || this.rand.nextInt(1 + par2) > 0))
+		if (hitByPlayerRecently && (rand.nextInt(3) == 0 || rand.nextInt(1 + lootingLevel) > 0))
 		{
-			this.dropItem(Items.spider_eye, 1);
+			dropItem(Items.spider_eye, 1);
 		}
 
 		inventory.dropAllItems();
 	}
 
-	/**
-	 * returns true if this entity is by a ladder, false otherwise
-	 */
+	@Override
 	public boolean isOnLadder()
 	{
-		return this.isBesideClimbableBlock();
+		return isBesideClimbableBlock();
 	}
 
-	/**
-	 * Sets the Entity inside a web block.
-	 */
+	@Override
 	public void setInWeb() {}
 
-	/**
-	 * Get this Entity's EnumCreatureAttribute
-	 */
+	@Override
 	public EnumCreatureAttribute getCreatureAttribute()
 	{
 		return EnumCreatureAttribute.ARTHROPOD;
 	}
 
-	public boolean isPotionApplicable(PotionEffect par1PotionEffect)
+	@Override
+	public boolean isPotionApplicable(PotionEffect potionEffect)
 	{
-		return par1PotionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(par1PotionEffect);
+		return potionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(potionEffect);
 	}
 
 	@Override
@@ -423,7 +379,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) 
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		super.writeEntityToNBT(nbt);
 
@@ -434,7 +390,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) 
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
 		NBTHelper.autoReadEntityFromNBT(this, nbt);
@@ -444,7 +400,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
 		}
 
-		catch (IllegalAccessException e)
+		catch (final IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -453,21 +409,21 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) 
+	public void writeSpawnData(ByteBuf buffer)
 	{
 		buffer.writeInt(cocoonType.ordinal());
 		buffer.writeInt(level);
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf additionalData) 
+	public void readSpawnData(ByteBuf additionalData)
 	{
 		try
 		{
 			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[additionalData.readInt()].get(EnumCocoonType.class);
 		}
 
-		catch (IllegalAccessException e)
+		catch (final IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -476,38 +432,60 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-	
-	/**
-	 * Returns true if the WatchableObject (Byte) is 0x01 otherwise returns false. The WatchableObject is updated using
-	 * setBesideClimableBlock.
-	 */
-	public boolean isBesideClimbableBlock()
+	protected boolean canDespawn()
 	{
-		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+		return false;
 	}
 
-	/**
-	 * Updates the WatchableObject (Byte) created in entityInit(), setting it to 0x01 if par1 is true or 0x00 if it is
-	 * false.
-	 */
-	public void setBesideClimbableBlock(boolean par1)
+	private boolean isBesideClimbableBlock()
 	{
-		byte b0 = this.dataWatcher.getWatchableObjectByte(16);
+		return (dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+	}
 
-		if (par1)
+	private void setBesideClimbableBlock(boolean setBoolean)
+	{
+		byte value = dataWatcher.getWatchableObjectByte(16);
+
+		if (setBoolean == true)
 		{
-			b0 = (byte)(b0 | 1);
+			value = (byte)(value | 1);
 		}
 		else
 		{
-			b0 &= -2;
+			value &= -2;
 		}
 
-		this.dataWatcher.updateObject(16, Byte.valueOf(b0));
+		dataWatcher.updateObject(16, Byte.valueOf(value));
+	}
+
+	private void updateEntityAttributes()
+	{
+		if (cocoonType == EnumCocoonType.SKELETON)
+		{
+			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D);
+		}
+
+		else if (cocoonType == EnumCocoonType.WOLF)
+		{
+			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.8D);
+		}
+
+		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + level * 10)
+		{
+			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + level * 10);
+			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);
+			setHealth((float) getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+		}
+	}
+
+	private float getAttackDamage()
+	{
+		switch (cocoonType)
+		{
+		case EMPTY: return 0.5F;
+		case WOLF: return 1.0F;
+		default: return 2.5F + level / 2;
+		}
 	}
 
 	private boolean tryFollowOwnerPlayer(boolean checkOnly)
@@ -549,7 +527,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void moveToPlayer(EntityPlayer player)
 	{
-		if (player != null && (player.onGround))
+		if (player != null && player.onGround)
 		{
 			getLookHelper().setLookPositionWithEntity(player, 10.0F, getVerticalFaceSpeed());
 
@@ -568,7 +546,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					{
 						for (int i2 = 0; i2 <= 4; ++i2)
 						{
-							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && worldObj.doesBlockHaveSolidTopSurface(worldObj, playerX + i, playerY - 1, playerZ + i2) && !worldObj.getBlock(playerX + i, playerY, playerZ + i2).isNormalCube() && !worldObj.getBlock(playerX + i, playerY + 1, playerZ + i2).isNormalCube())
+							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && World.doesBlockHaveSolidTopSurface(worldObj, playerX + i, playerY - 1, playerZ + i2) && !worldObj.getBlock(playerX + i, playerY, playerZ + i2).isNormalCube() && !worldObj.getBlock(playerX + i, playerY + 1, playerZ + i2).isNormalCube())
 							{
 								setLocationAndAngles(playerX + i + 0.5F, playerY, playerZ + i2 + 0.5F, rotationYaw, rotationPitch);
 								getNavigator().clearPathEntity();
@@ -581,7 +559,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 	}
 
-	private void syncInventory() 
+	private void syncInventory()
 	{
 		if (!hasSyncedInventory)
 		{
@@ -590,16 +568,16 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		}
 	}
 
-	private void displayParticles() 
+	private void displayParticles()
 	{
 		if (cocoonType == EnumCocoonType.ENDERMAN)
 		{
-			worldObj.spawnParticle("portal", 
-					posX + (rand.nextDouble() - 0.5D) * (double)width, 
-					posY + 0.5D + rand.nextDouble() * (double)0.25D, 
-					posZ + rand.nextDouble() - 0.5D * (double)width, 
-					(rand.nextDouble() - 0.5D) * 2.0D, 
-					-rand.nextDouble(), 
+			worldObj.spawnParticle("portal",
+					posX + (rand.nextDouble() - 0.5D) * width,
+					posY + 0.5D + rand.nextDouble() * 0.25D,
+					posZ + rand.nextDouble() - 0.5D * width,
+					(rand.nextDouble() - 0.5D) * 2.0D,
+					-rand.nextDouble(),
 					(rand.nextDouble() - 0.5D) * 2.0D);
 		}
 	}
@@ -638,9 +616,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (owner != null && spider.owner != null)
 		{
-			return !spider.owner.equals(this.owner) && this.canEntityBeSeen(spider) && (spider.isHostile || this.isHostile);
+			return !spider.owner.equals(owner) && canEntityBeSeen(spider) && (spider.isHostile || isHostile);
 		}
-		
+
 		else
 		{
 			return false;
@@ -651,9 +629,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (owner != null)
 		{
-			return !this.owner.equals(queen.identifier) && this.canEntityBeSeen(queen) && queen.isHostile;
+			return !owner.equals(queen.identifier) && canEntityBeSeen(queen) && queen.isHostile;
 		}
-		
+
 		else
 		{
 			return false;
@@ -663,10 +641,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	private boolean isPlayerValidTarget(EntityPlayer player)
 	{
 		if (owner != null)
-		{	
-			return !this.owner.equals(player.getCommandSenderName()) && this.canEntityBeSeen(player) && this.isHostile;
+		{
+			return !owner.equals(player.getCommandSenderName()) && canEntityBeSeen(player) && isHostile;
 		}
-		
+
 		else
 		{
 			return false;

@@ -29,18 +29,18 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 		super();
 		setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 	}
-	
+
 	@Override
-	public void registerIcons(IIconRegister IIconRegister) 
+	public void registerIcons(IIconRegister IIconRegister)
 	{
 		itemIcon = IIconRegister.registerIcon("spiderqueen:SpawnSpider");
 	}
 
 	@Override
-	public boolean spawnEntity(World world, EntityPlayer player, double posX, double posY, double posZ) 
+	public boolean spawnEntity(World world, EntityPlayer player, double posX, double posY, double posZ)
 	{
 		if (world.isRemote)
-		{	
+		{
 			return true;
 		}
 
@@ -48,10 +48,10 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 		{
 			final EntityHatchedSpider entityHatchedSpider = new EntityHatchedSpider(world, player.getCommandSenderName(), EnumCocoonType.getRandomCocoonType());
 			final int spiderLevel = LogicHelper.getNumberInRange(1, 3);
-			
+
 			entityHatchedSpider.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);
 			entityHatchedSpider.level = spiderLevel;
-			
+
 			if (!world.isRemote)
 			{
 				player.addChatMessage(new ChatComponentText("Spawned " + entityHatchedSpider.cocoonType.toString() + " spider at level " + entityHatchedSpider.level));
@@ -61,11 +61,11 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 			return true;
 		}
 	}
-	
+
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
-	{	
-		par3List.add("Spawns a random spider");
-		par3List.add("at a random level.");
+	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
+	{
+		list.add("Spawns a random spider");
+		list.add("at a random level.");
 	}
 }

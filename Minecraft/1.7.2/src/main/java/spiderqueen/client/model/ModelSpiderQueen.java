@@ -33,7 +33,7 @@ public class ModelSpiderQueen extends ModelBase
 	private final ModelRenderer breasts;
 	private final ModelRenderer spinner1;
 	private final ModelRenderer spinner2;
-	
+
 	public ModelSpiderQueen()
 	{
 		head = new ModelRenderer(this,32, 4);
@@ -190,6 +190,7 @@ public class ModelSpiderQueen extends ModelBase
 		spinner2.mirror = false;
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		setRotationAngles(f, f1, f2, f3, f4, f5);
@@ -215,10 +216,10 @@ public class ModelSpiderQueen extends ModelBase
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		this.head.rotateAngleY = f3 / (180F / (float)Math.PI);
-        this.head.rotateAngleX = f4 / (180F / (float)Math.PI);
-        
-		float f6 = 0.7853982F;
+		head.rotateAngleY = f3 / (180F / (float)Math.PI);
+		head.rotateAngleX = f4 / (180F / (float)Math.PI);
+
+		final float f6 = 0.7853982F;
 		leg1.rotateAngleZ = -f6;
 		leg2.rotateAngleZ = f6;
 		leg3.rotateAngleZ = -f6 * 0.74F;
@@ -227,8 +228,8 @@ public class ModelSpiderQueen extends ModelBase
 		leg6.rotateAngleZ = f6 * 0.74F;
 		leg7.rotateAngleZ = -f6;
 		leg8.rotateAngleZ = f6;
-		float f7 = -0F;
-		float f8 = 0.3926991F;
+		final float f7 = -0F;
+		final float f8 = 0.3926991F;
 		leg1.rotateAngleY = f8 * 2.0F + f7;
 		leg2.rotateAngleY = -f8 * 2.0F - f7;
 		leg3.rotateAngleY = f8 * 1.0F + f7;
@@ -237,14 +238,14 @@ public class ModelSpiderQueen extends ModelBase
 		leg6.rotateAngleY = f8 * 1.0F - f7;
 		leg7.rotateAngleY = -f8 * 2.0F + f7;
 		leg8.rotateAngleY = f8 * 2.0F - f7;
-		float f9 = -(MathHelper.cos(f * 0.6662F * 2.0F + 0.0F) * 0.4F) * f1;
-		float f10 = -(MathHelper.cos(f * 0.6662F * 2.0F + 3.141593F) * 0.4F) * f1;
-		float f11 = -(MathHelper.cos(f * 0.6662F * 2.0F + 1.570796F) * 0.4F) * f1;
-		float f12 = -(MathHelper.cos(f * 0.6662F * 2.0F + 4.712389F) * 0.4F) * f1;
-		float f13 = Math.abs(MathHelper.sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
-		float f14 = Math.abs(MathHelper.sin(f * 0.6662F + 3.141593F) * 0.4F) * f1;
-		float f15 = Math.abs(MathHelper.sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
-		float f16 = Math.abs(MathHelper.sin(f * 0.6662F + 4.712389F) * 0.4F) * f1;
+		final float f9 = -(MathHelper.cos(f * 0.6662F * 2.0F + 0.0F) * 0.4F) * f1;
+		final float f10 = -(MathHelper.cos(f * 0.6662F * 2.0F + 3.141593F) * 0.4F) * f1;
+		final float f11 = -(MathHelper.cos(f * 0.6662F * 2.0F + 1.570796F) * 0.4F) * f1;
+		final float f12 = -(MathHelper.cos(f * 0.6662F * 2.0F + 4.712389F) * 0.4F) * f1;
+		final float f13 = Math.abs(MathHelper.sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
+		final float f14 = Math.abs(MathHelper.sin(f * 0.6662F + 3.141593F) * 0.4F) * f1;
+		final float f15 = Math.abs(MathHelper.sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
+		final float f16 = Math.abs(MathHelper.sin(f * 0.6662F + 4.712389F) * 0.4F) * f1;
 
 		armRight.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 2.0F * f1 * 0.5F;
 		armLeft.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.5F;
@@ -280,9 +281,9 @@ public class ModelSpiderQueen extends ModelBase
 			ff6 *= ff6;
 			ff6 *= ff6;
 			ff6 = 1.0F - ff6;
-			float ff7 = MathHelper.sin(ff6 * 3.141593F);
-			float ff8 = MathHelper.sin(onGround * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
-			armRight.rotateAngleX -= (double)ff7 * 1.2D + (double)ff8;
+			final float ff7 = MathHelper.sin(ff6 * 3.141593F);
+			final float ff8 = MathHelper.sin(onGround * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
+			armRight.rotateAngleX -= ff7 * 1.2D + ff8;
 			armRight.rotateAngleY += body.rotateAngleY * 2.0F;
 			armRight.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
 		}

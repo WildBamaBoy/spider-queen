@@ -23,7 +23,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import com.radixshock.radixcore.core.RadixCore;
 
-public class ByteBufIO 
+public class ByteBufIO
 {
 	/**
 	 * Writes the provided object to the provided ByteBuf.
@@ -66,7 +66,7 @@ public class ByteBufIO
 			objectOutput.close();
 		}
 
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -94,12 +94,12 @@ public class ByteBufIO
 			objectInput.close();
 		}
 
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			e.printStackTrace();
 		}
 
-		catch (ClassNotFoundException e)
+		catch (final ClassNotFoundException e)
 		{
 			e.printStackTrace();
 		}
@@ -137,7 +137,7 @@ public class ByteBufIO
 			return byteOutput.toByteArray();
 		}
 
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			RadixCore.getInstance().quitWithException("Error compressing byte array.", e);
 			return null;
@@ -170,13 +170,13 @@ public class ByteBufIO
 			return byteOutput.toByteArray();
 		}
 
-		catch (DataFormatException e)
+		catch (final DataFormatException e)
 		{
 			RadixCore.getInstance().quitWithException("Error decompressing byte array.", e);
 			return null;
 		}
 
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			RadixCore.getInstance().quitWithException("Error decompressing byte array.", e);
 			return null;
@@ -184,7 +184,7 @@ public class ByteBufIO
 	}
 
 	/**
-	 * Writes the provided byte array to the buffer. Compresses the provided array and 
+	 * Writes the provided byte array to the buffer. Compresses the provided array and
 	 * precedes it data with its length as an int. Then the compressed array itself is written.
 	 * 
 	 * @param 	buffer		ByteBuf that the byte array will be written to.
@@ -198,12 +198,12 @@ public class ByteBufIO
 	}
 
 	/**
-	 * Reads the next byte array from the buffer. Gets the array's size by reading 
+	 * Reads the next byte array from the buffer. Gets the array's size by reading
 	 * the next int, then reads that amount of bytes and returns the decompressed byte array.
 	 * 
 	 * @param 	buffer
 	 * 
-	 * @return	
+	 * @return
 	 */
 	public static byte[] readByteArray(ByteBuf buffer)
 	{

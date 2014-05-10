@@ -33,11 +33,10 @@ import com.radixshock.radixcore.constant.Font.Format;
 
 public class RenderFakePlayer extends RenderBiped
 {
-	private static final float LABEL_SCALE = 0.027F;
 	private final ModelBiped modelArmorPlate;
 	private final ModelBiped modelArmor;
 
-	public RenderFakePlayer() 
+	public RenderFakePlayer()
 	{
 		super(new ModelBiped(0.0F), 0.5F);
 
@@ -57,7 +56,7 @@ public class RenderFakePlayer extends RenderBiped
 	{
 		renderFakePlayer((EntityFakePlayer)entityLiving, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
-	
+
 	@Override
 	protected void preRenderCallback(EntityLivingBase entityLivingBase, float partialTickTime)
 	{
@@ -79,7 +78,7 @@ public class RenderFakePlayer extends RenderBiped
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) 
+	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		final EntityFakePlayer player = (EntityFakePlayer)entity;
 
@@ -119,7 +118,7 @@ public class RenderFakePlayer extends RenderBiped
 			posYCorrection -= 0.125D;
 		}
 
-		super.doRender((EntityLiving)entity, posX, posYCorrection, posZ, rotationYaw, rotationPitch);
+		super.doRender(entity, posX, posYCorrection, posZ, rotationYaw, rotationPitch);
 		modelArmorPlate.aimedBow = modelArmor.aimedBow = modelBipedMain.aimedBow = false;
 		modelArmorPlate.isSneak = modelArmor.isSneak = modelBipedMain.isSneak = false;
 		modelArmorPlate.heldItemRight = modelArmor.heldItemRight = modelBipedMain.heldItemRight = 0;
@@ -146,27 +145,27 @@ public class RenderFakePlayer extends RenderBiped
 
 	protected void renderLivingLabel(Entity entity, String text, double posX, double posY, double posZ, int visibleDistance)
 	{
-		double distanceSq = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
+		final double distanceSq = entity.getDistanceSqToEntity(renderManager.livingPlayer);
 
-		if (distanceSq <= (double)(visibleDistance * visibleDistance))
+		if (distanceSq <= visibleDistance * visibleDistance)
 		{
 			final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
 
-			FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
-			float f = 1.6F;
-			float f1 = 0.016666668F * f;
+			final FontRenderer fontrenderer = getFontRendererFromRenderManager();
+			final float f = 1.6F;
+			final float f1 = 0.016666668F * f;
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)posX + 0.0F, (float)posY + entity.height + 0.5F, (float)posZ);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 			GL11.glScalef(-f1, -f1, f1);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDepthMask(false);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_BLEND);
 			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-			Tessellator tessellator = Tessellator.instance;
+			final Tessellator tessellator = Tessellator.instance;
 			byte b0 = 0;
 
 			if (text.equals("deadmau5"))
@@ -176,12 +175,12 @@ public class RenderFakePlayer extends RenderBiped
 
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			tessellator.startDrawingQuads();
-			int j = fontrenderer.getStringWidth(text) / 2;
+			final int j = fontrenderer.getStringWidth(text) / 2;
 			tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-			tessellator.addVertex((double)(-j - 1), (double)(-1 + b0), 0.0D);
-			tessellator.addVertex((double)(-j - 1), (double)(8 + b0), 0.0D);
-			tessellator.addVertex((double)(j + 1), (double)(8 + b0), 0.0D);
-			tessellator.addVertex((double)(j + 1), (double)(-1 + b0), 0.0D);
+			tessellator.addVertex(-j - 1, -1 + b0, 0.0D);
+			tessellator.addVertex(-j - 1, 8 + b0, 0.0D);
+			tessellator.addVertex(j + 1, 8 + b0, 0.0D);
+			tessellator.addVertex(j + 1, -1 + b0, 0.0D);
 			tessellator.draw();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			fontrenderer.drawString(text, -fontrenderer.getStringWidth(text) / 2, b0, 553648127);

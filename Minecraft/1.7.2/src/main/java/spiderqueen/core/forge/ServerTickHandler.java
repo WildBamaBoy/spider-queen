@@ -12,11 +12,9 @@ package spiderqueen.core.forge;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -37,22 +35,18 @@ import com.radixshock.radixcore.constant.Time;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.Point3D;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-
 /**
  * Handles ticking server-side.
  */
 public class ServerTickHandler
 {
-	/** The number of ticks since the loop has been ran. */
-	private int serverTicks = 20;
 	private int timeUntilSpawnWeb = Time.MINUTE * 3;
-	private int timeUntilSpawnPlayers = Time.SECOND * 30; 
+	private int timeUntilSpawnPlayers = Time.SECOND * 30;
 	private int timeUntilSpawnWarParties = Time.MINUTE * 2;
 
 	private boolean hasCalculatedReputationForDay = false;
 	public List<PlayerEatEntry> playersEating = new ArrayList<PlayerEatEntry>();
-	private List<PlayerEatEntry> playersNoLongerEating = new ArrayList<PlayerEatEntry>();
+	private final List<PlayerEatEntry> playersNoLongerEating = new ArrayList<PlayerEatEntry>();
 
 	/**
 	 * Fires once per tick in-game.
@@ -79,8 +73,8 @@ public class ServerTickHandler
 
 		else if (!worldServer.isDaytime() && !hasCalculatedReputationForDay)
 		{
-			for (Object obj : worldServer.playerEntities)
-			{	
+			for (final Object obj : worldServer.playerEntities)
+			{
 				final EntityPlayer player = (EntityPlayer)obj;
 				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
@@ -93,9 +87,9 @@ public class ServerTickHandler
 		}
 	}
 
-	private void applyReputationEffects(EntityPlayer player, PlayerExtension playerExtension) 
+	private void applyReputationEffects(EntityPlayer player, PlayerExtension playerExtension)
 	{
-		for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+		for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (entry.reputationValue == -2 && !entry.isAtWar)
 			{
@@ -129,22 +123,22 @@ public class ServerTickHandler
 		}
 	}
 
-	private void modifyReputations(PlayerExtension playerExtension) 
+	private void modifyReputations(PlayerExtension playerExtension)
 	{
-		final EntityPlayer player = playerExtension.getPlayer();
+		playerExtension.getPlayer();
 
-		for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+		for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (entry.creaturesKilled >= 3)
 			{
-				entry.reputationValue = 
+				entry.reputationValue =
 						entry.reputationValue == -5 ? -5 :
 							entry.reputationValue - 1;
 			}
 
 			else if (entry.creaturesKilled == 0)
 			{
-				entry.reputationValue = 
+				entry.reputationValue =
 						entry.reputationValue == 5 ? 5 :
 							entry.reputationValue + 1;
 			}
@@ -157,9 +151,9 @@ public class ServerTickHandler
 	{
 		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 		{
-			for (Object obj : worldServer.playerEntities)
+			for (final Object obj : worldServer.playerEntities)
 			{
-				EntityPlayer player = (EntityPlayer)obj;
+				final EntityPlayer player = (EntityPlayer)obj;
 
 				if (player.worldObj.getBlockLightValue((int)player.posX, (int)player.posY, (int)player.posZ) <= 8)
 				{
@@ -191,9 +185,9 @@ public class ServerTickHandler
 		{
 			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 			{
-				for (Object obj : worldServer.playerEntities)
+				for (final Object obj : worldServer.playerEntities)
 				{
-					EntityPlayer player = (EntityPlayer)obj;
+					final EntityPlayer player = (EntityPlayer)obj;
 					player.inventory.addItemStackToInventory(new ItemStack(Items.string, LogicHelper.getNumberInRange(1, 3)));
 				}
 			}
@@ -204,14 +198,14 @@ public class ServerTickHandler
 
 	private void updatePlayerEat()
 	{
-		for (PlayerEatEntry eatEntry : playersEating)
+		for (final PlayerEatEntry eatEntry : playersEating)
 		{
 			//Check if the player is still on the same slot.
 			if (eatEntry.getPlayer().inventory.currentItem == eatEntry.getSlot())
 			{
 				final ItemStack currentItemStack = eatEntry.getPlayer().getCurrentEquippedItem();
 
-				if (currentItemStack == null || (currentItemStack.stackSize < eatEntry.getCount() && currentItemStack.getItem() instanceof ItemFood))
+				if (currentItemStack == null || currentItemStack.stackSize < eatEntry.getCount() && currentItemStack.getItem() instanceof ItemFood)
 				{
 					eatEntry.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.string, LogicHelper.getNumberInRange(1, 3)));
 					playersNoLongerEating.add(eatEntry);
@@ -225,7 +219,7 @@ public class ServerTickHandler
 		}
 
 		//Empty the playersEating list.
-		for (PlayerEatEntry eatEntry : playersNoLongerEating)
+		for (final PlayerEatEntry eatEntry : playersNoLongerEating)
 		{
 			playersEating.remove(eatEntry);
 		}
@@ -239,14 +233,14 @@ public class ServerTickHandler
 		{
 			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 			{
-				for (Object obj : worldServer.playerEntities)
+				for (final Object obj : worldServer.playerEntities)
 				{
 					final EntityPlayer player = (EntityPlayer)obj;
 					final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
 					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 
-					final List<Entity> nearbyEntities = ((List<Entity>)LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30));
+					final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30);
 					int numberOfPlayersNearby = 0;
 
 					for (final Object entity : nearbyEntities)
@@ -268,7 +262,7 @@ public class ServerTickHandler
 		}
 	}
 
-	private void updateSpawnWarParties() 
+	private void updateSpawnWarParties()
 	{
 		timeUntilSpawnWarParties--;
 
@@ -276,12 +270,12 @@ public class ServerTickHandler
 		{
 			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 			{
-				for (Object obj : worldServer.playerEntities)
+				for (final Object obj : worldServer.playerEntities)
 				{
 					final EntityPlayer player = (EntityPlayer)obj;
 					final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
 
-					for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+					for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 					{
 						if (entry.isAtWar)
 						{
@@ -306,13 +300,13 @@ public class ServerTickHandler
 	{
 		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 		{
-			for (Object obj : worldServer.playerEntities)
+			for (final Object obj : worldServer.playerEntities)
 			{
 				final EntityPlayer player = (EntityPlayer)obj;
 				final int x = (int)player.posX;
 				final int y = (int)player.posY;
 				final int z = (int)player.posZ;
-				
+
 				if (worldServer.getBlock(x, y + 1, z) == SpiderQueen.getInstance().blockWebSide)
 				{
 					if (player.isSneaking())
@@ -336,7 +330,7 @@ public class ServerTickHandler
 						player.motionY = 0.4;
 					}
 				}
-				
+
 				if (worldServer.getBlock(x, y, z + 1) == SpiderQueen.getInstance().blockWebSide)
 				{
 					if (player.isSneaking())
@@ -344,7 +338,7 @@ public class ServerTickHandler
 						player.motionY = 0.4;
 					}
 				}
-				
+
 				if (worldServer.getBlock(x, y, z - 1) == SpiderQueen.getInstance().blockWebSide)
 				{
 					if (player.isSneaking())
@@ -352,23 +346,6 @@ public class ServerTickHandler
 						player.motionY = 0.4;
 					}
 				}
-			}
-		}
-	}
-	
-	private void updatePlayerWebMovement()
-	{
-		final World world = Minecraft.getMinecraft().theWorld;
-
-		for (Object obj : world.playerEntities)
-		{
-			final EntityPlayer player = (EntityPlayer)obj;
-			final int x = (int)player.posX;
-			final int y = (int)player.posY;
-			final int z = (int)player.posZ;
-			if (LogicHelper.isBlockNearby(player, Blocks.web, 2))
-			{
-				ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);
 			}
 		}
 	}

@@ -37,7 +37,7 @@ public class ContainerSpiderInventory extends Container
 		{
 			for (int inventoryWidth = 0; inventoryWidth < 9; ++inventoryWidth)
 			{
-				this.addSlotToContainer(new Slot(inventoryEntity, inventoryWidth + inventoryHeight * 9, 8 + inventoryWidth * 18, 18 + inventoryHeight * 18));
+				addSlotToContainer(new Slot(inventoryEntity, inventoryWidth + inventoryHeight * 9, 8 + inventoryWidth * 18, 18 + inventoryHeight * 18));
 				//this.addSlotToContainer(new Slot(inventoryEntity, inventoryWidth + inventoryHeight * 8, 8 + (inventoryWidth + 1) * 18, 18 + inventoryHeight * 18));
 			}
 		}
@@ -46,7 +46,7 @@ public class ContainerSpiderInventory extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) 
+	public boolean canInteractWith(EntityPlayer player)
 	{
 		return true;
 	}
@@ -54,7 +54,7 @@ public class ContainerSpiderInventory extends Container
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotId)
 	{
-		final Slot slot = (Slot)this.inventorySlots.get(slotId);
+		final Slot slot = (Slot)inventorySlots.get(slotId);
 		ItemStack transferStack = null;
 
 		if (slot != null && slot.getHasStack())
@@ -64,13 +64,13 @@ public class ContainerSpiderInventory extends Container
 
 			if (slotId < 4 * 9)
 			{
-				if (!this.mergeItemStack(slotStack, 4 * 9, this.inventorySlots.size(), true))
+				if (!mergeItemStack(slotStack, 4 * 9, inventorySlots.size(), true))
 				{
 					return null;
 				}
 			}
 
-			else if (!this.mergeItemStack(slotStack, 0, 4 * 9, false))
+			else if (!mergeItemStack(slotStack, 0, 4 * 9, false))
 			{
 				return null;
 			}
@@ -94,28 +94,28 @@ public class ContainerSpiderInventory extends Container
 	 * 
 	 * @param 	inventoryPlayer	An instance of the player's inventory.
 	 */
-	private void bindPlayerInventory(InventoryPlayer inventoryPlayer) 
+	private void bindPlayerInventory(InventoryPlayer inventoryPlayer)
 	{
 		final int heldItemsHeightMod = entity.level == 1 ? 107 : entity.level == 2 ? 125 : 143;
 		final int storedItemsHeightMod = entity.level == 1 ? 49 : entity.level == 2 ? 67 : 85;;
-		
+
 		try
 		{
-			for (int inventoryHeight = 0; inventoryHeight < 3; inventoryHeight++) 
+			for (int inventoryHeight = 0; inventoryHeight < 3; inventoryHeight++)
 			{
-				for (int inventoryWidth = 0; inventoryWidth < 9; inventoryWidth++) 
+				for (int inventoryWidth = 0; inventoryWidth < 9; inventoryWidth++)
 				{
 					addSlotToContainer(new Slot(inventoryPlayer, inventoryWidth + inventoryHeight * 9 + 9, 8 + inventoryWidth * 18, storedItemsHeightMod + inventoryHeight * 18));
 				}
 			}
 
-			for (int i = 0; i < 9; i++) 
+			for (int i = 0; i < 9; i++)
 			{
 				addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, heldItemsHeightMod));
 			}
 		}
 
-		catch (Throwable e)
+		catch (final Throwable e)
 		{
 			e.printStackTrace();
 		}

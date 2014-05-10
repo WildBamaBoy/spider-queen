@@ -18,25 +18,25 @@ import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntitySpiderEgg;
 
-public class ItemSpiderEgg extends AbstractItemSpawner 
+public class ItemSpiderEgg extends AbstractItemSpawner
 {
 	public ItemSpiderEgg()
 	{
 		super();
 		setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 	}
-	
+
 	@Override
-	public void registerIcons(IIconRegister IIconRegister) 
+	public void registerIcons(IIconRegister IIconRegister)
 	{
 		itemIcon = IIconRegister.registerIcon("spiderqueen:SpiderEgg");
 	}
 
 	@Override
-	public boolean spawnEntity(World world, EntityPlayer player, double posX, double posY, double posZ) 
+	public boolean spawnEntity(World world, EntityPlayer player, double posX, double posY, double posZ)
 	{
 		if (world.isRemote)
-		{	
+		{
 			return true;
 		}
 
@@ -53,11 +53,11 @@ public class ItemSpiderEgg extends AbstractItemSpawner
 			return true;
 		}
 	}
-	
+
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
-	{	
-		par3List.add("Consumes a nearby cocoon");
-		par3List.add("when ready to grow.");
+	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
+	{
+		list.add("Consumes a nearby cocoon");
+		list.add("when ready to grow.");
 	}
 }

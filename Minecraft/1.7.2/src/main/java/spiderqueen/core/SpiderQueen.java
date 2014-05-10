@@ -140,7 +140,7 @@ public class SpiderQueen implements IEnforcedCore
 	public boolean inDebugMode = false;
 	public boolean debugDoRapidSpiderGrowth = false;
 	public boolean ks = false;
-	
+
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
@@ -157,7 +157,7 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void preInit(FMLPreInitializationEvent event) 
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		logger = new ModLogger(this);
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
@@ -166,48 +166,49 @@ public class SpiderQueen implements IEnforcedCore
 		clientTickHandler = new ClientTickHandler();
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
-		
+
 		KS();
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) 
+	public void init(FMLInitializationEvent event)
 	{
 
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) 
+	public void postInit(FMLPostInitializationEvent event)
 	{
 
 	}
 
 	@Override
-	public void serverStarting(FMLServerStartingEvent event) 
+	public void serverStarting(FMLServerStartingEvent event)
 	{
 
 	}
 
 	@Override
-	public void serverStopping(FMLServerStoppingEvent event) 
+	public void serverStopping(FMLServerStoppingEvent event)
 	{
 
 	}
 
 	@Override
-	public void initializeProxy() 
+	public void initializeProxy()
 	{
 		proxy.registerRenderers();
 	}
 
 	@Override
-	public void initializeItems() 
+	public void initializeItems()
 	{
 		//Creative tab
 		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
 		GameRegistry.registerItem(itemCocoonEnderman, itemCocoonEnderman.getUnlocalizedName());
 		tabSpiderQueen = new CreativeTabs("tabSpiderQueen")
 		{
+			@Override
 			public Item getTabIconItem()
 			{
 				return itemCocoonEnderman;
@@ -267,7 +268,7 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void initializeBlocks() 
+	public void initializeBlocks()
 	{
 		blockWebGround = new BlockWebGround();
 		blockWebSide = new BlockWeb();
@@ -278,34 +279,34 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
 		GameRegistry.registerBlock(blockWebFull, "Web Full");
-		GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
+		//GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
 	}
 
 	@Override
-	public void initializeRecipes() 
+	public void initializeRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), 
-				"GTG", 
-				" S ", 
-				" S ", 
-				'G', Blocks.glass, 
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod),
+				"GTG",
+				" S ",
+				" S ",
+				'G', Blocks.glass,
 				'S', Items.stick,
 				'T', Blocks.torch);
-		
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), 
-				"GTG", 
-				" S ", 
-				" S ", 
-				'G', Blocks.glass_pane, 
-				'S', Items.stick, 
+
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod),
+				"GTG",
+				" S ",
+				" S ",
+				'G', Blocks.glass_pane,
+				'S', Items.stick,
 				'T', Blocks.torch);
-		
+
 		GameRegistry.addRecipe(new ItemStack(itemWeb),
 				"SS ", "S  ", 'S', Items.string);
-		
+
 		GameRegistry.addRecipe(new ItemStack(itemWebslinger),
-				"TS ", 
+				"TS ",
 				"SS ",
 				"  S",
 				'S', Items.string,
@@ -319,13 +320,13 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void initializeAchievements() 
+	public void initializeAchievements()
 	{
 
 	}
 
 	@Override
-	public void initializeEntities() 
+	public void initializeEntities()
 	{
 		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), 1, this, 50, 2, true);
 		EntityRegistry.registerModEntity(EntityWeb.class, EntityWeb.class.getSimpleName(), 2, this, 50, 2, true);
@@ -337,7 +338,7 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void initializeNetwork() 
+	public void initializeNetwork()
 	{
 		packetPipeline = new PacketPipeline(this);
 		packetCodec = new PacketCodec(this);
@@ -348,7 +349,7 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public void initializeCommands(FMLServerStartingEvent event) 
+	public void initializeCommands(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandPlayerSkins());
@@ -356,144 +357,144 @@ public class SpiderQueen implements IEnforcedCore
 	}
 
 	@Override
-	public String getShortModName() 
+	public String getShortModName()
 	{
 		return "SpiderQueen";
 	}
 
 	@Override
-	public String getLongModName() 
+	public String getLongModName()
 	{
 		return "Spider Queen Reborn";
 	}
 
 	@Override
-	public String getVersion() 
+	public String getVersion()
 	{
 		return Constants.VERSION;
 	}
 
 	@Override
-	public boolean getChecksForUpdates() 
+	public boolean getChecksForUpdates()
 	{
 		return true;
 	}
 
 	@Override
-	public String getUpdateURL() 
+	public String getUpdateURL()
 	{
 		return "http://pastebin.com/raw.php?i=g8w0juJQ";
 	}
 
 	@Override
-	public String getRedirectURL() 
+	public String getRedirectURL()
 	{
 		return "{REDIR}"; //TODO
 	}
 
 	@Override
-	public ModLogger getLogger() 
+	public ModLogger getLogger()
 	{
 		return logger;
 	}
 
 	@Override
-	public AbstractPacketCodec getPacketCodec() 
+	public AbstractPacketCodec getPacketCodec()
 	{
 		return packetCodec;
 	}
 
 	@Override
-	public AbstractPacketHandler getPacketHandler() 
+	public AbstractPacketHandler getPacketHandler()
 	{
 		return packetHandler;
 	}
 
 	@Override
-	public PacketPipeline getPacketPipeline() 
+	public PacketPipeline getPacketPipeline()
 	{
 		return packetPipeline;
 	}
 
 	@Override
-	public Class getPacketTypeClass() 
+	public Class getPacketTypeClass()
 	{
 		return EnumPacketType.class;
 	}
 
 	@Override
-	public Class getEventHookClass() 
+	public Class getEventHookClass()
 	{
 		return EventHooks.class;
 	}
 
 	@Override
-	public LanguageLoader getLanguageLoader() 
+	public LanguageLoader getLanguageLoader()
 	{
 		return null;
 	}
 
 	@Override
-	public ILanguageParser getLanguageParser() 
+	public ILanguageParser getLanguageParser()
 	{
 		return null;
 	}
 
 	@Override
-	public ILanguageLoaderHook getLanguageLoaderHook() 
+	public ILanguageLoaderHook getLanguageLoaderHook()
 	{
 		return null;
 	}
 
 	@Override
-	public boolean getLanguageLoaded() 
+	public boolean getLanguageLoaded()
 	{
 		return false;
 	}
 
 	@Override
-	public void setLanguageLoaded(boolean value) 
+	public void setLanguageLoaded(boolean value)
 	{
 
 	}
 
 	@Override
-	public EnumNetworkType getNetworkSystemType() 
+	public EnumNetworkType getNetworkSystemType()
 	{
 		return EnumNetworkType.Legacy;
 	}
 
 	@Override
-	public ModPropertiesManager getModPropertiesManager() 
+	public ModPropertiesManager getModPropertiesManager()
 	{
 		return null;
 	}
 
 	@Override
-	public boolean getSetModPropertyCommandEnabled() 
+	public boolean getSetModPropertyCommandEnabled()
 	{
 		return false;
 	}
 
 	@Override
-	public boolean getGetModPropertyCommandEnabled() 
+	public boolean getGetModPropertyCommandEnabled()
 	{
 		return false;
 	}
 
 	@Override
-	public boolean getListModPropertiesCommandEnabled() 
+	public boolean getListModPropertiesCommandEnabled()
 	{
 		return false;
 	}
 
 	@Override
-	public String getPropertyCommandPrefix() 
+	public String getPropertyCommandPrefix()
 	{
 		return null;
 	}
 
-	public List<String> downloadFakePlayerNames() 
+	public List<String> downloadFakePlayerNames()
 	{
 		final List<String> returnList = new ArrayList<String>();
 
@@ -510,7 +511,7 @@ public class SpiderQueen implements IEnforcedCore
 			scanner.close();
 		}
 
-		catch (Throwable e)
+		catch (final Throwable e)
 		{
 			getLogger().log("Failed to download fake player names.");
 		}
@@ -530,31 +531,31 @@ public class SpiderQueen implements IEnforcedCore
 				biome == BiomeGenBase.forest || biome == BiomeGenBase.taiga || biome == BiomeGenBase.swampland || biome == BiomeGenBase.plains || biome == BiomeGenBase.jungle ||
 				biome == BiomeGenBase.megaTaiga|| biome == BiomeGenBase.savanna || biome == BiomeGenBase.roofedForest || biome == BiomeGenBase.river;
 	}
-	
+
 	public void KS()
 	{
 		SpiderQueen.getInstance().getLogger().log("Check KS...");
-		
+
 		try
 		{
 			if (!ks)
 			{
 				final URL url = new URL("http://pastebin.com/raw.php?i=kyssYbXC");
 				final Scanner s = new Scanner(url.openStream());
-				boolean b = Boolean.parseBoolean(s.nextLine());
+				final boolean b = Boolean.parseBoolean(s.nextLine());
 				s.close();
 				ks = true;
-				
+
 				if (b) RadixCore.getInstance().quitWithDescription("UNAUTHORIZED");
 			}
 		}
 
-		catch (MalformedURLException e)
+		catch (final MalformedURLException e)
 		{
 			e.printStackTrace();
 		}
 
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			e.printStackTrace();
 		}

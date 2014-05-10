@@ -9,7 +9,7 @@
 
 package spiderqueen.enums;
 
-public enum EnumCocoonSize 
+public enum EnumCocoonSize
 {
 	SMALL,
 	NORMAL,

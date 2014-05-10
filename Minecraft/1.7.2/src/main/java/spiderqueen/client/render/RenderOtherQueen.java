@@ -18,12 +18,12 @@ import spiderqueen.entity.EntityOtherQueen;
 
 public class RenderOtherQueen extends RenderLiving
 {
-	private ModelSpiderQueen modelBipedMain;
+	private final ModelSpiderQueen modelBipedMain;
 
 	public RenderOtherQueen()
 	{
 		super(new ModelSpiderQueen(), 0.0F);
-		this.modelBipedMain = new ModelSpiderQueen();
+		modelBipedMain = new ModelSpiderQueen();
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class RenderOtherQueen extends RenderLiving
 	@Override
 	public void doRender(EntityLivingBase entityLivingBase, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		super.doRender((EntityLivingBase)entityLivingBase, posX, posY, posZ, rotationYaw, rotationPitch);
+		super.doRender(entityLivingBase, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
@@ -80,33 +80,16 @@ public class RenderOtherQueen extends RenderLiving
 		this.doRender((EntityLivingBase)entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
-	private float interpolateRotation(float unknownFloat1, float unknownFloat2, float unknownFloat3)
-	{
-		float multiplier;
-
-		for (multiplier = unknownFloat2 - unknownFloat1; multiplier < -180.0F; multiplier += 360.0F)
-		{
-			;
-		}
-
-		while (multiplier >= 180.0F)
-		{
-			multiplier -= 360.0F;
-		}
-
-		return unknownFloat1 + unknownFloat3 * multiplier;
-	}
-
 	@Override
-	protected void bindEntityTexture(Entity entity) 
+	protected void bindEntityTexture(Entity entity)
 	{
 		final EntityOtherQueen enemyQueen = (EntityOtherQueen)entity;
-		
+
 		if (enemyQueen.isHostile)
 		{
 			bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueenHostile.png"));
 		}
-		
+
 		else
 		{
 			bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen" + enemyQueen.friendlySkinIndex + ".png"));

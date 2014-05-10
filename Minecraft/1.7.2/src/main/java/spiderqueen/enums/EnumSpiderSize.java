@@ -9,7 +9,7 @@
 
 package spiderqueen.enums;
 
-public enum EnumSpiderSize 
+public enum EnumSpiderSize
 {
 	TINY,
 	THIN,

@@ -11,18 +11,18 @@ import net.minecraft.entity.monster.EntityZombie;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityOtherQueen;
 
-public class CreatureReputationEntry 
+public class CreatureReputationEntry
 {
-	private Class creatureClass;
+	private final Class creatureClass;
 	public String creatureGroupName;
 	public int reputationValue;
 	public int creaturesKilled;
 	public boolean isAtWar;
-	
+
 	public static List<CreatureReputationEntry> getListOfCleanEntries()
 	{
 		final List<CreatureReputationEntry> returnList = new ArrayList<CreatureReputationEntry>();
-		
+
 		returnList.add(new CreatureReputationEntry(EntityCreeper.class, "Creepers"));
 		returnList.add(new CreatureReputationEntry(EntitySkeleton.class, "Skeletons"));
 		returnList.add(new CreatureReputationEntry(EntityFakePlayer.class, "Humans"));
@@ -30,20 +30,20 @@ public class CreatureReputationEntry
 		returnList.add(new CreatureReputationEntry(EntityZombie.class, "Zombies"));
 		returnList.add(new CreatureReputationEntry(EntityEnderman.class, "Endermen"));
 		returnList.add(new CreatureReputationEntry(EntitySpider.class, "Evil Queen"));
-		
+
 		return returnList;
 	}
-	
+
 	public CreatureReputationEntry(Class creatureClass, String creatureGroupName)
 	{
 		this.creatureClass = creatureClass;
 		this.creatureGroupName = creatureGroupName;
-		this.reputationValue = 0;
-		this.creaturesKilled = 0;
-		this.isAtWar = false;
+		reputationValue = 0;
+		creaturesKilled = 0;
+		isAtWar = false;
 	}
 
-	public Class getCreatureClass() 
+	public Class getCreatureClass()
 	{
 		return creatureClass;
 	}

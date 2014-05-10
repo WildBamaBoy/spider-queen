@@ -36,8 +36,8 @@ public class RenderCocoon extends Render
 		{
 			GL11.glTranslated(posX, posY, posZ);
 			GL11.glRotatef(entityCocoon.rotationYaw, 0.0F, 1.0F, 0.0F);
-			float rotateAdjustForHit = (float) entityCocoon.getTimeSinceHit() - rotationPitch / 2;
-			float rotateAdjustForDamage = (float) entityCocoon.getCurrentDamage() - rotationPitch / 2;
+			final float rotateAdjustForHit = entityCocoon.getTimeSinceHit() - rotationPitch / 2;
+			float rotateAdjustForDamage = entityCocoon.getCurrentDamage() - rotationPitch / 2;
 
 			if (rotateAdjustForDamage < 0.0F)
 			{
@@ -46,30 +46,31 @@ public class RenderCocoon extends Render
 
 			if (rotateAdjustForHit > 0.0F)
 			{
-				GL11.glRotatef(((MathHelper.sin(rotateAdjustForHit) * rotateAdjustForHit * rotateAdjustForDamage) / 10F), 1.0F, 0.0F, 0.0F);
+				GL11.glRotatef(MathHelper.sin(rotateAdjustForHit) * rotateAdjustForHit * rotateAdjustForDamage / 10F, 1.0F, 0.0F, 0.0F);
 			}
 
-			this.bindTexture(getEntityTexture(entityCocoon));
+			bindTexture(getEntityTexture(entityCocoon));
 			GL11.glScalef(-1F, -1F, 1.0F);
-			modelCocoon.render((Entity)entityCocoon,0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			modelCocoon.render(entityCocoon,0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		}
 		GL11.glPopMatrix();
 	}
 
 
+	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
 		render((EntityCocoon)entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) 
+	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		final EntityCocoon entityCocoon = (EntityCocoon)entity;
 
 		String name = entityCocoon.getCocoonType().toString();
 		name = Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();
-		
+
 		String resourceLocation = "spiderqueen:textures/entity/" + name;
 
 		if (entityCocoon.isEaten())

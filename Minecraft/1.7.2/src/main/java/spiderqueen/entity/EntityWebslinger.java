@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -77,7 +76,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	{
 		super(world);
 
-		PlayerExtension playerExtension = (PlayerExtension) entityPlayer.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = (PlayerExtension) entityPlayer.getExtendedProperties(PlayerExtension.ID);
 
 		tileX = -1;
 		tileY = -1;
@@ -88,28 +87,30 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		timeInAir = 0;
 		field_4088_k = 0;
 		entityStruck = null;
-		player = (EntityPlayerMP)entityPlayer;
+		player = entityPlayer;
 		playerExtension.webEntity = this;
 
 		setSize(0.25F, 0.25F);
-		setLocationAndAngles(entityPlayer.posX, (entityPlayer.posY + 1.62D) - (double)entityPlayer.yOffset, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-		posX -= MathHelper.cos((rotationYaw / 180F) * (float)Math.PI) * 0.16F;
+		setLocationAndAngles(entityPlayer.posX, entityPlayer.posY + 1.62D - entityPlayer.yOffset, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+		posX -= MathHelper.cos(rotationYaw / 180F * (float)Math.PI) * 0.16F;
 		posY -= 0.1D;
-		posZ -= MathHelper.sin((rotationYaw / 180F) * (float)Math.PI) * 0.16F;
+		posZ -= MathHelper.sin(rotationYaw / 180F * (float)Math.PI) * 0.16F;
 		setPosition(posX, posY, posZ);
 		yOffset = 0.0F;
 
-		motionX = -MathHelper.sin((rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((rotationPitch / 180F) * (float)Math.PI) * 8F;
-		motionZ = MathHelper.cos((rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((rotationPitch / 180F) * (float)Math.PI) * 8F;
-		motionY = -MathHelper.sin((rotationPitch / 180F) * (float)Math.PI) * 8F;
+		motionX = -MathHelper.sin(rotationYaw / 180F * (float)Math.PI) * MathHelper.cos(rotationPitch / 180F * (float)Math.PI) * 8F;
+		motionZ = MathHelper.cos(rotationYaw / 180F * (float)Math.PI) * MathHelper.cos(rotationPitch / 180F * (float)Math.PI) * 8F;
+		motionY = -MathHelper.sin(rotationPitch / 180F * (float)Math.PI) * 8F;
 
 		func_4042_a(motionX, motionY, motionZ, 1.5F, 1.0F);
 	}
 
+	@Override
 	protected void entityInit()
 	{
 	}
 
+	@Override
 	public boolean isInRangeToRenderDist(double d)
 	{
 		double d1 = boundingBox.getAverageEdgeLength() * 4D;
@@ -119,25 +120,26 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 	public void func_4042_a(double d, double d1, double d2, float f, float f1)
 	{
-		float f2 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
+		final float f2 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
 		d /= f2;
 		d1 /= f2;
 		d2 /= f2;
-		d += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
-		d1 += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
-		d2 += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
+		d += rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d1 += rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d2 += rand.nextGaussian() * 0.0074999998323619366D * f1;
 		d *= f;
 		d1 *= f;
 		d2 *= f;
 		motionX = d;
 		motionY = d1;
 		motionZ = d2;
-		float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
-		prevRotationYaw = rotationYaw = (float)((Math.atan2(d, d2) * 180D) / 3.1415927410125732D);
-		prevRotationPitch = rotationPitch = (float)((Math.atan2(d1, f3) * 180D) / 3.1415927410125732D);
+		final float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
+		prevRotationYaw = rotationYaw = (float)(Math.atan2(d, d2) * 180D / 3.1415927410125732D);
+		prevRotationPitch = rotationPitch = (float)(Math.atan2(d1, f3) * 180D / 3.1415927410125732D);
 		timeInGround = 0;
 	}
 
+	@Override
 	public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i)
 	{
 		field_6387_m = d;
@@ -151,6 +153,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		motionZ = velocityZ;
 	}
 
+	@Override
 	public void setVelocity(double d, double d1, double d2)
 	{
 		velocityX = motionX = d;
@@ -159,53 +162,54 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	public void setDead() 
+	public void setDead()
 	{
 		super.setDead();
-		
-		if (this.player != null)
+
+		if (player != null)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension)this.player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
 			playerExtension.webEntity = null;
 		}
 	}
 
 	public void matchMotion(int type, double amount)
 	{
-		if (type == 0) 
+		if (type == 0)
 		{
 			amount = amount - player.motionX;
 			player.motionX = amount;
 
 			if (entityStruck != null)
-			{ 
-				entityStruck.motionX = entityStruck.motionX - amount; 
+			{
+				entityStruck.motionX = entityStruck.motionX - amount;
 			}
 		}
 
-		if (type == 1) 
+		if (type == 1)
 		{
 			amount = amount - player.motionY;
 			player.motionY = amount;
 
-			if (entityStruck != null) 
-			{ 
-				entityStruck.motionY = entityStruck.motionY - amount; 
+			if (entityStruck != null)
+			{
+				entityStruck.motionY = entityStruck.motionY - amount;
 			}
 		}
 
-		if (type == 2) 
+		if (type == 2)
 		{
 			amount = amount - player.motionZ;
 			player.motionZ = amount;
 
-			if (entityStruck != null) 
-			{ 
-				entityStruck.motionZ = entityStruck.motionZ - amount; 
+			if (entityStruck != null)
+			{
+				entityStruck.motionZ = entityStruck.motionZ - amount;
 			}
 		}
 	}
 
+	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
@@ -214,96 +218,96 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		{
 			player.fallDistance = 0.0F;
 
-			if (player.isSneaking()) 
+			if (player.isSneaking())
 			{
-				distance++; 
+				distance++;
 			}
 
-			Vec3 vectorSlinger = Vec3.createVectorHelper(posX, posY, posZ);
-			Vec3 vectorPlayer = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
+			final Vec3 vectorSlinger = Vec3.createVectorHelper(posX, posY, posZ);
+			final Vec3 vectorPlayer = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
 
 			if (distance != 0)
 			{
-				if(distance < 2) 
-				{ 
-					distance = 2; 
+				if(distance < 2)
+				{
+					distance = 2;
 				}
 
-				if (distance > 1000) 
-				{ 
-					distance = 1000; 
+				if (distance > 1000)
+				{
+					distance = 1000;
 				}
 			}
 
-			if (distance == 0) 
-			{ 
-				distance = vectorSlinger.squareDistanceTo(vectorPlayer); 
+			if (distance == 0)
+			{
+				distance = vectorSlinger.squareDistanceTo(vectorPlayer);
 			}
 
 			if (vectorSlinger.squareDistanceTo(vectorPlayer) > distance / 4 * 3)
 			{
-				Vec3 nextPosition = Vec3.createVectorHelper(
-						player.motionX * 1.2D + (posX - player.posX) / 2, 
-						player.motionY * 1.2D + (posY - player.posY) / 2, 
+				final Vec3 nextPosition = Vec3.createVectorHelper(
+						player.motionX * 1.2D + (posX - player.posX) / 2,
+						player.motionY * 1.2D + (posY - player.posY) / 2,
 						player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
 
 				double multiplier = 0.3D;// + (ww.squareDistanceTo(aa) - ddist) / (ddist);
 
-				if (entityStruck != null) 
-				{ 
-					multiplier = multiplier / 2; 
+				if (entityStruck != null)
+				{
+					multiplier = multiplier / 2;
 				}
 
-				double newMotionX = player.motionX + nextPosition.xCoord * multiplier;
-				double newMotionY = player.motionY + nextPosition.yCoord * multiplier;
-				double newMotionZ = player.motionZ + nextPosition.zCoord * multiplier;
+				final double newMotionX = player.motionX + nextPosition.xCoord * multiplier;
+				final double newMotionY = player.motionY + nextPosition.yCoord * multiplier;
+				final double newMotionZ = player.motionZ + nextPosition.zCoord * multiplier;
 
-				if (player.posX > posX) 
-				{ 
-					if (newMotionX < player.motionX) 
+				if (player.posX > posX)
+				{
+					if (newMotionX < player.motionX)
 					{
-						matchMotion(0, newMotionX); 
-					} 
-				} 
-
-				else 
-				{ 
-					if (newMotionX > player.motionX) 
-					{ 
-						matchMotion(0, newMotionX); 
-					} 
+						matchMotion(0, newMotionX);
+					}
 				}
 
-				if (player.posY > posY) 
-				{ 
-					if(newMotionY < player.motionY) 
-					{ 
-						matchMotion(1, newMotionY); 
-					} 
-				} 
-				
-				else 
-				{ 
-					if (newMotionY > player.motionY) 
-					{ 
-						matchMotion(1, newMotionY); 
-					} 
+				else
+				{
+					if (newMotionX > player.motionX)
+					{
+						matchMotion(0, newMotionX);
+					}
 				}
 
-				if (player.posZ > posZ) 
-				{ 
-					if (newMotionZ < player.motionZ) 
-					{ 
-						matchMotion(2, newMotionZ); 
-					} 
-				} 
-				
-				else 
-				{ 
-					if (newMotionZ > player.motionZ) 
-					{ 
-						matchMotion(2, newMotionZ); 
-					} 
+				if (player.posY > posY)
+				{
+					if(newMotionY < player.motionY)
+					{
+						matchMotion(1, newMotionY);
+					}
+				}
+
+				else
+				{
+					if (newMotionY > player.motionY)
+					{
+						matchMotion(1, newMotionY);
+					}
+				}
+
+				if (player.posZ > posZ)
+				{
+					if (newMotionZ < player.motionZ)
+					{
+						matchMotion(2, newMotionZ);
+					}
+				}
+
+				else
+				{
+					if (newMotionZ > player.motionZ)
+					{
+						matchMotion(2, newMotionZ);
+					}
 				}
 			}
 
@@ -311,11 +315,11 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			{
 				if (player != null)
 				{
-					boolean isJumping = ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, player, 41);
+					final boolean isJumping = ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, player, 41);
 
 					if (isJumping)
 					{
-						distance = distance - 6; 
+						distance = distance - 6;
 						SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.SetDistance, distance));
 					}
 				}
@@ -324,16 +328,16 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		if (field_6388_l > 0)
 		{
-			double d = posX + (field_6387_m - posX) / (double)field_6388_l;
-			double d1 = posY + (field_6386_n - posY) / (double)field_6388_l;
-			double d2 = posZ + (field_6385_o - posZ) / (double)field_6388_l;
+			final double d = posX + (field_6387_m - posX) / field_6388_l;
+			final double d1 = posY + (field_6386_n - posY) / field_6388_l;
+			final double d2 = posZ + (field_6385_o - posZ) / field_6388_l;
 			double d4;
 
-			for(d4 = field_6384_p - (double)rotationYaw; d4 < -180D; d4 += 360D) { }
+			for(d4 = field_6384_p - rotationYaw; d4 < -180D; d4 += 360D) { }
 			for(; d4 >= 180D; d4 -= 360D) { }
 
-			rotationYaw += d4 / (double)field_6388_l;
-			rotationPitch += (field_6383_q - (double)rotationPitch) / (double)field_6388_l;
+			rotationYaw += d4 / field_6388_l;
+			rotationPitch += (field_6383_q - rotationPitch) / field_6388_l;
 			field_6388_l--;
 			setPosition(d, d1, d2);
 			setRotation(rotationYaw, rotationPitch);
@@ -346,10 +350,10 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			{
 				setDead();
 
-				if (player != null) 
-				{ 
-					PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-					playerExtension.webEntity = null; 
+				if (player != null)
+				{
+					final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+					playerExtension.webEntity = null;
 				}
 
 				return;
@@ -360,12 +364,12 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 				if (entityStruck.isDead)
 				{
 					entityStruck = null;
-				} 
+				}
 
 				else
 				{
 					posX = entityStruck.posX;
-					posY = entityStruck.boundingBox.minY + (double)entityStruck.height * 0.80000000000000004D;
+					posY = entityStruck.boundingBox.minY + entityStruck.height * 0.80000000000000004D;
 					posZ = entityStruck.posZ;
 					return;
 				}
@@ -389,7 +393,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 			return;
 
-		} 
+		}
 
 		else
 		{
@@ -408,27 +412,27 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		}
 
 		Entity entity = null;
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+		final List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 		double d3 = 0.0D;
 
 		for (int j = 0; j < list.size(); j++)
 		{
-			Entity entity1 = (Entity)list.get(j);
+			final Entity entity1 = (Entity)list.get(j);
 			if (!entity1.canBeCollidedWith() || entity1 == player && timeInAir < 5)
 			{
 				continue;
 			}
 
-			float f2 = 0.3F;
-			AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f2, f2, f2);
-			MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
+			final float f2 = 0.3F;
+			final AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f2, f2, f2);
+			final MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
 
 			if (movingobjectposition1 == null)
 			{
 				continue;
 			}
 
-			double d6 = vec3d.distanceTo(movingobjectposition1.hitVec);
+			final double d6 = vec3d.distanceTo(movingobjectposition1.hitVec);
 			if (d6 < d3 || d3 == 0.0D)
 			{
 				entity = entity1;
@@ -449,7 +453,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 				{
 					entityStruck = movingobjectposition.entityHit;
 				}
-			} 
+			}
 
 			else
 			{
@@ -467,10 +471,10 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		}
 
 		moveEntity(motionX, motionY, motionZ);
-		float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-		rotationYaw = (float)((Math.atan2(motionX, motionZ) * 180D) / 3.1415927410125732D);
+		final float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+		rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180D / 3.1415927410125732D);
 
-		for(rotationPitch = (float)((Math.atan2(motionY, f) * 180D) / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
+		for(rotationPitch = (float)(Math.atan2(motionY, f) * 180D / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
 		for(; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
 		for(; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
 		for(; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
@@ -485,18 +489,18 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			inGround = true;
 		}
 
-		int k = 5;
+		final int k = 5;
 		double d5 = 0.0D;
 
 		for (int l = 0; l < k; l++)
 		{
-			double d8 = ((boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(l + 0)) / (double)k) - 0.125D) + 0.125D;
-			double d9 = ((boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(l + 1)) / (double)k) - 0.125D) + 0.125D;
-			AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(boundingBox.minX, d8, boundingBox.minZ, boundingBox.maxX, d9, boundingBox.maxZ);
+			final double d8 = boundingBox.minY + (boundingBox.maxY - boundingBox.minY) * (l + 0) / k - 0.125D + 0.125D;
+			final double d9 = boundingBox.minY + (boundingBox.maxY - boundingBox.minY) * (l + 1) / k - 0.125D + 0.125D;
+			final AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(boundingBox.minX, d8, boundingBox.minZ, boundingBox.maxX, d9, boundingBox.maxZ);
 
 			if (worldObj.isAABBInMaterial(axisalignedbb1, Material.water))
 			{
-				d5 += 1.0D / (double)k;
+				d5 += 1.0D / k;
 			}
 		}
 
@@ -505,7 +509,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			if (field_4088_k > 0)
 			{
 				field_4088_k--;
-			} 
+			}
 
 			else
 			{
@@ -521,19 +525,19 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 					field_4088_k = rand.nextInt(30) + 10;
 					motionY -= 0.20000000298023224D;
 					worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
-					float f3 = MathHelper.floor_double(boundingBox.minY);
-					for(int i1 = 0; (float)i1 < 1.0F + width * 20F; i1++)
+					final float f3 = MathHelper.floor_double(boundingBox.minY);
+					for(int i1 = 0; i1 < 1.0F + width * 20F; i1++)
 					{
-						float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						float f6 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						worldObj.spawnParticle("bubble", posX + (double)f4, f3 + 1.0F, posZ + (double)f6, motionX, motionY - (double)(rand.nextFloat() * 0.2F), motionZ);
+						final float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						final float f6 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						worldObj.spawnParticle("bubble", posX + f4, f3 + 1.0F, posZ + f6, motionX, motionY - rand.nextFloat() * 0.2F, motionZ);
 					}
 
-					for(int j1 = 0; (float)j1 < 1.0F + width * 20F; j1++)
+					for(int j1 = 0; j1 < 1.0F + width * 20F; j1++)
 					{
-						float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						float f7 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						worldObj.spawnParticle("splash", posX + (double)f5, f3 + 1.0F, posZ + (double)f7, motionX, motionY, motionZ);
+						final float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						final float f7 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						worldObj.spawnParticle("splash", posX + f5, f3 + 1.0F, posZ + f7, motionX, motionY, motionZ);
 					}
 				}
 			}
@@ -541,15 +545,15 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		if (field_4088_k > 0)
 		{
-			motionY -= (double)(rand.nextFloat() * rand.nextFloat() * rand.nextFloat()) * 0.20000000000000001D;
+			motionY -= rand.nextFloat() * rand.nextFloat() * rand.nextFloat() * 0.20000000000000001D;
 		}
 
-		double d7 = d5 * 2D - 1.0D;
+		final double d7 = d5 * 2D - 1.0D;
 		motionY += 0.029999999105930328D * d7;
 
 		if (d5 > 0.0D)
 		{
-			f1 = (float)((double)f1 * 0.90000000000000002D);
+			f1 = (float)(f1 * 0.90000000000000002D);
 			motionY *= 0.80000000000000004D;
 		}
 		/*motionX *= f1;
@@ -558,6 +562,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		setPosition(posX, posY, posZ);
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
 		nbttagcompound.setShort("xTile", (short)tileX);
@@ -568,6 +573,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		nbttagcompound.setByte("inGround", (byte)(inGround ? 1 : 0));
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
 	{
 		tileX = nbttagcompound.getShort("xTile");
@@ -578,6 +584,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		inGround = nbttagcompound.getByte("inGround") == 1;
 	}
 
+	@Override
 	public float getShadowSize()
 	{
 		return 0.0F;
@@ -595,9 +602,9 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf additionalData) 
+	public void readSpawnData(ByteBuf additionalData)
 	{
-		this.player = Minecraft.getMinecraft().thePlayer;	
+		player = Minecraft.getMinecraft().thePlayer;
 		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 		playerExtension.webEntity = this;
 	}

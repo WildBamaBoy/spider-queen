@@ -34,18 +34,18 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		super(world);
 	}
-	
+
 	public EntitySpiderEgg(World world, String owner)
 	{
 		super(world);
 		this.owner = owner;
-		this.setSize(0.3F, 0.3F);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-		this.timeUntilEggHatch = LogicHelper.getNumberInRange(500, 5000);
+		setSize(0.3F, 0.3F);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+		timeUntilEggHatch = LogicHelper.getNumberInRange(500, 5000);
 	}
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
 		super.entityInit();
 	}
@@ -71,7 +71,7 @@ public class EntitySpiderEgg extends EntityCreature
 	@Override
 	public AxisAlignedBB getBoundingBox()
 	{
-		return this.boundingBox;
+		return boundingBox;
 	}
 
 	@Override
@@ -87,10 +87,10 @@ public class EntitySpiderEgg extends EntityCreature
 	}
 
 	@Override
-	public void onUpdate() 
+	public void onUpdate()
 	{
 		super.onUpdate();
-		
+
 		if (!worldObj.isRemote)
 		{
 			//DEBUG
@@ -99,7 +99,7 @@ public class EntitySpiderEgg extends EntityCreature
 				timeUntilEggHatch = 0;
 			}
 			//DEBUG
-			
+
 			if (timeUntilEggHatch <= 0)
 			{
 				final EntityCocoon cocoonToConsume = getConsumableCocoon();
@@ -128,11 +128,11 @@ public class EntitySpiderEgg extends EntityCreature
 	}
 
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-    
+	protected boolean canDespawn()
+	{
+		return false;
+	}
+
 	private EntityCocoon getConsumableCocoon()
 	{
 		final List<EntityCocoon> nearbyCocoons = (List<EntityCocoon>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityCocoon.class, 5);
@@ -141,9 +141,9 @@ public class EntitySpiderEgg extends EntityCreature
 
 		for (final EntityCocoon cocoon : nearbyCocoons)
 		{
-			double distanceToCurrentEntity = LogicHelper.getDistanceToEntity(this, cocoon);
+			final double distanceToCurrentEntity = LogicHelper.getDistanceToEntity(this, cocoon);
 
-			if (!cocoon.isEaten() && (distanceToCurrentEntity < lowestDistance))
+			if (!cocoon.isEaten() && distanceToCurrentEntity < lowestDistance)
 			{
 				lowestDistance = distanceToCurrentEntity;
 				nearestCocoon = cocoon;

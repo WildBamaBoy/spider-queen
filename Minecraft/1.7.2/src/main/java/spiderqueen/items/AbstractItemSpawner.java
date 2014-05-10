@@ -82,7 +82,7 @@ public abstract class AbstractItemSpawner extends Item
 	 * Spawns an entity into the world.
 	 * 
 	 * @param 	world			The world that the entity is being spawned in.
-	 * @param   entityPlayer	The player that spawned the entity. 
+	 * @param   entityPlayer	The player that spawned the entity.
 	 * @param 	posX			X coordinates that the player clicked.
 	 * @param 	posY			Y coordinates that the player clicked.
 	 * @param 	posZ			Z coordinates that the player clicked.

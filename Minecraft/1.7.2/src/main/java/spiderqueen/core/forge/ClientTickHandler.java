@@ -81,7 +81,7 @@ public class ClientTickHandler
 	{
 		final World world = Minecraft.getMinecraft().theWorld;
 
-		for (Object obj : world.playerEntities)
+		for (final Object obj : world.playerEntities)
 		{
 			final EntityPlayer player = (EntityPlayer)obj;
 			final int x = (int)player.posX;
@@ -134,12 +134,9 @@ public class ClientTickHandler
 	{
 		final World world = Minecraft.getMinecraft().theWorld;
 
-		for (Object obj : world.playerEntities)
+		for (final Object obj : world.playerEntities)
 		{
 			final EntityPlayer player = (EntityPlayer)obj;
-			final int x = (int)player.posX;
-			final int y = (int)player.posY;
-			final int z = (int)player.posZ;
 			if (LogicHelper.isBlockNearby(player, Blocks.web, 2))
 			{
 				ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);

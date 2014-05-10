@@ -49,7 +49,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 /**
  * Contains methods that perform a function when an event in Minecraft occurs.
  */
-public class EventHooks 
+public class EventHooks
 {
 	/**
 	 * Ticks the client tick handler.
@@ -59,7 +59,8 @@ public class EventHooks
 	@SubscribeEvent
 	public void clientTickEventHandler(ClientTickEvent event)
 	{
-		SpiderQueen.getInstance().clientTickHandler.onTick();
+		SpiderQueen.getInstance();
+		SpiderQueen.clientTickHandler.onTick();
 	}
 
 	/**
@@ -70,7 +71,8 @@ public class EventHooks
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{
-		SpiderQueen.getInstance().serverTickHandler.onTick();
+		SpiderQueen.getInstance();
+		SpiderQueen.serverTickHandler.onTick();
 	}
 
 	/**
@@ -83,13 +85,15 @@ public class EventHooks
 	{
 		if (!event.entityPlayer.worldObj.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
 		{
-			SpiderQueen.getInstance().serverTickHandler.playersEating.clear();
+			SpiderQueen.getInstance();
+			SpiderQueen.serverTickHandler.playersEating.clear();
 
 			if (event.entityPlayer.getCurrentEquippedItem() != null)
 			{
 				if (event.entityPlayer.getCurrentEquippedItem().getItem() instanceof ItemFood)
 				{
-					SpiderQueen.getInstance().serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
+					SpiderQueen.getInstance();
+					SpiderQueen.serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
 				}
 			}
 		}
@@ -103,18 +107,18 @@ public class EventHooks
 
 		try
 		{
-			for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 			{
 				if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass())
 				{
-					for (EntityLiving entity : (List<EntityLiving>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
+					for (final EntityLiving entity : (List<EntityLiving>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
 					{
 						entity.setAttackTarget((EntityLivingBase) event.target);
 					}
 				}
 			}
 
-			for (EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
+			for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
 			{
 				if (spider.owner != null)
 				{
@@ -136,7 +140,7 @@ public class EventHooks
 			}
 		}
 
-		catch (ClassCastException e)
+		catch (final ClassCastException e)
 		{
 			e.printStackTrace();
 		}
@@ -171,7 +175,7 @@ public class EventHooks
 			final EntityPlayer player = (EntityPlayer) event.source.getEntity();
 			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-			for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 			{
 				if (event.entityLiving.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{
@@ -233,7 +237,7 @@ public class EventHooks
 			final EntityPlayer player = (EntityPlayer)event.target;
 			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-			for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 			{
 				if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
 				{

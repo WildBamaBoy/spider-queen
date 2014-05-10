@@ -84,7 +84,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 			else
 			{
-				Inventory otherInventory = (Inventory)obj;
+				final Inventory otherInventory = (Inventory)obj;
 
 				for (int i = 0; i < getSizeInventory(); i++)
 				{
@@ -120,7 +120,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			}
 		}
 
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			SpiderQueen.getInstance().getLogger().log(e);
 			return false;
@@ -138,7 +138,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		if (owner instanceof EntityHatchedSpider)
 		{
 			final EntityHatchedSpider spider = (EntityHatchedSpider) owner;
-			return (spider.level * 10);
+			return spider.level * 10;
 		}
 
 		else
@@ -161,7 +161,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			return inventoryItems[slotId];
 		}
-		
+
 		else
 		{
 			return null;
@@ -267,13 +267,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() 
+	public boolean hasCustomInventoryName()
 	{
 		return true;
 	}
 
 	@Override
-	public void markDirty() 
+	public void markDirty()
 	{
 		onInventoryChanged(this);
 	}
@@ -334,7 +334,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemStack) 
+	public boolean isItemValidForSlot(int slot, ItemStack itemStack)
 	{
 		return false;
 	}
@@ -437,13 +437,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	{
 		try
 		{
-			if (slotId != -1 && this.armorItems[slotId] != null)
+			if (slotId != -1 && armorItems[slotId] != null)
 			{
-				return this.inventoryItems[getFirstSlotContainingItem(this.armorItems[slotId].getItem())];
+				return inventoryItems[getFirstSlotContainingItem(armorItems[slotId].getItem())];
 			}
 		}
 
-		catch (ArrayIndexOutOfBoundsException e)
+		catch (final ArrayIndexOutOfBoundsException e)
 		{
 			return null;
 		}
@@ -455,15 +455,15 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	 * Sets the best possible armor combination in the armor inventory.
 	 */
 	public void setWornArmorItems()
-	{	
-		for (ItemStack stack : inventoryItems)
+	{
+		for (final ItemStack stack : inventoryItems)
 		{
 			if (stack != null)
 			{
 				if (stack.getItem() instanceof ItemArmor)
 				{
-					ItemArmor itemAsArmor = (ItemArmor)stack.getItem();
-					int armorType = itemAsArmor.armorType;
+					final ItemArmor itemAsArmor = (ItemArmor)stack.getItem();
+					final int armorType = itemAsArmor.armorType;
 
 					try
 					{
@@ -474,7 +474,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 					}
 
 					//Hit when there's nothing in that armor slot.
-					catch (NullPointerException e)
+					catch (final NullPointerException e)
 					{
 						armorItems[armorType] = stack;
 					}
@@ -517,7 +517,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				if (itemClassName.equals(type.getName()) && highestMaxDamage < stackInInventory.getMaxDamage())
 				{
 					highestMaxDamage = stackInInventory.getMaxDamage();
-					stack = stackInInventory;			
+					stack = stackInInventory;
 				}
 			}
 		}
@@ -534,9 +534,9 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	 */
 	private int storeItemStack(ItemStack itemStack)
 	{
-		for (int i = 0; i < this.inventoryItems.length; ++i)
+		for (int i = 0; i < inventoryItems.length; ++i)
 		{
-			if (this.inventoryItems[i] != null && this.inventoryItems[i] == itemStack && this.inventoryItems[i].isStackable() && this.inventoryItems[i].stackSize < this.inventoryItems[i].getMaxStackSize() && this.inventoryItems[i].stackSize < this.getInventoryStackLimit() && (!this.inventoryItems[i].getHasSubtypes() || this.inventoryItems[i].getItemDamage() == itemStack.getItemDamage()) && ItemStack.areItemStacksEqual(this.inventoryItems[i], itemStack))
+			if (inventoryItems[i] != null && inventoryItems[i] == itemStack && inventoryItems[i].isStackable() && inventoryItems[i].stackSize < inventoryItems[i].getMaxStackSize() && inventoryItems[i].stackSize < getInventoryStackLimit() && (!inventoryItems[i].getHasSubtypes() || inventoryItems[i].getItemDamage() == itemStack.getItemDamage()) && ItemStack.areItemStacksEqual(inventoryItems[i], itemStack))
 			{
 				return i;
 			}
@@ -646,7 +646,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	{
 		for (int i = 0; i < inventoryItems.length; i++)
 		{
-			ItemStack currentStack = inventoryItems[i];
+			final ItemStack currentStack = inventoryItems[i];
 
 			if (currentStack != null)
 			{
@@ -654,7 +654,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				{
 					for (int i2 = 0; i2 < inventoryItems.length; i2++)
 					{
-						ItemStack searchingStack = inventoryItems[i2];
+						final ItemStack searchingStack = inventoryItems[i2];
 
 						if (searchingStack != null)
 						{
@@ -702,7 +702,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			if (itemStack.isItemDamaged())
 			{
-				slotId = this.getFirstEmptyStack();
+				slotId = getFirstEmptyStack();
 
 				if (slotId >= 0)
 				{
@@ -728,7 +728,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				do
 				{
 					slotId = itemStack.stackSize;
-					itemStack.stackSize = this.storePartialItemStack(itemStack);
+					itemStack.stackSize = storePartialItemStack(itemStack);
 				}
 				while (itemStack.stackSize > 0 && itemStack.stackSize < slotId);
 
@@ -787,7 +787,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	 * 
 	 * @return	Integer amount that is the amount in half hearts that an entity should be damaged.
 	 */
-	public int getDamageVsEntity(EntityLivingBase target) 
+	public int getDamageVsEntity(EntityLivingBase target)
 	{
 		if (owner.getHeldItem() == null)
 		{
@@ -917,13 +917,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		//Write the main inventory to NBT.
 		NBTTagList nbttaglist = new NBTTagList();
 
-		for (int i = 0; i < this.inventoryItems.length; i++)
+		for (int i = 0; i < inventoryItems.length; i++)
 		{
-			if (this.inventoryItems[i] != null)
+			if (inventoryItems[i] != null)
 			{
 				final NBTTagCompound tagCompound = new NBTTagCompound();
 				tagCompound.setByte("Slot", (byte)i);
-				this.inventoryItems[i].writeToNBT(tagCompound);
+				inventoryItems[i].writeToNBT(tagCompound);
 				nbttaglist.appendTag(tagCompound);
 			}
 		}
@@ -933,13 +933,13 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		//Write the armor inventory to NBT.
 		nbttaglist = new NBTTagList();
 
-		for (int i = 0; i < this.armorItems.length; i++)
+		for (int i = 0; i < armorItems.length; i++)
 		{
-			if (this.armorItems[i] != null)
+			if (armorItems[i] != null)
 			{
 				final NBTTagCompound tagCompound = new NBTTagCompound();
 				tagCompound.setByte("Slot", (byte)i);
-				this.armorItems[i].writeToNBT(tagCompound);
+				armorItems[i].writeToNBT(tagCompound);
 				nbttaglist.appendTag(tagCompound);
 			}
 		}
@@ -955,30 +955,30 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	public void readInventoryFromNBT(NBTTagCompound nbt)
 	{
 		NBTTagList tagList = nbt.getTagList("Items", 10);
-		this.inventoryItems = new ItemStack[this.getSizeInventory()];
+		inventoryItems = new ItemStack[getSizeInventory()];
 
 		for (int i = 0; i < tagList.tagCount(); i++)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound)tagList.getCompoundTagAt(i);
-			int slotId = nbttagcompound.getByte("Slot") & 0xff;
+			final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
+			final int slotId = nbttagcompound.getByte("Slot") & 0xff;
 
-			if (slotId >= 0 && slotId < this.inventoryItems.length)
+			if (slotId >= 0 && slotId < inventoryItems.length)
 			{
-				this.inventoryItems[slotId] = ItemStack.loadItemStackFromNBT(nbttagcompound);
+				inventoryItems[slotId] = ItemStack.loadItemStackFromNBT(nbttagcompound);
 			}
 		}
 
 		tagList = nbt.getTagList("Armor", 10);
-		this.armorItems = new ItemStack[4];
+		armorItems = new ItemStack[4];
 
 		for (int i = 0; i < tagList.tagCount(); i++)
 		{
-			final NBTTagCompound nbttagcompound = (NBTTagCompound)tagList.getCompoundTagAt(i);
-			int armorSlotId = nbttagcompound.getByte("Slot") & 0xff;
+			final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
+			final int armorSlotId = nbttagcompound.getByte("Slot") & 0xff;
 
-			if (armorSlotId >= 0 && armorSlotId < this.armorItems.length)
+			if (armorSlotId >= 0 && armorSlotId < armorItems.length)
 			{
-				this.armorItems[armorSlotId] = ItemStack.loadItemStackFromNBT(nbttagcompound);
+				armorItems[armorSlotId] = ItemStack.loadItemStackFromNBT(nbttagcompound);
 			}
 		}
 
@@ -1004,7 +1004,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 
 				if (stack.getItem() instanceof ItemArmor)
 				{
-					ItemArmor armor = (ItemArmor)stack.getItem();
+					final ItemArmor armor = (ItemArmor)stack.getItem();
 					writeString += ":" + armor.getColor(stack);
 				}
 
@@ -1016,12 +1016,12 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				outStream.writeObject(writeString);
 			}
 
-			catch (NullPointerException e)
+			catch (final NullPointerException e)
 			{
 				outStream.writeObject(i + ":" + "null");
 			}
 
-			catch (ArrayIndexOutOfBoundsException e)
+			catch (final ArrayIndexOutOfBoundsException e)
 			{
 				outStream.writeObject(i + ":" + "null");
 			}
@@ -1075,7 +1075,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 				}
 			}
 
-			catch (Throwable e)
+			catch (final Throwable e)
 			{
 				continue;
 			}
@@ -1111,7 +1111,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	}
 
 	@Override
-	public void onInventoryChanged(InventoryBasic var1) 
+	public void onInventoryChanged(InventoryBasic var1)
 	{
 		//Nothing to do here.
 	}
@@ -1126,7 +1126,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		final boolean giveBoots = LogicHelper.getBooleanWithProbability(70);
 		final int armorLevel = LogicHelper.getNumberInRange(1, 4);
 		final int weaponLevel = LogicHelper.getNumberInRange(1, 4);
-		
+
 		if (giveBow)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.bow, 1));

@@ -21,40 +21,40 @@ import com.radixshock.radixcore.constant.Font.Color;
 public class CommandCheckReputation extends CommandBase
 {
 	@Override
-	public String getCommandUsage(ICommandSender sender) 
+	public String getCommandUsage(ICommandSender sender)
 	{
 		return "/sq.checkrep";
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender) 
+	public boolean canCommandSenderUseCommand(ICommandSender sender)
 	{
 		return true;
 	}
 
 	@Override
-	public int getRequiredPermissionLevel() 
+	public int getRequiredPermissionLevel()
 	{
 		return 4;
 	}
 
 	@Override
-	public String getCommandName() 
+	public String getCommandName()
 	{
 		return "sq.checkrep";
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] arguments) 
+	public void processCommand(ICommandSender sender, String[] arguments)
 	{
 		final EntityPlayer player = (EntityPlayer)sender;
 		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-		final StringBuilder SB = new StringBuilder();
+		new StringBuilder();
 
 		player.addChatMessage(new ChatComponentText(Color.YELLOW + "Spider Queen Reputations"));
 		player.addChatMessage(new ChatComponentText(Color.WHITE + "-----------------------------"));
 
-		for (CreatureReputationEntry entry : playerExtension.getReputationEntries())
+		for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (entry.isAtWar)
 			{
@@ -69,7 +69,7 @@ public class CommandCheckReputation extends CommandBase
 			else if (entry.reputationValue >= 0)
 			{
 				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.GREEN + entry.reputationValue));
-			}	
+			}
 		}
 
 		player.addChatMessage(new ChatComponentText(Color.WHITE + "-----------------------------"));

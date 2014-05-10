@@ -30,31 +30,31 @@ import com.radixshock.radixcore.network.Packet;
 public class CommandDebug extends CommandBase
 {
 	@Override
-	public String getCommandUsage(ICommandSender sender) 
+	public String getCommandUsage(ICommandSender sender)
 	{
 		return "/sq.debug <rulename> <true/false>";
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender) 
+	public boolean canCommandSenderUseCommand(ICommandSender sender)
 	{
 		return true;
 	}
 
 	@Override
-	public int getRequiredPermissionLevel() 
+	public int getRequiredPermissionLevel()
 	{
 		return 4;
 	}
 
 	@Override
-	public String getCommandName() 
+	public String getCommandName()
 	{
 		return "sq.debug";
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] arguments) 
+	public void processCommand(ICommandSender sender, String[] arguments)
 	{
 		if (arguments.length == 2 || arguments.length == 1 && (arguments[0].equalsIgnoreCase("on") || arguments[0].equalsIgnoreCase("off")))
 		{
@@ -68,7 +68,7 @@ public class CommandDebug extends CommandBase
 			else if (arguments[0].equalsIgnoreCase("off"))
 			{
 				SpiderQueen.getInstance().inDebugMode = false;
-				sender.addChatMessage(new ChatComponentText(Color.YELLOW + "Spider Queen debug mode is off."));				
+				sender.addChatMessage(new ChatComponentText(Color.YELLOW + "Spider Queen debug mode is off."));
 				return;
 			}
 
@@ -86,9 +86,9 @@ public class CommandDebug extends CommandBase
 				{
 					try
 					{
-						EntityPlayer player = (EntityPlayer)sender;
+						final EntityPlayer player = (EntityPlayer)sender;
 
-						for (EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityHatchedSpider.class, 20))
+						for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityHatchedSpider.class, 20))
 						{
 							if (spider.level < 3)
 							{
@@ -102,7 +102,7 @@ public class CommandDebug extends CommandBase
 						}
 					}
 
-					catch (Throwable e)
+					catch (final Throwable e)
 					{
 						e.printStackTrace();
 					}

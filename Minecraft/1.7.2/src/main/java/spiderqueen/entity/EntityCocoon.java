@@ -36,23 +36,21 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	private boolean isEaten;
 	private int currentDamage;
 	private int timeSinceHit;
-	private int rockDirection = 1;
-
 	public EntityCocoon(World world)
 	{
 		super(world);
-		this.setSize(1F, 1F);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+		setSize(1F, 1F);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 	}
 
-	public EntityCocoon(World world, EnumCocoonType cocoonType) 
+	public EntityCocoon(World world, EnumCocoonType cocoonType)
 	{
 		super(world);
 		this.cocoonType = cocoonType;
 	}
 
 	@Override
-	protected void entityInit() 
+	protected void entityInit()
 	{
 		super.entityInit();
 	}
@@ -78,7 +76,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public AxisAlignedBB getBoundingBox()
 	{
-		return this.boundingBox;
+		return boundingBox;
 	}
 
 	@Override
@@ -94,7 +92,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	}
 
 	@Override
-	public void onUpdate() 
+	public void onUpdate()
 	{
 		super.onUpdate();
 
@@ -114,18 +112,18 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 		if (cocoonType == EnumCocoonType.ENDERMAN && !isEaten)
 		{
-			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + 1 + rand.nextDouble() * (double)0.25D, posZ + rand.nextDouble() - 0.5D * (double)width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
+			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 1 + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
 	}
-	
+
 	@Override
-	public void onEntityUpdate() 
+	public void onEntityUpdate()
 	{
 		super.onEntityUpdate();
 	}
 
 	@Override
-	public void onLivingUpdate() 
+	public void onLivingUpdate()
 	{
 		super.onLivingUpdate();
 	}
@@ -134,7 +132,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public boolean attackEntityFrom(DamageSource damageSource, float damage)
 	{
 		final Entity entity = damageSource.getEntity();
-		
+
 		if (entity instanceof EntityPlayer)
 		{
 			timeSinceHit = 10;
@@ -157,19 +155,19 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				setDead();
 			}
 		}
-		
+
 		return true;
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) 
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		try
 		{
 			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
 		}
 
-		catch (IllegalAccessException e)
+		catch (final IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -178,14 +176,14 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) 
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		nbt.setInteger("cocoonType", cocoonType.ordinal());
 		nbt.setBoolean("isEaten", isEaten);
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) 
+	public void writeSpawnData(ByteBuf buffer)
 	{
 		buffer.writeInt(cocoonType.ordinal());
 		buffer.writeBoolean(isEaten);
@@ -199,7 +197,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			cocoonType = (EnumCocoonType)EnumCocoonType.class.getFields()[buffer.readInt()].get(EnumCocoonType.class);
 		}
 
-		catch (IllegalAccessException e)
+		catch (final IllegalAccessException e)
 		{
 			e.printStackTrace();
 		}
@@ -210,7 +208,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public boolean interact(EntityPlayer entityPlayer)
 	{
-		if(!isEaten) 
+		if(!isEaten)
 		{
 			entityPlayer.heal(3);
 			entityPlayer.getFoodStats().addStats(4, 0.4f);
@@ -223,20 +221,20 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			{
 				final boolean doDropEgg = LogicHelper.getBooleanWithProbability(15);
 				final int dropAmount = LogicHelper.getNumberInRange(1, 2);
-				
+
 				entityDropItem(new ItemStack(Items.string, LogicHelper.getNumberInRange(0, 5), 0), 0);
-				
+
 				if (doDropEgg)
 				{
 					entityDropItem(new ItemStack(SpiderQueen.getInstance().itemSpiderEgg, dropAmount, 0), 0);
 				}
-				
+
 				try
 				{
 					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
 				}
 
-				catch (Throwable e)
+				catch (final Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -247,22 +245,22 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	}
 
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-	
+	protected boolean canDespawn()
+	{
+		return false;
+	}
+
 	public EnumCocoonType getCocoonType()
 	{
 		return cocoonType;
 	}
 
-	public boolean isEaten() 
+	public boolean isEaten()
 	{
 		return isEaten;
 	}
 
-	public void setEaten(boolean isEaten) 
+	public void setEaten(boolean isEaten)
 	{
 		this.isEaten = isEaten;
 	}

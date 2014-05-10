@@ -31,13 +31,13 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public PlayerExtension(EntityPlayer player)
 	{
 		this.player = player;
-		this.reputationEntries = CreatureReputationEntry.getListOfCleanEntries();
+		reputationEntries = CreatureReputationEntry.getListOfCleanEntries();
 	}
 
 	@Override
-	public void saveNBTData(NBTTagCompound nbt) 
+	public void saveNBTData(NBTTagCompound nbt)
 	{
-		for (CreatureReputationEntry entry : reputationEntries)
+		for (final CreatureReputationEntry entry : reputationEntries)
 		{
 			NBTHelper.autoWriteClassFieldsToNBT(entry.getClass(), entry, nbt, entry.creatureGroupName);
 		}
@@ -46,14 +46,14 @@ public class PlayerExtension implements IExtendedEntityProperties
 	@Override
 	public void loadNBTData(NBTTagCompound nbt)
 	{
-		for (CreatureReputationEntry entry : reputationEntries)
+		for (final CreatureReputationEntry entry : reputationEntries)
 		{
 			NBTHelper.autoReadClassFieldsFromNBT(entry.getClass(), entry, nbt, entry.creatureGroupName);
 		}
 	}
 
 	@Override
-	public void init(Entity entity, World world) 
+	public void init(Entity entity, World world)
 	{
 	}
 
@@ -61,25 +61,25 @@ public class PlayerExtension implements IExtendedEntityProperties
 	{
 		player.registerExtendedProperties(PlayerExtension.ID, new PlayerExtension(player));
 	}
-	
+
 	public final List<CreatureReputationEntry> getReputationEntries()
 	{
 		return reputationEntries;
 	}
-	
+
 	public final CreatureReputationEntry getReputationEntry(Class clazz)
 	{
-		for (CreatureReputationEntry entry : reputationEntries)
+		for (final CreatureReputationEntry entry : reputationEntries)
 		{
 			if (entry.getCreatureClass().toString().equals(clazz.toString()))
 			{
 				return entry;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public EntityPlayer getPlayer()
 	{
 		return player;

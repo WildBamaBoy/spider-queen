@@ -57,14 +57,14 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public ThreadDownloadImageData imageDownloadThread;
 	public Inventory inventory = new Inventory(this);
 
-	public EntityFakePlayer(World world) 
+	public EntityFakePlayer(World world)
 	{
 		super(world);
 
-		if (!this.worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
-			this.addAI();
-			this.username = SpiderQueen.getInstance().getRandomPlayerName();
+			addAI();
+			username = SpiderQueen.getInstance().getRandomPlayerName();
 
 			if (username.endsWith("*"))
 			{
@@ -76,30 +76,30 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 	public void addAI()
 	{
-		this.getNavigator().setBreakDoors(true);
-		this.getNavigator().setAvoidsWater(false);
+		getNavigator().setBreakDoors(true);
+		getNavigator().setAvoidsWater(false);
 
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityCreeper.class, 0.6F, false));
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 0.6F, false));
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityZombie.class, 0.6F, false));
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityOtherQueen.class, 0.6F, false));
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.6F, false));
-		this.tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySpider.class, 0.6F, false));
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIMoveIndoors(this));
-		this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-		this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6F));
-		this.tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(7, new EntityAIWander(this, 0.4F));
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
+		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityCreeper.class, 0.6F, false));
+		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 0.6F, false));
+		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityZombie.class, 0.6F, false));
+		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityOtherQueen.class, 0.6F, false));
+		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.6F, false));
+		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySpider.class, 0.6F, false));
+		tasks.addTask(1, new EntityAISwimming(this));
+		tasks.addTask(2, new EntityAIMoveIndoors(this));
+		tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(4, new EntityAIOpenDoor(this, true));
+		tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6F));
+		tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(7, new EntityAIWander(this, 0.4F));
+		tasks.addTask(8, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
 
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityCreeper.class, 16, false));
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16, false));
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16, false));
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityOtherQueen.class, 16, false));
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16, false));
-		this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySpider.class, 16, false));
+		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityCreeper.class, 16, false));
+		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16, false));
+		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16, false));
+		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityOtherQueen.class, 16, false));
+		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16, false));
+		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySpider.class, 16, false));
 	}
 
 	@Override
@@ -114,15 +114,15 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			if (!hasInventoryBeenPopulated)
 			{
 				Inventory.populateWithRandomEquipment(inventory);
-				hasInventoryBeenPopulated = true;				
+				hasInventoryBeenPopulated = true;
 			}
 		}
-		
+
 		inventory.setWornArmorItems();
 	}
 
 	@Override
-	protected void damageEntity(DamageSource damageSource, float damageAmount) 
+	protected void damageEntity(DamageSource damageSource, float damageAmount)
 	{
 		final float unabsorbedDamage = ISpecialArmor.ArmorProperties.ApplyArmor(this, inventory.armorItems, damageSource, damageAmount);
 		super.damageEntity(damageSource, unabsorbedDamage);
@@ -133,12 +133,12 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	{
 		return inventory.armorItemInSlot(3 - armorId);
 	}
-	
+
 	private void damageTarget()
 	{
-		if (this.getAttackTarget() instanceof EntityCreature)
+		if (getAttackTarget() instanceof EntityCreature)
 		{
-			final EntityCreature attackTarget = (EntityCreature)this.getAttackTarget();
+			final EntityCreature attackTarget = (EntityCreature)getAttackTarget();
 
 			if (attackTarget != null)
 			{
@@ -153,9 +153,9 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			}
 		}
 
-		else if (this.getAttackTarget() instanceof EntityPlayer)
+		else if (getAttackTarget() instanceof EntityPlayer)
 		{
-			final EntityPlayer attackTarget = (EntityPlayer)this.getAttackTarget();
+			final EntityPlayer attackTarget = (EntityPlayer)getAttackTarget();
 
 			if (attackTarget != null)
 			{
@@ -171,7 +171,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void onDeath(DamageSource damageSource) 
+	public void onDeath(DamageSource damageSource)
 	{
 		super.onDeath(damageSource);
 
@@ -180,7 +180,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 
 	@Override
-	protected void dropFewItems(boolean recentlyHitByPlayer, int lootingLevel) 
+	protected void dropFewItems(boolean recentlyHitByPlayer, int lootingLevel)
 	{
 		final int amountToDrop = lootingLevel > 0 ? lootingLevel : 1;
 		final boolean dropHeart = LogicHelper.getBooleanWithProbability(30);
@@ -207,8 +207,8 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6F);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6F);
 	}
 
 	@Override
@@ -224,7 +224,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) 
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		super.writeEntityToNBT(nbt);
 		inventory.writeInventoryToNBT(nbt);
@@ -232,7 +232,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) 
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
 		inventory.readInventoryFromNBT(nbt);
@@ -240,14 +240,14 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) 
+	public void writeSpawnData(ByteBuf buffer)
 	{
 		ByteBufIO.writeObject(buffer, username);
 		buffer.writeBoolean(isContributor);
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf additionalData) 
+	public void readSpawnData(ByteBuf additionalData)
 	{
 		username = (String)ByteBufIO.readObject(additionalData);
 		isContributor = additionalData.readBoolean();
@@ -256,11 +256,11 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-	
+	protected boolean canDespawn()
+	{
+		return false;
+	}
+
 	private void getInventoryFromServer()
 	{
 		SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));

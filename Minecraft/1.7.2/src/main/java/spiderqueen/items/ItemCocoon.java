@@ -25,13 +25,13 @@ import com.radixshock.radixcore.constant.Font.Color;
 
 public class ItemCocoon extends Item
 {
-	private EnumCocoonType cocoonType;
-	
+	private final EnumCocoonType cocoonType;
+
 	public ItemCocoon(EnumCocoonType cocoonType)
 	{
 		super();
-		this.maxStackSize = 1;
-		this.setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
+		maxStackSize = 1;
+		setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 		this.cocoonType = cocoonType;
 		this.cocoonType.setCocoonItem(this);
 	}
@@ -45,16 +45,16 @@ public class ItemCocoon extends Item
 			{
 				itemStack.stackSize--;
 			}
-			
+
 			posX += Facing.offsetsXForSide[meta];
 			posY += Facing.offsetsYForSide[meta];
 			posZ += Facing.offsetsZForSide[meta];
-			
+
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
 			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
 			world.spawnEntityInWorld(entityCocoon);
 		}
-		
+
 		return true;
 	}
 
@@ -68,43 +68,43 @@ public class ItemCocoon extends Item
 	}
 
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) 
-	{	
+	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
+	{
 		if (this == SpiderQueen.getInstance().itemCocoonChicken || this == SpiderQueen.getInstance().itemCocoonCow ||
 				this == SpiderQueen.getInstance().itemCocoonHorse || this == SpiderQueen.getInstance().itemCocoonPig ||
 				this == SpiderQueen.getInstance().itemCocoonSheep || this == SpiderQueen.getInstance().itemCocoonHuman)
 		{
-			par3List.add(Color.GRAY + "Produces a typical spider.");
+			list.add(Color.GRAY + "Produces a typical spider.");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonEnderman)
 		{
-			par3List.add(Color.GRAY + "Produces an " + Color.PURPLE + "Ender Spider" + Color.GRAY + ".");
+			list.add(Color.GRAY + "Produces an " + Color.PURPLE + "Ender Spider" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonCreeper)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.GREEN + "Boom Spider" + Color.GRAY + ".");
+			list.add(Color.GRAY + "Produces a " + Color.GREEN + "Boom Spider" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonSkeleton)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.WHITE + "Slinger Spider" + Color.GRAY + ".");
+			list.add(Color.GRAY + "Produces a " + Color.WHITE + "Slinger Spider" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonTestificate)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.GOLD + "Pack Spider" + Color.GRAY + ".");
+			list.add(Color.GRAY + "Produces a " + Color.GOLD + "Pack Spider" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonWolf)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.WHITE + "Nova Spider" + Color.GRAY + ".");
+			list.add(Color.GRAY + "Produces a " + Color.WHITE + "Nova Spider" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonZombie)
 		{
-			par3List.add(Color.GRAY + "Produces a " + Color.DARKGREEN + "Tank Spider" + Color.GRAY + ".");
+			list.add(Color.GRAY + "Produces a " + Color.DARKGREEN + "Tank Spider" + Color.GRAY + ".");
 		}
 	}
 }

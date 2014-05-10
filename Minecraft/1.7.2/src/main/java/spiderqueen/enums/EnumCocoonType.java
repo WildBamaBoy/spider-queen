@@ -25,7 +25,7 @@ import spiderqueen.entity.EntityFakePlayer;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 
-public enum EnumCocoonType 
+public enum EnumCocoonType
 {
 	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
 	PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
@@ -40,16 +40,16 @@ public enum EnumCocoonType
 	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL),
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL),
 	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY);
-	
+
 	private Class entityClass;
 	private Item itemCocoon;
-	
+
 	/** How difficult it is to catch this entity. Lower factor is more difficult, unless 0. */
 	private int entityCatchDifficulty;
 	private String deathSound;
 	private EnumCocoonSize cocoonSize;
 	private EnumSpiderSize spiderSize;
-	
+
 	private EnumCocoonType(Class entityClass, int entityCatchDifficulty, String deathSound, EnumCocoonSize cocoonSize, EnumSpiderSize spiderSize)
 	{
 		this.entityClass = entityClass;
@@ -58,32 +58,32 @@ public enum EnumCocoonType
 		this.cocoonSize = cocoonSize;
 		this.spiderSize = spiderSize;
 	}
-	
+
 	public Class getEntityClass()
 	{
 		return entityClass;
 	}
-	
+
 	public void setCocoonItem(Item item)
 	{
 		itemCocoon = item;
 	}
-	
+
 	public Item getCocoonItem()
 	{
 		return itemCocoon;
 	}
-	
+
 	public int getEntityCatchDifficulty()
 	{
 		return entityCatchDifficulty;
 	}
-	
+
 	public String getDeathSound()
 	{
 		return deathSound;
 	}
-	
+
 	public EnumCocoonSize getCocoonSize()
 	{
 		return cocoonSize;
@@ -93,30 +93,30 @@ public enum EnumCocoonType
 	{
 		return spiderSize;
 	}
-	
+
 	public static boolean isAnimalBased(EnumCocoonType cocoonType)
 	{
 		return cocoonType == PIG || cocoonType == SHEEP || cocoonType == CHICKEN || cocoonType == COW;
 	}
-	
+
 	public static EnumCocoonType getCocoonTypeByCapturedClass(Class entityClass)
 	{
-		for (EnumCocoonType type : EnumCocoonType.values())
+		for (final EnumCocoonType type : EnumCocoonType.values())
 		{
 			if (type.getEntityClass() == entityClass)
 			{
 				return type;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static EnumCocoonType getRandomCocoonType()
 	{
 		final int maxRange = EnumCocoonType.values().length - 1;
 		final int typeIndexToReturn = LogicHelper.getNumberInRange(0, maxRange);
-		
+
 		return EnumCocoonType.values()[typeIndexToReturn];
 	}
 }

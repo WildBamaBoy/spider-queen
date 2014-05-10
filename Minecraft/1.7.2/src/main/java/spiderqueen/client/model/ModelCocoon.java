@@ -107,23 +107,24 @@ public class ModelCocoon extends ModelBase
 		modelHorseHeadStart.addBox(-2F, -14F, -3F, 4, 5, 6);
 		modelHorseHeadStart.setRotationPoint(0F, -7F, -2F);
 		setRotation(modelHorseHeadStart, 0.2617994F, 0F, 0F);
-		
+
 		modelHorseMuzzleUp = new ModelRenderer(this, 20, 0);
 		modelHorseMuzzleUp.addBox(-2F, -14F, -9F, 4, 3, 6);
 		modelHorseMuzzleUp.setRotationPoint(0F, -7F, -2F);
 		setRotation(modelHorseMuzzleUp, 0.2617994F, 0F, 0F);
-		
+
 		modelHorseMuzzleDown = new ModelRenderer(this, 0, 0);
 		modelHorseMuzzleDown.addBox(-2F, -1F, -6.2F, 4, 2, 6);
 		modelHorseMuzzleDown.setRotationPoint(0F, -16F, -7F);
 		setRotation(modelHorseMuzzleDown, 0.4476924F, 0.0174533F, 0F);
-		
+
 		modelHorseWeb = new ModelRenderer(this, 51, -6);
 		modelHorseWeb.addBox(2F, -3F, -6F, 0, 4, 6);
 		modelHorseWeb.setRotationPoint(0F, -16F, -7F);
 		setRotation(modelHorseWeb, 0.3490659F, -0.0174533F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float posX, float posY, float posZ, float rotationYaw, float rotationPitch, float partialTickTime)
 	{
 		final EntityCocoon entityCocoon = (EntityCocoon)entity;

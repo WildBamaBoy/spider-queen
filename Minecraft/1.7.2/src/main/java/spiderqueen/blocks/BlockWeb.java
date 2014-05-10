@@ -26,7 +26,7 @@ import spiderqueen.entity.EntityHatchedSpider;
 
 public class BlockWeb extends Block
 {
-	public BlockWeb() 
+	public BlockWeb()
 	{
 		super(Material.circuits);
 	}
@@ -37,6 +37,7 @@ public class BlockWeb extends Block
 		return 0;
 	}
 
+	@Override
 	public void onBlockAdded(World world, int posX, int posY, int posZ)
 	{
 		checkForBed(world, posX, posY, posZ, 0);
@@ -46,9 +47,9 @@ public class BlockWeb extends Block
 	@Override
 	public void onEntityCollidedWithBlock(World world, int posX, int posY, int posZ, Entity entity)
 	{
-		if (entity instanceof EntitySpider || entity instanceof EntityHatchedSpider || entity instanceof EntityPlayer) 
+		if (entity instanceof EntitySpider || entity instanceof EntityHatchedSpider || entity instanceof EntityPlayer)
 		{
-			return; 
+			return;
 		}
 
 		else
@@ -86,7 +87,7 @@ public class BlockWeb extends Block
 	}
 
 	@Override
-	public boolean isLadder(IBlockAccess world, int posX, int posY, int posZ, EntityLivingBase entity) 
+	public boolean isLadder(IBlockAccess world, int posX, int posY, int posZ, EntityLivingBase entity)
 	{
 		if (entity instanceof EntityPlayer || entity instanceof EntitySpider || entity instanceof EntityHatchedSpider)
 		{
@@ -115,7 +116,7 @@ public class BlockWeb extends Block
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
 	{
-		int meta = blockAccess.getBlockMetadata(posX, posY, posZ);
+		final int meta = blockAccess.getBlockMetadata(posX, posY, posZ);
 		float minX = 1.0F, minY = 1.0F, minZ = 1.0F;
 		float maxX = 0.0F, maxY = 0.0F, maxZ = 0.0F;
 		boolean flag = meta > 0;
@@ -164,7 +165,7 @@ public class BlockWeb extends Block
 			flag = true;
 		}
 
-		if (!flag && this.canBePlacedOn(blockAccess.getBlock(posX, posY + 1, posZ)))
+		if (!flag && canBePlacedOn(blockAccess.getBlock(posX, posY + 1, posZ)))
 		{
 			minY = Math.min(minY, 0.9375F);
 			maxY = 1.0F;
@@ -174,7 +175,7 @@ public class BlockWeb extends Block
 			maxZ = 1.0F;
 		}
 
-		this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+		setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
 	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)

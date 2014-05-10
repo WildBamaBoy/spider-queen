@@ -1,6 +1,6 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
+// Decompiler options: packimports(3) braces deadcode
 
 package spiderqueen.items;
 
@@ -9,7 +9,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
@@ -19,7 +18,7 @@ import spiderqueen.enums.EnumPacketType;
 import com.radixshock.radixcore.network.Packet;
 
 // Referenced classes of package net.minecraft.src:
-//            Item, World, EntityPlayer, ItemStack, 
+//            Item, World, EntityPlayer, ItemStack,
 //            EntityFish
 
 public class ItemWebslinger extends Item
@@ -48,8 +47,8 @@ public class ItemWebslinger extends Item
 	{
 		if(entityliving1 instanceof EntityPlayer)
 		{
-			EntityPlayer ell = (EntityPlayer) entityliving1;
-			PlayerExtension playerExtension = (PlayerExtension) ell.getExtendedProperties(PlayerExtension.ID);
+			final EntityPlayer ell = (EntityPlayer) entityliving1;
+			final PlayerExtension playerExtension = (PlayerExtension) ell.getExtendedProperties(PlayerExtension.ID);
 
 			if (playerExtension.webEntity != null)
 			{
@@ -66,7 +65,7 @@ public class ItemWebslinger extends Item
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
 	{
-		PlayerExtension playerExtension = (PlayerExtension) entityplayer.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = (PlayerExtension) entityplayer.getExtendedProperties(PlayerExtension.ID);
 
 		if (playerExtension.webEntity != null)
 		{
@@ -78,7 +77,7 @@ public class ItemWebslinger extends Item
 				playerExtension.webEntity.player = null;
 				playerExtension.webEntity = null;
 			}
-		} 
+		}
 
 		else
 		{

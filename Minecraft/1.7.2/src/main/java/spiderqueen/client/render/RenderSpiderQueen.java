@@ -25,13 +25,13 @@ import spiderqueen.client.model.ModelSpiderQueen;
 public class RenderSpiderQueen extends RenderPlayer
 {
 	private static final ResourceLocation steveTextures = new ResourceLocation("textures/entity/steve.png");
-	private ModelSpiderQueen modelBipedMain;
+	private final ModelSpiderQueen modelBipedMain;
 
 	public RenderSpiderQueen()
 	{
 		super();
-		this.modelBipedMain = new ModelSpiderQueen();
-		this.mainModel = modelBipedMain;
+		modelBipedMain = new ModelSpiderQueen();
+		mainModel = modelBipedMain;
 	}
 
 	@Override
@@ -51,16 +51,13 @@ public class RenderSpiderQueen extends RenderPlayer
 	{
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-		double modY = posY - (double)clientPlayer.yOffset;
-
 		if (clientPlayer.isSneaking() && !(clientPlayer instanceof EntityPlayerSP))
 		{
-			modY -= 0.125D;
 		}
 
 		GL11.glPushMatrix();
 		{
-			final EntityLivingBase entity = (EntityLivingBase)clientPlayer;
+			final EntityLivingBase entity = clientPlayer;
 
 			GL11.glDisable(GL11.GL_CULL_FACE);
 			mainModel.onGround = renderSwingProgress(entity, rotationPitch);
@@ -81,14 +78,14 @@ public class RenderSpiderQueen extends RenderPlayer
 			{
 				final float unknownConstant = -0.0925F;
 
-				float realRotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * rotationPitch;
+				final float realRotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * rotationPitch;
 				float realRenderYaw = interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, rotationPitch);
-				float realRenderYawHead = interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, rotationPitch);
+				final float realRenderYawHead = interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, rotationPitch);
 				float wrappedRotation = handleRotationFloat(entity, rotationPitch);
 
 				if (entity.isRiding() && entity.ridingEntity instanceof EntityLivingBase)
 				{
-					EntityLivingBase entityRiding = (EntityLivingBase)entity.ridingEntity;
+					final EntityLivingBase entityRiding = (EntityLivingBase)entity.ridingEntity;
 					realRenderYaw = interpolateRotation(entityRiding.prevRenderYawOffset, entityRiding.renderYawOffset, rotationPitch);
 					wrappedRotation = MathHelper.wrapAngleTo180_float(realRenderYawHead - realRenderYaw);
 
@@ -117,7 +114,7 @@ public class RenderSpiderQueen extends RenderPlayer
 				GL11.glScalef(0.7F, 0.7F, -0.7F);		//Scale and flip the new model.
 
 				float limbSwing = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * rotationPitch;
-				float limbAngle = entity.limbSwing - entity.limbSwingAmount * (1.0F - rotationPitch);
+				final float limbAngle = entity.limbSwing - entity.limbSwingAmount * (1.0F - rotationPitch);
 
 				if (limbSwing > 1.0F)
 				{
@@ -128,7 +125,7 @@ public class RenderSpiderQueen extends RenderPlayer
 				renderModel(entity, limbAngle, limbSwing, wrappedRotation, realRenderYawHead - realRenderYaw, realRotationPitch, unknownConstant);
 
 				final float brightness = entity.getBrightness(rotationPitch);
-				final int colorMultiplier = this.getColorMultiplier(entity, brightness, rotationPitch);
+				final int colorMultiplier = getColorMultiplier(entity, brightness, rotationPitch);
 
 				if ((colorMultiplier >> 24 & 255) > 0 || entity.hurtTime > 0 || entity.deathTime > 0)
 				{
@@ -146,10 +143,10 @@ public class RenderSpiderQueen extends RenderPlayer
 
 					if ((colorMultiplier >> 24 & 255) > 0)
 					{
-						final float colorR = (float)(colorMultiplier >> 16 & 255) / 255.0F;
-						final float colorG = (float)(colorMultiplier >> 8 & 255) / 255.0F;
-						final float colorB = (float)(colorMultiplier & 255) / 255.0F;
-						final float colorA = (float)(colorMultiplier >> 24 & 255) / 255.0F;
+						final float colorR = (colorMultiplier >> 16 & 255) / 255.0F;
+						final float colorG = (colorMultiplier >> 8 & 255) / 255.0F;
+						final float colorB = (colorMultiplier & 255) / 255.0F;
+						final float colorA = (colorMultiplier >> 24 & 255) / 255.0F;
 						GL11.glColor4f(colorR, colorG, colorB, colorA);
 						mainModel.render(entity, limbAngle, limbSwing, wrappedRotation, realRenderYawHead - realRenderYaw, realRotationPitch, unknownConstant);
 					}
@@ -161,7 +158,7 @@ public class RenderSpiderQueen extends RenderPlayer
 				}
 			}
 
-			catch (Exception exception)
+			catch (final Exception exception)
 			{
 				System.out.println("Failure to render entity. " + exception.getMessage());
 			}
@@ -207,7 +204,7 @@ public class RenderSpiderQueen extends RenderPlayer
 	{
 		if (clientPlayer.isEntityAlive() && clientPlayer.isPlayerSleeping())
 		{
-			super.renderLivingAt(clientPlayer, posX + (double)clientPlayer.field_71079_bU, posY + (double)clientPlayer.field_71082_cx, posZ + (double)clientPlayer.field_71089_bV);
+			super.renderLivingAt(clientPlayer, posX + clientPlayer.field_71079_bU, posY + clientPlayer.field_71082_cx, posZ + clientPlayer.field_71089_bV);
 		}
 		else
 		{
@@ -308,7 +305,7 @@ public class RenderSpiderQueen extends RenderPlayer
 	}
 
 	@Override
-	protected void bindEntityTexture(Entity entity) 
+	protected void bindEntityTexture(Entity entity)
 	{
 		bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen1.png"));
 	}

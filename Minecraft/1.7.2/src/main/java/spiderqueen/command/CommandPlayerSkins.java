@@ -22,31 +22,31 @@ import com.radixshock.radixcore.constant.Font.Color;
 public class CommandPlayerSkins extends CommandBase
 {
 	@Override
-	public String getCommandUsage(ICommandSender sender) 
+	public String getCommandUsage(ICommandSender sender)
 	{
 		return "/sq.playerskins <refresh/enable/disable>";
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender) 
+	public boolean canCommandSenderUseCommand(ICommandSender sender)
 	{
 		return true;
 	}
 
 	@Override
-	public int getRequiredPermissionLevel() 
+	public int getRequiredPermissionLevel()
 	{
 		return 4;
 	}
 
 	@Override
-	public String getCommandName() 
+	public String getCommandName()
 	{
 		return "sq.playerskins";
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] arguments) 
+	public void processCommand(ICommandSender sender, String[] arguments)
 	{
 		if (arguments.length == 1)
 		{
@@ -75,7 +75,7 @@ public class CommandPlayerSkins extends CommandBase
 
 					else
 					{
-						sender.addChatMessage(new ChatComponentText(Color.RED + "No new skins need to be added."));					
+						sender.addChatMessage(new ChatComponentText(Color.RED + "No new skins need to be added."));
 					}
 				}
 			}

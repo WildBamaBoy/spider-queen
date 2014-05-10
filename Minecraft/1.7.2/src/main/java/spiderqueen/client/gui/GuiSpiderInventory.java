@@ -29,14 +29,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class GuiSpiderInventory extends InventoryEffectRenderer
-{	
+{
 	private static final ResourceLocation resourceLocation = new ResourceLocation("textures/gui/container/generic_54.png");
-	
-	private EntityHatchedSpider owner;
+
+	private final EntityHatchedSpider owner;
 	private GuiButton exitButton;
 
 	/** The number of rows in the inventory. */
-	private int inventoryRows;
+	private final int inventoryRows;
 
 	/**
 	 * Constructor
@@ -53,8 +53,8 @@ public class GuiSpiderInventory extends InventoryEffectRenderer
 		owner = entity;
 		allowUserInput = false;
 
-		char c = '\336';
-		int i = c - 108;		
+		final char c = '\336';
+		final int i = c - 108;
 		inventoryRows = entityInventory.getSizeInventory() / 9;
 		xSize = xSize + 24;
 		ySize = i + inventoryRows * 18;
@@ -86,19 +86,19 @@ public class GuiSpiderInventory extends InventoryEffectRenderer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float offset, int mouseX, int mouseY)
 	{
-		this.mc.getTextureManager().bindTexture(resourceLocation);
+		mc.getTextureManager().bindTexture(resourceLocation);
 
-		int addX = Minecraft.getMinecraft().thePlayer.getActivePotionEffects().size() > 0 ? 120 : 0;
+		final int addX = Minecraft.getMinecraft().thePlayer.getActivePotionEffects().size() > 0 ? 120 : 0;
 
 		//Draw the two inventories.
-		int x = (width - xSize + addX) / 2;
-		int y = (height - ySize) / 2;
+		final int x = (width - xSize + addX) / 2;
+		final int y = (height - ySize) / 2;
 		drawTexturedModalRect(x, y, 0, 0, xSize, inventoryRows * 18 + 17);			//Top inventory
 		drawTexturedModalRect(x, y + inventoryRows * 18 + 17, 0, 126, xSize, 96);	//Bottom inventory
 	}
 
 	@Override
-	public void onGuiClosed() 
+	public void onGuiClosed()
 	{
 		super.onGuiClosed();
 		owner.inventory.closeInventory();

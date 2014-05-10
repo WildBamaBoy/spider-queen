@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
  * Handles the inventory GUI.
  */
 public class GuiHandlerInventory implements IGuiHandler
-{	
+{
 	/**
 	 * Constructor
 	 * 
@@ -33,17 +33,17 @@ public class GuiHandlerInventory implements IGuiHandler
 	public GuiHandlerInventory()
 	{
 	}
-	
+
 	@Override
-	public Object getServerGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ) 
+	public Object getServerGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ)
 	{
 		final EntityHatchedSpider entity = (EntityHatchedSpider)LogicHelper.getEntityOfTypeAtXYZ(EntityHatchedSpider.class, world, posX, posY, posZ);
-		
+
 		if (guiId == Constants.ID_GUI_INVENTORY)
 		{
 			return new ContainerSpiderInventory(player.inventory, entity.inventory, entity);
 		}
-		
+
 		else
 		{
 			return null;
@@ -51,15 +51,15 @@ public class GuiHandlerInventory implements IGuiHandler
 	}
 
 	@Override
-	public Object getClientGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ) 
+	public Object getClientGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ)
 	{
 		final EntityHatchedSpider entity = (EntityHatchedSpider)LogicHelper.getEntityOfTypeAtXYZ(EntityHatchedSpider.class, world, posX, posY, posZ);
-		
+
 		if (guiId == Constants.ID_GUI_INVENTORY)
 		{
 			return new GuiSpiderInventory(entity, player.inventory, entity.inventory, false);
 		}
-		
+
 		else
 		{
 			return null;
