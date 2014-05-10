@@ -26,6 +26,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -115,7 +116,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			if (!tryFollowOwnerPlayer(false))
 			{
-				if (target != null)
+				if (target != null && !target.isDead)
 				{
 					attackEntity(target, 3.5F);
 				}
@@ -150,8 +151,6 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			syncInventory();
 			displayParticles();
 		}
-		
-		setHitboxSize();
 	}
 
 	@Override
@@ -264,9 +263,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
 		damageAmount = getAttackDamage();
-		getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
+		setAttackPath(entityBeingAttacked);
 
-		if (rand.nextInt(10) == 0)
+		if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON)
 		{
 			if (onGround)
 			{
@@ -301,26 +300,49 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 				if (entityLiving.getHealth() <= 0.0F)
 				{
-					killsUntilLevelUp--;
-
-					if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
-					{
-						timeUntilTeleport = 0;
-						timeUntilExplosion = 0;
-						timeUntilWebshot = 0;
-
-						worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
-						killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
-						level++;
-						setHitboxSize();
-						
-						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
-						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
-					}
-
-					target = null;
+					processKill();
 				}
 			}
+		}
+	}
+
+	public void processKill()
+	{
+		killsUntilLevelUp--;
+
+		if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
+		{
+			timeUntilTeleport = 0;
+			timeUntilExplosion = 0;
+			timeUntilWebshot = 0;
+
+			worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
+			killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
+			level++;
+			setHitboxSize();
+			
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
+		}
+
+		target = null;
+	}
+
+	private void setAttackPath(Entity entityBeingAttacked)
+	{
+		if (cocoonType == EnumCocoonType.SKELETON)
+		{
+			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) > 12.0F)
+			{
+				final Point3D point = LogicHelper.getRandomNearbyBlockCoordinatesOfType(entityBeingAttacked, Blocks.air, 8);
+				getNavigator().setPath(getNavigator().getPathToXYZ(point.dPosX, point.dPosY, point.dPosZ), 0.4D);
+				faceEntity(entityBeingAttacked, 1.0F, 1.0F);
+			}
+		}
+		
+		else
+		{
+			getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
 		}
 	}
 

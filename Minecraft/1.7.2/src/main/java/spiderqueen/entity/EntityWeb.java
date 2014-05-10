@@ -36,10 +36,10 @@ public class EntityWeb extends Entity implements IProjectile
 	private boolean		isPoison;
 	private boolean		doBlockSpawn;
 
-	public EntityPlayer	shooter;
-	public double		accelerationX;
-	public double		accelerationY;
-	public double		accelerationZ;
+	public EntityLivingBase	shooter;
+	public double			accelerationX;
+	public double			accelerationY;
+	public double			accelerationZ;
 
 	public EntityWeb(World worldObj)
 	{
@@ -74,6 +74,7 @@ public class EntityWeb extends Entity implements IProjectile
 	public EntityWeb(EntityLivingBase shooter, EntityLivingBase target, float speed)
 	{
 		super(shooter.worldObj);
+		this.shooter = shooter;
 		renderDistanceWeight = 10.0D;
 
 		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
@@ -381,6 +382,12 @@ public class EntityWeb extends Entity implements IProjectile
 							worldObj.spawnEntityInWorld(entityCocoon);
 							entityHit.setDead();
 							setDead();
+							
+							if (shooter instanceof EntityHatchedSpider)
+							{
+								final EntityHatchedSpider spider = (EntityHatchedSpider)shooter;
+								spider.processKill();
+							}
 						}
 					}
 				}
