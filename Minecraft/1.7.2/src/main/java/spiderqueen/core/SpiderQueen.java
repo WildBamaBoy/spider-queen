@@ -23,7 +23,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
-import spiderqueen.blocks.BlockPoisonWeb;
 import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
 import spiderqueen.blocks.BlockWebFull;
@@ -273,7 +272,7 @@ public class SpiderQueen implements IEnforcedCore
 		blockWebGround = new BlockWebGround();
 		blockWebSide = new BlockWeb();
 		blockWebFull = new BlockWebFull();
-		blockPoisonWeb = new BlockPoisonWeb();
+		//blockPoisonWeb = new BlockPoisonWeb();
 		blockSpiderRod = new BlockSpiderRod();
 
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
