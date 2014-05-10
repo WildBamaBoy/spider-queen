@@ -39,7 +39,7 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		super(world);
 		this.owner = owner;
-		setSize(0.3F, 0.3F);
+		setSize(0.15F, 0.15F);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 		timeUntilEggHatch = LogicHelper.getNumberInRange(500, 5000);
 	}
