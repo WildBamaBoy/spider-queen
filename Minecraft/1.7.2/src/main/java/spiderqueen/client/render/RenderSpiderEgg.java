@@ -41,6 +41,7 @@ public class RenderSpiderEgg extends Render
 			GL11.glScalef(-1F, -1F, 1.0F);
 
 			bindTexture(getEntityTexture(entitySpiderEgg));
+
 			modelEgg.render(entitySpiderEgg, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}
 		GL11.glPopMatrix();
@@ -52,6 +53,7 @@ public class RenderSpiderEgg extends Render
 		render((EntitySpiderEgg) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
+	
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{

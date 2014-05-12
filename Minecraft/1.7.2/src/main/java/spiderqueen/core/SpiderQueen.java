@@ -126,7 +126,8 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemBrain;
 	public Item						itemSkull;
 	public Item						itemHeart;
-
+	public Item						itemBugLight;
+	
 	// Blocks
 	public Block					blockWebFull;
 	public Block					blockWebGround;
@@ -166,7 +167,6 @@ public class SpiderQueen implements IEnforcedCore
 		clientTickHandler = new ClientTickHandler();
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
-
 		KS();
 	}
 
@@ -236,7 +236,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemBrain = new Item().setUnlocalizedName("brain").setTextureName("spiderqueen:Brain").setCreativeTab(tabSpiderQueen);
 		itemSkull = new Item().setUnlocalizedName("skull").setTextureName("spiderqueen:Skull").setCreativeTab(tabSpiderQueen);
 		itemHeart = new Item().setUnlocalizedName("heart").setTextureName("spiderqueen:Heart").setCreativeTab(tabSpiderQueen);
-
+		itemBugLight = new Item().setUnlocalizedName("buglight").setTextureName("spiderqueen:BugLight").setCreativeTab(tabSpiderQueen);
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
@@ -261,7 +261,7 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerItem(itemBrain, itemBrain.getUnlocalizedName());
 		GameRegistry.registerItem(itemSkull, itemSkull.getUnlocalizedName());
 		GameRegistry.registerItem(itemHeart, itemHeart.getUnlocalizedName());
-
+		GameRegistry.registerItem(itemBugLight, itemBugLight.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnPlayer, itemSpawnPlayer.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnSpider, itemSpawnSpider.getUnlocalizedName());
 		GameRegistry.registerItem(itemSpawnEnemyQueen, itemSpawnEnemyQueen.getUnlocalizedName());
@@ -275,7 +275,7 @@ public class SpiderQueen implements IEnforcedCore
 		blockWebFull = new BlockWebFull();
 		// blockPoisonWeb = new BlockPoisonWeb();
 		blockSpiderRod = new BlockSpiderRod();
-
+		
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
 		GameRegistry.registerBlock(blockWebFull, "Web Full");

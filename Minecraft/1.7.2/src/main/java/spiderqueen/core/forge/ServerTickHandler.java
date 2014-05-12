@@ -150,12 +150,30 @@ public class ServerTickHandler
 			for (final Object obj : worldServer.playerEntities)
 			{
 				final EntityPlayer player = (EntityPlayer) obj;
-
+				boolean hasBugLight = false;
+				
+				for (ItemStack stack : player.inventory.mainInventory)
+				{
+					if (stack != null && stack.getItem() == SpiderQueen.getInstance().itemBugLight)
+					{
+						hasBugLight = true;
+						break;
+					}
+				}
+				
 				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
-					if (player.getActivePotionEffect(Potion.nightVision) == null)
+					if (hasBugLight)
 					{
-						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 1, true));
+						if (player.getActivePotionEffect(Potion.nightVision) == null)
+						{
+							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 1, true));
+						}
+					}
+					
+					else if (!hasBugLight && player.getActivePotionEffect(Potion.nightVision) != null)
+					{
+						player.removePotionEffect(Potion.nightVision.id);
 					}
 				}
 
