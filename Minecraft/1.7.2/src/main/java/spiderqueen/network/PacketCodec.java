@@ -80,6 +80,14 @@ public final class PacketCodec extends AbstractPacketCodec
 					buffer.writeDouble((Double) packet.arguments[3]);
 					break;
 
+				case CreateClientExplosion:
+					buffer.writeDouble((Double) packet.arguments[0]);
+					buffer.writeDouble((Double) packet.arguments[1]);
+					buffer.writeDouble((Double) packet.arguments[2]);
+					buffer.writeFloat((Float) packet.arguments[3]);
+					buffer.writeBoolean((Boolean) packet.arguments[4]);
+					break;
+					
 				default:
 					break;
 			}
@@ -136,6 +144,14 @@ public final class PacketCodec extends AbstractPacketCodec
 					packet.arguments[3] = buffer.readDouble();
 					break;
 
+				case CreateClientExplosion:
+					packet.arguments[0] = buffer.readDouble();
+					packet.arguments[1] = buffer.readDouble();
+					packet.arguments[2] = buffer.readDouble();
+					packet.arguments[3] = buffer.readFloat();
+					packet.arguments[4] = buffer.readBoolean();
+					break;
+					
 				default:
 					break;
 			}

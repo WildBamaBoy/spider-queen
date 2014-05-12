@@ -295,7 +295,35 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
 				{
 					resetTimeUntilExplosion();
-					worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
+					SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateClientExplosion, posX, posY, posZ, 5.0F, false));
+					
+					for (EntityLivingBase entity : (List<EntityLivingBase>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
+					{
+						if (entity instanceof EntityPlayer)
+						{
+							final EntityPlayer player = (EntityPlayer)entity;
+							
+							if (owner.equals(player.getCommandSenderName()))
+							{
+								continue;
+							}
+						}
+						
+						else if (entity instanceof EntityHatchedSpider)
+						{
+							final EntityHatchedSpider spider = (EntityHatchedSpider)entity;
+							
+							if (spider.owner.equals(owner))
+							{
+								continue;
+							}
+						}
+						
+						else
+						{
+							entity.attackEntityFrom(DamageSource.generic, 5.0F);
+						}
+					}
 				}
 
 				if (entityLiving.getHealth() <= 0.0F)

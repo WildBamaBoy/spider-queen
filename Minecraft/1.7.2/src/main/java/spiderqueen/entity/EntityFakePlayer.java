@@ -52,7 +52,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityFakePlayer extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	public String					username;
-	public String					lastAttackingPlayer;
+	public String					lastAttackingPlayer = "";
 	public boolean					isContributor;
 	public boolean					hasInventoryBeenPopulated;
 	public ResourceLocation			skinResourceLocation;

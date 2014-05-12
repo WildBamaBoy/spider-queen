@@ -24,6 +24,7 @@ import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
+import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
 import com.radixshock.radixcore.network.Packet;
 
@@ -82,6 +83,10 @@ public final class PacketHandler extends AbstractPacketHandler
 					handleDestroySlinger(packet.arguments, player);
 					break;
 
+				case CreateClientExplosion:
+					handleCreateClientExplosion(packet.arguments, player);
+					break;
+					
 				default:
 					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -221,5 +226,25 @@ public final class PacketHandler extends AbstractPacketHandler
 		}
 
 		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetPlayerMotion, player.getCommandSenderName(), player.motionX, player.motionY, player.motionZ));
+	}
+
+	private void handleCreateClientExplosion(Object[] arguments, EntityPlayer player)
+	{
+		final double posX = (Double)arguments[0];
+		final double posY = (Double)arguments[1];
+		final double posZ = (Double)arguments[2];
+		final float radius = (Float)arguments[3];
+		final boolean doGreifing = (Boolean)arguments[4];
+		
+		player.worldObj.createExplosion(null, posX, posY, posZ, radius, doGreifing);
+        player.worldObj.playSound(posX, posY, posZ, "random.explode", 4.0F, (1.0F + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.2F) * 0.7F, true);
+        
+        for (int i = 0; i < 10; i++)
+        {
+        	final int modX = LogicHelper.getNumberInRange(0, 3);
+        	final int modY = LogicHelper.getNumberInRange(0, 3);
+        	final int modZ = LogicHelper.getNumberInRange(0, 3);
+        	player.worldObj.spawnParticle("largeexplode", posX + modX, posY + modY, posZ + modZ, 1.0D, 0.0D, 0.0D);
+        }
 	}
 }
