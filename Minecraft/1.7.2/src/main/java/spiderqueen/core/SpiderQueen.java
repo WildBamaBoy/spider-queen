@@ -49,6 +49,7 @@ import spiderqueen.items.ItemSpawnEnemyQueen;
 import spiderqueen.items.ItemSpawnPlayer;
 import spiderqueen.items.ItemSpawnSpider;
 import spiderqueen.items.ItemSpiderEgg;
+import spiderqueen.items.ItemSpiderStone;
 import spiderqueen.items.ItemSpiderRod;
 import spiderqueen.items.ItemWeb;
 import spiderqueen.items.ItemWebslinger;
@@ -58,6 +59,7 @@ import spiderqueen.network.PacketHandler;
 import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.core.ModLogger;
 import com.radixshock.radixcore.core.RadixCore;
+import com.radixshock.radixcore.core.RadixRegistry;
 import com.radixshock.radixcore.enums.EnumNetworkType;
 import com.radixshock.radixcore.file.ModPropertiesManager;
 import com.radixshock.radixcore.lang.ILanguageLoaderHook;
@@ -78,7 +80,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = "spiderqueen", name = "Spider Queen", version = Constants.VERSION, dependencies = "required-after:radixcore")
@@ -127,6 +128,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemSkull;
 	public Item						itemHeart;
 	public Item						itemBugLight;
+	public Item						itemSpiderStone;
 	
 	// Blocks
 	public Block					blockWebFull;
@@ -205,17 +207,9 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		// Creative tab
 		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
-		GameRegistry.registerItem(itemCocoonEnderman, itemCocoonEnderman.getUnlocalizedName());
-		tabSpiderQueen = new CreativeTabs("tabSpiderQueen")
-		{
-			@Override
-			public Item getTabIconItem()
-			{
-				return itemCocoonEnderman;
-			}
-		};
-		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
-
+		RadixRegistry.registerItem(itemCocoonEnderman);
+		tabSpiderQueen = RadixRegistry.registerCreativeTab(this, tabSpiderQueen, itemCocoonEnderman);
+		
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER).setUnlocalizedName("cocoon.creeper");
@@ -237,34 +231,38 @@ public class SpiderQueen implements IEnforcedCore
 		itemSkull = new Item().setUnlocalizedName("skull").setTextureName("spiderqueen:Skull").setCreativeTab(tabSpiderQueen);
 		itemHeart = new Item().setUnlocalizedName("heart").setTextureName("spiderqueen:Heart").setCreativeTab(tabSpiderQueen);
 		itemBugLight = new Item().setUnlocalizedName("buglight").setTextureName("spiderqueen:BugLight").setCreativeTab(tabSpiderQueen);
+		itemSpiderStone = new ItemSpiderStone().setUnlocalizedName("spiderstone").setCreativeTab(tabSpiderQueen);
+		
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
 
-		GameRegistry.registerItem(itemCocoonChicken, itemCocoonChicken.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonCow, itemCocoonCow.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonCreeper, itemCocoonCreeper.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonHorse, itemCocoonHorse.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonHuman, itemCocoonHuman.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonPig, itemCocoonPig.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonSheep, itemCocoonSheep.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonSkeleton, itemCocoonSkeleton.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonTestificate, itemCocoonTestificate.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonWolf, itemCocoonWolf.getUnlocalizedName());
-		GameRegistry.registerItem(itemCocoonZombie, itemCocoonZombie.getUnlocalizedName());
+		RadixRegistry.registerItem(itemCocoonChicken);
+		RadixRegistry.registerItem(itemCocoonCow);
+		RadixRegistry.registerItem(itemCocoonCreeper);
+		RadixRegistry.registerItem(itemCocoonHorse);
+		RadixRegistry.registerItem(itemCocoonHuman);
+		RadixRegistry.registerItem(itemCocoonPig);
+		RadixRegistry.registerItem(itemCocoonSheep);
+		RadixRegistry.registerItem(itemCocoonSkeleton);
+		RadixRegistry.registerItem(itemCocoonTestificate);
+		RadixRegistry.registerItem(itemCocoonWolf);
+		RadixRegistry.registerItem(itemCocoonZombie);
 
-		GameRegistry.registerItem(itemWeb, itemWeb.getUnlocalizedName());
-		GameRegistry.registerItem(itemPoisonWeb, itemPoisonWeb.getUnlocalizedName());
-		GameRegistry.registerItem(itemWebslinger, itemWebslinger.getUnlocalizedName());
-		GameRegistry.registerItem(itemSpiderRod, itemSpiderRod.getUnlocalizedName());
-		GameRegistry.registerItem(itemSpiderEgg, itemSpiderEgg.getUnlocalizedName());
-		GameRegistry.registerItem(itemBrain, itemBrain.getUnlocalizedName());
-		GameRegistry.registerItem(itemSkull, itemSkull.getUnlocalizedName());
-		GameRegistry.registerItem(itemHeart, itemHeart.getUnlocalizedName());
-		GameRegistry.registerItem(itemBugLight, itemBugLight.getUnlocalizedName());
-		GameRegistry.registerItem(itemSpawnPlayer, itemSpawnPlayer.getUnlocalizedName());
-		GameRegistry.registerItem(itemSpawnSpider, itemSpawnSpider.getUnlocalizedName());
-		GameRegistry.registerItem(itemSpawnEnemyQueen, itemSpawnEnemyQueen.getUnlocalizedName());
+		RadixRegistry.registerItem(itemWeb);
+		RadixRegistry.registerItem(itemPoisonWeb);
+		RadixRegistry.registerItem(itemWebslinger);
+		RadixRegistry.registerItem(itemSpiderRod);
+		RadixRegistry.registerItem(itemSpiderEgg);
+		RadixRegistry.registerItem(itemBrain);
+		RadixRegistry.registerItem(itemSkull);
+		RadixRegistry.registerItem(itemHeart);
+		RadixRegistry.registerItem(itemSpiderStone);
+		RadixRegistry.registerItem(itemBugLight);
+		
+		RadixRegistry.registerItem(itemSpawnPlayer);
+		RadixRegistry.registerItem(itemSpawnSpider);
+		RadixRegistry.registerItem(itemSpawnEnemyQueen);
 	}
 
 	@Override
@@ -286,13 +284,15 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'T', Blocks.torch);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'X', itemSpiderStone);
 
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'T', Blocks.torch);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'X', itemSpiderStone);
 
 		GameRegistry.addRecipe(new ItemStack(itemWeb), "SS ", "S  ", 'S', Items.string);
 
 		GameRegistry.addRecipe(new ItemStack(itemWebslinger), "TS ", "SS ", "  S", 'S', Items.string, 'T', itemWeb);
+		
+		GameRegistry.addRecipe(new ItemStack(itemBugLight), "GGG", "GXG", "GGG", 'G', Blocks.glass_pane, 'X', itemSpiderStone);
 	}
 
 	@Override
@@ -310,13 +310,13 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeEntities()
 	{
-		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), 1, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntityWeb.class, EntityWeb.class.getSimpleName(), 2, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntityFakePlayer.class, EntityFakePlayer.class.getSimpleName(), 3, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntityHatchedSpider.class, EntityHatchedSpider.class.getSimpleName(), 4, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), 5, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntityOtherQueen.class, EntityOtherQueen.class.getSimpleName(), 6, this, 50, 2, true);
-		EntityRegistry.registerModEntity(EntityWebslinger.class, EntityWebslinger.class.getSimpleName(), 7, this, 50, 2, true);
+		RadixRegistry.registerModEntity(this, EntityCocoon.class);
+		RadixRegistry.registerModEntity(this, EntityWeb.class);
+		RadixRegistry.registerModEntity(this, EntityFakePlayer.class);
+		RadixRegistry.registerModEntity(this, EntityHatchedSpider.class);
+		RadixRegistry.registerModEntity(this, EntitySpiderEgg.class);
+		RadixRegistry.registerModEntity(this, EntityOtherQueen.class);
+		RadixRegistry.registerModEntity(this, EntityWebslinger.class);
 	}
 
 	@Override

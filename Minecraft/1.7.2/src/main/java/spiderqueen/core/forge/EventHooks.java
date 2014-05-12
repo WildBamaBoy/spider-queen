@@ -191,6 +191,11 @@ public class EventHooks
 					}
 				}
 			}
+
+			if (event.entityLiving instanceof EntitySpider && LogicHelper.getBooleanWithProbability(20))
+			{
+				event.entityLiving.dropItem(SpiderQueen.getInstance().itemSpiderStone, 1);
+			}
 		}
 	}
 
@@ -247,13 +252,13 @@ public class EventHooks
 					if (entity instanceof EntityFakePlayer)
 					{
 						final EntityFakePlayer fakePlayer = (EntityFakePlayer)entity;
-						
+
 						if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName()))
 						{
 							return;
 						}
 					}
-					
+
 					if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
 					{
 						entity.setAttackTarget(null);
