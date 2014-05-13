@@ -139,8 +139,8 @@ public class ModelHatchedSpider extends ModelBase
 			case TINYLONGLEG:
 				renderTinyLongLegSpider(partialTickTime);
 				break;
-			case CARRIER:
-				renderCarrierSpiders(entity, partialTickTime);
+			case SWARM:
+				renderSwarmSpiders(entity, partialTickTime);
 				break;
 			default:
 				break;
@@ -947,7 +947,7 @@ public class ModelHatchedSpider extends ModelBase
 		GL11.glPopMatrix();
 	}
 
-	private void renderCarrierSpiders(Entity entity, float partialTickTime)
+	private void renderSwarmSpiders(Entity entity, float partialTickTime)
 	{
 		final EntityHatchedSpider spider = (EntityHatchedSpider)entity;
 

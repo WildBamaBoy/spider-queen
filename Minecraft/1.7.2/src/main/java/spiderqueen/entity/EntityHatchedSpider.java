@@ -615,7 +615,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			case TINYLONGLEG:
 				setSize(0.3F, 0.15F);
 				break;
-			case CARRIER:
+			case SWARM:
 				setSize(0.7F, 0.6F);
 			default:
 				break;
