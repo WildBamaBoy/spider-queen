@@ -208,7 +208,8 @@ public class SpiderQueen implements IEnforcedCore
 		// Creative tab
 		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
 		RadixRegistry.registerItem(itemCocoonEnderman);
-		tabSpiderQueen = RadixRegistry.registerCreativeTab(this, tabSpiderQueen, itemCocoonEnderman);
+		tabSpiderQueen = RadixRegistry.registerCreativeTab(this, itemCocoonEnderman);
+		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
 		
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
