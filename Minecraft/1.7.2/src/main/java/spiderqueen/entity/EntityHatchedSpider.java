@@ -57,8 +57,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public int					level				= 1;
 	public int					killsUntilLevelUp	= LogicHelper.getNumberInRange(5, 15);
 	public int					timeUntilWebshot	= 0;
-	public int					timeUntilTeleport	= 0;
+	public int					timeUntilSpawnMites = 0;
 	public int					timeUntilExplosion	= 0;
+	public int					timeUntilDespawn    = -1;
+	public int					miteSpawnProgress   = 0;
 	public boolean				isHostile			= false;
 	public Inventory			inventory			= new Inventory(this);
 
@@ -83,6 +85,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		this(world);
 		this.owner = owner;
 		this.cocoonType = cocoonType;
+
 		setHitboxSize();
 	}
 
@@ -129,9 +132,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				tryMoveToSpiderRod();
 			}
 
-			if (timeUntilTeleport > 0)
+			if (target != null)
 			{
-				timeUntilTeleport--;
+				if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilSpawnMites <= 0)
+				{
+					resetTimeUntilSpawnMites();
+					miteSpawnProgress = 10 * LogicHelper.getNumberInRange(1, 5);
+				}
 			}
 
 			if (timeUntilExplosion > 0)
@@ -142,6 +149,28 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (timeUntilWebshot > 0)
 			{
 				timeUntilWebshot--;
+			}
+
+			if (timeUntilSpawnMites > 0)
+			{
+				timeUntilSpawnMites--;
+			}
+
+			if (miteSpawnProgress > 0)
+			{
+				spawnEnderMites();
+				miteSpawnProgress--;
+			}
+
+			if (timeUntilDespawn > 0)
+			{
+				timeUntilDespawn--;
+			}
+
+			else if (timeUntilDespawn == 0)
+			{
+				worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+				setDead();
 			}
 		}
 
@@ -183,15 +212,6 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				closestValidTarget = (EntityLivingBase) entity;
 				distanceToTarget = distanceToThisEntity;
 			}
-		}
-
-		if (closestValidTarget != null && cocoonType == EnumCocoonType.ENDERMAN && timeUntilTeleport <= 0)
-		{
-			resetTimeUntilTeleport();
-
-			worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
-			setPosition(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ);
-			worldObj.playSound(closestValidTarget.posX, closestValidTarget.posY, closestValidTarget.posZ, "mob.endermen.portal", 0.75F, 1.0F, true);
 		}
 
 		return closestValidTarget;
@@ -265,7 +285,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		damageAmount = getAttackDamage();
 		setAttackPath(entityBeingAttacked);
 
-		if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON)
+		if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON && cocoonType != EnumCocoonType.ENDERMAN)
 		{
 			if (onGround)
 			{
@@ -296,29 +316,29 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				{
 					resetTimeUntilExplosion();
 					SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateClientExplosion, posX, posY, posZ, 5.0F, false));
-					
+
 					for (EntityLivingBase entity : (List<EntityLivingBase>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
 					{
 						if (entity instanceof EntityPlayer)
 						{
 							final EntityPlayer player = (EntityPlayer)entity;
-							
+
 							if (owner.equals(player.getCommandSenderName()))
 							{
 								continue;
 							}
 						}
-						
+
 						else if (entity instanceof EntityHatchedSpider)
 						{
 							final EntityHatchedSpider spider = (EntityHatchedSpider)entity;
-							
+
 							if (spider.owner.equals(owner))
 							{
 								continue;
 							}
 						}
-						
+
 						else
 						{
 							entity.attackEntityFrom(DamageSource.generic, 5.0F);
@@ -338,17 +358,17 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		killsUntilLevelUp--;
 
-		if (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode))
+		if (cocoonType != EnumCocoonType._ENDERMITE && (level < 3 && (killsUntilLevelUp <= 0 || SpiderQueen.getInstance().inDebugMode)))
 		{
-			timeUntilTeleport = 0;
 			timeUntilExplosion = 0;
 			timeUntilWebshot = 0;
+			timeUntilSpawnMites = 0;
 
 			worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 			killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
 			level++;
 			setHitboxSize();
-			
+
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
 		}
@@ -358,7 +378,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void setAttackPath(Entity entityBeingAttacked)
 	{
-		if (cocoonType == EnumCocoonType.SKELETON)
+		if (cocoonType == EnumCocoonType.SKELETON || cocoonType == EnumCocoonType.ENDERMAN)
 		{
 			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) > 12.0F)
 			{
@@ -367,7 +387,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				faceEntity(entityBeingAttacked, 1.0F, 1.0F);
 			}
 		}
-		
+
 		else
 		{
 			getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
@@ -494,16 +514,49 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			case HUGE:
 				setSize(1.6F + (0.20F * level), 0.75F + (0.25F * level));
+				break;
 			case NORMAL:
 				setSize(1.6F, 0.75F);
+				break;
 			case RAISED:
 				setSize(1.6F, 0.95F);
+				break;
 			case THIN:
 				setSize(0.8F, 0.5F);
+				break;
 			case TINY:
 				setSize(0.8F, 0.375F);
+				break;
+			case LONGLEG:
+				setSize(1.2F, 1.0F);
+				break;
+			case TINYLONGLEG:
+				setSize(0.3F, 0.15F);
+				break;
 			default:
 				break;
+		}
+	}
+
+	private void spawnEnderMites()
+	{
+		if (miteSpawnProgress % 10 == 0)
+		{
+			final EntityHatchedSpider miteSpider = new EntityHatchedSpider(worldObj, owner, EnumCocoonType._ENDERMITE);
+			final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(worldObj, new Point3D(target.posX, target.posY, target.posZ), Blocks.air, 3);
+
+			if (spawnPoint != null)
+			{
+				miteSpider.setPosition(spawnPoint.dPosX, spawnPoint.dPosY, spawnPoint.dPosZ);
+				miteSpider.target = this.target;
+
+				if (!worldObj.isRemote)
+				{
+					miteSpider.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
+					worldObj.spawnEntityInWorld(miteSpider);
+					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);	
+				}
+			}
 		}
 	}
 
@@ -554,6 +607,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			case EMPTY:
 				return 0.5F;
+			case _ENDERMITE:
+				return 0.3F;
 			case WOLF:
 				return 1.0F;
 			default:
@@ -643,24 +698,24 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void displayParticles()
 	{
-		if (cocoonType == EnumCocoonType.ENDERMAN)
+		if (cocoonType == EnumCocoonType.ENDERMAN || cocoonType == EnumCocoonType._ENDERMITE)
 		{
-			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 0.5D + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
+			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 0.9D + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
 	}
 
-	private void resetTimeUntilTeleport()
+	private void resetTimeUntilSpawnMites()
 	{
 		switch (level)
 		{
 			case 1:
-				timeUntilTeleport = Time.MINUTE;
+				timeUntilSpawnMites = Time.MINUTE;
 				break;
 			case 2:
-				timeUntilTeleport = Time.SECOND * 30;
+				timeUntilSpawnMites = Time.SECOND * 30;
 				break;
 			case 3:
-				timeUntilTeleport = Time.SECOND * 10;
+				timeUntilSpawnMites = Time.SECOND * 10;
 				break;
 		}
 	}

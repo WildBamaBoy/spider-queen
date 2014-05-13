@@ -38,10 +38,10 @@ public enum EnumCocoonType
 	HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
 	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), 
 	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
-	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), 
+	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.LONGLEG), 
 	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY),
 	
-	_ENDERMITE(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL);
+	_ENDERMITE(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.TINYLONGLEG);
 	
 	private Class			entityClass;
 	private Item			itemCocoon;

@@ -9,6 +9,8 @@
 
 package spiderqueen.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -85,6 +87,16 @@ public class ModelHatchedSpider extends ModelBase
 	public ModelRenderer	hugeSpiderRightBulk;
 	public ModelRenderer	hugeSpiderLeftBulk;
 
+	public ModelRenderer longLegSpiderBody;
+	public ModelRenderer longLegSpiderLeg8;
+	public ModelRenderer longLegSpiderLeg6;
+	public ModelRenderer longLegSpiderLeg4;
+	public ModelRenderer longLegSpiderLeg2;
+	public ModelRenderer longLegSpiderLeg7;
+	public ModelRenderer longLegSpiderLeg5;
+	public ModelRenderer longLegSpiderLeg3;
+	public ModelRenderer longLegSpiderLeg1;
+
 	public ModelHatchedSpider()
 	{
 		initDefaultSpider();
@@ -92,6 +104,7 @@ public class ModelHatchedSpider extends ModelBase
 		initTinySpider();
 		initThinSpider();
 		initHugeSpider();
+		initLongLegSpider();
 	}
 
 	@Override
@@ -117,6 +130,12 @@ public class ModelHatchedSpider extends ModelBase
 			case TINY:
 				renderTinySpider(partialTickTime);
 				break;
+			case LONGLEG:
+				renderLongLegSpider(partialTickTime);
+				break;
+			case TINYLONGLEG:
+				renderTinyLongLegSpider(partialTickTime);
+				break;
 			default:
 				break;
 		}
@@ -127,7 +146,7 @@ public class ModelHatchedSpider extends ModelBase
 	{
 		final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
 
-		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER || spider.cocoonType == EnumCocoonType.ENDERMAN || spider.cocoonType == EnumCocoonType.HUMAN)
+		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER || spider.cocoonType == EnumCocoonType.HUMAN)
 		{
 			defaultSpiderHead.rotateAngleY = rotationYaw / (180F / (float) Math.PI);
 			defaultSpiderHead.rotateAngleX = rotationPitch / (180F / (float) Math.PI);
@@ -373,6 +392,55 @@ public class ModelHatchedSpider extends ModelBase
 			hugeSpiderLeg6.rotateAngleZ += -f15;
 			hugeSpiderLeg7.rotateAngleZ += f16;
 			hugeSpiderLeg8.rotateAngleZ += -f16;
+		}
+
+		else if (spider.cocoonType == EnumCocoonType.ENDERMAN || spider.cocoonType == EnumCocoonType._ENDERMITE)
+		{
+			final float quarterCircle = (float) Math.PI / 4F;
+			longLegSpiderLeg1.rotateAngleZ = -quarterCircle;
+			longLegSpiderLeg2.rotateAngleZ = quarterCircle;
+			longLegSpiderLeg3.rotateAngleZ = -quarterCircle * 0.74F;
+			longLegSpiderLeg4.rotateAngleZ = quarterCircle * 0.74F;
+			longLegSpiderLeg5.rotateAngleZ = -quarterCircle * 0.74F;
+			longLegSpiderLeg6.rotateAngleZ = quarterCircle * 0.74F;
+			longLegSpiderLeg7.rotateAngleZ = -quarterCircle;
+			longLegSpiderLeg8.rotateAngleZ = quarterCircle;
+
+			final float eighthCircle = (float) Math.PI / 8F;
+			longLegSpiderLeg1.rotateAngleY = eighthCircle * 2.0F;
+			longLegSpiderLeg2.rotateAngleY = -eighthCircle * 2.0F;
+			longLegSpiderLeg3.rotateAngleY = eighthCircle * 1.0F;
+			longLegSpiderLeg4.rotateAngleY = -eighthCircle * 1.0F;
+			longLegSpiderLeg5.rotateAngleY = -eighthCircle * 1.0F;
+			longLegSpiderLeg6.rotateAngleY = eighthCircle * 1.0F;
+			longLegSpiderLeg7.rotateAngleY = -eighthCircle * 2.0F;
+			longLegSpiderLeg8.rotateAngleY = eighthCircle * 2.0F;
+
+			final float frontRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F) * 0.4F) * prevLimbSwing;
+			final float frontMidRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * prevLimbSwing;
+			final float backMidRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI / 2F) * 0.4F) * prevLimbSwing;
+			final float backRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI * 3F / 2F) * 0.4F) * prevLimbSwing;
+			final float frontRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F) * 0.4F) * prevLimbSwing;
+			final float frontMidRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * prevLimbSwing;
+			final float backMidRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI / 2F) * 0.4F) * prevLimbSwing;
+			final float backRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI * 3F / 2F) * 0.4F) * prevLimbSwing;
+
+			longLegSpiderLeg1.rotateAngleY += frontRotateY;
+			longLegSpiderLeg2.rotateAngleY += -frontRotateY;
+			longLegSpiderLeg3.rotateAngleY += frontMidRotateY;
+			longLegSpiderLeg4.rotateAngleY += -frontMidRotateY;
+			longLegSpiderLeg5.rotateAngleY += backMidRotateY;
+			longLegSpiderLeg6.rotateAngleY += -backMidRotateY;
+			longLegSpiderLeg7.rotateAngleY += backRotateY;
+			longLegSpiderLeg8.rotateAngleY += -backRotateY;
+			longLegSpiderLeg1.rotateAngleZ += frontRotateZ;
+			longLegSpiderLeg2.rotateAngleZ += -frontRotateZ;
+			longLegSpiderLeg3.rotateAngleZ += frontMidRotateZ;
+			longLegSpiderLeg4.rotateAngleZ += -frontMidRotateZ;
+			longLegSpiderLeg5.rotateAngleZ += backMidRotateZ;
+			longLegSpiderLeg6.rotateAngleZ += -backMidRotateZ;
+			longLegSpiderLeg7.rotateAngleZ += backRotateZ;
+			longLegSpiderLeg8.rotateAngleZ += -backRotateZ;
 		}
 	}
 
@@ -695,6 +763,69 @@ public class ModelHatchedSpider extends ModelBase
 		tinySpiderLeg8.rotateAngleY = -0.19199F;
 	}
 
+	private void initLongLegSpider()
+	{
+		longLegSpiderBody = new ModelRenderer(this, 0, 0);
+		longLegSpiderBody.addBox(-3F, -3F, -3F, 6, 6, 6);
+		longLegSpiderBody.setRotationPoint(0F, 5F, 0F);
+
+		longLegSpiderLeg8 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg8.addBox(-1F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg8.setRotationPoint(2.5F, 9F, -1F);
+		longLegSpiderLeg8.setTextureSize(64, 32);
+		longLegSpiderLeg8.mirror = true;
+		setRotation(longLegSpiderLeg8, 0.2974289F, 0.5759587F, 1.230457F);
+		longLegSpiderLeg6 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg6.addBox(-1F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg6.setRotationPoint(2.5F, 9F, 0F);
+		longLegSpiderLeg6.setTextureSize(64, 32);
+		longLegSpiderLeg6.mirror = true;
+		setRotation(longLegSpiderLeg6, 0.5948578F, 0.2792527F, 1.22173F);
+		longLegSpiderLeg4 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg4.addBox(-1F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg4.setRotationPoint(2F, 9F, 1F);
+		longLegSpiderLeg4.setTextureSize(64, 32);
+		longLegSpiderLeg4.mirror = true;
+		setRotation(longLegSpiderLeg4, 0F, -0.2792527F, 1.22173F);
+		longLegSpiderLeg2 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg2.addBox(-1F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg2.setRotationPoint(2F, 9F, 2F);
+		longLegSpiderLeg2.setTextureSize(64, 32);
+		longLegSpiderLeg2.mirror = true;
+		setRotation(longLegSpiderLeg2, 0.2974289F, -0.5759587F, 1.230457F);
+		longLegSpiderLeg7 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg7.addBox(-15F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg7.setRotationPoint(-2.5F, 10F, -1F);
+		longLegSpiderLeg7.setTextureSize(64, 32);
+		longLegSpiderLeg7.mirror = true;
+		setRotation(longLegSpiderLeg7, 0F, -0.5759587F, -1.230457F);
+		longLegSpiderLeg5 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg5.addBox(-15F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg5.setRotationPoint(-2.5F, 10F, 0F);
+		longLegSpiderLeg5.setTextureSize(64, 32);
+		longLegSpiderLeg5.mirror = true;
+		setRotation(longLegSpiderLeg5, 0F, -0.2792527F, -1.22173F);
+		longLegSpiderLeg3 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg3.addBox(-15F, -1F, -1F, 17, 1, 1);
+		longLegSpiderLeg3.setRotationPoint(-2.5F, 10F, 1F);
+		longLegSpiderLeg3.setTextureSize(64, 32);
+		longLegSpiderLeg3.mirror = true;
+		setRotation(longLegSpiderLeg3, 0F, 0.2792527F, -1.22173F);
+		longLegSpiderLeg1 = new ModelRenderer(this, 18, 0);
+		longLegSpiderLeg1.addBox(-15F, -1F, -1F, 18, 1, 1);
+		longLegSpiderLeg1.setRotationPoint(-2.5F, 10F, 2F);
+		longLegSpiderLeg1.setTextureSize(64, 32);
+		longLegSpiderLeg1.mirror = true;
+		setRotation(longLegSpiderLeg1, 0.3665191F, 0.5759587F, -1.230457F);
+	}
+
+	private void setRotation(ModelRenderer model, float angleX, float angleY, float angleZ)
+	{
+		model.rotateAngleX = angleX;
+		model.rotateAngleY = angleY;
+		model.rotateAngleZ = angleZ;
+	}
+
 	private void renderHugeSpider(float partialTickTime)
 	{
 		hugeSpiderHead.render(partialTickTime);
@@ -772,5 +903,41 @@ public class ModelHatchedSpider extends ModelBase
 		tinySpiderLeg6.render(partialTickTime);
 		tinySpiderLeg7.render(partialTickTime);
 		tinySpiderLeg8.render(partialTickTime);
+	}
+
+	private void renderLongLegSpider(float partialTickTime)
+	{		
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslated(0, 0.35D, 0);
+			longLegSpiderBody.render(partialTickTime);
+		}
+		GL11.glPopMatrix();
+		
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslated(0, -0.05D, 0);
+			GL11.glScaled(1, 1.5D, 1);
+			longLegSpiderLeg1.render(partialTickTime);
+			longLegSpiderLeg2.render(partialTickTime);
+			longLegSpiderLeg3.render(partialTickTime);
+			longLegSpiderLeg4.render(partialTickTime);
+			longLegSpiderLeg5.render(partialTickTime);
+			longLegSpiderLeg6.render(partialTickTime);
+			longLegSpiderLeg7.render(partialTickTime);
+			longLegSpiderLeg8.render(partialTickTime);
+		}
+		GL11.glPopMatrix();
+	}
+	
+	private void renderTinyLongLegSpider(float partialTickTime)
+	{
+		GL11.glPushMatrix();
+		{
+			GL11.glScaled(0.5D, 0.5D, 0.5D);
+			GL11.glTranslated(0.0D, 1.2D, 0.0D);
+			renderLongLegSpider(partialTickTime);
+		}
+		GL11.glPopMatrix();
 	}
 }

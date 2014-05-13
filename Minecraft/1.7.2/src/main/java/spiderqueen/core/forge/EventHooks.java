@@ -60,7 +60,6 @@ public class EventHooks
 	@SubscribeEvent
 	public void clientTickEventHandler(ClientTickEvent event)
 	{
-		SpiderQueen.getInstance();
 		SpiderQueen.clientTickHandler.onTick();
 	}
 
@@ -73,7 +72,6 @@ public class EventHooks
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{
-		SpiderQueen.getInstance();
 		SpiderQueen.serverTickHandler.onTick();
 	}
 
@@ -88,14 +86,12 @@ public class EventHooks
 	{
 		if (!event.entityPlayer.worldObj.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
 		{
-			SpiderQueen.getInstance();
 			SpiderQueen.serverTickHandler.playersEating.clear();
 
 			if (event.entityPlayer.getCurrentEquippedItem() != null)
 			{
 				if (event.entityPlayer.getCurrentEquippedItem().getItem() instanceof ItemFood)
 				{
-					SpiderQueen.getInstance();
 					SpiderQueen.serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
 				}
 			}
