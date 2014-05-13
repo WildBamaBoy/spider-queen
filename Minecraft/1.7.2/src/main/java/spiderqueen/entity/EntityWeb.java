@@ -386,7 +386,8 @@ public class EntityWeb extends Entity implements IProjectile
 							if (shooter instanceof EntityHatchedSpider)
 							{
 								final EntityHatchedSpider spider = (EntityHatchedSpider)shooter;
-								spider.processKill();
+								spider.killsUntilLevelUp--;
+								spider.tryLevelUp();
 							}
 						}
 					}

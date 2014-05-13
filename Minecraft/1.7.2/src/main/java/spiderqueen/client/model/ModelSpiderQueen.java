@@ -12,7 +12,13 @@ package spiderqueen.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+
+import spiderqueen.entity.EntityHatchedSpider;
 
 public class ModelSpiderQueen extends ModelBase
 {
@@ -192,9 +198,36 @@ public class ModelSpiderQueen extends ModelBase
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	{		
 		setRotationAngles(f, f1, f2, f3, f4, f5);
 
+		if (entity instanceof EntityPlayer)
+		{
+			final EntityPlayer player = (EntityPlayer)entity;
+
+			if (player.ridingEntity instanceof EntityHatchedSpider)
+			{
+				final EntityHatchedSpider spider = (EntityHatchedSpider)player.ridingEntity;
+
+				if (spider.isOnLadder())
+				{
+					final Vec3 lookVector = spider.getLookVec();
+
+					if (lookVector.xCoord <= -0.90 || lookVector.zCoord <= -0.90)
+					{
+						GL11.glRotatef(270, 1, 0, 0);
+						GL11.glTranslated(0, 1.8, 0);
+					}
+
+					else if (lookVector.xCoord >= 0.90 || lookVector.zCoord >= 0.90)
+					{
+						GL11.glRotatef(-90, 1, 0, 0);
+						GL11.glTranslated(0, 1.8, 0);
+					}
+				}
+			}
+		}
+		
 		head.render(f5);
 		body.render(f5);
 		rear.render(f5);

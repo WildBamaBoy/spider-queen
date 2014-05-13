@@ -9,12 +9,15 @@
 
 package spiderqueen.client.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+
+import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityHatchedSpider;
 import spiderqueen.enums.EnumCocoonType;
 import cpw.mods.fml.relauncher.Side;
@@ -136,6 +139,9 @@ public class ModelHatchedSpider extends ModelBase
 			case TINYLONGLEG:
 				renderTinyLongLegSpider(partialTickTime);
 				break;
+			case CARRIER:
+				renderCarrierSpiders(entity, partialTickTime);
+				break;
 			default:
 				break;
 		}
@@ -146,7 +152,7 @@ public class ModelHatchedSpider extends ModelBase
 	{
 		final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
 
-		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER || spider.cocoonType == EnumCocoonType.HUMAN)
+		if (EnumCocoonType.isAnimalBased(spider.cocoonType) || spider.cocoonType == EnumCocoonType.EMPTY || spider.cocoonType == EnumCocoonType.VILLAGER || spider.cocoonType == EnumCocoonType.HUMAN || spider.cocoonType == EnumCocoonType.HORSE)
 		{
 			defaultSpiderHead.rotateAngleY = rotationYaw / (180F / (float) Math.PI);
 			defaultSpiderHead.rotateAngleX = rotationPitch / (180F / (float) Math.PI);
@@ -913,7 +919,7 @@ public class ModelHatchedSpider extends ModelBase
 			longLegSpiderBody.render(partialTickTime);
 		}
 		GL11.glPopMatrix();
-		
+
 		GL11.glPushMatrix();
 		{
 			GL11.glTranslated(0, -0.05D, 0);
@@ -929,7 +935,7 @@ public class ModelHatchedSpider extends ModelBase
 		}
 		GL11.glPopMatrix();
 	}
-	
+
 	private void renderTinyLongLegSpider(float partialTickTime)
 	{
 		GL11.glPushMatrix();
@@ -939,5 +945,130 @@ public class ModelHatchedSpider extends ModelBase
 			renderLongLegSpider(partialTickTime);
 		}
 		GL11.glPopMatrix();
+	}
+
+	private void renderCarrierSpiders(Entity entity, float partialTickTime)
+	{
+		final EntityHatchedSpider spider = (EntityHatchedSpider)entity;
+
+		if (spider.isOnLadder())
+		{
+			final Vec3 lookVector = spider.getLookVec();
+
+			if (lookVector.xCoord <= -0.90 || lookVector.zCoord <= -0.90)
+			{
+				GL11.glRotatef(270, 1, 0, 0);
+				GL11.glTranslated(0, -1.2, 0);
+			}
+			
+			else if ( lookVector.xCoord >= 0.90 || lookVector.zCoord >= 0.90)
+			{
+				GL11.glRotatef(-90, 1, 0, 0);
+				GL11.glTranslated(0, -1.2, 0);
+			}
+		}
+		
+		if (spider.level == 1)
+		{
+			for (int pass = 0; pass < 9; pass++)
+			{
+				GL11.glPushMatrix();
+				{
+					GL11.glScaled(0.3D, 0.3D, 0.3D);
+					GL11.glTranslated(0, 3.6D, 0D);
+					
+					switch (pass)
+					{
+						case 0: GL11.glTranslated(0D, 0.0D, -2.0D); break;
+						case 1: GL11.glTranslated(0D, 0, 2.0D); break; 
+						case 2: GL11.glTranslated(1.8D, 0, 0D); break; 
+						case 3: GL11.glTranslated(-1.8D, 0, 0D); break; 
+						case 4: GL11.glTranslated(1.8D, 0, -2.0D); break; 
+						case 5: GL11.glTranslated(-1.8D, 0, -2.0D); break; 
+						case 6: GL11.glTranslated(1.8D, 0, 2.0D); break; 
+						case 7: GL11.glTranslated(-1.8D, 0, 2.0D); break;
+						default: break;
+					}
+					renderDefaultSpider(partialTickTime);
+				}
+				GL11.glPopMatrix();
+			}
+		}
+		
+		else if (spider.level == 2)
+		{
+			for (int pass = 0; pass < 13; pass++)
+			{
+				GL11.glPushMatrix();
+				{
+					GL11.glScaled(0.2D, 0.2D, 0.2D);
+					GL11.glTranslated(0, 6.1D, 0D);
+
+					switch (pass)
+					{
+						case 0: GL11.glTranslated(0D, 0.0D, -2.0D); break;
+						case 1: GL11.glTranslated(0D, 0, 2.0D); break; 
+						case 2: GL11.glTranslated(1.8D, 0, 0D); break; 
+						case 3: GL11.glTranslated(-1.8D, 0, 0D); break; 
+						case 4: GL11.glTranslated(1.8D, 0, -2.0D); break; 
+						case 5: GL11.glTranslated(-1.8D, 0, -2.0D); break; 
+						case 6: GL11.glTranslated(1.8D, 0, 2.0D); break; 
+						case 7: GL11.glTranslated(3.5D, 0, 0.0D); break;
+						case 8: GL11.glTranslated(-3.5D, 0, 0.0D); break;
+						case 9: GL11.glTranslated(0D, 0, 0D); break;
+						case 10: GL11.glTranslated(0D, 0, 4D); break;
+						case 11: GL11.glTranslated(-1.8D, 0, 2.0D); break;
+						case 12: GL11.glTranslated(0D, 0, -4D); break;
+						default: break;
+					}
+					renderDefaultSpider(partialTickTime);
+				}
+				GL11.glPopMatrix();
+			}
+		}
+		
+		else if (spider.level == 3)
+		{
+			for (int pass = 0; pass < 25; pass++)
+			{
+				GL11.glPushMatrix();
+				{
+					GL11.glScaled(0.15D, 0.15D, 0.15D);
+					GL11.glTranslated(0, 8.6D, 0D);
+
+					switch (pass)
+					{
+						case 0: GL11.glTranslated(0D, 0.0D, -2.0D); break;
+						case 1: GL11.glTranslated(0D, 0, 2.0D); break; 
+						case 2: GL11.glTranslated(1.8D, 0, 0D); break; 
+						case 3: GL11.glTranslated(-1.8D, 0, 0D); break; 
+						case 4: GL11.glTranslated(1.8D, 0, -2.0D); break; 
+						case 5: GL11.glTranslated(-1.8D, 0, -2.0D); break; 
+						case 6: GL11.glTranslated(1.8D, 0, 2.0D); break; 
+						case 7: GL11.glTranslated(3.5D, 0, 0.0D); break;
+						case 8: GL11.glTranslated(-3.5D, 0, 0.0D); break;
+						case 9: GL11.glTranslated(0D, 0, 0D); break;
+						case 10: GL11.glTranslated(0D, 0, 4D); break;
+						case 11: GL11.glTranslated(-1.8D, 0, 2.0D); break;
+						case 12: GL11.glTranslated(0D, 0, -4D); break;
+						case 13: GL11.glTranslated(1.8D, 0, -4D); break;
+						case 14: GL11.glTranslated(-1.8D, 0, -4D); break;
+						case 15: GL11.glTranslated(3.5D, 0, -4D); break;
+						case 16: GL11.glTranslated(-3.5D, 0, -4D); break;
+						case 17: GL11.glTranslated(-3.5D, 0, -2D); break;
+						case 18: GL11.glTranslated(-3.5D, 0, 4D); break;
+						case 19: GL11.glTranslated(-3.5D, 0, 2D); break;
+						case 20: GL11.glTranslated(1.8D, 0, 4D); break;
+						case 21: GL11.glTranslated(3.5D, 0, 4D); break;
+						case 22: GL11.glTranslated(3.5D, 0, 2D); break;
+						case 23: GL11.glTranslated(3.5D, 0, -2D); break;
+						case 24: GL11.glTranslated(-1.8D, 0, 4D); break;
+						default: break;
+					}
+					renderDefaultSpider(partialTickTime);
+				}
+				GL11.glPopMatrix();
+			}
+		}
 	}
 }

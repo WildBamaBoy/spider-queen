@@ -11,5 +11,5 @@ package spiderqueen.enums;
 
 public enum EnumSpiderSize
 {
-	TINY, THIN, NORMAL, RAISED, HUGE, LONGLEG, TINYLONGLEG;
+	TINY, THIN, NORMAL, RAISED, HUGE, LONGLEG, TINYLONGLEG, CARRIER;
 }

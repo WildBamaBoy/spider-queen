@@ -70,11 +70,16 @@ public class ItemCocoon extends Item
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{
-		if (this == SpiderQueen.getInstance().itemCocoonChicken || this == SpiderQueen.getInstance().itemCocoonCow || this == SpiderQueen.getInstance().itemCocoonHorse || this == SpiderQueen.getInstance().itemCocoonPig || this == SpiderQueen.getInstance().itemCocoonSheep || this == SpiderQueen.getInstance().itemCocoonHuman)
+		if (this == SpiderQueen.getInstance().itemCocoonChicken || this == SpiderQueen.getInstance().itemCocoonCow || this == SpiderQueen.getInstance().itemCocoonPig || this == SpiderQueen.getInstance().itemCocoonSheep || this == SpiderQueen.getInstance().itemCocoonHuman)
 		{
 			list.add(Color.GRAY + "Produces a typical spider.");
 		}
 
+		else if (this == SpiderQueen.getInstance().itemCocoonHorse)
+		{
+			list.add(Color.GRAY + "Produces a group of " + Color.GOLD + "Rider Spiders" + Color.GRAY + ".");
+		}
+		
 		else if (this == SpiderQueen.getInstance().itemCocoonEnderman)
 		{
 			list.add(Color.GRAY + "Produces an " + Color.PURPLE + "Ender Spider" + Color.GRAY + ".");

@@ -37,7 +37,7 @@ public enum EnumCocoonType
 	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
 	HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
 	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), 
-	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
+	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.CARRIER), 
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.LONGLEG), 
 	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY),
 	
