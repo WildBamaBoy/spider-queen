@@ -662,19 +662,22 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (miteSpawnProgress % 10 == 0)
 		{
-			final EntityHatchedSpider miteSpider = new EntityHatchedSpider(worldObj, owner, EnumCocoonType._ENDERMITE);
-			final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(worldObj, new Point3D(target.posX, target.posY, target.posZ), Blocks.air, 3);
-
-			if (spawnPoint != null)
+			if (target != null)
 			{
-				miteSpider.setPosition(spawnPoint.dPosX, spawnPoint.dPosY, spawnPoint.dPosZ);
-				miteSpider.target = target;
+				final EntityHatchedSpider miteSpider = new EntityHatchedSpider(worldObj, owner, EnumCocoonType._ENDERMITE);
+				final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(worldObj, new Point3D(target.posX, target.posY, target.posZ), Blocks.air, 3);
 
-				if (!worldObj.isRemote)
+				if (spawnPoint != null)
 				{
-					miteSpider.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
-					worldObj.spawnEntityInWorld(miteSpider);
-					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+					miteSpider.setPosition(spawnPoint.dPosX, spawnPoint.dPosY, spawnPoint.dPosZ);
+					miteSpider.target = target;
+
+					if (!worldObj.isRemote)
+					{
+						miteSpider.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
+						worldObj.spawnEntityInWorld(miteSpider);
+						worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+					}
 				}
 			}
 		}
