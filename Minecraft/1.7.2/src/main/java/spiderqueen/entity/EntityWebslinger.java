@@ -20,7 +20,6 @@ import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.enums.EnumPacketType;
 
-import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -219,7 +218,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		{
 			player.fallDistance = 0.0F;
 			player.motionY = player.motionY;
-			
+
 			if (player.isSneaking())
 			{
 				distance += 4;

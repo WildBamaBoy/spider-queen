@@ -24,8 +24,8 @@ import com.radixshock.radixcore.constant.Font.Color;
 public class ItemWeb extends Item
 {
 	/** 0 = normal, 1 = poison, 2 = flame */
-	private int type = 0;
-	
+	private int	type	= 0;
+
 	public ItemWeb(int type)
 	{
 		this.type = type;
@@ -40,7 +40,7 @@ public class ItemWeb extends Item
 		{
 			world.playSoundAtEntity(entityPlayer, "mob.ghast.fireball", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 		}
-		
+
 		else
 		{
 			world.playSoundAtEntity(entityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
@@ -49,12 +49,12 @@ public class ItemWeb extends Item
 		if (!world.isRemote)
 		{
 			final EntityWeb web = new EntityWeb(entityPlayer, type);
-			
+
 			if (type == 2)
 			{
 				web.setFire(5);
 			}
-			
+
 			world.spawnEntityInWorld(web);
 		}
 
@@ -62,9 +62,15 @@ public class ItemWeb extends Item
 		{
 			switch (type)
 			{
-				case 0: entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb); break;
-				case 1: entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemPoisonWeb); break;
-				case 2: entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemFlameWeb); break;
+				case 0:
+					entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb);
+					break;
+				case 1:
+					entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemPoisonWeb);
+					break;
+				case 2:
+					entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemFlameWeb);
+					break;
 			}
 		}
 
@@ -76,9 +82,15 @@ public class ItemWeb extends Item
 	{
 		switch (type)
 		{
-			case 0: itemIcon = iconRegister.registerIcon("spiderqueen:Web"); break;
-			case 1: itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison"); break;
-			case 2: itemIcon = iconRegister.registerIcon("spiderqueen:WebFlame"); break;
+			case 0:
+				itemIcon = iconRegister.registerIcon("spiderqueen:Web");
+				break;
+			case 1:
+				itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison");
+				break;
+			case 2:
+				itemIcon = iconRegister.registerIcon("spiderqueen:WebFlame");
+				break;
 		}
 	}
 
@@ -92,7 +104,7 @@ public class ItemWeb extends Item
 		{
 			list.add(Color.GREEN + "Poison");
 		}
-		
+
 		else if (type == 2)
 		{
 			list.add(Color.GOLD + "Fire");

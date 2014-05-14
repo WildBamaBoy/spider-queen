@@ -151,7 +151,7 @@ public final class PacketCodec extends AbstractPacketCodec
 					packet.arguments[3] = buffer.readFloat();
 					packet.arguments[4] = buffer.readBoolean();
 					break;
-					
+
 				default:
 					break;
 			}

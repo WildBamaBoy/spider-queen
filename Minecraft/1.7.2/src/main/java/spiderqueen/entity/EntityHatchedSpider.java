@@ -52,23 +52,23 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHatchedSpider extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	public String				owner				= "";
-	public EnumCocoonType		cocoonType			= EnumCocoonType.EMPTY;
-	public int					level				= 1;
-	public int					killsUntilLevelUp	= LogicHelper.getNumberInRange(5, 15);
-	public int					timeUntilLevelUp    = Time.MINUTE * LogicHelper.getNumberInRange(1, 5);
-	public int					timeUntilWebshot	= 0;
-	public int					timeUntilSpawnMites = 0;
-	public int					timeUntilExplosion	= 0;
-	public int					timeUntilDespawn    = -1;
-	public int					timeUntilMakeFlameWeb = Time.MINUTE * LogicHelper.getNumberInRange(1, 3);
-	public int					miteSpawnProgress   = 0;
-	public int					flameWebSpawnProgress = 0;
-	public int					flameWebProduced    = 0;
-	public boolean				isHostile			= false;
-	public Inventory			inventory			= new Inventory(this);
+	public String				owner					= "";
+	public EnumCocoonType		cocoonType				= EnumCocoonType.EMPTY;
+	public int					level					= 1;
+	public int					killsUntilLevelUp		= LogicHelper.getNumberInRange(5, 15);
+	public int					timeUntilLevelUp		= Time.MINUTE * LogicHelper.getNumberInRange(1, 5);
+	public int					timeUntilWebshot		= 0;
+	public int					timeUntilSpawnMites		= 0;
+	public int					timeUntilExplosion		= 0;
+	public int					timeUntilDespawn		= -1;
+	public int					timeUntilMakeFlameWeb	= Time.MINUTE * LogicHelper.getNumberInRange(1, 3);
+	public int					miteSpawnProgress		= 0;
+	public int					flameWebSpawnProgress	= 0;
+	public int					flameWebProduced		= 0;
+	public boolean				isHostile				= false;
+	public Inventory			inventory				= new Inventory(this);
 
-	public transient boolean	hasSyncedInventory	= false;
+	public transient boolean	hasSyncedInventory		= false;
 	public Entity				target;
 
 	public EntityHatchedSpider(World world)
@@ -194,7 +194,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				setDead();
 			}
 
-			if (riddenByEntity != null && ((motionX >= 0.1F || motionX <= -0.1F) || motionZ >= 0.1F || motionZ <= -0.1F))
+			if (riddenByEntity != null && (motionX >= 0.1F || motionX <= -0.1F || motionZ >= 0.1F || motionZ <= -0.1F))
 			{
 				timeUntilLevelUp--;
 			}
@@ -203,7 +203,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			{
 				tryLevelUp();
 			}
-			
+
 			if (cocoonType == EnumCocoonType.BLAZE)
 			{
 				extinguish();
@@ -353,11 +353,11 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					resetTimeUntilExplosion();
 					SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateClientExplosion, posX, posY, posZ, 5.0F, false));
 
-					for (EntityLivingBase entity : (List<EntityLivingBase>)LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
+					for (final EntityLivingBase entity : (List<EntityLivingBase>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
 					{
 						if (entity instanceof EntityPlayer)
 						{
-							final EntityPlayer player = (EntityPlayer)entity;
+							final EntityPlayer player = (EntityPlayer) entity;
 
 							if (owner.equals(player.getCommandSenderName()))
 							{
@@ -367,7 +367,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 						else if (entity instanceof EntityHatchedSpider)
 						{
-							final EntityHatchedSpider spider = (EntityHatchedSpider)entity;
+							final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
 
 							if (spider.owner.equals(owner))
 							{
@@ -393,9 +393,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	public void tryLevelUp()
 	{
-		if (cocoonType != EnumCocoonType._ENDERMITE && 
-				(level < 3 && (killsUntilLevelUp <= 0 || (cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0) || 
-				SpiderQueen.getInstance().inDebugMode)))
+		if (cocoonType != EnumCocoonType._ENDERMITE && level < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode))
 		{
 			timeUntilExplosion = 0;
 			timeUntilWebshot = 0;
@@ -455,7 +453,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	@Override
 	public boolean isOnLadder()
 	{
-		boolean returnBool = isBesideClimbableBlock();
+		final boolean returnBool = isBesideClimbableBlock();
 
 		if (returnBool)
 		{
@@ -495,10 +493,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			else if (cocoonType == EnumCocoonType.HORSE)
 			{
-				entityPlayer.rotationYaw = this.rotationYaw;
-				entityPlayer.rotationPitch = this.rotationPitch;
+				entityPlayer.rotationYaw = rotationYaw;
+				entityPlayer.rotationPitch = rotationPitch;
 
-				if (!this.worldObj.isRemote)
+				if (!worldObj.isRemote)
 				{
 					entityPlayer.mountEntity(this);
 				}
@@ -510,7 +508,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				{
 					worldObj.playSoundAtEntity(this, "random.fizz", 0.75F, 1.5F);
 					dropItem(SpiderQueen.getInstance().itemFlameWeb, flameWebProduced);
-					
+
 					flameWebProduced = 0;
 					dataWatcher.updateObject(17, flameWebProduced);
 				}
@@ -584,32 +582,32 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	@Override
 	public void moveEntityWithHeading(float moveStrafe, float moveForward)
 	{
-		if (this.riddenByEntity != null)
+		if (riddenByEntity != null)
 		{
-			this.prevRotationYaw = this.rotationYaw = this.riddenByEntity.rotationYaw;
-			this.rotationPitch = this.riddenByEntity.rotationPitch * 0.5F;
-			this.setRotation(this.rotationYaw, this.rotationPitch);
-			this.rotationYawHead = this.renderYawOffset = this.rotationYaw;
-			moveStrafe = ((EntityLivingBase)this.riddenByEntity).moveStrafing * level * 0.4F / 2;
-			moveForward = ((EntityLivingBase)this.riddenByEntity).moveForward * level * 0.5F / 2;
+			prevRotationYaw = rotationYaw = riddenByEntity.rotationYaw;
+			rotationPitch = riddenByEntity.rotationPitch * 0.5F;
+			setRotation(rotationYaw, rotationPitch);
+			rotationYawHead = renderYawOffset = rotationYaw;
+			moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 2;
+			moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 2;
 
 			if (moveForward <= 0.0F)
 			{
 				moveForward *= 0.25F;
 			}
 
-			this.stepHeight = 1.0F;
-			this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
+			stepHeight = 1.0F;
+			jumpMovementFactor = getAIMoveSpeed() * 0.1F;
 
-			if (!this.worldObj.isRemote)
+			if (!worldObj.isRemote)
 			{
-				this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
+				setAIMoveSpeed((float) getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
 				super.moveEntityWithHeading(moveStrafe, moveForward);
 			}
 
-			this.prevLimbSwingAmount = this.limbSwingAmount;
-			double d1 = this.posX - this.prevPosX;
-			double d0 = this.posZ - this.prevPosZ;
+			prevLimbSwingAmount = limbSwingAmount;
+			final double d1 = posX - prevPosX;
+			final double d0 = posZ - prevPosZ;
 			float f4 = MathHelper.sqrt_double(d1 * d1 + d0 * d0) * 4.0F;
 
 			if (f4 > 1.0F)
@@ -617,13 +615,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				f4 = 1.0F;
 			}
 
-			this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
-			this.limbSwing += this.limbSwingAmount;
+			limbSwingAmount += (f4 - limbSwingAmount) * 0.4F;
+			limbSwing += limbSwingAmount;
 		}
 		else
 		{
-			this.stepHeight = 0.5F;
-			this.jumpMovementFactor = 0.02F;
+			stepHeight = 0.5F;
+			jumpMovementFactor = 0.02F;
 			super.moveEntityWithHeading(moveStrafe, moveForward);
 		}
 	}
@@ -633,7 +631,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		switch (cocoonType.getSpiderSize())
 		{
 			case HUGE:
-				setSize(1.6F + (0.20F * level), 0.75F + (0.25F * level));
+				setSize(1.6F + 0.20F * level, 0.75F + 0.25F * level);
 				break;
 			case NORMAL:
 				setSize(1.6F, 0.75F);
@@ -670,13 +668,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (spawnPoint != null)
 			{
 				miteSpider.setPosition(spawnPoint.dPosX, spawnPoint.dPosY, spawnPoint.dPosZ);
-				miteSpider.target = this.target;
+				miteSpider.target = target;
 
 				if (!worldObj.isRemote)
 				{
 					miteSpider.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
 					worldObj.spawnEntityInWorld(miteSpider);
-					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);	
+					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
 				}
 			}
 		}
@@ -859,7 +857,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					final double motionX = worldObj.rand.nextDouble() / 32 - 0.008;
 					final double motionY = worldObj.rand.nextDouble() / 32 - 0.008;
 					final double motionZ = worldObj.rand.nextDouble() / 32 - 0.008;
-					
+
 					worldObj.spawnParticle("flame", posX + worldObj.rand.nextFloat() - 0.5D, posY + 0.5, posZ + worldObj.rand.nextFloat() - 0.5D, motionX, motionY, motionZ);
 				}
 			}
@@ -881,6 +879,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				break;
 		}
 	}
+
 	private void resetTimeUntilSpawnMites()
 	{
 		switch (level)

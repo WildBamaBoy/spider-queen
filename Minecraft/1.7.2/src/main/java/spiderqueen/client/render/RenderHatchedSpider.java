@@ -71,12 +71,12 @@ public class RenderHatchedSpider extends RenderLiving
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderZombie" + entitySpider.level + ".png");
 		}
-		
+
 		else if (entitySpider.cocoonType == EnumCocoonType.BLAZE)
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderBlaze" + entitySpider.level + ".png");
 		}
-		
+
 		else
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + entitySpider.level + ".png");

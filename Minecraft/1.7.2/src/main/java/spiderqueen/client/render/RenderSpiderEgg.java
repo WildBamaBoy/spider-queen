@@ -53,7 +53,6 @@ public class RenderSpiderEgg extends Render
 		render((EntitySpiderEgg) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
-	
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{

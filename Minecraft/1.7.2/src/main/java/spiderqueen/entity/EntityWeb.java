@@ -36,9 +36,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityWeb extends Entity implements IProjectile
 {
-	private int			ticksInAir;
-	private int			type;
-	private boolean		doBlockSpawn;
+	private int				ticksInAir;
+	private int				type;
+	private boolean			doBlockSpawn;
 
 	public EntityLivingBase	shooter;
 	public double			accelerationX;
@@ -137,9 +137,9 @@ public class EntityWeb extends Entity implements IProjectile
 					return;
 				}
 
-				if (worldObj.getBlock((int)posX, (int)posY, (int)posZ) == Blocks.lava)
+				if (worldObj.getBlock((int) posX, (int) posY, (int) posZ) == Blocks.lava)
 				{
-					for (Point3D point : (List<Point3D>)LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
+					for (final Point3D point : LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
 					{
 						worldObj.setBlock(point.iPosX, point.iPosY, point.iPosZ, Blocks.fire);
 					}
@@ -257,6 +257,7 @@ public class EntityWeb extends Entity implements IProjectile
 		prevRotationPitch = rotationPitch = (float) (Math.atan2(posY, distanceXZ) * 180.0D / Math.PI);
 	}
 
+	@Override
 	public void setDead()
 	{
 		super.setDead();
@@ -265,9 +266,9 @@ public class EntityWeb extends Entity implements IProjectile
 		{
 			for (int i = -2; i < 2; i++)
 			{
-				final Block inBlock = worldObj.getBlock((int)posX, (int)posY + i, (int)posZ);
+				worldObj.getBlock((int) posX, (int) posY + i, (int) posZ);
 
-				for (Point3D point : (List<Point3D>)LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
+				for (final Point3D point : LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
 				{
 					worldObj.setBlock(point.iPosX, point.iPosY, point.iPosZ, Blocks.fire);
 				}
@@ -423,7 +424,7 @@ public class EntityWeb extends Entity implements IProjectile
 
 							if (shooter instanceof EntityHatchedSpider)
 							{
-								final EntityHatchedSpider spider = (EntityHatchedSpider)shooter;
+								final EntityHatchedSpider spider = (EntityHatchedSpider) shooter;
 								spider.killsUntilLevelUp--;
 								spider.tryLevelUp();
 							}
@@ -433,7 +434,7 @@ public class EntityWeb extends Entity implements IProjectile
 			}
 
 			else
-				// Hit a block.
+			// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int i = impactPoint.blockX;

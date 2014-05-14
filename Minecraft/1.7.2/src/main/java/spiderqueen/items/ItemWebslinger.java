@@ -17,7 +17,6 @@ import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.entity.EntityWebslinger;
 import spiderqueen.enums.EnumPacketType;
 
-import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.network.Packet;
 
 // Referenced classes of package net.minecraft.src:
@@ -99,7 +98,7 @@ public class ItemWebslinger extends Item
 	{
 		itemIcon = iconRegister.registerIcon("spiderqueen:Webslinger");
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{

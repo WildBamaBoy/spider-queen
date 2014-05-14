@@ -52,12 +52,12 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityFakePlayer extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	public String					username;
-	public String					lastAttackingPlayer = "";
+	public String					lastAttackingPlayer	= "";
 	public boolean					isContributor;
 	public boolean					hasInventoryBeenPopulated;
 	public ResourceLocation			skinResourceLocation;
 	public ThreadDownloadImageData	imageDownloadThread;
-	public Inventory				inventory	= new Inventory(this);
+	public Inventory				inventory			= new Inventory(this);
 
 	public EntityFakePlayer(World world)
 	{
@@ -181,7 +181,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		{
 			if (attackingEntity instanceof EntityPlayer)
 			{
-				final EntityPlayer player = (EntityPlayer)attackingEntity;
+				final EntityPlayer player = (EntityPlayer) attackingEntity;
 				lastAttackingPlayer = player.getCommandSenderName();
 			}
 

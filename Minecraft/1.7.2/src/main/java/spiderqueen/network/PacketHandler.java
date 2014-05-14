@@ -86,7 +86,7 @@ public final class PacketHandler extends AbstractPacketHandler
 				case CreateClientExplosion:
 					handleCreateClientExplosion(packet.arguments, player);
 					break;
-					
+
 				default:
 					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -176,7 +176,7 @@ public final class PacketHandler extends AbstractPacketHandler
 			{
 				spider.worldObj.spawnParticle("smoke", spider.posX + (rand.nextDouble() - 0.5D) * spider.width, spider.posY + 0.5D + rand.nextDouble() * 0.25D, spider.posZ + rand.nextDouble() - 0.5D * spider.width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 			}
-			
+
 			spider.level = level;
 			spider.setHitboxSize();
 		}
@@ -230,21 +230,21 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleCreateClientExplosion(Object[] arguments, EntityPlayer player)
 	{
-		final double posX = (Double)arguments[0];
-		final double posY = (Double)arguments[1];
-		final double posZ = (Double)arguments[2];
-		final float radius = (Float)arguments[3];
-		final boolean doGreifing = (Boolean)arguments[4];
-		
+		final double posX = (Double) arguments[0];
+		final double posY = (Double) arguments[1];
+		final double posZ = (Double) arguments[2];
+		final float radius = (Float) arguments[3];
+		final boolean doGreifing = (Boolean) arguments[4];
+
 		player.worldObj.createExplosion(null, posX, posY, posZ, radius, doGreifing);
-        player.worldObj.playSound(posX, posY, posZ, "random.explode", 4.0F, (1.0F + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.2F) * 0.7F, true);
-        
-        for (int i = 0; i < 10; i++)
-        {
-        	final int modX = LogicHelper.getNumberInRange(0, 3);
-        	final int modY = LogicHelper.getNumberInRange(0, 3);
-        	final int modZ = LogicHelper.getNumberInRange(0, 3);
-        	player.worldObj.spawnParticle("largeexplode", posX + modX, posY + modY, posZ + modZ, 1.0D, 0.0D, 0.0D);
-        }
+		player.worldObj.playSound(posX, posY, posZ, "random.explode", 4.0F, (1.0F + (player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.2F) * 0.7F, true);
+
+		for (int i = 0; i < 10; i++)
+		{
+			final int modX = LogicHelper.getNumberInRange(0, 3);
+			final int modY = LogicHelper.getNumberInRange(0, 3);
+			final int modZ = LogicHelper.getNumberInRange(0, 3);
+			player.worldObj.spawnParticle("largeexplode", posX + modX, posY + modY, posZ + modZ, 1.0D, 0.0D, 0.0D);
+		}
 	}
 }

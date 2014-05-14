@@ -28,22 +28,9 @@ import com.radixshock.radixcore.logic.LogicHelper;
 
 public enum EnumCocoonType
 {
-	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
-	PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
-	SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
-	CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL, EnumSpiderSize.RAISED), 
-	CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL, EnumSpiderSize.NORMAL), 
-	ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL, EnumSpiderSize.HUGE), 
-	SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL, EnumSpiderSize.THIN), 
-	COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
-	HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), 
-	VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), 
-	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.SWARM), 
-	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.LONGLEG), 
-	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY),
-	BLAZE(EntityBlaze.class, 2, "mob.blaze.death", EnumCocoonSize.NORMAL, EnumSpiderSize.FLAT),
-	_ENDERMITE(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.TINYLONGLEG);
-	
+	EMPTY(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), PIG(EntityPig.class, 0, "mob.pig.death", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), SHEEP(EntitySheep.class, 6, "mob.sheep.say", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), CREEPER(EntityCreeper.class, 4, "mob.creeper.death", EnumCocoonSize.NORMAL, EnumSpiderSize.RAISED), CHICKEN(EntityChicken.class, 0, "mob.chicken.hurt", EnumCocoonSize.SMALL, EnumSpiderSize.NORMAL), ZOMBIE(EntityZombie.class, 4, "mob.zombie.death", EnumCocoonSize.NORMAL, EnumSpiderSize.HUGE), SKELETON(EntitySkeleton.class, 4, "mob.skeleton.death", EnumCocoonSize.NORMAL, EnumSpiderSize.THIN), COW(EntityCow.class, 6, "mob.cow.hurt", EnumCocoonSize.NORMAL, EnumSpiderSize.NORMAL), HUMAN(EntityFakePlayer.class, 0, "null", EnumCocoonSize.NORMAL,
+			EnumSpiderSize.NORMAL), VILLAGER(EntityVillager.class, 0, "mob.villager.death", EnumCocoonSize.TALL, EnumSpiderSize.NORMAL), HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.SWARM), ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.LONGLEG), WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY), BLAZE(EntityBlaze.class, 2, "mob.blaze.death", EnumCocoonSize.NORMAL, EnumSpiderSize.FLAT), _ENDERMITE(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.TINYLONGLEG);
+
 	private Class			entityClass;
 	private Item			itemCocoon;
 

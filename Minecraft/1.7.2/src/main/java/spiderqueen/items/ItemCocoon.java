@@ -79,7 +79,7 @@ public class ItemCocoon extends Item
 		{
 			list.add(Color.GRAY + "Produces a group of " + Color.GOLD + "Rider Spiders" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonEnderman)
 		{
 			list.add(Color.GRAY + "Produces an " + Color.PURPLE + "Ender Spider" + Color.GRAY + ".");
@@ -109,7 +109,7 @@ public class ItemCocoon extends Item
 		{
 			list.add(Color.GRAY + "Produces a " + Color.DARKGREEN + "Tank Spider" + Color.GRAY + ".");
 		}
-		
+
 		else if (this == SpiderQueen.getInstance().itemCocoonBlaze)
 		{
 			list.add(Color.GRAY + "Produces an " + Color.GOLD + "Inferno Spider" + Color.GRAY + ".");

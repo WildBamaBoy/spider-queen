@@ -49,8 +49,8 @@ import spiderqueen.items.ItemSpawnEnemyQueen;
 import spiderqueen.items.ItemSpawnPlayer;
 import spiderqueen.items.ItemSpawnSpider;
 import spiderqueen.items.ItemSpiderEgg;
-import spiderqueen.items.ItemSpiderStone;
 import spiderqueen.items.ItemSpiderRod;
+import spiderqueen.items.ItemSpiderStone;
 import spiderqueen.items.ItemWeb;
 import spiderqueen.items.ItemWebslinger;
 import spiderqueen.network.PacketCodec;
@@ -121,7 +121,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemCocoonHuman;
 	public Item						itemCocoonWolf;
 	public Item						itemCocoonBlaze;
-	
+
 	public Item						itemSpawnPlayer;
 	public Item						itemSpawnSpider;
 	public Item						itemSpawnEnemyQueen;
@@ -131,7 +131,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemHeart;
 	public Item						itemBugLight;
 	public Item						itemSpiderStone;
-	
+
 	// Blocks
 	public Block					blockWebFull;
 	public Block					blockWebGround;
@@ -212,7 +212,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.registerItem(itemCocoonEnderman);
 		tabSpiderQueen = RadixRegistry.registerCreativeTab(this, itemCocoonEnderman);
 		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
-		
+
 		itemCocoonBlaze = new ItemCocoon(EnumCocoonType.BLAZE).setUnlocalizedName("cocoon.blaze");
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
@@ -237,7 +237,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemHeart = new Item().setUnlocalizedName("heart").setTextureName("spiderqueen:Heart").setCreativeTab(tabSpiderQueen);
 		itemBugLight = new Item().setUnlocalizedName("buglight").setTextureName("spiderqueen:BugLight").setCreativeTab(tabSpiderQueen);
 		itemSpiderStone = new ItemSpiderStone().setUnlocalizedName("spiderstone").setCreativeTab(tabSpiderQueen);
-		
+
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
@@ -266,7 +266,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.registerItem(itemHeart);
 		RadixRegistry.registerItem(itemSpiderStone);
 		RadixRegistry.registerItem(itemBugLight);
-		
+
 		RadixRegistry.registerItem(itemSpawnPlayer);
 		RadixRegistry.registerItem(itemSpawnSpider);
 		RadixRegistry.registerItem(itemSpawnEnemyQueen);
@@ -280,7 +280,7 @@ public class SpiderQueen implements IEnforcedCore
 		blockWebFull = new BlockWebFull();
 		// blockPoisonWeb = new BlockPoisonWeb();
 		blockSpiderRod = new BlockSpiderRod();
-		
+
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
 		GameRegistry.registerBlock(blockWebFull, "Web Full");
@@ -298,7 +298,7 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.addRecipe(new ItemStack(itemWeb), "SS ", "S  ", 'S', Items.string);
 
 		GameRegistry.addRecipe(new ItemStack(itemWebslinger), "TS ", "SS ", "  S", 'S', Items.string, 'T', itemWeb);
-		
+
 		GameRegistry.addRecipe(new ItemStack(itemBugLight), "GGG", "GXG", "GGG", 'G', Blocks.glass_pane, 'X', itemSpiderStone);
 	}
 

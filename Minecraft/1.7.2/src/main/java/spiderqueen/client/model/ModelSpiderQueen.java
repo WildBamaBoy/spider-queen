@@ -198,16 +198,16 @@ public class ModelSpiderQueen extends ModelBase
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{		
+	{
 		setRotationAngles(f, f1, f2, f3, f4, f5);
 
 		if (entity instanceof EntityPlayer)
 		{
-			final EntityPlayer player = (EntityPlayer)entity;
+			final EntityPlayer player = (EntityPlayer) entity;
 
 			if (player.ridingEntity instanceof EntityHatchedSpider)
 			{
-				final EntityHatchedSpider spider = (EntityHatchedSpider)player.ridingEntity;
+				final EntityHatchedSpider spider = (EntityHatchedSpider) player.ridingEntity;
 
 				if (spider.isOnLadder())
 				{
@@ -227,7 +227,7 @@ public class ModelSpiderQueen extends ModelBase
 				}
 			}
 		}
-		
+
 		head.render(f5);
 		body.render(f5);
 		rear.render(f5);
