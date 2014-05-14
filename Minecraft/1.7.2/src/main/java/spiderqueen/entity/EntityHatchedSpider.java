@@ -61,7 +61,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public int					timeUntilSpawnMites = 0;
 	public int					timeUntilExplosion	= 0;
 	public int					timeUntilDespawn    = -1;
+	public int					timeUntilMakeFlameWeb = Time.MINUTE * LogicHelper.getNumberInRange(1, 3);
 	public int					miteSpawnProgress   = 0;
+	public int					flameWebSpawnProgress = 0;
+	public int					flameWebProduced    = 0;
 	public boolean				isHostile			= false;
 	public Inventory			inventory			= new Inventory(this);
 
@@ -79,6 +82,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
 		updateEntityAttributes();
+		dataWatcher.addObject(17, flameWebProduced);
 	}
 
 	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
@@ -163,6 +167,22 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				miteSpawnProgress--;
 			}
 
+			if (timeUntilMakeFlameWeb > 0 && flameWebSpawnProgress <= 0)
+			{
+				timeUntilMakeFlameWeb--;
+			}
+
+			else if (timeUntilMakeFlameWeb <= 0 && flameWebSpawnProgress <= 0)
+			{
+				flameWebSpawnProgress = 20;
+			}
+
+			if (flameWebSpawnProgress > 0)
+			{
+				spawnFlameWeb();
+				flameWebSpawnProgress--;
+			}
+
 			if (timeUntilDespawn > 0)
 			{
 				timeUntilDespawn--;
@@ -173,15 +193,20 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
 				setDead();
 			}
-			
+
 			if (riddenByEntity != null && ((motionX >= 0.1F || motionX <= -0.1F) || motionZ >= 0.1F || motionZ <= -0.1F))
 			{
 				timeUntilLevelUp--;
 			}
-			
+
 			if (timeUntilLevelUp <= 0)
 			{
 				tryLevelUp();
+			}
+			
+			if (cocoonType == EnumCocoonType.BLAZE)
+			{
+				extinguish();
 			}
 		}
 
@@ -376,7 +401,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			timeUntilWebshot = 0;
 			timeUntilSpawnMites = 0;
 			timeUntilLevelUp = Time.MINUTE * LogicHelper.getNumberInRange(1, 5);
-			
+			resetTimeUntilMakeFlameWeb();
+
 			worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 			killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
 			level++;
@@ -430,13 +456,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public boolean isOnLadder()
 	{
 		boolean returnBool = isBesideClimbableBlock();
-		
+
 		if (returnBool)
 		{
 			limbSwingAmount += 0.1;
 			motionY = level * 0.115F;
 		}
-		
+
 		return returnBool;
 	}
 
@@ -477,8 +503,20 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					entityPlayer.mountEntity(this);
 				}
 			}
+
+			else if (cocoonType == EnumCocoonType.BLAZE)
+			{
+				if (flameWebProduced > 0)
+				{
+					worldObj.playSoundAtEntity(this, "random.fizz", 0.75F, 1.5F);
+					dropItem(SpiderQueen.getInstance().itemFlameWeb, flameWebProduced);
+					
+					flameWebProduced = 0;
+					dataWatcher.updateObject(17, flameWebProduced);
+				}
+			}
 		}
-		
+
 		return true;
 	}
 
@@ -544,52 +582,52 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-    public void moveEntityWithHeading(float moveStrafe, float moveForward)
-    {
-        if (this.riddenByEntity != null)
-        {
-            this.prevRotationYaw = this.rotationYaw = this.riddenByEntity.rotationYaw;
-            this.rotationPitch = this.riddenByEntity.rotationPitch * 0.5F;
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-            this.rotationYawHead = this.renderYawOffset = this.rotationYaw;
-            moveStrafe = ((EntityLivingBase)this.riddenByEntity).moveStrafing * level * 0.4F / 2;
-            moveForward = ((EntityLivingBase)this.riddenByEntity).moveForward * level * 0.5F / 2;
+	public void moveEntityWithHeading(float moveStrafe, float moveForward)
+	{
+		if (this.riddenByEntity != null)
+		{
+			this.prevRotationYaw = this.rotationYaw = this.riddenByEntity.rotationYaw;
+			this.rotationPitch = this.riddenByEntity.rotationPitch * 0.5F;
+			this.setRotation(this.rotationYaw, this.rotationPitch);
+			this.rotationYawHead = this.renderYawOffset = this.rotationYaw;
+			moveStrafe = ((EntityLivingBase)this.riddenByEntity).moveStrafing * level * 0.4F / 2;
+			moveForward = ((EntityLivingBase)this.riddenByEntity).moveForward * level * 0.5F / 2;
 
-            if (moveForward <= 0.0F)
-            {
-                moveForward *= 0.25F;
-            }
+			if (moveForward <= 0.0F)
+			{
+				moveForward *= 0.25F;
+			}
 
-            this.stepHeight = 1.0F;
-            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
+			this.stepHeight = 1.0F;
+			this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
 
-            if (!this.worldObj.isRemote)
-            {
-                this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
-                super.moveEntityWithHeading(moveStrafe, moveForward);
-            }
+			if (!this.worldObj.isRemote)
+			{
+				this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
+				super.moveEntityWithHeading(moveStrafe, moveForward);
+			}
 
-            this.prevLimbSwingAmount = this.limbSwingAmount;
-            double d1 = this.posX - this.prevPosX;
-            double d0 = this.posZ - this.prevPosZ;
-            float f4 = MathHelper.sqrt_double(d1 * d1 + d0 * d0) * 4.0F;
+			this.prevLimbSwingAmount = this.limbSwingAmount;
+			double d1 = this.posX - this.prevPosX;
+			double d0 = this.posZ - this.prevPosZ;
+			float f4 = MathHelper.sqrt_double(d1 * d1 + d0 * d0) * 4.0F;
 
-            if (f4 > 1.0F)
-            {
-                f4 = 1.0F;
-            }
+			if (f4 > 1.0F)
+			{
+				f4 = 1.0F;
+			}
 
-            this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
-            this.limbSwing += this.limbSwingAmount;
-        }
-        else
-        {
-            this.stepHeight = 0.5F;
-            this.jumpMovementFactor = 0.02F;
-            super.moveEntityWithHeading(moveStrafe, moveForward);
-        }
-    }
-    
+			this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
+			this.limbSwing += this.limbSwingAmount;
+		}
+		else
+		{
+			this.stepHeight = 0.5F;
+			this.jumpMovementFactor = 0.02F;
+			super.moveEntityWithHeading(moveStrafe, moveForward);
+		}
+	}
+
 	public void setHitboxSize()
 	{
 		switch (cocoonType.getSpiderSize())
@@ -641,6 +679,31 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);	
 				}
 			}
+		}
+	}
+
+	private void spawnFlameWeb()
+	{
+		if (flameWebSpawnProgress % 5 == 0)
+		{
+			if (!worldObj.isRemote)
+			{
+				worldObj.playSoundAtEntity(this, "random.fizz", 0.75F, 1.5F);
+			}
+		}
+
+		if (flameWebSpawnProgress == 1)
+		{
+			flameWebSpawnProgress = 0;
+			flameWebProduced += LogicHelper.getNumberInRange(1, 4);
+
+			if (flameWebProduced >= 64)
+			{
+				flameWebProduced = 64;
+			}
+
+			dataWatcher.updateObject(17, flameWebProduced);
+			resetTimeUntilMakeFlameWeb();
 		}
 	}
 
@@ -786,8 +849,38 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		{
 			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 0.9D + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
+
+		if (cocoonType == EnumCocoonType.BLAZE)
+		{
+			for (int i = 0; i < dataWatcher.getWatchableObjectInt(17); i++)
+			{
+				if (LogicHelper.getBooleanWithProbability(20))
+				{
+					final double motionX = worldObj.rand.nextDouble() / 32 - 0.008;
+					final double motionY = worldObj.rand.nextDouble() / 32 - 0.008;
+					final double motionZ = worldObj.rand.nextDouble() / 32 - 0.008;
+					
+					worldObj.spawnParticle("flame", posX + worldObj.rand.nextFloat() - 0.5D, posY + 0.5, posZ + worldObj.rand.nextFloat() - 0.5D, motionX, motionY, motionZ);
+				}
+			}
+		}
 	}
 
+	private void resetTimeUntilMakeFlameWeb()
+	{
+		switch (level)
+		{
+			case 1:
+				timeUntilMakeFlameWeb = Time.MINUTE * 2;
+				break;
+			case 2:
+				timeUntilMakeFlameWeb = Time.MINUTE;
+				break;
+			case 3:
+				timeUntilMakeFlameWeb = Time.SECOND * 30;
+				break;
+		}
+	}
 	private void resetTimeUntilSpawnMites()
 	{
 		switch (level)

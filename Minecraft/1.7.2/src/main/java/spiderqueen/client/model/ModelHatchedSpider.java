@@ -100,6 +100,18 @@ public class ModelHatchedSpider extends ModelBase
 	public ModelRenderer longLegSpiderLeg3;
 	public ModelRenderer longLegSpiderLeg1;
 
+    public ModelRenderer flatSpiderHead;
+    public ModelRenderer flatSpiderBody;
+    public ModelRenderer flatSpiderRearEnd;
+    public ModelRenderer flatSpiderLeg8;
+    public ModelRenderer flatSpiderLeg6;
+    public ModelRenderer flatSpiderLeg4;
+    public ModelRenderer flatSpiderLeg2;
+    public ModelRenderer flatSpiderLeg7;
+    public ModelRenderer flatSpiderLeg5;
+    public ModelRenderer flatSpiderLeg3;
+    public ModelRenderer flatSpiderLeg1;
+    
 	public ModelHatchedSpider()
 	{
 		initDefaultSpider();
@@ -108,6 +120,7 @@ public class ModelHatchedSpider extends ModelBase
 		initThinSpider();
 		initHugeSpider();
 		initLongLegSpider();
+		initFlatSpider();
 	}
 
 	@Override
@@ -141,6 +154,9 @@ public class ModelHatchedSpider extends ModelBase
 				break;
 			case SWARM:
 				renderSwarmSpiders(entity, partialTickTime);
+				break;
+			case FLAT:
+				renderFlatSpider(partialTickTime);
 				break;
 			default:
 				break;
@@ -447,6 +463,58 @@ public class ModelHatchedSpider extends ModelBase
 			longLegSpiderLeg6.rotateAngleZ += -backMidRotateZ;
 			longLegSpiderLeg7.rotateAngleZ += backRotateZ;
 			longLegSpiderLeg8.rotateAngleZ += -backRotateZ;
+		}
+		
+		else if (spider.cocoonType == EnumCocoonType.BLAZE)
+		{
+			flatSpiderHead.rotateAngleY = rotationYaw / (180F / (float) Math.PI);
+			flatSpiderHead.rotateAngleX = rotationPitch / (180F / (float) Math.PI);
+
+			final float quarterCircle = (float) Math.PI / 4F;
+			flatSpiderLeg1.rotateAngleZ = -quarterCircle;
+			flatSpiderLeg2.rotateAngleZ = quarterCircle;
+			flatSpiderLeg3.rotateAngleZ = -quarterCircle * 0.74F;
+			flatSpiderLeg4.rotateAngleZ = quarterCircle * 0.74F;
+			flatSpiderLeg5.rotateAngleZ = -quarterCircle * 0.74F;
+			flatSpiderLeg6.rotateAngleZ = quarterCircle * 0.74F;
+			flatSpiderLeg7.rotateAngleZ = -quarterCircle;
+			flatSpiderLeg8.rotateAngleZ = quarterCircle;
+
+			final float eighthCircle = (float) Math.PI / 8F;
+			flatSpiderLeg1.rotateAngleY = eighthCircle * 2.0F;
+			flatSpiderLeg2.rotateAngleY = -eighthCircle * 2.0F;
+			flatSpiderLeg3.rotateAngleY = eighthCircle * 1.0F;
+			flatSpiderLeg4.rotateAngleY = -eighthCircle * 1.0F;
+			flatSpiderLeg5.rotateAngleY = -eighthCircle * 1.0F;
+			flatSpiderLeg6.rotateAngleY = eighthCircle * 1.0F;
+			flatSpiderLeg7.rotateAngleY = -eighthCircle * 2.0F;
+			flatSpiderLeg8.rotateAngleY = eighthCircle * 2.0F;
+
+			final float frontRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F) * 0.4F) * prevLimbSwing;
+			final float frontMidRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * prevLimbSwing;
+			final float backMidRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI / 2F) * 0.4F) * prevLimbSwing;
+			final float backRotateY = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI * 3F / 2F) * 0.4F) * prevLimbSwing;
+			final float frontRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F) * 0.4F) * prevLimbSwing;
+			final float frontMidRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * prevLimbSwing;
+			final float backMidRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI / 2F) * 0.4F) * prevLimbSwing;
+			final float backRotateZ = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI * 3F / 2F) * 0.4F) * prevLimbSwing;
+
+			flatSpiderLeg1.rotateAngleY += frontRotateY;
+			flatSpiderLeg2.rotateAngleY += -frontRotateY;
+			flatSpiderLeg3.rotateAngleY += frontMidRotateY;
+			flatSpiderLeg4.rotateAngleY += -frontMidRotateY;
+			flatSpiderLeg5.rotateAngleY += backMidRotateY;
+			flatSpiderLeg6.rotateAngleY += -backMidRotateY;
+			flatSpiderLeg7.rotateAngleY += backRotateY;
+			flatSpiderLeg8.rotateAngleY += -backRotateY;
+			flatSpiderLeg1.rotateAngleZ += frontRotateZ;
+			flatSpiderLeg2.rotateAngleZ += -frontRotateZ;
+			flatSpiderLeg3.rotateAngleZ += frontMidRotateZ;
+			flatSpiderLeg4.rotateAngleZ += -frontMidRotateZ;
+			flatSpiderLeg5.rotateAngleZ += backMidRotateZ;
+			flatSpiderLeg6.rotateAngleZ += -backMidRotateZ;
+			flatSpiderLeg7.rotateAngleZ += backRotateZ;
+			flatSpiderLeg8.rotateAngleZ += -backRotateZ;
 		}
 	}
 
@@ -825,6 +893,76 @@ public class ModelHatchedSpider extends ModelBase
 		setRotation(longLegSpiderLeg1, 0.3665191F, 0.5759587F, -1.230457F);
 	}
 
+	private void initFlatSpider()
+	{
+	      flatSpiderHead = new ModelRenderer(this, 40, 12);
+	      flatSpiderHead.addBox(-4F, -4F, -8F, 6, 6, 6);
+	      flatSpiderHead.setRotationPoint(1F, 20F, -1F);
+	      flatSpiderHead.setTextureSize(64, 32);
+	      flatSpiderHead.mirror = true;
+	      setRotation(flatSpiderHead, 0F, 0F, 0F);
+	      flatSpiderBody = new ModelRenderer(this, 0, 0);
+	      flatSpiderBody.addBox(-3F, -3F, -3F, 6, 4, 5);
+	      flatSpiderBody.setRotationPoint(0F, 20F, 0F);
+	      flatSpiderBody.setTextureSize(64, 32);
+	      flatSpiderBody.mirror = true;
+	      setRotation(flatSpiderBody, 0F, 0F, 0F);
+	      flatSpiderRearEnd = new ModelRenderer(this, 0, 12);
+	      flatSpiderRearEnd.addBox(-5F, -4F, -6F, 12, 6, 13);
+	      flatSpiderRearEnd.setRotationPoint(-1F, 21F, 7F);
+	      flatSpiderRearEnd.setTextureSize(64, 32);
+	      flatSpiderRearEnd.mirror = true;
+	      setRotation(flatSpiderRearEnd, -0.1487144F, 0F, 0F);
+	      flatSpiderLeg8 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg8.addBox(-1F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg8.setRotationPoint(4F, 20F, -3F);
+	      flatSpiderLeg8.setTextureSize(64, 32);
+	      flatSpiderLeg8.mirror = true;
+	      setRotation(flatSpiderLeg8, 0F, 0.5759587F, 0.1919862F);
+	      flatSpiderLeg6 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg6.addBox(-1F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg6.setRotationPoint(4F, 20F, -2F);
+	      flatSpiderLeg6.setTextureSize(64, 32);
+	      flatSpiderLeg6.mirror = true;
+	      setRotation(flatSpiderLeg6, 0F, 0.2792527F, 0.1919862F);
+	      flatSpiderLeg4 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg4.addBox(-1F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg4.setRotationPoint(4F, 20F, -1F);
+	      flatSpiderLeg4.setTextureSize(64, 32);
+	      flatSpiderLeg4.mirror = true;
+	      setRotation(flatSpiderLeg4, 0F, -0.2792527F, 0.1919862F);
+	      flatSpiderLeg2 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg2.addBox(-1F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg2.setRotationPoint(4F, 20F, 0F);
+	      flatSpiderLeg2.setTextureSize(64, 32);
+	      flatSpiderLeg2.mirror = true;
+	      setRotation(flatSpiderLeg2, 0F, -0.5759587F, 0.1919862F);
+	      flatSpiderLeg7 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg7.addBox(-15F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg7.setRotationPoint(-4F, 20F, -3F);
+	      flatSpiderLeg7.setTextureSize(64, 32);
+	      flatSpiderLeg7.mirror = true;
+	      setRotation(flatSpiderLeg7, 0F, -0.5759587F, -0.1919862F);
+	      flatSpiderLeg5 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg5.addBox(-15F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg5.setRotationPoint(-4F, 20F, -2F);
+	      flatSpiderLeg5.setTextureSize(64, 32);
+	      flatSpiderLeg5.mirror = true;
+	      setRotation(flatSpiderLeg5, 0F, -0.2792527F, -0.1919862F);
+	      flatSpiderLeg3 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg3.addBox(-15F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg3.setRotationPoint(-4F, 20F, -1F);
+	      flatSpiderLeg3.setTextureSize(64, 32);
+	      flatSpiderLeg3.mirror = true;
+	      setRotation(flatSpiderLeg3, 0F, 0.2792527F, -0.1919862F);
+	      flatSpiderLeg1 = new ModelRenderer(this, 18, 0);
+	      flatSpiderLeg1.addBox(-15F, -1F, -1F, 16, 2, 2);
+	      flatSpiderLeg1.setRotationPoint(-4F, 20F, 0F);
+	      flatSpiderLeg1.setTextureSize(64, 32);
+	      flatSpiderLeg1.mirror = true;
+	      setRotation(flatSpiderLeg1, 0F, 0.5759587F, -0.1919862F);
+	}
+	
 	private void setRotation(ModelRenderer model, float angleX, float angleY, float angleZ)
 	{
 		model.rotateAngleX = angleX;
@@ -1070,5 +1208,27 @@ public class ModelHatchedSpider extends ModelBase
 				GL11.glPopMatrix();
 			}
 		}
+	}
+	
+	private void renderFlatSpider(float partialTickTime)
+	{
+		GL11.glPushMatrix();
+		{
+			GL11.glScalef(1F, 0.8F, 1F);
+			GL11.glTranslated(0D, 0.05D, 0D);
+			
+		    flatSpiderHead.render(partialTickTime);
+		    flatSpiderBody.render(partialTickTime);
+		    flatSpiderRearEnd.render(partialTickTime);
+		    flatSpiderLeg8.render(partialTickTime);
+		    flatSpiderLeg6.render(partialTickTime);
+		    flatSpiderLeg4.render(partialTickTime);
+		    flatSpiderLeg2.render(partialTickTime);
+		    flatSpiderLeg7.render(partialTickTime);
+		    flatSpiderLeg5.render(partialTickTime);
+		    flatSpiderLeg3.render(partialTickTime);
+		    flatSpiderLeg1.render(partialTickTime);
+		}
+		GL11.glPopMatrix();
 	}
 }

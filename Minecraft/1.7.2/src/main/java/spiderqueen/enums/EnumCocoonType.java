@@ -9,6 +9,7 @@
 
 package spiderqueen.enums;
 
+import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -40,7 +41,7 @@ public enum EnumCocoonType
 	HORSE(EntityHorse.class, 3, "mob.horse.death", EnumCocoonSize.NORMAL, EnumSpiderSize.SWARM), 
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.LONGLEG), 
 	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY),
-	
+	BLAZE(EntityBlaze.class, 2, "mob.blaze.death", EnumCocoonSize.NORMAL, EnumSpiderSize.FLAT),
 	_ENDERMITE(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.TINYLONGLEG);
 	
 	private Class			entityClass;

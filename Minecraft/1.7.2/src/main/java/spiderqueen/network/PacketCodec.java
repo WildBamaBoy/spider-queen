@@ -87,7 +87,7 @@ public final class PacketCodec extends AbstractPacketCodec
 					buffer.writeFloat((Float) packet.arguments[3]);
 					buffer.writeBoolean((Boolean) packet.arguments[4]);
 					break;
-					
+
 				default:
 					break;
 			}

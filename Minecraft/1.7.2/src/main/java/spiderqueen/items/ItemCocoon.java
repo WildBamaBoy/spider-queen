@@ -109,5 +109,10 @@ public class ItemCocoon extends Item
 		{
 			list.add(Color.GRAY + "Produces a " + Color.DARKGREEN + "Tank Spider" + Color.GRAY + ".");
 		}
+		
+		else if (this == SpiderQueen.getInstance().itemCocoonBlaze)
+		{
+			list.add(Color.GRAY + "Produces an " + Color.GOLD + "Inferno Spider" + Color.GRAY + ".");
+		}
 	}
 }

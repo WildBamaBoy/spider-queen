@@ -27,13 +27,17 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.enums.EnumCocoonType;
+
+import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.logic.Point3D;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityWeb extends Entity implements IProjectile
 {
 	private int			ticksInAir;
-	private boolean		isPoison;
+	private int			type;
 	private boolean		doBlockSpawn;
 
 	public EntityLivingBase	shooter;
@@ -65,15 +69,15 @@ public class EntityWeb extends Entity implements IProjectile
 		doBlockSpawn = true;
 	}
 
-	public EntityWeb(EntityPlayer player, boolean isPoison)
+	public EntityWeb(EntityPlayer player, int type)
 	{
 		this(player);
-		this.isPoison = isPoison;
+		this.type = type;
 	}
 
 	public EntityWeb(EntityLivingBase shooter, EntityLivingBase target, float speed)
 	{
-		super(shooter.worldObj);
+		this(shooter.worldObj);
 		this.shooter = shooter;
 		renderDistanceWeight = 10.0D;
 
@@ -131,6 +135,16 @@ public class EntityWeb extends Entity implements IProjectile
 				{
 					setDead();
 					return;
+				}
+
+				if (worldObj.getBlock((int)posX, (int)posY, (int)posZ) == Blocks.lava)
+				{
+					for (Point3D point : (List<Point3D>)LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
+					{
+						worldObj.setBlock(point.iPosX, point.iPosY, point.iPosZ, Blocks.fire);
+					}
+
+					setDead();
 				}
 			}
 
@@ -241,6 +255,24 @@ public class EntityWeb extends Entity implements IProjectile
 		final float distanceXZ = MathHelper.sqrt_double(posX * posX + posZ * posZ);
 		prevRotationYaw = rotationYaw = (float) (Math.atan2(posX, posZ) * 180.0D / Math.PI);
 		prevRotationPitch = rotationPitch = (float) (Math.atan2(posY, distanceXZ) * 180.0D / Math.PI);
+	}
+
+	public void setDead()
+	{
+		super.setDead();
+
+		if (type == 2)
+		{
+			for (int i = -2; i < 2; i++)
+			{
+				final Block inBlock = worldObj.getBlock((int)posX, (int)posY + i, (int)posZ);
+
+				for (Point3D point : (List<Point3D>)LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
+				{
+					worldObj.setBlock(point.iPosX, point.iPosY, point.iPosZ, Blocks.fire);
+				}
+			}
+		}
 	}
 
 	private void updateCollision()
@@ -356,12 +388,18 @@ public class EntityWeb extends Entity implements IProjectile
 			{
 				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonTypeByCapturedClass(impactPoint.entityHit.getClass());
 				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
-				final float attackPower = isPoison ? 4.0F : 0.0F;
+				final float attackPower = type == 1 ? 4.0F : type == 2 ? 1.0F : 0.0F;
 				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), attackPower);
+
+				if (type == 2)
+				{
+					entityHit.setFire(5);
+					setDead();
+				}
 
 				if (cocoonType != null)
 				{
-					if (entityHit.getHealth() > 0.4F)
+					if (entityHit.getHealth() > 0.4F && type != 2)
 					{
 						final Random rand = new Random();
 						final int intHealth = (int) entityHit.getHealth();
@@ -382,7 +420,7 @@ public class EntityWeb extends Entity implements IProjectile
 							worldObj.spawnEntityInWorld(entityCocoon);
 							entityHit.setDead();
 							setDead();
-							
+
 							if (shooter instanceof EntityHatchedSpider)
 							{
 								final EntityHatchedSpider spider = (EntityHatchedSpider)shooter;
@@ -395,7 +433,7 @@ public class EntityWeb extends Entity implements IProjectile
 			}
 
 			else
-			// Hit a block.
+				// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int i = impactPoint.blockX;
@@ -454,12 +492,28 @@ public class EntityWeb extends Entity implements IProjectile
 
 							if (meta == -1)
 							{
-								worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
+								if (type == 0)
+								{
+									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
+								}
+
+								else if (type == 2)
+								{
+									worldObj.setBlock(i, j, k, Blocks.fire);
+								}
 							}
 
 							else
 							{
-								worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
+								if (type == 0)
+								{
+									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
+								}
+
+								else if (type == 2)
+								{
+									worldObj.setBlock(i, j, k, Blocks.fire);
+								}
 							}
 						}
 
@@ -469,7 +523,15 @@ public class EntityWeb extends Entity implements IProjectile
 
 				else if (blockHit == SpiderQueen.getInstance().blockWebGround || blockHit == SpiderQueen.getInstance().blockWebSide)
 				{
-					worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
+					if (type == 0)
+					{
+						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
+					}
+
+					else if (type == 2)
+					{
+						worldObj.setBlock(i, j, k, Blocks.fire);
+					}
 				}
 			}
 		}

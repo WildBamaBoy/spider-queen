@@ -23,11 +23,12 @@ import com.radixshock.radixcore.constant.Font.Color;
 
 public class ItemWeb extends Item
 {
-	private final boolean	isPoison;
-
-	public ItemWeb(boolean isPoison)
+	/** 0 = normal, 1 = poison, 2 = flame */
+	private int type = 0;
+	
+	public ItemWeb(int type)
 	{
-		this.isPoison = isPoison;
+		this.type = type;
 		maxStackSize = 64;
 		setCreativeTab(SpiderQueen.getInstance().tabSpiderQueen);
 	}
@@ -35,23 +36,35 @@ public class ItemWeb extends Item
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
 	{
-		world.playSoundAtEntity(entityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		if (type == 2)
+		{
+			world.playSoundAtEntity(entityPlayer, "mob.ghast.fireball", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		}
+		
+		else
+		{
+			world.playSoundAtEntity(entityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		}
 
 		if (!world.isRemote)
 		{
-			world.spawnEntityInWorld(new EntityWeb(entityPlayer, isPoison));
+			final EntityWeb web = new EntityWeb(entityPlayer, type);
+			
+			if (type == 2)
+			{
+				web.setFire(5);
+			}
+			
+			world.spawnEntityInWorld(web);
 		}
 
 		if (!entityPlayer.capabilities.isCreativeMode)
 		{
-			if (isPoison)
+			switch (type)
 			{
-				entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemPoisonWeb);
-			}
-
-			else
-			{
-				entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb);
+				case 0: entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb); break;
+				case 1: entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemPoisonWeb); break;
+				case 2: entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemFlameWeb); break;
 			}
 		}
 
@@ -61,14 +74,11 @@ public class ItemWeb extends Item
 	@Override
 	public void registerIcons(IIconRegister iconRegister)
 	{
-		if (isPoison)
+		switch (type)
 		{
-			itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison");
-		}
-
-		else
-		{
-			itemIcon = iconRegister.registerIcon("spiderqueen:Web");
+			case 0: itemIcon = iconRegister.registerIcon("spiderqueen:Web"); break;
+			case 1: itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison"); break;
+			case 2: itemIcon = iconRegister.registerIcon("spiderqueen:WebFlame"); break;
 		}
 	}
 
@@ -78,9 +88,15 @@ public class ItemWeb extends Item
 		list.add("Cocoons enemies and");
 		list.add("creates climbable webs.");
 
-		if (isPoison)
+		if (type == 1)
 		{
 			list.add(Color.GREEN + "Poison");
+		}
+		
+		else if (type == 2)
+		{
+			list.add(Color.GOLD + "Fire");
+			list.add(Color.GOLD + "Extinguishes lava");
 		}
 	}
 }

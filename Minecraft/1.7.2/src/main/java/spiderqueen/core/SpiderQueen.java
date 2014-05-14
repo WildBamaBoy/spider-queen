@@ -103,6 +103,7 @@ public class SpiderQueen implements IEnforcedCore
 	// Items
 	public Item						itemWeb;
 	public Item						itemPoisonWeb;
+	public Item						itemFlameWeb;
 	public Item						itemWebslinger;
 	public Item						itemSpiderRod;
 	public Item						itemSpiderEgg;
@@ -119,7 +120,8 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemCocoonEnderman;
 	public Item						itemCocoonHuman;
 	public Item						itemCocoonWolf;
-
+	public Item						itemCocoonBlaze;
+	
 	public Item						itemSpawnPlayer;
 	public Item						itemSpawnSpider;
 	public Item						itemSpawnEnemyQueen;
@@ -211,6 +213,7 @@ public class SpiderQueen implements IEnforcedCore
 		tabSpiderQueen = RadixRegistry.registerCreativeTab(this, itemCocoonEnderman);
 		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
 		
+		itemCocoonBlaze = new ItemCocoon(EnumCocoonType.BLAZE).setUnlocalizedName("cocoon.blaze");
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER).setUnlocalizedName("cocoon.creeper");
@@ -223,8 +226,9 @@ public class SpiderQueen implements IEnforcedCore
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.WOLF).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE).setUnlocalizedName("cocoon.zombie");
 
-		itemWeb = new ItemWeb(false).setUnlocalizedName("web");
-		itemPoisonWeb = new ItemWeb(true).setUnlocalizedName("webpoison");
+		itemWeb = new ItemWeb(0).setUnlocalizedName("web");
+		itemPoisonWeb = new ItemWeb(1).setUnlocalizedName("webpoison");
+		itemFlameWeb = new ItemWeb(2).setUnlocalizedName("webflame");
 		itemWebslinger = new ItemWebslinger().setUnlocalizedName("webslinger");
 		itemSpiderRod = new ItemSpiderRod().setUnlocalizedName("spiderrod");
 		itemSpiderEgg = new ItemSpiderEgg().setUnlocalizedName("spideregg");
@@ -238,6 +242,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
 
+		RadixRegistry.registerItem(itemCocoonBlaze);
 		RadixRegistry.registerItem(itemCocoonChicken);
 		RadixRegistry.registerItem(itemCocoonCow);
 		RadixRegistry.registerItem(itemCocoonCreeper);
@@ -252,6 +257,7 @@ public class SpiderQueen implements IEnforcedCore
 
 		RadixRegistry.registerItem(itemWeb);
 		RadixRegistry.registerItem(itemPoisonWeb);
+		RadixRegistry.registerItem(itemFlameWeb);
 		RadixRegistry.registerItem(itemWebslinger);
 		RadixRegistry.registerItem(itemSpiderRod);
 		RadixRegistry.registerItem(itemSpiderEgg);
