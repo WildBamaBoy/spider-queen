@@ -53,8 +53,10 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 {
 	public String					username;
 	public String					lastAttackingPlayer	= "";
+	public int 						swingProgressTicks;
 	public boolean					isContributor;
 	public boolean					hasInventoryBeenPopulated;
+	public boolean 					isSwinging;
 	public ResourceLocation			skinResourceLocation;
 	public ThreadDownloadImageData	imageDownloadThread;
 	public Inventory				inventory			= new Inventory(this);
@@ -116,7 +118,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			tryGetTarget();
 			moveToTarget();
 			damageTarget();
-
+			
 			if (!hasInventoryBeenPopulated)
 			{
 				Inventory.populateWithRandomEquipment(inventory);
@@ -124,6 +126,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			}
 		}
 
+		updateSwinging();
 		inventory.setWornArmorItems();
 	}
 
@@ -293,6 +296,25 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		return false;
 	}
 
+	@Override
+	public void swingItem()
+	{
+		if (worldObj.isRemote)
+		{
+			if (!isSwinging || swingProgressTicks >= 8 / 2 || swingProgressTicks < 0)
+			{
+				swingProgressTicks = -1;
+				isSwinging = true;
+			}
+		}
+
+		else
+		{
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SwingArm, getEntityId()));
+		}
+	}
+
+
 	private void tryGetTarget()
 	{
 		for (Entity entity : LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15))
@@ -362,5 +384,26 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			skinResourceLocation = AbstractClientPlayer.getLocationSkin(username);
 			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, username);
 		}
+	}
+	
+	private void updateSwinging()
+	{
+		if (isSwinging)
+		{
+			swingProgressTicks++;
+
+			if (swingProgressTicks >= 8)
+			{
+				swingProgressTicks = 0;
+				isSwinging = false;
+			}
+		}
+
+		else
+		{
+			swingProgressTicks = 0;
+		}
+
+		swingProgress = (float)swingProgressTicks / (float)8;
 	}
 }

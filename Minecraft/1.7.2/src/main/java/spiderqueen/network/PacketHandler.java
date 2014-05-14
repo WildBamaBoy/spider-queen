@@ -87,6 +87,10 @@ public final class PacketHandler extends AbstractPacketHandler
 					handleCreateClientExplosion(packet.arguments, player);
 					break;
 
+				case SwingArm:
+					handleSwingArm(packet.arguments, player);
+					break;
+					
 				default:
 					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -246,5 +250,13 @@ public final class PacketHandler extends AbstractPacketHandler
 			final int modZ = LogicHelper.getNumberInRange(0, 3);
 			player.worldObj.spawnParticle("largeexplode", posX + modX, posY + modY, posZ + modZ, 1.0D, 0.0D, 0.0D);
 		}
+	}
+
+	private void handleSwingArm(Object[] arguments, EntityPlayer player)
+	{
+		final int entityId = (Integer)arguments[0];
+		final EntityFakePlayer entity = (EntityFakePlayer) player.worldObj.getEntityByID(entityId);
+		
+		entity.swingItem();
 	}
 }

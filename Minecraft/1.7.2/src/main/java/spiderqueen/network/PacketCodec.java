@@ -88,6 +88,10 @@ public final class PacketCodec extends AbstractPacketCodec
 					buffer.writeBoolean((Boolean) packet.arguments[4]);
 					break;
 
+				case SwingArm:
+					buffer.writeInt((Integer) packet.arguments[0]);
+					break;
+					
 				default:
 					break;
 			}
@@ -152,6 +156,10 @@ public final class PacketCodec extends AbstractPacketCodec
 					packet.arguments[4] = buffer.readBoolean();
 					break;
 
+				case SwingArm:
+					packet.arguments[0] = buffer.readInt();
+					break;
+					
 				default:
 					break;
 			}
