@@ -42,7 +42,7 @@ public enum EnumCocoonType
 	ENDERMAN(EntityEnderman.class, 2, "mob.endermen.death", EnumCocoonSize.TALL, EnumSpiderSize.LONGLEG), 
 	WOLF(EntityWolf.class, 4, "mob.wolf.death", EnumCocoonSize.NORMAL, EnumSpiderSize.TINY), 
 	BLAZE(EntityBlaze.class, 2, "mob.blaze.death", EnumCocoonSize.NORMAL, EnumSpiderSize.FLAT), 
-	_ENDERMITE(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.TINYLONGLEG);
+	_ENDERMINION(null, 0, "null", EnumCocoonSize.NORMAL, EnumSpiderSize.TINYLONGLEG);
 
 	private Class			entityClass;
 	private Item			itemCocoon;

@@ -47,7 +47,7 @@ public class RenderHatchedSpider extends RenderLiving
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderVillager" + entitySpider.level + ".png");
 		}
 
-		else if (entitySpider.cocoonType == EnumCocoonType.ENDERMAN || entitySpider.cocoonType == EnumCocoonType._ENDERMITE)
+		else if (entitySpider.cocoonType == EnumCocoonType.ENDERMAN || entitySpider.cocoonType == EnumCocoonType._ENDERMINION)
 		{
 			return new ResourceLocation("spiderqueen:textures/entity/SpiderEnderman" + entitySpider.level + ".png");
 		}

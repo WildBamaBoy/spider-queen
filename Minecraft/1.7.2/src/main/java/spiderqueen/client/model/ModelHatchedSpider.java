@@ -415,7 +415,7 @@ public class ModelHatchedSpider extends ModelBase
 			hugeSpiderLeg8.rotateAngleZ += -f16;
 		}
 
-		else if (spider.cocoonType == EnumCocoonType.ENDERMAN || spider.cocoonType == EnumCocoonType._ENDERMITE)
+		else if (spider.cocoonType == EnumCocoonType.ENDERMAN || spider.cocoonType == EnumCocoonType._ENDERMINION)
 		{
 			final float quarterCircle = (float) Math.PI / 4F;
 			longLegSpiderLeg1.rotateAngleZ = -quarterCircle;
