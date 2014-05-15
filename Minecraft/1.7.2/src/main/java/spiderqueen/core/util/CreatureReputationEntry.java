@@ -41,6 +41,11 @@ public class CreatureReputationEntry
 		reputationValue = 0;
 		creaturesKilled = 0;
 		isAtWar = false;
+		
+		if (creatureClass.equals(EntityFakePlayer.class))
+		{
+			reputationValue = -1;
+		}
 	}
 
 	public Class getCreatureClass()
