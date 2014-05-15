@@ -257,6 +257,9 @@ public final class PacketHandler extends AbstractPacketHandler
 		final int entityId = (Integer)arguments[0];
 		final EntityFakePlayer entity = (EntityFakePlayer) player.worldObj.getEntityByID(entityId);
 		
-		entity.swingItem();
+		if (entity != null)
+		{
+			entity.swingItem();
+		}
 	}
 }
