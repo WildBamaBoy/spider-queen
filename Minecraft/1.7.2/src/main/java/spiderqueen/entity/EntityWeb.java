@@ -441,8 +441,20 @@ public class EntityWeb extends Entity implements IProjectile
 				int j = impactPoint.blockY;
 				int k = impactPoint.blockZ;
 
-				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround && blockHit != SpiderQueen.getInstance().blockPoisonWeb && blockHit != Blocks.tallgrass)
+				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround && blockHit != SpiderQueen.getInstance().blockPoisonWeb)
 				{
+					if (blockHit == Blocks.tallgrass && type == 2)
+					{
+						worldObj.setBlock(i, j, k, Blocks.fire);
+						setDead();
+						return;
+					}
+					
+					else if (blockHit == Blocks.tallgrass && type != 2)
+					{
+						return;
+					}
+					
 					if (doBlockSpawn)
 					{
 						switch (impactPoint.sideHit)
