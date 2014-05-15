@@ -675,6 +675,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					if (!worldObj.isRemote)
 					{
 						miteSpider.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
+						miteSpider.level = this.level;
 						worldObj.spawnEntityInWorld(miteSpider);
 						worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
 					}
