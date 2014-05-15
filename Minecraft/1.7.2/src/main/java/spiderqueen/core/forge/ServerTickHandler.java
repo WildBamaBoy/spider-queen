@@ -59,7 +59,7 @@ public class ServerTickHandler
 		updateReputation();
 		updateSpawnPlayers();
 		updateSpawnWarParties();
-		updatePlayerWebClimb();
+		//updatePlayerWebClimb();
 	}
 
 	private void updateReputation()
@@ -308,60 +308,6 @@ public class ServerTickHandler
 			}
 
 			timeUntilSpawnWarParties = LogicHelper.getNumberInRange(2, 15) * Time.MINUTE;
-		}
-	}
-
-	private void updatePlayerWebClimb()
-	{
-		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
-		{
-			for (final Object obj : worldServer.playerEntities)
-			{
-				final EntityPlayer player = (EntityPlayer) obj;
-				final int x = (int) player.posX;
-				final int y = (int) player.posY;
-				final int z = (int) player.posZ;
-
-				if (worldServer.getBlock(x, y + 1, z) == SpiderQueen.getInstance().blockWebSide)
-				{
-					if (player.isSneaking())
-					{
-						player.motionY = 0.4;
-					}
-				}
-
-				if (worldServer.getBlock(x + 1, y, z) == SpiderQueen.getInstance().blockWebSide)
-				{
-					if (player.isSneaking())
-					{
-						player.motionY = 0.4;
-					}
-				}
-
-				if (worldServer.getBlock(x - 1, y, z) == SpiderQueen.getInstance().blockWebSide)
-				{
-					if (player.isSneaking())
-					{
-						player.motionY = 0.4;
-					}
-				}
-
-				if (worldServer.getBlock(x, y, z + 1) == SpiderQueen.getInstance().blockWebSide)
-				{
-					if (player.isSneaking())
-					{
-						player.motionY = 0.4;
-					}
-				}
-
-				if (worldServer.getBlock(x, y, z - 1) == SpiderQueen.getInstance().blockWebSide)
-				{
-					if (player.isSneaking())
-					{
-						player.motionY = 0.4;
-					}
-				}
-			}
 		}
 	}
 }

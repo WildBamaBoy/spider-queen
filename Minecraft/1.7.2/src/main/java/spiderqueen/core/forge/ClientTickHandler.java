@@ -50,7 +50,7 @@ public class ClientTickHandler
 
 	public void onTickInGame()
 	{
-		updatePlayerWebClimb();
+		//updatePlayerWebClimb();
 		updatePlayerWebMovement();
 	}
 
@@ -75,59 +75,6 @@ public class ClientTickHandler
 		else if (guiScreen instanceof GuiIngameMenu)
 		{
 			hasCompletedMainMenuTick = false;
-		}
-	}
-
-	private void updatePlayerWebClimb()
-	{
-		final World world = Minecraft.getMinecraft().theWorld;
-
-		for (final Object obj : world.playerEntities)
-		{
-			final EntityPlayer player = (EntityPlayer) obj;
-			final int x = (int) player.posX;
-			final int y = (int) player.posY;
-			final int z = (int) player.posZ;
-
-			if (world.getBlock(x, y + 1, z) == SpiderQueen.getInstance().blockWebSide)
-			{
-				if (player.isSneaking())
-				{
-					player.motionY = 0.4;
-				}
-			}
-
-			if (world.getBlock(x + 1, y, z) == SpiderQueen.getInstance().blockWebSide)
-			{
-				if (player.isSneaking())
-				{
-					player.motionY = 0.4;
-				}
-			}
-
-			if (world.getBlock(x - 1, y, z) == SpiderQueen.getInstance().blockWebSide)
-			{
-				if (player.isSneaking())
-				{
-					player.motionY = 0.4;
-				}
-			}
-
-			if (world.getBlock(x, y, z + 1) == SpiderQueen.getInstance().blockWebSide)
-			{
-				if (player.isSneaking())
-				{
-					player.motionY = 0.4;
-				}
-			}
-
-			if (world.getBlock(x, y, z - 1) == SpiderQueen.getInstance().blockWebSide)
-			{
-				if (player.isSneaking())
-				{
-					player.motionY = 0.4;
-				}
-			}
 		}
 	}
 
