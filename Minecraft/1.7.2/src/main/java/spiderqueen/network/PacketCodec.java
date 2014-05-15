@@ -12,11 +12,11 @@ package spiderqueen.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import spiderqueen.core.SpiderQueen;
-import spiderqueen.core.util.ByteBufIO;
 import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.network.AbstractPacketCodec;
+import com.radixshock.radixcore.network.ByteBufIO;
 import com.radixshock.radixcore.network.Packet;
 
 /**

@@ -39,12 +39,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
-import spiderqueen.core.util.ByteBufIO;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.inventory.Inventory;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.NBTHelper;
+import com.radixshock.radixcore.network.ByteBufIO;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
