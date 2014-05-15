@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import spiderqueen.core.SpiderQueen;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 
