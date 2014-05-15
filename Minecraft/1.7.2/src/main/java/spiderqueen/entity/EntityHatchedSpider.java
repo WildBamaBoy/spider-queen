@@ -603,9 +603,19 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			rotationPitch = riddenByEntity.rotationPitch * 0.5F;
 			setRotation(rotationYaw, rotationPitch);
 			rotationYawHead = renderYawOffset = rotationYaw;
-			moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 2;
-			moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 2;
 
+			if (level == 3)
+			{
+				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 4;
+				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 4;				
+			}
+			
+			else
+			{
+				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 3;
+				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 3;				
+			}
+			
 			if (moveForward <= 0.0F)
 			{
 				moveForward *= 0.25F;
