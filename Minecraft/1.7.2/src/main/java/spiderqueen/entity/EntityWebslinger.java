@@ -177,34 +177,43 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	{
 		if (type == 0)
 		{
-			amount = amount - player.motionX;
-			player.motionX = amount;
-
 			if (entityStruck != null)
 			{
 				entityStruck.motionX = entityStruck.motionX - amount;
+			}
+			
+			else
+			{
+				amount = amount - player.motionX;
+				player.motionX = amount;		
 			}
 		}
 
 		if (type == 1)
 		{
-			amount = amount - player.motionY;
-			player.motionY = amount;
-
 			if (entityStruck != null)
 			{
 				entityStruck.motionY = entityStruck.motionY - amount;
+			}
+			
+			else
+			{
+				amount = amount - player.motionY;
+				player.motionY = amount;		
 			}
 		}
 
 		if (type == 2)
 		{
-			amount = amount - player.motionZ;
-			player.motionZ = amount;
-
 			if (entityStruck != null)
 			{
 				entityStruck.motionZ = entityStruck.motionZ - amount;
+			}
+			
+			else
+			{
+				amount = amount - player.motionZ;
+				player.motionZ = amount;		
 			}
 		}
 	}
@@ -599,16 +608,10 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 		return 0.0F;
 	}
 
-	public int catchFish()
-	{
-		return 0;
-	}
-
 	@Override
 	public void writeSpawnData(ByteBuf buffer)
 	{
-		// TODO Auto-generated method stub
-
+		//No data to read.
 	}
 
 	@Override
