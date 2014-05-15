@@ -1226,16 +1226,16 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 			switch (armorLevel)
 			{
 				case 1:
-					inventory.addItemStackToInventory(new ItemStack(Items.leather_chestplate, 1));
+					inventory.addItemStackToInventory(new ItemStack(Items.leather_boots, 1));
 					break;
 				case 2:
-					inventory.addItemStackToInventory(new ItemStack(Items.golden_chestplate, 1));
+					inventory.addItemStackToInventory(new ItemStack(Items.golden_boots, 1));
 					break;
 				case 3:
-					inventory.addItemStackToInventory(new ItemStack(Items.iron_chestplate, 1));
+					inventory.addItemStackToInventory(new ItemStack(Items.iron_boots, 1));
 					break;
 				case 4:
-					inventory.addItemStackToInventory(new ItemStack(Items.diamond_chestplate, 1));
+					inventory.addItemStackToInventory(new ItemStack(Items.diamond_boots, 1));
 					break;
 			}
 		}
