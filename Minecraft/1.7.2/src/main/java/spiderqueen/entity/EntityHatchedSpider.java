@@ -146,67 +146,82 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				}
 			}
 
-			if (timeUntilExplosion > 0)
+			if (cocoonType == EnumCocoonType.CREEPER)
 			{
-				timeUntilExplosion--;
+				if (timeUntilExplosion > 0)
+				{
+					timeUntilExplosion--;
+				}
 			}
 
-			if (timeUntilWebshot > 0)
+			if (cocoonType == EnumCocoonType.SKELETON)
 			{
-				timeUntilWebshot--;
+				if (timeUntilWebshot > 0)
+				{
+					timeUntilWebshot--;
+				}
 			}
 
-			if (timeUntilSpawnMites > 0)
+			if (cocoonType == EnumCocoonType.ENDERMAN)
 			{
-				timeUntilSpawnMites--;
-			}
+				if (timeUntilSpawnMites > 0)
+				{
+					timeUntilSpawnMites--;
+				}
 
-			if (miteSpawnProgress > 0)
-			{
-				spawnEnderMites();
-				miteSpawnProgress--;
-			}
-
-			if (timeUntilMakeFlameWeb > 0 && flameWebSpawnProgress <= 0)
-			{
-				timeUntilMakeFlameWeb--;
-			}
-
-			else if (timeUntilMakeFlameWeb <= 0 && flameWebSpawnProgress <= 0)
-			{
-				flameWebSpawnProgress = 20;
-			}
-
-			if (flameWebSpawnProgress > 0)
-			{
-				spawnFlameWeb();
-				flameWebSpawnProgress--;
-			}
-
-			if (timeUntilDespawn > 0)
-			{
-				timeUntilDespawn--;
-			}
-
-			else if (timeUntilDespawn == 0)
-			{
-				worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
-				setDead();
-			}
-
-			if (riddenByEntity != null && (motionX >= 0.1F || motionX <= -0.1F || motionZ >= 0.1F || motionZ <= -0.1F))
-			{
-				timeUntilLevelUp--;
-			}
-
-			if (timeUntilLevelUp <= 0)
-			{
-				tryLevelUp();
+				if (miteSpawnProgress > 0)
+				{
+					spawnEnderMites();
+					miteSpawnProgress--;
+				}
 			}
 
 			if (cocoonType == EnumCocoonType.BLAZE)
 			{
 				extinguish();
+
+				if (timeUntilMakeFlameWeb > 0 && flameWebSpawnProgress <= 0)
+				{
+					timeUntilMakeFlameWeb--;
+				}
+
+				else if (timeUntilMakeFlameWeb <= 0 && flameWebSpawnProgress <= 0)
+				{
+					flameWebSpawnProgress = 20;
+				}
+
+				if (flameWebSpawnProgress > 0)
+				{
+					spawnFlameWeb();
+					flameWebSpawnProgress--;
+				}
+			}
+
+			if (cocoonType == EnumCocoonType._ENDERMITE)
+			{
+				if (timeUntilDespawn > 0)
+				{
+					timeUntilDespawn--;
+				}
+
+				else if (timeUntilDespawn == 0)
+				{
+					worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
+					setDead();
+				}
+			}
+
+			if (cocoonType == EnumCocoonType.HORSE)
+			{
+				if (riddenByEntity != null && (motionX >= 0.1F || motionX <= -0.1F || motionZ >= 0.1F || motionZ <= -0.1F))
+				{
+					timeUntilLevelUp--;
+				}
+
+				if (timeUntilLevelUp <= 0)
+				{
+					tryLevelUp();
+				}
 			}
 		}
 
