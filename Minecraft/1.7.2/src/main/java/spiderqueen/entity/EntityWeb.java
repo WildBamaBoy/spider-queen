@@ -57,7 +57,7 @@ public class EntityWeb extends Entity implements IProjectile
 		final Vec3 vec = player.getLookVec();
 
 		shooter = player;
-		setPosition(player.posX, player.posY + 1, player.posZ);
+		setPosition(player.posX, player.posY + 1.4F, player.posZ);
 		accelerationX = vec.xCoord * 1.5;
 		accelerationY = vec.yCoord * 1.5;
 		accelerationZ = vec.zCoord * 1.5;
