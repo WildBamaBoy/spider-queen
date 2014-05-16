@@ -367,7 +367,10 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 			else
 			{
-				getNavigator().setPath(getNavigator().getPathToEntityLiving(target), 0.6D);
+				if (getNavigator().noPath())
+				{
+					getNavigator().setPath(getNavigator().getPathToEntityLiving(target), 0.6D);
+				}
 			}
 		}
 	}
