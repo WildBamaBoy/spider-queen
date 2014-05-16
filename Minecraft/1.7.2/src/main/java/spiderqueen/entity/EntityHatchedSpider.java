@@ -467,7 +467,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			dropItem(Items.spider_eye, 1);
 		}
 
-		inventory.dropAllItems();
+		inventory.dropAllItems(false);
 	}
 
 	@Override

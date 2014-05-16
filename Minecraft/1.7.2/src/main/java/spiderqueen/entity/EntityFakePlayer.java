@@ -211,7 +211,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	{
 		super.onDeath(damageSource);
 
-		inventory.dropAllItems();
+		inventory.dropAllItems(true);
 	}
 
 	@Override

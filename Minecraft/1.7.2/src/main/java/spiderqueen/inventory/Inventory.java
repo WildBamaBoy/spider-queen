@@ -17,6 +17,7 @@ import java.io.Serializable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;
@@ -396,18 +397,21 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	/**
 	 * Drops all items in the inventory.
 	 */
-	public void dropAllItems()
+	public void dropAllItems(boolean dropRandomly)
 	{
 		if (!owner.worldObj.isRemote)
 		{
 			for (int i = 0; i < inventoryItems.length; i++)
 			{
-				final ItemStack stack = inventoryItems[i];
-
-				if (stack != null)
+				if ((dropRandomly && LogicHelper.getBooleanWithProbability(25)) || !dropRandomly)
 				{
-					owner.entityDropItem(stack, owner.worldObj.rand.nextFloat());
-					setInventorySlotContents(i, null);
+					final ItemStack stack = inventoryItems[i];
+
+					if (stack != null)
+					{
+						owner.entityDropItem(stack, owner.worldObj.rand.nextFloat());
+						setInventorySlotContents(i, null);
+					}	
 				}
 			}
 
@@ -1142,7 +1146,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		if (giveBow)
 		{
 			inventory.addItemStackToInventory(new ItemStack(Items.bow, 1));
-			inventory.addItemStackToInventory(new ItemStack(Items.arrow, LogicHelper.getNumberInRange(4, 64)));
+			inventory.addItemStackToInventory(new ItemStack(Items.arrow, LogicHelper.getNumberInRange(4, 16)));
 		}
 
 		if (giveSword)
@@ -1239,7 +1243,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 					break;
 			}
 		}
-
+		
 		inventory.setWornArmorItems();
 	}
 

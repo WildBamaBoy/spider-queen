@@ -249,7 +249,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			dropItem(Items.spider_eye, 1);
 		}
 
-		inventory.dropAllItems();
+		inventory.dropAllItems(false);
 	}
 
 	@Override
