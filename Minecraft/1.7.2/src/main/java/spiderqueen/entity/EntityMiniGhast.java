@@ -1,5 +1,6 @@
 package spiderqueen.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -63,6 +65,22 @@ public class EntityMiniGhast extends EntityCreature
 		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(3.8D);
 	}
 
+	@Override
+	public boolean attackEntityFrom(DamageSource damageSource, float damage)
+	{
+		final Entity entity = damageSource.getEntity();
+
+		if (entity instanceof EntityWeb)
+		{
+			return false;
+		}
+
+		else
+		{
+			return super.attackEntityFrom(damageSource, damage);
+		}
+	}
+	
 	@Override
 	protected void updateEntityActionState()
 	{

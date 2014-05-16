@@ -110,6 +110,9 @@ public class EntitySpiderEgg extends EntityCreature
 					miniGhast.setPosition(posX, posY + 1, posZ);
 					worldObj.spawnEntityInWorld(miniGhast);
 					setDead();
+					
+					cocoonToConsume.setEaten(true);
+					SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetEaten, cocoonToConsume.getEntityId()));
 				}
 				
 				else
