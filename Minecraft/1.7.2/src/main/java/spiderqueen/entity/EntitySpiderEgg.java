@@ -104,7 +104,7 @@ public class EntitySpiderEgg extends EntityCreature
 			{
 				final EntityCocoon cocoonToConsume = getConsumableCocoon();
 				
-				if (cocoonToConsume.getCocoonType() == EnumCocoonType.GHAST)
+				if (cocoonToConsume != null && cocoonToConsume.getCocoonType() == EnumCocoonType.GHAST)
 				{
 					final EntityMiniGhast miniGhast = new EntityMiniGhast(worldObj, owner);
 					miniGhast.setPosition(posX, posY + 1, posZ);
