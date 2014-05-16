@@ -64,7 +64,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		friendlySkinIndex = LogicHelper.getNumberInRange(1, 4);
 		identifier = HashGenerator.getMD5Hash(String.valueOf(LogicHelper.getNumberInRange(0, 100) * getEntityId()));
 
-		setSize(1.4F, 0.9F);
+		setSize(1.4F, 1.8F);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
 		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -80,7 +80,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		friendlySkinIndex = LogicHelper.getNumberInRange(1, 4);
 		identifier = HashGenerator.getMD5Hash(String.valueOf(LogicHelper.getNumberInRange(0, 100) * getEntityId()));
 
-		setSize(1.4F, 0.9F);
+		setSize(1.4F, 1.8F);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
 		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -470,11 +470,14 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	public void writeSpawnData(ByteBuf buffer)
 	{
 		buffer.writeBoolean(isHostile);
+		buffer.writeInt(friendlySkinIndex);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf additionalData)
 	{
 		isHostile = additionalData.readBoolean();
+		friendlySkinIndex = additionalData.readInt();
+		setSize(1.4F, 1.8F);
 	}
 }

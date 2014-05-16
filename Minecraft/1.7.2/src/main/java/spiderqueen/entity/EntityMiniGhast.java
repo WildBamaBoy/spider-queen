@@ -1,5 +1,6 @@
 package spiderqueen.entity;
 
+import spiderqueen.core.SpiderQueen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -31,7 +32,7 @@ public class EntityMiniGhast extends EntityCreature
 	public EntityMiniGhast(World world)
 	{
 		super(world);
-		this.setSize(2.5F, 2.9F);
+		this.setSize(1.0F, 3.0F);
 		this.isImmuneToFire = true;
 		this.experienceValue = 5;
 		
@@ -144,10 +145,10 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return 3.0F;
 	}
-
-	public boolean getCanSpawnHere()
+	
+	public void onUpdate()
 	{
-		return this.rand.nextInt(20) == 0 && super.getCanSpawnHere() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL;
+		
 	}
 
 	public void writeEntityToNBT(NBTTagCompound nbt)

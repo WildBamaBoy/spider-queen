@@ -43,7 +43,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public EntityCocoon(World world)
 	{
 		super(world);
-		setSize(1F, 1F);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 	}
 
@@ -250,6 +249,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		}
 
 		isEaten = buffer.readBoolean();
+		setHitboxSize();
 	}
 
 	@Override
@@ -302,7 +302,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		switch (cocoonType)
 		{
 			case GHAST:
-				setSize(4.0F, 4.0F);
+				setSize(3.8F, 3.8F);
 				break;
 			default:
 				setSize(1.0F, 1.0F);

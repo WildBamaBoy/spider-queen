@@ -33,6 +33,7 @@ public class EntitySpiderEgg extends EntityCreature
 	public EntitySpiderEgg(World world)
 	{
 		super(world);
+		setSize(0.15F, 0.15F);
 	}
 
 	public EntitySpiderEgg(World world, String owner)

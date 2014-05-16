@@ -670,7 +670,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				setSize(1.6F, 0.95F);
 				break;
 			case THIN:
-				setSize(0.8F, 0.5F);
+				setSize(1.2F, 1.1F);
 				break;
 			case TINY:
 				setSize(0.8F, 0.375F);
@@ -682,7 +682,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				setSize(0.3F, 0.15F);
 				break;
 			case SWARM:
-				setSize(0.7F, 0.6F);
+				setSize(1.0F, 0.6F);
 			default:
 				break;
 		}
