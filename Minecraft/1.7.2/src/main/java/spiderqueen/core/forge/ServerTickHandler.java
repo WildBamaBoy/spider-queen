@@ -13,7 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
@@ -59,6 +64,7 @@ public class ServerTickHandler
 		updateReputation();
 		updateSpawnPlayers();
 		updateSpawnWarParties();
+		updateFriendlyEntityPathing();
 	}
 
 	private void updateReputation()
@@ -312,6 +318,54 @@ public class ServerTickHandler
 			}
 
 			timeUntilSpawnWarParties = LogicHelper.getNumberInRange(2, 15) * Time.MINUTE;
+		}
+	}
+
+	private void updateFriendlyEntityPathing()
+	{
+		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+		{
+			for (final Object obj : worldServer.playerEntities)
+			{
+				final EntityPlayer player = (EntityPlayer) obj;
+				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+
+				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
+				{
+					if (player.getCurrentEquippedItem().getItem() == SpiderQueen.getInstance().itemSpiderRod && entry.reputationValue > 0)
+					{
+						final List<EntityLiving> nearbyEntities = (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, entry.getCreatureClass(), 10);
+
+						for (EntityLiving entity : nearbyEntities)
+						{
+							if (entity instanceof EntityMob)
+							{
+								float moveSpeed = 0.7F;
+
+								if (entity instanceof EntitySpider)
+								{
+									moveSpeed = 1.2F;
+								}
+
+								else if (entity instanceof EntitySkeleton)
+								{
+									moveSpeed = 1.1F;
+								}
+
+								else if (entity instanceof EntityZombie)
+								{
+									moveSpeed = 0.9F;
+								}
+
+								if (entity.getNavigator().noPath())
+								{
+									entity.getNavigator().tryMoveToEntityLiving(player, moveSpeed);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
