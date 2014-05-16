@@ -218,16 +218,22 @@ public class ServerTickHandler
 			if (eatEntry.getPlayer().inventory.currentItem == eatEntry.getSlot())
 			{
 				final ItemStack currentItemStack = eatEntry.getPlayer().getCurrentEquippedItem();
+				System.out.println(eatEntry.getPlayer().getItemInUseCount());
 
 				if (currentItemStack == null || currentItemStack.stackSize < eatEntry.getCount() && currentItemStack.getItem() instanceof ItemFood)
 				{
 					eatEntry.getPlayer().inventory.addItemStackToInventory(new ItemStack(Items.string, LogicHelper.getNumberInRange(1, 3)));
 					playersNoLongerEating.add(eatEntry);
 				}
+
+				if (eatEntry.getPlayer().getItemInUseCount() == 1 && eatEntry.getPlayer().getFoodStats().getFoodLevel() == 19)
+				{
+					eatEntry.getPlayer().getFoodStats().setFoodLevel(20);
+				}
 			}
 
 			else
-			// They've moved to a different slot. Ignore.
+				// They've moved to a different slot. Ignore.
 			{
 				playersNoLongerEating.add(eatEntry);
 			}
@@ -235,7 +241,7 @@ public class ServerTickHandler
 
 		// Empty the playersEating list.
 		for (final PlayerEatEntry eatEntry : playersNoLongerEating)
-		{
+		{	
 			playersEating.remove(eatEntry);
 		}
 	}
