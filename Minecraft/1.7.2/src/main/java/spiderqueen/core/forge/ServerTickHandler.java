@@ -59,7 +59,6 @@ public class ServerTickHandler
 		updateReputation();
 		updateSpawnPlayers();
 		updateSpawnWarParties();
-		//updatePlayerWebClimb();
 	}
 
 	private void updateReputation()
@@ -218,7 +217,6 @@ public class ServerTickHandler
 			if (eatEntry.getPlayer().inventory.currentItem == eatEntry.getSlot())
 			{
 				final ItemStack currentItemStack = eatEntry.getPlayer().getCurrentEquippedItem();
-				System.out.println(eatEntry.getPlayer().getItemInUseCount());
 
 				if (currentItemStack == null || currentItemStack.stackSize < eatEntry.getCount() && currentItemStack.getItem() instanceof ItemFood)
 				{
