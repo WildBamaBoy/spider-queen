@@ -16,6 +16,7 @@ import java.util.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.enums.EnumCocoonType;
 
+import com.radixshock.radixcore.constant.Time;
 import com.radixshock.radixcore.logic.LogicHelper;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -36,6 +38,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	private boolean			isEaten;
 	private int				currentDamage;
 	private int				timeSinceHit;
+	private int				timeUntilTryBreakFree = -1;
 
 	public EntityCocoon(World world)
 	{
@@ -48,6 +51,17 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		super(world);
 		this.cocoonType = cocoonType;
+		setHitboxSize();
+	}
+
+	public EntityCocoon(World world, EnumCocoonType cocoonType, boolean isGhast)
+	{
+		this(world, cocoonType);
+
+		if (isGhast)
+		{
+			timeUntilTryBreakFree = LogicHelper.getNumberInRange(1, 4) * Time.SECOND;
+		}
 	}
 
 	@Override
@@ -115,6 +129,34 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		{
 			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 1 + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
+
+		if (timeUntilTryBreakFree > 0)
+		{
+			timeUntilTryBreakFree--;
+		}
+
+		if (timeUntilTryBreakFree == 0)
+		{
+			if (!worldObj.isRemote)
+			{
+				if (LogicHelper.getBooleanWithProbability(75))
+				{
+					setDead();
+
+					final EntityGhast ghast = new EntityGhast(worldObj);
+					ghast.setPosition(posX, posY + 2, posZ);
+					worldObj.spawnEntityInWorld(ghast);
+					worldObj.playSoundAtEntity(ghast, "mob.ghast.scream", 10.0F, 1.0F);
+					worldObj.playSoundAtEntity(ghast, "fireworks.largeBlast_far", 10.0F, 1.0F);
+				}
+
+				else
+				{
+					worldObj.playSoundAtEntity(this, "random.levelup", 10.0F, 1.0F);
+					timeUntilTryBreakFree = -1;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -174,6 +216,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		}
 
 		isEaten = nbt.getBoolean("isEaten");
+		timeUntilTryBreakFree = nbt.getInteger("timeUntilTryBreakFree");
+		setHitboxSize();
 	}
 
 	@Override
@@ -181,6 +225,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		nbt.setInteger("cocoonType", cocoonType.ordinal());
 		nbt.setBoolean("isEaten", isEaten);
+		nbt.setInteger("timeUntilTryBreakFree", timeUntilTryBreakFree);
+		setHitboxSize();
 	}
 
 	@Override
@@ -249,6 +295,19 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	protected boolean canDespawn()
 	{
 		return false;
+	}
+
+	public void setHitboxSize()
+	{
+		switch (cocoonType)
+		{
+			case GHAST:
+				setSize(4.0F, 4.0F);
+				break;
+			default:
+				setSize(1.0F, 1.0F);
+				break;
+		}
 	}
 
 	public EnumCocoonType getCocoonType()

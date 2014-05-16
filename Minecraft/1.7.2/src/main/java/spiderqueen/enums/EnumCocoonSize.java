@@ -11,5 +11,5 @@ package spiderqueen.enums;
 
 public enum EnumCocoonSize
 {
-	SMALL, NORMAL, TALL
+	SMALL, NORMAL, TALL, HUGE;
 }

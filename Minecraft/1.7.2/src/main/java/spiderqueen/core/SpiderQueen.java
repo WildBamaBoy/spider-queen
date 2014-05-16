@@ -38,6 +38,7 @@ import spiderqueen.core.forge.ServerTickHandler;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.entity.EntityMiniGhast;
 import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntitySpiderEgg;
 import spiderqueen.entity.EntityWeb;
@@ -122,6 +123,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemCocoonHuman;
 	public Item						itemCocoonWolf;
 	public Item						itemCocoonBlaze;
+	public Item						itemCocoonGhast;
 
 	public Item						itemSpawnPlayer;
 	public Item						itemSpawnSpider;
@@ -222,6 +224,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemCocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN).setUnlocalizedName("cocoon.chicken");
 		itemCocoonCow = new ItemCocoon(EnumCocoonType.COW).setUnlocalizedName("cocoon.cow");
 		itemCocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER).setUnlocalizedName("cocoon.creeper");
+		itemCocoonGhast = new ItemCocoon(EnumCocoonType.GHAST).setUnlocalizedName("cocoon.ghast");
 		itemCocoonHorse = new ItemCocoon(EnumCocoonType.HORSE).setUnlocalizedName("cocoon.horse");
 		itemCocoonHuman = new ItemCocoon(EnumCocoonType.HUMAN).setUnlocalizedName("cocoon.human");
 		itemCocoonPig = new ItemCocoon(EnumCocoonType.PIG).setUnlocalizedName("cocoon.pig");
@@ -230,7 +233,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemCocoonTestificate = new ItemCocoon(EnumCocoonType.VILLAGER).setUnlocalizedName("cocoon.testificate");
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.WOLF).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE).setUnlocalizedName("cocoon.zombie");
-
+		
 		itemWeb = new ItemWeb(0).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(1).setUnlocalizedName("webpoison");
 		itemFlameWeb = new ItemWeb(2).setUnlocalizedName("webflame");
@@ -251,6 +254,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.registerItem(itemCocoonChicken);
 		RadixRegistry.registerItem(itemCocoonCow);
 		RadixRegistry.registerItem(itemCocoonCreeper);
+		RadixRegistry.registerItem(itemCocoonGhast);
 		RadixRegistry.registerItem(itemCocoonHorse);
 		RadixRegistry.registerItem(itemCocoonHuman);
 		RadixRegistry.registerItem(itemCocoonPig);
@@ -261,7 +265,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.registerItem(itemCocoonZombie);
 
 		RadixRegistry.registerItem(itemWeb);
-		RadixRegistry.registerItem(itemPoisonWeb);
+		//RadixRegistry.registerItem(itemPoisonWeb);
 		RadixRegistry.registerItem(itemFlameWeb);
 		RadixRegistry.registerItem(itemWebslinger);
 		RadixRegistry.registerItem(itemSpiderRod);
@@ -329,6 +333,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.registerModEntity(this, EntitySpiderEgg.class);
 		RadixRegistry.registerModEntity(this, EntityOtherQueen.class);
 		RadixRegistry.registerModEntity(this, EntityWebslinger.class);
+		RadixRegistry.registerModEntity(this, EntityMiniGhast.class);
 	}
 
 	@Override
@@ -518,11 +523,6 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		final int index = LogicHelper.getNumberInRange(0, fakePlayerNames.size() - 1);
 		return fakePlayerNames.get(index);
-	}
-
-	public static boolean isValidSpawnBiome(BiomeGenBase biome)
-	{
-		return biome == BiomeGenBase.desert || biome == BiomeGenBase.birchForest || biome == BiomeGenBase.coldTaiga || biome == BiomeGenBase.extremeHills || biome == BiomeGenBase.forest || biome == BiomeGenBase.taiga || biome == BiomeGenBase.swampland || biome == BiomeGenBase.plains || biome == BiomeGenBase.jungle || biome == BiomeGenBase.megaTaiga || biome == BiomeGenBase.savanna || biome == BiomeGenBase.roofedForest || biome == BiomeGenBase.river;
 	}
 
 	public void KS()

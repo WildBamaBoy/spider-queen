@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -415,7 +416,17 @@ public class EntityWeb extends Entity implements IProjectile
 
 						else
 						{
-							final EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
+							final EntityCocoon entityCocoon;
+
+							if (impactPoint.entityHit instanceof EntityGhast)
+							{
+								entityCocoon = new EntityCocoon(worldObj, cocoonType, true);
+							}
+
+							else
+							{
+								entityCocoon = new EntityCocoon(worldObj, cocoonType);
+							}
 
 							entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
 							worldObj.spawnEntityInWorld(entityCocoon);
@@ -434,7 +445,7 @@ public class EntityWeb extends Entity implements IProjectile
 			}
 
 			else
-			// Hit a block.
+				// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int i = impactPoint.blockX;
@@ -449,12 +460,12 @@ public class EntityWeb extends Entity implements IProjectile
 						setDead();
 						return;
 					}
-					
+
 					else if (blockHit == Blocks.tallgrass && type != 2)
 					{
 						return;
 					}
-					
+
 					if (doBlockSpawn)
 					{
 						switch (impactPoint.sideHit)

@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import spiderqueen.client.render.RenderCocoon;
 import spiderqueen.client.render.RenderFakePlayer;
 import spiderqueen.client.render.RenderHatchedSpider;
+import spiderqueen.client.render.RenderMiniGhast;
 import spiderqueen.client.render.RenderOtherQueen;
 import spiderqueen.client.render.RenderSpiderEgg;
 import spiderqueen.client.render.RenderSpiderQueen;
@@ -21,6 +22,7 @@ import spiderqueen.client.render.RenderWebslinger;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.entity.EntityMiniGhast;
 import spiderqueen.entity.EntityOtherQueen;
 import spiderqueen.entity.EntitySpiderEgg;
 import spiderqueen.entity.EntityWeb;
@@ -40,5 +42,6 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEgg.class, new RenderSpiderEgg());
 		RenderingRegistry.registerEntityRenderingHandler(EntityOtherQueen.class, new RenderOtherQueen());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebslinger.class, new RenderWebslinger());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMiniGhast.class, new RenderMiniGhast());
 	}
 }

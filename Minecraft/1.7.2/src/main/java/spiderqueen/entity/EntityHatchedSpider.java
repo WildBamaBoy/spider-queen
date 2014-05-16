@@ -58,7 +58,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public int					killsUntilLevelUp		= LogicHelper.getNumberInRange(5, 15);
 	public int					timeUntilLevelUp		= Time.MINUTE * LogicHelper.getNumberInRange(1, 5);
 	public int					timeUntilWebshot		= 0;
-	public int					timeUntilSpawnMinions		= 0;
+	public int					timeUntilSpawnMinions	= 0;
 	public int					timeUntilExplosion		= 0;
 	public int					timeUntilDespawn		= -1;
 	public int					timeUntilMakeFlameWeb	= Time.MINUTE * LogicHelper.getNumberInRange(1, 3);

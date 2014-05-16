@@ -17,7 +17,6 @@ import java.io.Serializable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;

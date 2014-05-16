@@ -43,6 +43,9 @@ public class ModelCocoon extends ModelBase
 	private final ModelRenderer	modelHorseMuzzleDown;
 	private final ModelRenderer	modelHorseWeb;
 
+	private final ModelRenderer modelGhastBody;
+	private final ModelRenderer modelGhastFace;
+
 	public ModelCocoon()
 	{
 		super();
@@ -122,6 +125,20 @@ public class ModelCocoon extends ModelBase
 		modelHorseWeb.addBox(2F, -3F, -6F, 0, 4, 6);
 		modelHorseWeb.setRotationPoint(0F, -16F, -7F);
 		setRotation(modelHorseWeb, 0.3490659F, -0.0174533F, 0F);
+
+		modelGhastBody = new ModelRenderer(this, 0, 0);
+		modelGhastBody.addBox(0F, 0F, 0F, 16, 16, 16);
+		modelGhastBody.setRotationPoint(-8F, 8F, -8F);
+		modelGhastBody.setTextureSize(64, 32);
+		modelGhastBody.mirror = true;
+		setRotation(modelGhastBody, 0F, 0F, 0F);
+
+		modelGhastFace = new ModelRenderer(this, 0, 0);
+		modelGhastFace.addBox(0F, 0F, 0F, 14, 14, 1);
+		modelGhastFace.setRotationPoint(-7F, 9F, -9F);
+		modelGhastFace.setTextureSize(64, 32);
+		modelGhastFace.mirror = true;
+		setRotation(modelGhastFace, 0F, 0F, 0F);
 	}
 
 	@Override
@@ -171,6 +188,11 @@ public class ModelCocoon extends ModelBase
 			modelHorseWeb.render(partialTickTime);
 		}
 
+		else if (cocoonType == EnumCocoonType.GHAST)
+		{
+			modelGhastFace.render(partialTickTime);
+		}
+
 		else
 		{
 			modelVisibleFlatHead.render(partialTickTime);
@@ -190,9 +212,14 @@ public class ModelCocoon extends ModelBase
 			modelWrappedBody.render(partialTickTime);
 		}
 
-		else
+		else if (cocoonSize == EnumCocoonSize.TALL)
 		{
 			modelWrappedBodyTall.render(partialTickTime);
+		}
+
+		else if (cocoonSize == EnumCocoonSize.HUGE)
+		{
+			modelGhastBody.render(partialTickTime);
 		}
 	}
 

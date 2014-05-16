@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import spiderqueen.client.model.ModelCocoon;
 import spiderqueen.entity.EntityCocoon;
+import spiderqueen.enums.EnumCocoonType;
 
 public class RenderCocoon extends Render
 {
@@ -50,7 +51,18 @@ public class RenderCocoon extends Render
 			}
 
 			bindTexture(getEntityTexture(entityCocoon));
-			GL11.glScalef(-1F, -1F, 1.0F);
+			
+			if (entityCocoon.getCocoonType() == EnumCocoonType.GHAST)
+			{
+				GL11.glScalef(3.5F, 3.5F, 3.5F);
+				GL11.glTranslated(0.0D, -0.5D, 0.0);
+			}
+			
+			else
+			{
+				GL11.glScalef(-1F, -1F, 1.0F);	
+			}
+			
 			modelCocoon.render(entityCocoon, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		}
 		GL11.glPopMatrix();

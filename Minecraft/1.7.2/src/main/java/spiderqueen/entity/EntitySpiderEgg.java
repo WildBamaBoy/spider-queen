@@ -103,8 +103,20 @@ public class EntitySpiderEgg extends EntityCreature
 			if (timeUntilEggHatch <= 0)
 			{
 				final EntityCocoon cocoonToConsume = getConsumableCocoon();
-				final EntityHatchedSpider hatchedSpider = consumeCocoon(cocoonToConsume);
-				doHatch(hatchedSpider);
+				
+				if (cocoonToConsume.getCocoonType() == EnumCocoonType.GHAST)
+				{
+					final EntityMiniGhast miniGhast = new EntityMiniGhast(worldObj, owner);
+					miniGhast.setPosition(posX, posY + 1, posZ);
+					worldObj.spawnEntityInWorld(miniGhast);
+					setDead();
+				}
+				
+				else
+				{
+					final EntityHatchedSpider hatchedSpider = consumeCocoon(cocoonToConsume);
+					doHatch(hatchedSpider);
+				}
 			}
 
 			else
