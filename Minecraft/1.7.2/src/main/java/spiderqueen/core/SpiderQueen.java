@@ -169,7 +169,11 @@ public class SpiderQueen implements IEnforcedCore
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 		fakePlayerNames = downloadFakePlayerNames();
 
-		clientTickHandler = new ClientTickHandler();
+		if (event.getSide().isClient())
+		{
+			clientTickHandler = new ClientTickHandler();
+		}
+
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
 		KS();

@@ -58,7 +58,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	public boolean					hasInventoryBeenPopulated;
 	public boolean 					isSwinging;
 	public ResourceLocation			skinResourceLocation;
-	public ThreadDownloadImageData	imageDownloadThread;
+	private ThreadDownloadImageData	imageDownloadThread;
 	public Inventory				inventory			= new Inventory(this);
 
 	private Entity target = null;
@@ -85,12 +85,6 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		getNavigator().setBreakDoors(true);
 		getNavigator().setAvoidsWater(false);
 
-		//		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityCreeper.class, 0.6F, false));
-		//		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 0.6F, false));
-		//		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityZombie.class, 0.6F, false));
-		//		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityOtherQueen.class, 0.6F, false));
-		//		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.6F, false));
-		//		tasks.addTask(0, new EntityAIAttackOnCollide(this, EntitySpider.class, 0.6F, false));
 		tasks.addTask(1, new EntityAISwimming(this));
 		tasks.addTask(2, new EntityAIMoveIndoors(this));
 		tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
@@ -99,13 +93,6 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		tasks.addTask(6, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		tasks.addTask(7, new EntityAIWander(this, 0.4F));
 		tasks.addTask(8, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
-
-		//		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityCreeper.class, 16, false));
-		//		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16, false));
-		//		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16, false));
-		//		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityOtherQueen.class, 16, false));
-		//		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16, false));
-		//		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntitySpider.class, 16, false));
 	}
 
 	@Override

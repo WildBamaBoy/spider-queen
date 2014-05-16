@@ -332,7 +332,7 @@ public class ServerTickHandler
 
 				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 				{
-					if (player.getCurrentEquippedItem().getItem() == SpiderQueen.getInstance().itemSpiderRod && entry.reputationValue > 0)
+					if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == SpiderQueen.getInstance().itemSpiderRod && entry.reputationValue > 0)
 					{
 						final List<EntityLiving> nearbyEntities = (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, entry.getCreatureClass(), 10);
 
