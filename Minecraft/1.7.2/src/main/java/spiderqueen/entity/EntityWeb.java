@@ -138,7 +138,7 @@ public class EntityWeb extends Entity implements IProjectile
 					return;
 				}
 
-				if (worldObj.getBlock((int) posX, (int) posY, (int) posZ) == Blocks.lava)
+				if (type == 2 && worldObj.getBlock((int) posX, (int) posY, (int) posZ) == Blocks.lava)
 				{
 					for (final Point3D point : LogicHelper.getNearbyBlocks_StartAtBottom(this, Blocks.lava, 2))
 					{
