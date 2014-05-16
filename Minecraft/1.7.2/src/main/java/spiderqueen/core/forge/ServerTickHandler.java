@@ -14,12 +14,13 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -34,9 +35,11 @@ import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
 import spiderqueen.entity.EntityFakePlayer;
+import spiderqueen.entity.EntityOtherQueen;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.constant.Time;
+import com.radixshock.radixcore.core.RadixCore;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.Point3D;
 
@@ -47,6 +50,7 @@ public class ServerTickHandler
 {
 	private int							timeUntilSpawnWeb				= Time.MINUTE * 3;
 	private int							timeUntilSpawnPlayers			= Time.SECOND * 30;
+	private int							timeUntilSpawnQueens			= Time.SECOND * 30;
 	private int							timeUntilSpawnWarParties		= Time.MINUTE * 2;
 
 	private boolean						hasCalculatedReputationForDay	= false;
@@ -63,6 +67,7 @@ public class ServerTickHandler
 		updatePlayerEat();
 		updateReputation();
 		updateSpawnPlayers();
+		updateSpawnQueens();
 		updateSpawnWarParties();
 		updateFriendlyEntityPathing();
 	}
@@ -96,34 +101,37 @@ public class ServerTickHandler
 	{
 		for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
-			if (entry.reputationValue == -2 && !entry.isAtWar)
+			if (!entry.creatureGroupName.equals("Evil Queen"))
 			{
-				player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are not pleased with your latest actions."));
-			}
+				if (entry.reputationValue == -2 && !entry.isAtWar)
+				{
+					player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are not pleased with your latest actions."));
+				}
 
-			else if (entry.reputationValue == -4 && !entry.isAtWar)
-			{
-				player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are threatening war."));
-				player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
-				LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, entry.getCreatureClass(), 2, 5);
-			}
+				else if (entry.reputationValue == -4 && !entry.isAtWar)
+				{
+					player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are threatening war."));
+					player.addChatMessage(new ChatComponentText(Color.RED + "They have sent a group to assassinate you."));
+					LogicHelper.spawnGroupOfEntitiesAroundPlayer(player, entry.getCreatureClass(), 2, 5);
+				}
 
-			else if (entry.reputationValue == -5 && !entry.isAtWar)
-			{
-				player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " have declared war on you for your actions."));
-				entry.isAtWar = true;
-			}
+				else if (entry.reputationValue == -5 && !entry.isAtWar)
+				{
+					player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " have declared war on you for your actions."));
+					entry.isAtWar = true;
+				}
 
-			else if (entry.reputationValue == 0 && entry.isAtWar)
-			{
-				player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " have ended their war with you."));
-				entry.isAtWar = false;
-			}
+				else if (entry.reputationValue == 0 && entry.isAtWar)
+				{
+					player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " have ended their war with you."));
+					entry.isAtWar = false;
+				}
 
-			else if (entry.reputationValue == 3)
-			{
-				player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " are pleased with you. They have sent you one of their own."));
-				LogicHelper.spawnEntityAtPlayer(player, EntityCreeper.class);
+				else if (entry.reputationValue == 3)
+				{
+					player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " are pleased with you. They have sent you one of their own."));
+					LogicHelper.spawnEntityAtPlayer(player, entry.getCreatureClass());
+				}
 			}
 		}
 	}
@@ -284,6 +292,78 @@ public class ServerTickHandler
 			}
 
 			timeUntilSpawnPlayers = Time.SECOND * 30;
+		}
+	}
+
+	private void updateSpawnQueens()
+	{
+		timeUntilSpawnQueens--;
+
+		if (timeUntilSpawnQueens <= 0)
+		{
+			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+			{
+				for (final Object obj : worldServer.playerEntities)
+				{
+					final EntityPlayer player = (EntityPlayer) obj;
+					final boolean doSpawnQueens = LogicHelper.getBooleanWithProbability(10);
+					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
+					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
+
+					final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30);
+					int numberOfQueensNearby = 0;
+
+					for (final Object entity : nearbyEntities)
+					{
+						if (entity instanceof EntityOtherQueen)
+						{
+							numberOfQueensNearby++;
+						}
+					}
+
+					if (doSpawnQueens && numberOfQueensNearby < 3)
+					{
+						final World world = player.worldObj;
+						final Point3D point = new Point3D(player.posX + modX, player.posY, player.posZ + modZ);
+						final Class entityClass = EntityOtherQueen.class;
+						final int minimum = 1;
+						final int maximum = 1;
+						
+						try
+						{
+							final int amountToSpawn = LogicHelper.getNumberInRange(minimum, maximum);
+
+							for (int i = 0; i < amountToSpawn; i++)
+							{
+								final EntityOtherQueen entity = (EntityOtherQueen) new EntityOtherQueen(world);
+								final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(world, point, Blocks.air, 10);
+
+								if (spawnPoint != null)
+								{
+									int blocksUntilGround = 0;
+
+									while (world.isAirBlock(point.iPosX, point.iPosY + blocksUntilGround, point.iPosZ) && blocksUntilGround != 255)
+									{
+										blocksUntilGround--;
+									}
+
+									entity.setPosition(spawnPoint.dPosX, spawnPoint.dPosY + blocksUntilGround + 1, spawnPoint.dPosZ);
+									entity.spawnAdditionalSpiders();
+									world.spawnEntityInWorld(entity);
+								}
+							}
+						}
+
+						catch (Exception e) 
+						{
+							RadixCore.getInstance().getLogger().log("Unexpected exception while spawning a group of entities.");
+							RadixCore.getInstance().getLogger().log(e);
+						}
+					}
+				}
+			}
+
+			timeUntilSpawnQueens = Time.SECOND * 30;
 		}
 	}
 
