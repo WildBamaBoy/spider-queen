@@ -71,6 +71,7 @@ import com.radixshock.radixcore.network.AbstractPacketHandler;
 import com.radixshock.radixcore.network.Packet;
 import com.radixshock.radixcore.network.PacketPipeline;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
@@ -378,7 +379,8 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public String getRedirectURL()
 	{
-		return "{REDIR}"; // TODO
+		return "http://radix-shock.com/update-page.html?userSpiderQueen=" + getVersion() + "&currentSpiderQueen=%" + 
+				"&userMC=" + Loader.instance().getMCVersionString().substring(10) + "&currentMC=%";
 	}
 
 	@Override
