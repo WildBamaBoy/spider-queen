@@ -133,6 +133,49 @@ public class ServerTickHandler
 					LogicHelper.spawnEntityAtPlayer(player, entry.getCreatureClass());
 				}
 			}
+
+			else
+			{
+				if (entry.reputationValue == -5 && LogicHelper.getBooleanWithProbability(15))
+				{
+					player.addChatMessage(new ChatComponentText(Color.RED + "The evil spider queen has come to seek vengeance!"));
+
+					final EntityOtherQueen entity = new EntityOtherQueen(player.worldObj, true);
+
+					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(5, 15) : LogicHelper.getNumberInRange(5, 15) * -1;
+					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(5, 15) : LogicHelper.getNumberInRange(5, 15) * -1;
+					final World world = player.worldObj;
+					final Point3D point = new Point3D(player.posX + modX, player.posY, player.posZ + modZ);
+
+					try
+					{
+						final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(world, point, Blocks.air, 10);
+
+						if (spawnPoint != null)
+						{
+							int blocksUntilGround = 0;
+
+							while (world.isAirBlock(point.iPosX, point.iPosY + blocksUntilGround, point.iPosZ) && blocksUntilGround != 255)
+							{
+								blocksUntilGround--;
+							}
+
+							entity.setPosition(spawnPoint.dPosX, spawnPoint.dPosY + blocksUntilGround + 1, spawnPoint.dPosZ);
+							entity.spawnAdditionalSpiders();
+							entity.spawnAdditionalSpiders();
+							entity.spawnAdditionalSpiders();
+							
+							world.spawnEntityInWorld(entity);
+						}
+					}
+
+					catch (Exception e) 
+					{
+						RadixCore.getInstance().getLogger().log("Unexpected exception while spawning a group of entities.");
+						RadixCore.getInstance().getLogger().log(e);
+					}
+				}
+			}
 		}
 	}
 
@@ -147,7 +190,7 @@ public class ServerTickHandler
 				entry.reputationValue = entry.reputationValue == -5 ? -5 : entry.reputationValue - 1;
 			}
 
-			else if (entry.creaturesKilled == 0)
+			else if (entry.creaturesKilled == 0 && !entry.creatureGroupName.equals("Evil Queen"))
 			{
 				entry.reputationValue = entry.reputationValue == 5 ? 5 : entry.reputationValue + 1;
 			}
@@ -328,7 +371,7 @@ public class ServerTickHandler
 						final Class entityClass = EntityOtherQueen.class;
 						final int minimum = 1;
 						final int maximum = 1;
-						
+
 						try
 						{
 							final int amountToSpawn = LogicHelper.getNumberInRange(minimum, maximum);

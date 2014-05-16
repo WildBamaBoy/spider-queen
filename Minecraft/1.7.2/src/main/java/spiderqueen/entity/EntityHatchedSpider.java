@@ -361,7 +361,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 			{
 				final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
-				entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
+				entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
 
 				if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
 				{

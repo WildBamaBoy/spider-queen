@@ -72,6 +72,22 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
 
+	public EntityOtherQueen(World world, boolean isHostile)
+	{
+		super(world);
+		
+		this.isHostile = isHostile;
+		friendlySkinIndex = LogicHelper.getNumberInRange(1, 4);
+		identifier = HashGenerator.getMD5Hash(String.valueOf(LogicHelper.getNumberInRange(0, 100) * getEntityId()));
+
+		setSize(1.4F, 0.9F);
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
+		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(3, new EntityAIWander(this, 0.4D));
+		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+	}
+	
 	@Override
 	public boolean isAIEnabled()
 	{
@@ -216,13 +232,13 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 				if (entityBeingAttacked instanceof EntityPlayer)
 				{
 					final EntityPlayer player = (EntityPlayer) entityBeingAttacked;
-					player.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
+					player.attackEntityFrom(DamageSource.generic, damageAmount);
 				}
 
 				else
 				{
 					final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
-					entityBeingAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), damageAmount);
+					entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
 
 					if (entityLiving.getHealth() <= 0.0F)
 					{
@@ -308,7 +324,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		for (int i = 0; i < LogicHelper.getNumberInRange(1, 16); i++)
 		{
 			final boolean spawnBoomSpider = false; // LogicHelper.getBooleanWithProbability(20);
-			final boolean spawnPackSpider = LogicHelper.getBooleanWithProbability(30);
+			final boolean spawnPackSpider = LogicHelper.getBooleanWithProbability(15);
 			final boolean spawnSlingerSpider = LogicHelper.getBooleanWithProbability(20);
 			final boolean spawnNovaSpider = LogicHelper.getBooleanWithProbability(25);
 			final boolean spawnEnderSpider = LogicHelper.getBooleanWithProbability(10);
