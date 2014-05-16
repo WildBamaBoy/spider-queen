@@ -11,5 +11,14 @@ package spiderqueen.enums;
 
 public enum EnumPacketType
 {
-	GetInventory, SetInventory, SetEaten, SetLevel, SetPlayerMotion, SetDistance, DestroySlinger, CreateClientExplosion, SwingArm;
+	GetInventory, 
+	SetInventory, 
+	SetEaten, 
+	SetLevel, 
+	SetPlayerMotion, 
+	SetDistance, 
+	DestroySlinger, 
+	CreateClientExplosion, 
+	SwingArm,
+	CreateParticle;
 }

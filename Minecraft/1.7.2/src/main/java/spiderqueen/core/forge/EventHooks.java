@@ -10,6 +10,7 @@
 package spiderqueen.core.forge;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -38,9 +39,11 @@ import spiderqueen.core.util.PlayerEatEntry;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -226,7 +229,23 @@ public class EventHooks
 				if (entry != null)
 				{
 					entry.reputationValue = entry.reputationValue == 5 ? 5 : entry.reputationValue + 1;
+					player.addChatMessage(new ChatComponentText(Color.YELLOW + "Your reputation with the " + entry.creatureGroupName + " has increased to " + entry.reputationValue + "."));
 					currentItem.stackSize--;
+
+					for (int i = 0; i < 6; i++)
+					{
+						final Random rand = player.worldObj.rand;
+						final double velX  = rand.nextGaussian() * 0.02D;
+						final double velY = rand.nextGaussian() * 0.02D;
+						final double velZ = rand.nextGaussian() * 0.02D;
+
+						SpiderQueen.packetPipeline.sendPacketToAllPlayers(
+								new Packet(EnumPacketType.CreateParticle, 
+										"heart", event.target.posX + rand.nextFloat() * event.target.width * 2.0F - event.target.width, 
+										event.target.posY + 0.5D + rand.nextFloat() * event.target.height, 
+										event.target.posZ + rand.nextFloat() * event.target.width * 2.0F - event.target.width, 
+										velX, velY, velZ));
+					}
 				}
 			}
 		}
