@@ -220,7 +220,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			if (!worldObj.isRemote)
 			{
-				final boolean doDropEgg = LogicHelper.getBooleanWithProbability(15);
+				final boolean doDropEgg = LogicHelper.getBooleanWithProbability(25);
 				final int dropAmount = LogicHelper.getNumberInRange(1, 2);
 
 				entityDropItem(new ItemStack(Items.string, LogicHelper.getNumberInRange(0, 5), 0), 0);
