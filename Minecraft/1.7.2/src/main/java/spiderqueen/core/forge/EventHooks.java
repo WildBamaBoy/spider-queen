@@ -356,6 +356,21 @@ public class EventHooks
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftSpiderRod);
 		}
+		
+		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemPoisonBarbs)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftPoisonBarbs);
+		}
+		
+		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemPoisonWeb)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftPoisonWeb);
+		}
+		
+		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemWebslinger)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWebslinger);
+		}
 	}
 
 	@SubscribeEvent

@@ -21,6 +21,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
@@ -133,6 +134,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemBrain;
 	public Item						itemSkull;
 	public Item						itemHeart;
+	public Item						itemPoisonBarbs;
 	public Item						itemBugLight;
 	public Item						itemSpiderStone;
 
@@ -140,7 +142,9 @@ public class SpiderQueen implements IEnforcedCore
 	public Block					blockWebFull;
 	public Block					blockWebGround;
 	public Block					blockWebSide;
-	public Block					blockPoisonWeb;
+	public Block					blockPoisonWebFull;
+	public Block					blockPoisonWebGround;
+	public Block					blockPoisonWebSide;
 	public Block					blockWebBed;
 	public Block					blockSpiderRod;
 
@@ -183,13 +187,17 @@ public class SpiderQueen implements IEnforcedCore
 	public Achievement				achievementKillHumans;
 	public Achievement				achievementKillSheWolfDeadly;
 	public Achievement				achievementKillWildBamaBoy;
-
+	public Achievement				achievementCraftPoisonBarbs;
+	public Achievement				achievementCraftPoisonWeb;
+	public Achievement				achievementEatSomething;
+	public Achievement				achievementCraftWebslinger;
+	public Achievement				achievementLevelUpSpider;
+	
 	public List<String>				fakePlayerNames				= new ArrayList<String>();
 	public boolean					doDisplayPlayerSkins		= true;
 	public boolean					inDebugMode					= true;
 	public boolean					debugDoRapidSpiderGrowth	= true;
 	public boolean					ks							= false;
-
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
@@ -284,6 +292,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemBrain = new Item().setUnlocalizedName("brain").setTextureName("spiderqueen:Brain").setCreativeTab(tabSpiderQueen);
 		itemSkull = new Item().setUnlocalizedName("skull").setTextureName("spiderqueen:Skull").setCreativeTab(tabSpiderQueen);
 		itemHeart = new Item().setUnlocalizedName("heart").setTextureName("spiderqueen:Heart").setCreativeTab(tabSpiderQueen);
+		itemPoisonBarbs = new Item().setUnlocalizedName("poisonbarbs").setTextureName("spiderqueen:PoisonBarbs").setCreativeTab(tabSpiderQueen);
 		itemBugLight = new Item().setUnlocalizedName("buglight").setTextureName("spiderqueen:BugLight").setCreativeTab(tabSpiderQueen);
 		itemSpiderStone = new ItemSpiderStone().setUnlocalizedName("spiderstone").setCreativeTab(tabSpiderQueen);
 
@@ -306,7 +315,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.Items.registerItem(itemCocoonZombie);
 
 		RadixRegistry.Items.registerItem(itemWeb);
-		// RadixRegistry.ItemsAndBlocks.registerItem(itemPoisonWeb);
+		RadixRegistry.Items.registerItem(itemPoisonWeb);
 		RadixRegistry.Items.registerItem(itemFlameWeb);
 		RadixRegistry.Items.registerItem(itemWebslinger);
 		RadixRegistry.Items.registerItem(itemSpiderRod);
@@ -314,6 +323,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.Items.registerItem(itemBrain);
 		RadixRegistry.Items.registerItem(itemSkull);
 		RadixRegistry.Items.registerItem(itemHeart);
+		RadixRegistry.Items.registerItem(itemPoisonBarbs);
 		RadixRegistry.Items.registerItem(itemSpiderStone);
 		RadixRegistry.Items.registerItem(itemBugLight);
 
@@ -325,31 +335,57 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeBlocks()
 	{
-		blockWebGround = new BlockWebGround();
-		blockWebSide = new BlockWeb();
-		blockWebFull = new BlockWebFull();
-		// blockPoisonWeb = new BlockPoisonWeb();
+		blockWebGround = new BlockWebGround(false);
+		blockWebSide = new BlockWeb(false);
+		blockWebFull = new BlockWebFull(false);
+		blockPoisonWebGround = new BlockWebGround(true);
+		blockPoisonWebSide = new BlockWeb(true);
+		blockPoisonWebFull = new BlockWebFull(true);
 		blockSpiderRod = new BlockSpiderRod();
 
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
 		GameRegistry.registerBlock(blockWebFull, "Web Full");
-		// GameRegistry.registerBlock(blockPoisonWeb, "Poison Web");
+		GameRegistry.registerBlock(blockPoisonWebGround, "Poison Web Ground");
+		GameRegistry.registerBlock(blockPoisonWebSide, "Poison Web Side");
+		GameRegistry.registerBlock(blockPoisonWebFull, "Poison Web Full");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
 	}
 
 	@Override
 	public void initializeRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GXG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'X', itemSpiderStone);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), 
+				"GXG", 
+				" S ", 
+				" S ", 
+				'G', Blocks.glass_pane, 
+				'S', Items.stick, 
+				'X', itemSpiderStone);
 
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GXG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'X', itemSpiderStone);
+		GameRegistry.addShapelessRecipe(new ItemStack(itemWeb),
+				Items.string, Items.string, Items.string);
 
-		GameRegistry.addRecipe(new ItemStack(itemWeb), "SS ", "S  ", 'S', Items.string);
+		GameRegistry.addRecipe(new ItemStack(itemWebslinger), 
+				"TS ", 
+				"SS ", 
+				"  S", 
+				'S', Items.string, 
+				'T', itemWeb);
 
-		GameRegistry.addRecipe(new ItemStack(itemWebslinger), "TS ", "SS ", "  S", 'S', Items.string, 'T', itemWeb);
-
-		GameRegistry.addRecipe(new ItemStack(itemBugLight), "GGG", "GXG", "GGG", 'G', Blocks.glass_pane, 'X', itemSpiderStone);
+		GameRegistry.addRecipe(new ItemStack(itemBugLight), 
+				"GGG", 
+				"GXG", 
+				"GGG", 
+				'G', Blocks.glass_pane, 
+				'X', itemSpiderStone);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(itemPoisonWeb), 
+				itemPoisonBarbs,
+				itemWeb);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(itemPoisonBarbs, 4), 
+				new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.func_150976_a()));
 	}
 
 	@Override
@@ -365,15 +401,20 @@ public class SpiderQueen implements IEnforcedCore
 		achievementCraftWeb = RadixRegistry.Achievements.createAchievement(this, "craftweb", 0, 0, itemWeb);
 
 		// Crafting Tier
+		achievementCraftPoisonBarbs = RadixRegistry.Achievements.createAchievement(this, "craftpoisonbarbs", 0, 3, itemPoisonBarbs, achievementCraftWeb);
+		achievementCraftPoisonWeb = RadixRegistry.Achievements.createAchievement(this, "craftpoisonweb", -1, 4, itemPoisonWeb, achievementCraftPoisonBarbs);
 		achievementFindSpiderStone = RadixRegistry.Achievements.createAchievement(this, "findspiderstone", -2, 0, itemSpiderStone, achievementCraftWeb).setSpecial();
 		achievementCraftSpiderRod = RadixRegistry.Achievements.createAchievement(this, "craftspiderrod", -3, 1, itemSpiderRod, achievementFindSpiderStone);
 		achievementCraftBugLight = RadixRegistry.Achievements.createAchievement(this, "craftbuglight", -3, -1, itemBugLight, achievementFindSpiderStone);
 		achievementNightVision = RadixRegistry.Achievements.createAchievement(this, "nightvision", -5, -1, itemBugLight, achievementCraftBugLight).setSpecial();
-
+		achievementCraftWebslinger = RadixRegistry.Achievements.createAchievement(this, "craftwebslinger", 2, 2, itemWebslinger, achievementCraftWeb).setSpecial();
+		
 		// Walkthrough
-		achievementCocoonSomething = RadixRegistry.Achievements.createAchievement(this, "cocoonsomething", 2, -2, itemCocoonCow, achievementCraftWeb);
-		achievementLayEgg = RadixRegistry.Achievements.createAchievement(this, "layegg", 4, 0, itemSpiderEgg, achievementCocoonSomething);
+		achievementCocoonSomething = RadixRegistry.Achievements.createAchievement(this, "cocoonsomething", 0, -2, itemCocoonCow, achievementCraftWeb);
+		achievementEatSomething = RadixRegistry.Achievements.createAchievement(this, "eatsomething", 2, -2, Items.cooked_beef, achievementCocoonSomething);
+		achievementLayEgg = RadixRegistry.Achievements.createAchievement(this, "layegg", 2, 0, itemSpiderEgg, achievementEatSomething);
 		achievementHatchSpider = RadixRegistry.Achievements.createAchievement(this, "hatchspider", 6, 0, itemSpawnSpider, achievementLayEgg);
+		achievementLevelUpSpider = RadixRegistry.Achievements.createAchievement(this, "levelupspider", 7, -2, itemSpiderRod, achievementHatchSpider).setSpecial();
 
 		// Mob Teir
 		achievementHatchSkeletonSpider = RadixRegistry.Achievements.createAchievement(this, "hatchskeletonspider", 3, -3, itemCocoonSkeleton, achievementHatchSpider);
@@ -411,8 +452,9 @@ public class SpiderQueen implements IEnforcedCore
 		achievementPeaceWithAll = RadixRegistry.Achievements.createAchievement(this, "peacewithall", 16, 0, Items.diamond, achievementFriendsWithAny).setSpecial();
 
 		// Misc Teir
-		achievementHelpZombies = RadixRegistry.Achievements.createAchievement(this, "helpzombies", -5, -3, itemBrain);
-		achievementKillHumans = RadixRegistry.Achievements.createAchievement(this, "killhumans", -2, -3, itemHeart);
+		achievementHelpZombies = RadixRegistry.Achievements.createAchievement(this, "helpzombies", 1, -4, itemBrain, achievementCraftWeb);
+		achievementKillHumans = RadixRegistry.Achievements.createAchievement(this, "killhumans", -1, -4, itemHeart, achievementCraftWeb);
+		
 		// this.achievementKillSheWolfDeadly =
 		// RadixRegistry.Achievements.createAchievement(this,
 		// "killshewolfdeadly", -3, -4, itemCocoonWolf,

@@ -112,6 +112,39 @@ public class ServerTickHandler
 					atWarWithAll = false;
 				}
 
+				else
+				{
+					if (entry.getCreatureClass() == EntityCreeper.class)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithCreepers);
+					}
+
+					else if (entry.getCreatureClass() == EntityFakePlayer.class)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithHumans);
+					}
+
+					else if (entry.getCreatureClass() == EntityZombie.class)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithZombies);
+					}
+
+					else if (entry.getCreatureClass() == EntityEnderman.class)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithEndermen);
+					}
+
+					else if (entry.getCreatureClass() == EntityOtherQueen.class)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithOtherQueens);
+					}
+
+					else if (entry.getCreatureClass() == EntitySkeleton.class)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithSkeletons);
+					}
+				}
+				
 				if (entry.reputationValue < 3)
 				{
 					atFriendsWithAll = false;
@@ -146,36 +179,6 @@ public class ServerTickHandler
 					player.triggerAchievement(SpiderQueen.getInstance().achievementFriendsWithAny);
 					player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " are pleased with you. They have sent you one of their own."));
 					LogicHelper.spawnEntityAtPlayer(player, entry.getCreatureClass());
-				}
-
-				if (entry.getCreatureClass() == EntityCreeper.class)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithCreepers);
-				}
-
-				else if (entry.getCreatureClass() == EntityFakePlayer.class)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithHumans);
-				}
-
-				else if (entry.getCreatureClass() == EntityZombie.class)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithZombies);
-				}
-
-				else if (entry.getCreatureClass() == EntityEnderman.class)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithEndermen);
-				}
-
-				else if (entry.getCreatureClass() == EntityOtherQueen.class)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithOtherQueens);
-				}
-
-				else if (entry.getCreatureClass() == EntitySkeleton.class)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithSkeletons);
 				}
 			}
 

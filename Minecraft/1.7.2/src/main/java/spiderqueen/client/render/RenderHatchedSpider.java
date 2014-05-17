@@ -122,6 +122,12 @@ public class RenderHatchedSpider extends RenderLiving
 			GL11.glScaled(scale, scale, scale);
 		}
 
+		else if (hatchedSpider.cocoonType == EnumCocoonType.ENDERMAN)
+		{
+			GL11.glScaled(1.3D, 1.3D, 1.3D);
+			
+		}
+		
 		else
 		{
 			super.preRenderCallback(entityLiving, partialTickTime);

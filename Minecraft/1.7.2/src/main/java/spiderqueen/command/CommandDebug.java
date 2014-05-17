@@ -92,12 +92,7 @@ public class CommandDebug extends CommandBase
 						{
 							if (spider.level < 3)
 							{
-								spider.worldObj.playSoundAtEntity(spider, "random.levelup", 0.75F, 1.0F);
-								spider.killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
-								spider.level++;
-
-								SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, spider.getEntityId(), spider.level));
-								SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, spider.getEntityId(), spider.inventory));
+								spider.tryLevelUp(true);
 							}
 						}
 					}

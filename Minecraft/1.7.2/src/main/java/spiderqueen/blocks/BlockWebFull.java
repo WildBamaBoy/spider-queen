@@ -4,6 +4,11 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockWebFull extends BlockWeb
 {
+	public BlockWebFull(boolean isPoison)
+	{
+		super(isPoison);
+	}
+
 	@Override
 	public int getRenderType()
 	{

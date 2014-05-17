@@ -19,16 +19,25 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import spiderqueen.entity.EntityHatchedSpider;
+import spiderqueen.entity.EntityOtherQueen;
+
+import com.radixshock.radixcore.constant.Time;
+import com.radixshock.radixcore.logic.LogicHelper;
 
 public class BlockWeb extends Block
 {
-	public BlockWeb()
+	private boolean isPoison;
+
+	public BlockWeb(boolean isPoison)
 	{
 		super(Material.circuits);
+		this.isPoison = isPoison;
 	}
 
 	@Override
@@ -47,7 +56,7 @@ public class BlockWeb extends Block
 	@Override
 	public void onEntityCollidedWithBlock(World world, int posX, int posY, int posZ, Entity entity)
 	{
-		if (entity instanceof EntitySpider || entity instanceof EntityHatchedSpider || entity instanceof EntityPlayer)
+		if (entity instanceof EntitySpider || entity instanceof EntityHatchedSpider || entity instanceof EntityPlayer || entity instanceof EntityOtherQueen)
 		{
 			return;
 		}
@@ -59,6 +68,12 @@ public class BlockWeb extends Block
 			entity.motionX = entity.motionX * -0.1D;
 			entity.motionZ = entity.motionZ * -0.1D;
 			entity.motionY = entity.motionY * 0.1D;
+
+			if (isPoison && LogicHelper.getBooleanWithProbability(40) && entity instanceof EntityLivingBase)
+			{
+				final EntityLivingBase entityLiving = (EntityLivingBase)entity;
+				entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, Time.SECOND * 5));
+			}
 		}
 	}
 
@@ -83,7 +98,15 @@ public class BlockWeb extends Block
 	@Override
 	public void registerBlockIcons(IIconRegister IIconRegister)
 	{
-		blockIcon = IIconRegister.registerIcon("spiderqueen:Web");
+		if (isPoison)
+		{
+			blockIcon = IIconRegister.registerIcon("spiderqueen:WebPoison");
+		}
+
+		else
+		{
+			blockIcon = IIconRegister.registerIcon("spiderqueen:Web");
+		}
 	}
 
 	@Override
@@ -192,72 +215,75 @@ public class BlockWeb extends Block
 
 	private void checkForBed(World world, int x, int y, int z, int itr)
 	{
-		// FIXME
-		// Block ww = SpiderQueen.getInstance().blockWeb;
-		// Block ll = Blocks.log;
-		//
-		// if(world.getBlock(x,y,z) != ww) { return; }
-		//
-		// int cc = 0;
-		// int wc = 0;
-		//
-		// if(world.getBlock(x-1,y,z-1) == ww) { cc++; }
-		// if(world.getBlock(x-1,y,z) == ww) { cc++; }
-		// if(world.getBlock(x-1,y,z+1) == ww) { cc++; }
-		// if(world.getBlock(x,y,z-1) == ww) { cc++; }
-		// if(world.getBlock(x,y,z) == ww) { cc++; }
-		// if(world.getBlock(x,y,z+1) == ww) { cc++; }
-		// if(world.getBlock(x+1,y,z-1) == ww) { cc++; }
-		// if(world.getBlock(x+1,y,z) == ww) { cc++; }
-		// if(world.getBlock(x+1,y,z+1) == ww) { cc++; }
-		//
-		// if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x-2,y,z-1) == ll) { wc++; }
-		// if(world.getBlock(x-2,y,z) == ll) { wc++; }
-		// if(world.getBlock(x-2,y,z+1) == ll) { wc++; }
-		// if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z-1) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z+1) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
-		// if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x-1,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x+1,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
-		// if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
-		// if(world.getBlock(x-1,y,z+2) == ll) { wc++; }
-		// if(world.getBlock(x,y,z+2) == ll) { wc++; }
-		// if(world.getBlock(x+1,y,z+2) == ll) { wc++; }
-		// if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
-		//
-		// if(cc == 9 & wc == 20)
-		// {
-		// world.setBlock(x-1,y,z-1,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x-1,y,z,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x-1,y,z+1,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x,y,z-1,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x,y,z,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x,y,z+1,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x+1,y,z-1,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x+1,y,z,SpiderQueen.getInstance().blockWebBed);
-		// world.setBlock(x+1,y,z+1,SpiderQueen.getInstance().blockWebBed);
-		// }
-		// else
-		// {
-		// if (itr < 3)
-		// {
-		// checkForBed(world,x-1,y,z-1,itr+1);
-		// checkForBed(world,x-1,y,z,itr+1);
-		// checkForBed(world,x-1,y,z+1,itr+1);
-		// checkForBed(world,x,y,z-1,itr+1);
-		// checkForBed(world,x,y,z+1,itr+1);
-		// checkForBed(world,x+1,y,z-1,itr+1);
-		// checkForBed(world,x+1,y,z,itr+1);
-		// checkForBed(world,x+1,y,z+1,itr+1);
-		// }
-		// }
+		if (!isPoison)
+		{
+			// FIXME
+			// Block ww = SpiderQueen.getInstance().blockWeb;
+			// Block ll = Blocks.log;
+			//
+			// if(world.getBlock(x,y,z) != ww) { return; }
+			//
+			// int cc = 0;
+			// int wc = 0;
+			//
+			// if(world.getBlock(x-1,y,z-1) == ww) { cc++; }
+			// if(world.getBlock(x-1,y,z) == ww) { cc++; }
+			// if(world.getBlock(x-1,y,z+1) == ww) { cc++; }
+			// if(world.getBlock(x,y,z-1) == ww) { cc++; }
+			// if(world.getBlock(x,y,z) == ww) { cc++; }
+			// if(world.getBlock(x,y,z+1) == ww) { cc++; }
+			// if(world.getBlock(x+1,y,z-1) == ww) { cc++; }
+			// if(world.getBlock(x+1,y,z) == ww) { cc++; }
+			// if(world.getBlock(x+1,y,z+1) == ww) { cc++; }
+			//
+			// if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x-2,y,z-1) == ll) { wc++; }
+			// if(world.getBlock(x-2,y,z) == ll) { wc++; }
+			// if(world.getBlock(x-2,y,z+1) == ll) { wc++; }
+			// if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z-1) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z+1) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
+			// if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x-1,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x+1,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
+			// if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
+			// if(world.getBlock(x-1,y,z+2) == ll) { wc++; }
+			// if(world.getBlock(x,y,z+2) == ll) { wc++; }
+			// if(world.getBlock(x+1,y,z+2) == ll) { wc++; }
+			// if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
+			//
+			// if(cc == 9 & wc == 20)
+			// {
+			// world.setBlock(x-1,y,z-1,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x-1,y,z,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x-1,y,z+1,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x,y,z-1,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x,y,z,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x,y,z+1,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x+1,y,z-1,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x+1,y,z,SpiderQueen.getInstance().blockWebBed);
+			// world.setBlock(x+1,y,z+1,SpiderQueen.getInstance().blockWebBed);
+			// }
+			// else
+			// {
+			// if (itr < 3)
+			// {
+			// checkForBed(world,x-1,y,z-1,itr+1);
+			// checkForBed(world,x-1,y,z,itr+1);
+			// checkForBed(world,x-1,y,z+1,itr+1);
+			// checkForBed(world,x,y,z-1,itr+1);
+			// checkForBed(world,x,y,z+1,itr+1);
+			// checkForBed(world,x+1,y,z-1,itr+1);
+			// checkForBed(world,x+1,y,z,itr+1);
+			// checkForBed(world,x+1,y,z+1,itr+1);
+			// }
+			// }
+		}
 	}
 
 	private boolean canBePlacedOn(Block block)

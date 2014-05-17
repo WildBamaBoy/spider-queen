@@ -72,10 +72,10 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			addAI();
 			username = SpiderQueen.getInstance().getRandomPlayerName();
 
-			if ((username.equals("WildBamaBoy*") || username.equals("LuvTrumpetStyle*")) && LogicHelper.getBooleanWithProbability(90))
-			{
-				username = SpiderQueen.getInstance().getRandomPlayerName();
-			}
+//			if ((username.equals("WildBamaBoy*") || username.equals("LuvTrumpetStyle*")) && LogicHelper.getBooleanWithProbability(90))
+//			{
+//				username = SpiderQueen.getInstance().getRandomPlayerName();
+//			}
 
 			if (username.endsWith("*"))
 			{

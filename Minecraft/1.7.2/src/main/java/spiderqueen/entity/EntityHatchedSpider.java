@@ -421,6 +421,16 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			level++;
 			setHitboxSize();
 
+			if (level == 3)
+			{
+				final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
+				
+				if (player != null)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementLevelUpSpider);
+				}
+			}
+			
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
 		}
@@ -611,14 +621,20 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			if (level == 3)
 			{
-				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 4;
-				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 4;
+				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.5F / 4;
+				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.6F / 4;
 			}
 
-			else
+			else if (level == 2)
 			{
 				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 3;
 				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 3;
+			}
+			
+			else
+			{
+				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.7F / 3;
+				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.8F / 3;
 			}
 
 			if (moveForward <= 0.0F)
@@ -676,7 +692,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				setSize(0.8F, 0.375F);
 				break;
 			case LONGLEG:
-				setSize(1.2F, 1.0F);
+				setSize(1.4F, 1.3F);
 				break;
 			case TINYLONGLEG:
 				setSize(0.3F, 0.15F);

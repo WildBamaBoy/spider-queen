@@ -257,6 +257,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		if (!isEaten)
 		{
+			entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementEatSomething);
 			entityPlayer.heal(3);
 			entityPlayer.getFoodStats().addStats(4, 0.4f);
 
@@ -328,6 +329,19 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public void setEaten(boolean isEaten)
 	{
 		this.isEaten = isEaten;
+
+		if (isEaten)
+		{
+			try
+			{
+				worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
+			}
+
+			catch (final Throwable e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public int getTimeSinceHit()

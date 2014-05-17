@@ -478,7 +478,8 @@ public class EntityWeb extends Entity implements IProjectile
 				int j = impactPoint.blockY;
 				int k = impactPoint.blockZ;
 
-				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround && blockHit != SpiderQueen.getInstance().blockPoisonWeb)
+				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround && 
+						blockHit != SpiderQueen.getInstance().blockPoisonWebSide && blockHit != SpiderQueen.getInstance().blockPoisonWebGround)
 				{
 					if (blockHit == Blocks.tallgrass && type == 2)
 					{
@@ -544,6 +545,11 @@ public class EntityWeb extends Entity implements IProjectile
 									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
 								}
 
+								else if (type == 1)
+								{
+									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebGround, 0, 2);
+								}
+								
 								else if (type == 2)
 								{
 									worldObj.setBlock(i, j, k, Blocks.fire);
@@ -557,6 +563,11 @@ public class EntityWeb extends Entity implements IProjectile
 									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
 								}
 
+								else if (type == 1)
+								{
+									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebSide, meta, 2);
+								}
+								
 								else if (type == 2)
 								{
 									worldObj.setBlock(i, j, k, Blocks.fire);
@@ -575,6 +586,29 @@ public class EntityWeb extends Entity implements IProjectile
 						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
 					}
 
+					else if (type == 1)
+					{
+						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebFull);
+					}
+					
+					else if (type == 2)
+					{
+						worldObj.setBlock(i, j, k, Blocks.fire);
+					}
+				}
+				
+				else if (blockHit == SpiderQueen.getInstance().blockPoisonWebGround || blockHit == SpiderQueen.getInstance().blockPoisonWebSide)
+				{
+					if (type == 0)
+					{
+						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebFull);
+					}
+
+					else if (type == 1)
+					{
+						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebFull);
+					}
+					
 					else if (type == 2)
 					{
 						worldObj.setBlock(i, j, k, Blocks.fire);
