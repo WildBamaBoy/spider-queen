@@ -14,7 +14,8 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
@@ -99,10 +100,23 @@ public class ServerTickHandler
 
 	private void applyReputationEffects(EntityPlayer player, PlayerExtension playerExtension)
 	{
+		boolean atWarWithAll = true;
+		boolean atFriendsWithAll = true;
+		
 		for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (!entry.creatureGroupName.equals("Evil Queen"))
 			{
+				if (!entry.isAtWar)
+				{
+					atWarWithAll = false;
+				}
+				
+				if (entry.reputationValue < 3)
+				{
+					atFriendsWithAll = false;
+				}
+				
 				if (entry.reputationValue == -2 && !entry.isAtWar)
 				{
 					player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are not pleased with your latest actions."));
@@ -129,15 +143,47 @@ public class ServerTickHandler
 
 				else if (entry.reputationValue == 3)
 				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementFriendsWithAny);
 					player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " are pleased with you. They have sent you one of their own."));
 					LogicHelper.spawnEntityAtPlayer(player, entry.getCreatureClass());
+				}
+				
+				if (entry.getCreatureClass() == EntityCreeper.class)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithCreepers);
+				}
+				
+				else if (entry.getCreatureClass() == EntityFakePlayer.class)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithHumans);
+				}
+				
+				else if (entry.getCreatureClass() == EntityZombie.class)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithZombies);
+				}
+				
+				else if (entry.getCreatureClass() == EntityEnderman.class)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithEndermen);
+				}
+				
+				else if (entry.getCreatureClass() == EntityOtherQueen.class)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithOtherQueens);
+				}
+				
+				else if (entry.getCreatureClass() == EntitySkeleton.class)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithSkeletons);
 				}
 			}
 
 			else
 			{
-				if (entry.reputationValue == -5 && LogicHelper.getBooleanWithProbability(15))
+				if (entry.reputationValue == -5 && LogicHelper.getBooleanWithProbability(10))
 				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithEvilQueen);
 					player.addChatMessage(new ChatComponentText(Color.RED + "The evil spider queen has come to seek vengeance!"));
 
 					final EntityOtherQueen entity = new EntityOtherQueen(player.worldObj, true);
@@ -176,6 +222,16 @@ public class ServerTickHandler
 					}
 				}
 			}
+		}
+		
+		if (atWarWithAll)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithAll);
+		}
+		
+		else if (atFriendsWithAll)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementPeaceWithAll);
 		}
 	}
 
@@ -223,6 +279,7 @@ public class ServerTickHandler
 					{
 						if (player.getActivePotionEffect(Potion.nightVision) == null)
 						{
+							player.triggerAchievement(SpiderQueen.getInstance().achievementNightVision);
 							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 1, true));
 						}
 					}

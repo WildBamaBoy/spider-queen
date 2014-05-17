@@ -58,7 +58,7 @@ public class CommandCheckReputation extends CommandBase
 		{
 			if (entry.isAtWar)
 			{
-				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.RED + entry.reputationValue + "(WAR)"));
+				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.RED + entry.reputationValue + " (WAR)"));
 			}
 
 			else if (entry.reputationValue < 0)
@@ -66,9 +66,14 @@ public class CommandCheckReputation extends CommandBase
 				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.RED + entry.reputationValue));
 			}
 
-			else if (entry.reputationValue >= 0)
+			else if (entry.reputationValue >= 0 && entry.reputationValue < 3)
 			{
 				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.GREEN + entry.reputationValue));
+			}
+			
+			else
+			{
+				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.GREEN + entry.reputationValue + " (FRIEND)"));
 			}
 		}
 

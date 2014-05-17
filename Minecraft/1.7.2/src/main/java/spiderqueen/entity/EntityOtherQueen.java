@@ -115,6 +115,12 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			if (target != null)
 			{
 				attackEntity(target, 3.5F);
+				
+				if (target instanceof EntityPlayer && ((EntityPlayer) target).getHealth() <= 0.0F)
+				{
+					setDead();
+					despawnAllOwnedSpiders();
+				}
 			}
 		}
 
@@ -122,6 +128,18 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		// Client-side only
 		{
 			syncInventory();
+		}
+	}
+
+	@Override
+	public void onDeath(DamageSource damageSource)
+	{
+		super.onDeath(damageSource);
+		
+		if (damageSource.getEntity() instanceof EntityPlayer)
+		{
+			final EntityPlayer player = (EntityPlayer)damageSource.getEntity();
+			player.triggerAchievement(SpiderQueen.getInstance().achievementDefeatEvilQueen);
 		}
 	}
 
@@ -418,6 +436,19 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		}
 	}
 
+	private void despawnAllOwnedSpiders()
+	{
+		final List<EntityHatchedSpider> spidersAroundMe = (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityHatchedSpider.class, 15);
+
+		for (final EntityHatchedSpider spider : spidersAroundMe)
+		{
+			if (spider.owner.equals(identifier))
+			{
+				spider.setDead();
+			}
+		}
+	}
+	
 	private void syncInventory()
 	{
 		if (!hasSyncedInventory)

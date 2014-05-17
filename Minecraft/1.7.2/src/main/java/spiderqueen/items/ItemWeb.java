@@ -97,18 +97,22 @@ public class ItemWeb extends Item
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{
-		list.add("Cocoons enemies and");
-		list.add("creates climbable webs.");
-
-		if (type == 1)
+		if (type == 0)
+		{
+			list.add("Cocoons enemies and");
+			list.add("creates climbable webs.");
+		}
+		
+		else if (type == 1)
 		{
 			list.add(Color.GREEN + "Poison");
 		}
 
 		else if (type == 2)
 		{
+			list.add(Color.GRAY + "Extinguishes lava");
+			list.add(Color.GRAY + "Cocoons Ghasts");
 			list.add(Color.GOLD + "Fire");
-			list.add(Color.GOLD + "Extinguishes lava");
 		}
 	}
 }

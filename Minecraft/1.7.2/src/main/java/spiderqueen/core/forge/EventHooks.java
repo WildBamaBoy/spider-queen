@@ -22,7 +22,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
@@ -32,6 +34,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
@@ -43,9 +46,12 @@ import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.logic.Point3D;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
@@ -102,6 +108,23 @@ public class EventHooks
 		}
 	}
 
+	@SubscribeEvent
+	public void onEntityItemPickup(EntityItemPickupEvent event)
+	{
+		if (event.entityPlayer != null)
+		{
+			if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemSpiderStone)
+			{
+				event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementFindSpiderStone);
+			}
+			
+			else if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemFlameWeb)
+			{
+				event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementPickupFlameWeb);
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void onAttackEntity(AttackEntityEvent event)
 	{
@@ -196,6 +219,28 @@ public class EventHooks
 			{
 				event.entityLiving.dropItem(SpiderQueen.getInstance().itemSpiderStone, 1);
 			}
+			
+			if (event.entityLiving instanceof EntityVillager)
+			{
+				final List<EntityZombie> nearbyZombies = (List<EntityZombie>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityLiving, EntityZombie.class, 8);
+				final boolean cobblestoneNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.cobblestone, 5) != null;
+				final boolean planksNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.planks, 5) != null;
+				
+				if (nearbyZombies.size() > 0 && cobblestoneNearby && planksNearby)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementHelpZombies);
+				}
+			}
+			
+			if (event.entityLiving instanceof EntityFakePlayer)
+			{
+				playerExtension.totalHumansKilled++;
+				
+				if (playerExtension.totalHumansKilled >= 50)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementKillHumans);
+				}
+			}
 		}
 	}
 
@@ -214,16 +259,19 @@ public class EventHooks
 			{
 				if (event.target instanceof EntityCreeper && currentItem.getItem() == SpiderQueen.getInstance().itemHeart)
 				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementGiftHeart);
 					entry = playerExtension.getReputationEntry(EntityCreeper.class);
 				}
 
 				if (event.target instanceof EntityZombie && currentItem.getItem() == SpiderQueen.getInstance().itemBrain)
 				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementGiftBrain);
 					entry = playerExtension.getReputationEntry(EntityZombie.class);
 				}
 
 				if (event.target instanceof EntitySkeleton && currentItem.getItem() == SpiderQueen.getInstance().itemSkull)
 				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementGiftSkull);
 					entry = playerExtension.getReputationEntry(EntitySkeleton.class);
 				}
 
@@ -289,6 +337,37 @@ public class EventHooks
 		}
 	}
 
+	/**
+	 * Handles crafting of a crown and setting to monarch status.
+	 * 
+	 * @param 	event	The event.
+	 */
+	@SubscribeEvent
+	public void itemCraftedEventHandler(ItemCraftedEvent event)
+	{
+		final EntityPlayer player = event.player;
+		
+		if (event.crafting.getItem() == SpiderQueen.getInstance().itemWeb)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWeb);
+		}
+		
+		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemBugLight)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftBugLight);
+		}
+		
+		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftSpiderRod);
+		}
+	}
+	
+	@SubscribeEvent
+	public void itemSmeltedEventHandler(ItemSmeltedEvent event)
+	{
+	}
+	
 	private void doAddAttackTasks(EntityCreature mob)
 	{
 		if (mob instanceof EntityMob)

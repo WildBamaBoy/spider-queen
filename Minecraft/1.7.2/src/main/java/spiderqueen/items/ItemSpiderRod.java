@@ -51,10 +51,10 @@ public class ItemSpiderRod extends Item
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{
-		list.add("Lead your spiders");
-		list.add("with this item eqipped.");
+		list.add("Lead your followers");
+		list.add("with this item equipped.");
 		list.add("");
 		list.add("Place on the ground to");
-		list.add("keep them stationary.");
+		list.add("keep spiders stationary.");
 	}
 }

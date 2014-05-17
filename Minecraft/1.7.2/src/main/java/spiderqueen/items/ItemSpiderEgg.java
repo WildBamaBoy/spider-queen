@@ -42,6 +42,8 @@ public class ItemSpiderEgg extends AbstractItemSpawner
 
 		else
 		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementLayEgg);
+			
 			final EntitySpiderEgg entitySpiderEgg = new EntitySpiderEgg(world, player.getCommandSenderName());
 			entitySpiderEgg.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);
 

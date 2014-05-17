@@ -390,7 +390,7 @@ public class EntityWeb extends Entity implements IProjectile
 			{
 				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonTypeByCapturedClass(impactPoint.entityHit.getClass());
 				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
-				final float attackPower = type == 1 ? 4.0F : type == 2 ? 1.0F : 0.0F;
+				final float attackPower = type == 1 ? 4.0F : type == 2 ? 0.0F : 0.0F;
 				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), attackPower);
 
 				if (type == 2)
@@ -401,7 +401,7 @@ public class EntityWeb extends Entity implements IProjectile
 
 				if (cocoonType != null)
 				{
-					if (entityHit.getHealth() > 0.4F && type != 2)
+					if (entityHit.getHealth() > 0.4F)
 					{
 						final Random rand = new Random();
 						final int intHealth = (int) entityHit.getHealth();
@@ -416,28 +416,54 @@ public class EntityWeb extends Entity implements IProjectile
 
 						else
 						{
-							final EntityCocoon entityCocoon;
+							EntityCocoon entityCocoon = null;
 
-							if (impactPoint.entityHit instanceof EntityGhast)
+							if (shooter instanceof EntityPlayer && type != 2)
 							{
-								entityCocoon = new EntityCocoon(worldObj, cocoonType, true);
+								final EntityPlayer player = (EntityPlayer)shooter;
+								player.triggerAchievement(SpiderQueen.getInstance().achievementCocoonSomething);
+							}
+
+							if (type == 2)
+							{
+								if (impactPoint.entityHit instanceof EntityGhast)
+								{
+									entityCocoon = new EntityCocoon(worldObj, cocoonType, true);
+
+									if (shooter instanceof EntityPlayer)
+									{
+										final EntityPlayer player = (EntityPlayer)shooter;
+										player.triggerAchievement(SpiderQueen.getInstance().achievementCocoonGhast);
+									}
+								}
 							}
 
 							else
 							{
-								entityCocoon = new EntityCocoon(worldObj, cocoonType);
+								if (impactPoint.entityHit instanceof EntityGhast)
+								{
+									return;
+								}
+
+								else
+								{
+									entityCocoon = new EntityCocoon(worldObj, cocoonType);
+								}
 							}
 
-							entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
-							worldObj.spawnEntityInWorld(entityCocoon);
-							entityHit.setDead();
-							setDead();
-
-							if (shooter instanceof EntityHatchedSpider)
+							if (entityCocoon != null)
 							{
-								final EntityHatchedSpider spider = (EntityHatchedSpider) shooter;
-								spider.killsUntilLevelUp--;
-								spider.tryLevelUp();
+								entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
+								worldObj.spawnEntityInWorld(entityCocoon);
+								entityHit.setDead();
+								setDead();
+
+								if (shooter instanceof EntityHatchedSpider)
+								{
+									final EntityHatchedSpider spider = (EntityHatchedSpider) shooter;
+									spider.killsUntilLevelUp--;
+									spider.tryLevelUp();
+								}
 							}
 						}
 					}

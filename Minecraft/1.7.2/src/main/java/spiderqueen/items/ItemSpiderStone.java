@@ -34,7 +34,8 @@ public class ItemSpiderStone extends Item
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{
-		list.add("Use to craft a Bug Light.");
+		list.add("A rare stone used in");
+		list.add("various crafting recipes.");
 	}
 
 	@Override

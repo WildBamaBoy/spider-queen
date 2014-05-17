@@ -148,7 +148,7 @@ public class EntityMiniGhast extends EntityCreature
 	
 	public void onUpdate()
 	{
-		
+		super.onUpdate();
 	}
 
 	public void writeEntityToNBT(NBTTagCompound nbt)

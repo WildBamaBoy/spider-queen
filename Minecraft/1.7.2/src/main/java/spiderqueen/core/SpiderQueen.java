@@ -18,11 +18,17 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
 import spiderqueen.blocks.BlockWebFull;
@@ -35,6 +41,7 @@ import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.core.forge.EventHooks;
 import spiderqueen.core.forge.GuiHandlerInventory;
 import spiderqueen.core.forge.ServerTickHandler;
+import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
@@ -143,6 +150,46 @@ public class SpiderQueen implements IEnforcedCore
 	public Block					blockWebBed;
 	public Block					blockSpiderRod;
 
+	// Achievements
+	public AchievementPage			achievementPageSpiderQueen;
+	public Achievement				achievementCraftWeb;
+	public Achievement				achievementPickupFlameWeb;
+	public Achievement				achievementNightVision;
+	public Achievement	achievementCocoonSomething;
+	public Achievement	achievementLayEgg;
+	public Achievement	achievementFindSpiderStone;
+	public Achievement	achievementCraftSpiderRod;
+	public Achievement	achievementCraftBugLight;
+	public Achievement	achievementHatchSpider;
+	public Achievement	achievementHatchSkeletonSpider;
+	public Achievement	achievementHatchZombieSpider;
+	public Achievement	achievementHatchCreeperSpider;
+	public Achievement	achievementHatchEndermanSpider;
+	public Achievement	achievementHatchVillagerSpider;
+	public Achievement	achievementHatchHorseSpider;
+	public Achievement	achievementHatchWolfSpider;
+	public Achievement	achievementWarWithCreepers;
+	public Achievement	achievementWarWithSkeletons;
+	public Achievement	achievementWarWithHumans;
+	public Achievement	achievementWarWithOtherQueens;
+	public Achievement	achievementWarWithZombies;
+	public Achievement	achievementWarWithEndermen;
+	public Achievement	achievementWarWithEvilQueen;
+	public Achievement	achievementWarWithAll;
+	public Achievement	achievementDefeatEvilQueen;
+	public Achievement	achievementHatchBlazeSpider;
+	public Achievement	achievementCocoonGhast;
+	public Achievement	achievementHatchGhastSpider;
+	public Achievement	achievementFriendsWithAny;
+	public Achievement	achievementGiftBrain;
+	public Achievement	achievementGiftSkull;
+	public Achievement	achievementGiftHeart;
+	public Achievement	achievementPeaceWithAll;
+	public Achievement	achievementHelpZombies;
+	public Achievement	achievementKillHumans;
+	public Achievement	achievementKillSheWolfDeadly;
+	public Achievement	achievementKillWildBamaBoy;
+	
 	public List<String>				fakePlayerNames				= new ArrayList<String>();
 	public boolean					doDisplayPlayerSkins		= true;
 	public boolean					inDebugMode					= true;
@@ -233,7 +280,7 @@ public class SpiderQueen implements IEnforcedCore
 		itemCocoonTestificate = new ItemCocoon(EnumCocoonType.VILLAGER).setUnlocalizedName("cocoon.testificate");
 		itemCocoonWolf = new ItemCocoon(EnumCocoonType.WOLF).setUnlocalizedName("cocoon.wolf");
 		itemCocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE).setUnlocalizedName("cocoon.zombie");
-		
+
 		itemWeb = new ItemWeb(0).setUnlocalizedName("web");
 		itemPoisonWeb = new ItemWeb(1).setUnlocalizedName("webpoison");
 		itemFlameWeb = new ItemWeb(2).setUnlocalizedName("webflame");
@@ -300,9 +347,9 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeRecipes()
 	{
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'X', itemSpiderStone);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GXG", " S ", " S ", 'G', Blocks.glass, 'S', Items.stick, 'X', itemSpiderStone);
 
-		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GTG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'X', itemSpiderStone);
+		GameRegistry.addRecipe(new ItemStack(itemSpiderRod), "GXG", " S ", " S ", 'G', Blocks.glass_pane, 'S', Items.stick, 'X', itemSpiderStone);
 
 		GameRegistry.addRecipe(new ItemStack(itemWeb), "SS ", "S  ", 'S', Items.string);
 
@@ -320,7 +367,63 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeAchievements()
 	{
+		//Initial point
+		this.achievementCraftWeb = Achievements.createNewAchievement(this, "craftweb", 0, 0, itemWeb);
 
+		//Crafting Tier
+		this.achievementFindSpiderStone = Achievements.createNewAchievement(this, "findspiderstone", -2, 0, itemSpiderStone, achievementCraftWeb).setSpecial();
+		this.achievementCraftSpiderRod = Achievements.createNewAchievement(this, "craftspiderrod", -3, 1, itemSpiderRod, achievementFindSpiderStone);
+		this.achievementCraftBugLight = Achievements.createNewAchievement(this, "craftbuglight", -3, -1, itemBugLight, achievementFindSpiderStone);
+		this.achievementNightVision = Achievements.createNewAchievement(this, "nightvision", -5, -1, itemBugLight, achievementCraftBugLight).setSpecial();
+
+		//Walkthrough
+		this.achievementCocoonSomething = Achievements.createNewAchievement(this, "cocoonsomething", 2, -2, itemCocoonCow, achievementCraftWeb);
+		this.achievementLayEgg = Achievements.createNewAchievement(this, "layegg", 4, 0, itemSpiderEgg, achievementCocoonSomething);
+		this.achievementHatchSpider = Achievements.createNewAchievement(this, "hatchspider", 6, 0, itemSpawnSpider, achievementLayEgg);
+
+		//Mob Teir
+		this.achievementHatchSkeletonSpider = Achievements.createNewAchievement(this, "hatchskeletonspider", 3, -3, itemCocoonSkeleton, achievementHatchSpider);
+		this.achievementHatchZombieSpider = Achievements.createNewAchievement(this, "hatchzombiespider", 4, -4, itemCocoonZombie, achievementHatchSpider);
+		this.achievementHatchCreeperSpider = Achievements.createNewAchievement(this, "hatchcreeperspider", 5, -5, itemCocoonCreeper, achievementHatchSpider);
+		this.achievementHatchEndermanSpider = Achievements.createNewAchievement(this, "hatchendermanspider", 6, -6, itemCocoonEnderman, achievementHatchSpider).setSpecial();
+		this.achievementHatchVillagerSpider = Achievements.createNewAchievement(this, "hatchvillagerspider", 7, -5, itemCocoonTestificate, achievementHatchSpider);
+		this.achievementHatchHorseSpider = Achievements.createNewAchievement(this, "hatchhorsespider", 8, -4, itemCocoonHorse, achievementHatchSpider);
+		this.achievementHatchWolfSpider = Achievements.createNewAchievement(this, "hatchwolfspider", 9, -3, itemCocoonWolf, achievementHatchSpider);
+
+		//War Tier
+		this.achievementWarWithCreepers = Achievements.createNewAchievement(this, "warwithcreepers", 3, 3, Items.gunpowder, achievementHatchSpider);
+		this.achievementWarWithSkeletons = Achievements.createNewAchievement(this, "warwithskeletons", 9, 3, Items.bone, achievementHatchSpider);
+		this.achievementWarWithHumans = Achievements.createNewAchievement(this, "warwithhumans", 4, 4, Items.iron_helmet, achievementHatchSpider);
+		this.achievementWarWithOtherQueens = Achievements.createNewAchievement(this, "warwithotherqueens", 8, 4, Items.string, achievementHatchSpider);
+		this.achievementWarWithZombies = Achievements.createNewAchievement(this, "warwithzombies", 5, 5, Items.rotten_flesh, achievementHatchSpider);
+		this.achievementWarWithEndermen = Achievements.createNewAchievement(this, "warwithendermen", 7, 5, Items.ender_pearl, achievementHatchSpider);
+		this.achievementWarWithAll      = Achievements.createNewAchievement(this, "warwithall", 6, 6, Items.diamond_sword, achievementHatchSpider).setSpecial();
+
+		//Nether Tier
+		this.achievementHatchBlazeSpider = Achievements.createNewAchievement(this, "hatchblazespider", 10, -1, itemCocoonBlaze, achievementHatchSpider);
+		this.achievementPickupFlameWeb    = Achievements.createNewAchievement(this, "pickupflameweb", 12, -3, itemFlameWeb, achievementHatchBlazeSpider);
+		this.achievementCocoonGhast      = Achievements.createNewAchievement(this, "cocoonghast", 14, -5, itemCocoonGhast, achievementPickupFlameWeb);
+		this.achievementHatchGhastSpider = Achievements.createNewAchievement(this, "hatchghastspider", 14, -7, Items.nether_star, achievementCocoonGhast).setSpecial();
+
+		//Evil Queen Tier
+		this.achievementWarWithEvilQueen = Achievements.createNewAchievement(this, "warwithevilqueen", 10, 1, Items.spider_eye, achievementHatchSpider);
+		this.achievementDefeatEvilQueen = Achievements.createNewAchievement(this, "defeatevilqueen", 12, 3, itemSkull, achievementWarWithEvilQueen).setSpecial();
+
+		//Peace Tier
+		this.achievementFriendsWithAny = Achievements.createNewAchievement(this, "friendswithany", 12, 0, Items.cookie, achievementHatchSpider);
+		this.achievementGiftBrain = Achievements.createNewAchievement(this, "giftbrain", 14, 2, itemBrain, achievementFriendsWithAny);
+		this.achievementGiftSkull = Achievements.createNewAchievement(this, "giftskull", 14, 0, itemSkull, achievementFriendsWithAny);
+		this.achievementGiftHeart = Achievements.createNewAchievement(this, "giftheart", 14, -2, itemHeart, achievementFriendsWithAny);
+		this.achievementPeaceWithAll = Achievements.createNewAchievement(this, "peacewithall", 16, 0, Items.diamond, achievementFriendsWithAny).setSpecial();
+		
+		//Misc Teir
+		this.achievementHelpZombies = Achievements.createNewAchievement(this, "helpzombies", -5, -3, itemBrain);
+		this.achievementKillHumans = Achievements.createNewAchievement(this, "killhumans", -2, -3, itemHeart);
+		this.achievementKillSheWolfDeadly = Achievements.createNewAchievement(this, "killshewolfdeadly", -3, -4, itemCocoonWolf, achievementKillHumans).setSpecial();
+		this.achievementKillWildBamaBoy = Achievements.createNewAchievement(this, "killwildbamaboy", -1, -4, Items.diamond_helmet, achievementKillHumans).setSpecial();
+		
+		//Page
+		this.achievementPageSpiderQueen = Achievements.createAchievementPage(this, "Spider Queen Reborn");
 	}
 
 	@Override

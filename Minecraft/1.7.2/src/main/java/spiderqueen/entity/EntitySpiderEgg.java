@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -107,6 +108,13 @@ public class EntitySpiderEgg extends EntityCreature
 				
 				if (cocoonToConsume != null && cocoonToConsume.getCocoonType() == EnumCocoonType.GHAST)
 				{
+					final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
+					
+					if (player != null)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementHatchGhastSpider);
+					}
+					
 					final EntityMiniGhast miniGhast = new EntityMiniGhast(worldObj, owner);
 					miniGhast.setPosition(posX, posY + 1, posZ);
 					worldObj.spawnEntityInWorld(miniGhast);
@@ -190,6 +198,53 @@ public class EntitySpiderEgg extends EntityCreature
 
 	private void doHatch(EntityHatchedSpider hatchedSpider)
 	{
+		final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
+		
+		if (player != null)
+		{
+			player.triggerAchievement(SpiderQueen.getInstance().achievementHatchSpider);
+			
+			Achievement achievementToUnlock = null;
+			
+			switch (hatchedSpider.cocoonType)
+			{
+				case BLAZE:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchBlazeSpider;
+					break;
+				case CREEPER:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchCreeperSpider;
+					break;
+				case ENDERMAN:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchEndermanSpider;
+					break;
+				case GHAST:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchGhastSpider;
+					break;
+				case HORSE:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchHorseSpider;
+					break;
+				case SKELETON:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchSkeletonSpider;
+					break;
+				case VILLAGER:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchVillagerSpider;
+					break;
+				case WOLF:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchWolfSpider;
+					break;
+				case ZOMBIE:
+					achievementToUnlock = SpiderQueen.getInstance().achievementHatchZombieSpider;
+					break;
+				default:
+					break;
+			}
+			
+			if (achievementToUnlock != null)
+			{
+				player.triggerAchievement(achievementToUnlock);
+			}
+		}
+		
 		hatchedSpider.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
 		worldObj.spawnEntityInWorld(hatchedSpider);
 		setDead();

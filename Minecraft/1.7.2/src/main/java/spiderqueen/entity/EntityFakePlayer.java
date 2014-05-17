@@ -72,6 +72,11 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			addAI();
 			username = SpiderQueen.getInstance().getRandomPlayerName();
 
+			if ((username.equals("WildBamaBoy*") || username.equals("LuvTrumpetStyle*")) && LogicHelper.getBooleanWithProbability(90))
+			{
+				username = SpiderQueen.getInstance().getRandomPlayerName();
+			}
+
 			if (username.endsWith("*"))
 			{
 				isContributor = true;
@@ -105,7 +110,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			tryGetTarget();
 			moveToTarget();
 			damageTarget();
-			
+
 			if (!hasInventoryBeenPopulated)
 			{
 				Inventory.populateWithRandomEquipment(inventory);
@@ -199,6 +204,21 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		super.onDeath(damageSource);
 
 		inventory.dropAllItems(true);
+
+		if (damageSource.getEntity() instanceof EntityPlayer)
+		{
+			final EntityPlayer player = (EntityPlayer)damageSource.getEntity();
+			
+			if (username.equals("WildBamaBoy"))
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementKillWildBamaBoy);
+			}
+
+			else if (username.equals("LuvTrumpetStyle"))
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementKillSheWolfDeadly);
+			}
+		}
 	}
 
 	@Override
@@ -375,7 +395,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, username);
 		}
 	}
-	
+
 	private void updateSwinging()
 	{
 		if (isSwinging)
