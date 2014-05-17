@@ -105,25 +105,25 @@ public class EntitySpiderEgg extends EntityCreature
 			if (timeUntilEggHatch <= 0)
 			{
 				final EntityCocoon cocoonToConsume = getConsumableCocoon();
-				
+
 				if (cocoonToConsume != null && cocoonToConsume.getCocoonType() == EnumCocoonType.GHAST)
 				{
 					final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
-					
+
 					if (player != null)
 					{
 						player.triggerAchievement(SpiderQueen.getInstance().achievementHatchGhastSpider);
 					}
-					
+
 					final EntityMiniGhast miniGhast = new EntityMiniGhast(worldObj, owner);
 					miniGhast.setPosition(posX, posY + 1, posZ);
 					worldObj.spawnEntityInWorld(miniGhast);
 					setDead();
-					
+
 					cocoonToConsume.setEaten(true);
 					SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetEaten, cocoonToConsume.getEntityId()));
 				}
-				
+
 				else
 				{
 					final EntityHatchedSpider hatchedSpider = consumeCocoon(cocoonToConsume);
@@ -199,13 +199,13 @@ public class EntitySpiderEgg extends EntityCreature
 	private void doHatch(EntityHatchedSpider hatchedSpider)
 	{
 		final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
-		
+
 		if (player != null)
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementHatchSpider);
-			
+
 			Achievement achievementToUnlock = null;
-			
+
 			switch (hatchedSpider.cocoonType)
 			{
 				case BLAZE:
@@ -238,13 +238,13 @@ public class EntitySpiderEgg extends EntityCreature
 				default:
 					break;
 			}
-			
+
 			if (achievementToUnlock != null)
 			{
 				player.triggerAchievement(achievementToUnlock);
 			}
 		}
-		
+
 		hatchedSpider.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
 		worldObj.spawnEntityInWorld(hatchedSpider);
 		setDead();

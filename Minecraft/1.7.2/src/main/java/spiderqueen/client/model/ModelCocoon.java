@@ -43,8 +43,8 @@ public class ModelCocoon extends ModelBase
 	private final ModelRenderer	modelHorseMuzzleDown;
 	private final ModelRenderer	modelHorseWeb;
 
-	private final ModelRenderer modelGhastBody;
-	private final ModelRenderer modelGhastFace;
+	private final ModelRenderer	modelGhastBody;
+	private final ModelRenderer	modelGhastFace;
 
 	public ModelCocoon()
 	{

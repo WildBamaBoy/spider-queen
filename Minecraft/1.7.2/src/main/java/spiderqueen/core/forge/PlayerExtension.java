@@ -25,7 +25,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 {
 	public static final String					ID	= "SpiderQueenplayerExtension";
 	public EntityWebslinger						webEntity;
-	public int totalHumansKilled;
+	public int									totalHumansKilled;
 	private final EntityPlayer					player;
 	private final List<CreatureReputationEntry>	reputationEntries;
 
@@ -42,7 +42,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 		{
 			NBTHelper.autoWriteClassFieldsToNBT(entry.getClass(), entry, nbt, entry.creatureGroupName);
 		}
-		
+
 		nbt.setInteger("totalHumansKilled", totalHumansKilled);
 	}
 
@@ -53,7 +53,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 		{
 			NBTHelper.autoReadClassFieldsFromNBT(entry.getClass(), entry, nbt, entry.creatureGroupName);
 		}
-		
+
 		totalHumansKilled = nbt.getInteger("totalHumansKilled");
 	}
 

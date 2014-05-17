@@ -181,11 +181,11 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			{
 				entityStruck.motionX = entityStruck.motionX - amount;
 			}
-			
+
 			else
 			{
 				amount = amount - player.motionX;
-				player.motionX = amount;		
+				player.motionX = amount;
 			}
 		}
 
@@ -195,11 +195,11 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			{
 				entityStruck.motionY = entityStruck.motionY - amount;
 			}
-			
+
 			else
 			{
 				amount = amount - player.motionY;
-				player.motionY = amount;		
+				player.motionY = amount;
 			}
 		}
 
@@ -209,11 +209,11 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			{
 				entityStruck.motionZ = entityStruck.motionZ - amount;
 			}
-			
+
 			else
 			{
 				amount = amount - player.motionZ;
-				player.motionZ = amount;		
+				player.motionZ = amount;
 			}
 		}
 	}
@@ -611,7 +611,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	@Override
 	public void writeSpawnData(ByteBuf buffer)
 	{
-		//No data to read.
+		// No data to read.
 	}
 
 	@Override

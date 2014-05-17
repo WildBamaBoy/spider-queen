@@ -102,7 +102,7 @@ public class ServerTickHandler
 	{
 		boolean atWarWithAll = true;
 		boolean atFriendsWithAll = true;
-		
+
 		for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 		{
 			if (!entry.creatureGroupName.equals("Evil Queen"))
@@ -111,12 +111,12 @@ public class ServerTickHandler
 				{
 					atWarWithAll = false;
 				}
-				
+
 				if (entry.reputationValue < 3)
 				{
 					atFriendsWithAll = false;
 				}
-				
+
 				if (entry.reputationValue == -2 && !entry.isAtWar)
 				{
 					player.addChatMessage(new ChatComponentText(Color.RED + "The " + entry.creatureGroupName.toLowerCase() + " are not pleased with your latest actions."));
@@ -147,32 +147,32 @@ public class ServerTickHandler
 					player.addChatMessage(new ChatComponentText(Color.GREEN + "The " + entry.creatureGroupName.toLowerCase() + " are pleased with you. They have sent you one of their own."));
 					LogicHelper.spawnEntityAtPlayer(player, entry.getCreatureClass());
 				}
-				
+
 				if (entry.getCreatureClass() == EntityCreeper.class)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithCreepers);
 				}
-				
+
 				else if (entry.getCreatureClass() == EntityFakePlayer.class)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithHumans);
 				}
-				
+
 				else if (entry.getCreatureClass() == EntityZombie.class)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithZombies);
 				}
-				
+
 				else if (entry.getCreatureClass() == EntityEnderman.class)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithEndermen);
 				}
-				
+
 				else if (entry.getCreatureClass() == EntityOtherQueen.class)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithOtherQueens);
 				}
-				
+
 				else if (entry.getCreatureClass() == EntitySkeleton.class)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithSkeletons);
@@ -210,12 +210,12 @@ public class ServerTickHandler
 							entity.spawnAdditionalSpiders();
 							entity.spawnAdditionalSpiders();
 							entity.spawnAdditionalSpiders();
-							
+
 							world.spawnEntityInWorld(entity);
 						}
 					}
 
-					catch (Exception e) 
+					catch (final Exception e)
 					{
 						RadixCore.getInstance().getLogger().log("Unexpected exception while spawning a group of entities.");
 						RadixCore.getInstance().getLogger().log(e);
@@ -223,12 +223,12 @@ public class ServerTickHandler
 				}
 			}
 		}
-		
+
 		if (atWarWithAll)
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithAll);
 		}
-		
+
 		else if (atFriendsWithAll)
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementPeaceWithAll);
@@ -345,7 +345,7 @@ public class ServerTickHandler
 			}
 
 			else
-				// They've moved to a different slot. Ignore.
+			// They've moved to a different slot. Ignore.
 			{
 				playersNoLongerEating.add(eatEntry);
 			}
@@ -353,7 +353,7 @@ public class ServerTickHandler
 
 		// Empty the playersEating list.
 		for (final PlayerEatEntry eatEntry : playersNoLongerEating)
-		{	
+		{
 			playersEating.remove(eatEntry);
 		}
 	}
@@ -425,7 +425,6 @@ public class ServerTickHandler
 					{
 						final World world = player.worldObj;
 						final Point3D point = new Point3D(player.posX + modX, player.posY, player.posZ + modZ);
-						final Class entityClass = EntityOtherQueen.class;
 						final int minimum = 1;
 						final int maximum = 1;
 
@@ -435,7 +434,7 @@ public class ServerTickHandler
 
 							for (int i = 0; i < amountToSpawn; i++)
 							{
-								final EntityOtherQueen entity = (EntityOtherQueen) new EntityOtherQueen(world);
+								final EntityOtherQueen entity = new EntityOtherQueen(world);
 								final Point3D spawnPoint = LogicHelper.getRandomNearbyBlockCoordinatesOfType(world, point, Blocks.air, 10);
 
 								if (spawnPoint != null)
@@ -454,7 +453,7 @@ public class ServerTickHandler
 							}
 						}
 
-						catch (Exception e) 
+						catch (final Exception e)
 						{
 							RadixCore.getInstance().getLogger().log("Unexpected exception while spawning a group of entities.");
 							RadixCore.getInstance().getLogger().log(e);
@@ -516,7 +515,7 @@ public class ServerTickHandler
 					{
 						final List<EntityLiving> nearbyEntities = (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, entry.getCreatureClass(), 10);
 
-						for (EntityLiving entity : nearbyEntities)
+						for (final EntityLiving entity : nearbyEntities)
 						{
 							if (entity instanceof EntityMob)
 							{

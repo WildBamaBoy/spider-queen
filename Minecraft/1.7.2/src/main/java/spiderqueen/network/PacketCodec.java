@@ -91,7 +91,7 @@ public final class PacketCodec extends AbstractPacketCodec
 				case SwingArm:
 					buffer.writeInt((Integer) packet.arguments[0]);
 					break;
-					
+
 				case CreateParticle:
 					ByteBufIO.writeObject(buffer, packet.arguments[0]);
 					buffer.writeDouble((Double) packet.arguments[1]);
@@ -101,7 +101,7 @@ public final class PacketCodec extends AbstractPacketCodec
 					buffer.writeDouble((Double) packet.arguments[5]);
 					buffer.writeDouble((Double) packet.arguments[6]);
 					break;
-					
+
 				default:
 					break;
 			}
@@ -169,7 +169,7 @@ public final class PacketCodec extends AbstractPacketCodec
 				case SwingArm:
 					packet.arguments[0] = buffer.readInt();
 					break;
-					
+
 				case CreateParticle:
 					packet.arguments[0] = ByteBufIO.readObject(buffer);
 					packet.arguments[1] = buffer.readDouble();
@@ -179,7 +179,7 @@ public final class PacketCodec extends AbstractPacketCodec
 					packet.arguments[5] = buffer.readDouble();
 					packet.arguments[6] = buffer.readDouble();
 					break;
-					
+
 				default:
 					break;
 			}

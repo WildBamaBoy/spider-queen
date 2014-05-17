@@ -70,7 +70,7 @@ public class CommandCheckReputation extends CommandBase
 			{
 				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.GREEN + entry.reputationValue));
 			}
-			
+
 			else
 			{
 				player.addChatMessage(new ChatComponentText(Color.WHITE + entry.creatureGroupName + ": " + Color.GREEN + entry.reputationValue + " (FRIEND)"));

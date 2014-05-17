@@ -49,7 +49,7 @@ public class ClientTickHandler
 
 	public void onTickInGame()
 	{
-		//updatePlayerWebClimb();
+		// updatePlayerWebClimb();
 		updatePlayerWebMovement();
 	}
 

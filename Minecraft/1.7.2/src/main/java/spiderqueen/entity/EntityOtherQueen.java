@@ -75,7 +75,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	public EntityOtherQueen(World world, boolean isHostile)
 	{
 		super(world);
-		
+
 		this.isHostile = isHostile;
 		friendlySkinIndex = LogicHelper.getNumberInRange(1, 4);
 		identifier = HashGenerator.getMD5Hash(String.valueOf(LogicHelper.getNumberInRange(0, 100) * getEntityId()));
@@ -87,7 +87,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		tasks.addTask(3, new EntityAIWander(this, 0.4D));
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
-	
+
 	@Override
 	public boolean isAIEnabled()
 	{
@@ -115,7 +115,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			if (target != null)
 			{
 				attackEntity(target, 3.5F);
-				
+
 				if (target instanceof EntityPlayer && ((EntityPlayer) target).getHealth() <= 0.0F)
 				{
 					setDead();
@@ -135,10 +135,10 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	public void onDeath(DamageSource damageSource)
 	{
 		super.onDeath(damageSource);
-		
+
 		if (damageSource.getEntity() instanceof EntityPlayer)
 		{
-			final EntityPlayer player = (EntityPlayer)damageSource.getEntity();
+			final EntityPlayer player = (EntityPlayer) damageSource.getEntity();
 			player.triggerAchievement(SpiderQueen.getInstance().achievementDefeatEvilQueen);
 		}
 	}
@@ -448,7 +448,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			}
 		}
 	}
-	
+
 	private void syncInventory()
 	{
 		if (!hasSyncedInventory)

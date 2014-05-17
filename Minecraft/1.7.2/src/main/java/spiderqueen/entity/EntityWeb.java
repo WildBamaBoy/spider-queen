@@ -420,7 +420,7 @@ public class EntityWeb extends Entity implements IProjectile
 
 							if (shooter instanceof EntityPlayer && type != 2)
 							{
-								final EntityPlayer player = (EntityPlayer)shooter;
+								final EntityPlayer player = (EntityPlayer) shooter;
 								player.triggerAchievement(SpiderQueen.getInstance().achievementCocoonSomething);
 							}
 
@@ -432,7 +432,7 @@ public class EntityWeb extends Entity implements IProjectile
 
 									if (shooter instanceof EntityPlayer)
 									{
-										final EntityPlayer player = (EntityPlayer)shooter;
+										final EntityPlayer player = (EntityPlayer) shooter;
 										player.triggerAchievement(SpiderQueen.getInstance().achievementCocoonGhast);
 									}
 								}
@@ -471,7 +471,7 @@ public class EntityWeb extends Entity implements IProjectile
 			}
 
 			else
-				// Hit a block.
+			// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int i = impactPoint.blockX;
@@ -487,10 +487,7 @@ public class EntityWeb extends Entity implements IProjectile
 						return;
 					}
 
-					else if (blockHit == Blocks.tallgrass && type != 2)
-					{
-						return;
-					}
+					else if (blockHit == Blocks.tallgrass && type != 2) { return; }
 
 					if (doBlockSpawn)
 					{

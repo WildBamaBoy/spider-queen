@@ -90,11 +90,11 @@ public final class PacketHandler extends AbstractPacketHandler
 				case SwingArm:
 					handleSwingArm(packet.arguments, player);
 					break;
-					
+
 				case CreateParticle:
 					handleCreateParticle(packet.arguments, player);
 					break;
-					
+
 				default:
 					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -258,9 +258,9 @@ public final class PacketHandler extends AbstractPacketHandler
 
 	private void handleSwingArm(Object[] arguments, EntityPlayer player)
 	{
-		final int entityId = (Integer)arguments[0];
+		final int entityId = (Integer) arguments[0];
 		final EntityFakePlayer entity = (EntityFakePlayer) player.worldObj.getEntityByID(entityId);
-		
+
 		if (entity != null)
 		{
 			entity.swingItem();
@@ -276,7 +276,7 @@ public final class PacketHandler extends AbstractPacketHandler
 		final double velX = (Double) arguments[4];
 		final double velY = (Double) arguments[5];
 		final double velZ = (Double) arguments[6];
-		
+
 		player.worldObj.spawnParticle(particleName, posX, posY, posZ, velX, velY, velZ);
 	}
 }

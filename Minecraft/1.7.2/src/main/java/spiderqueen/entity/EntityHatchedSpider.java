@@ -408,7 +408,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	public void tryLevelUp(boolean doForce)
 	{
-		if (doForce || (cocoonType != EnumCocoonType._ENDERMINION && level < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode)))
+		if (doForce || cocoonType != EnumCocoonType._ENDERMINION && level < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode))
 		{
 			timeUntilExplosion = 0;
 			timeUntilWebshot = 0;
@@ -432,7 +432,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		tryLevelUp(false);
 	}
-	
+
 	private void setAttackPath(Entity entityBeingAttacked)
 	{
 		if (cocoonType == EnumCocoonType.SKELETON || cocoonType == EnumCocoonType.ENDERMAN)
@@ -612,15 +612,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (level == 3)
 			{
 				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 4;
-				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 4;				
+				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 4;
 			}
-			
+
 			else
 			{
 				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 3;
-				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 3;				
+				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 3;
 			}
-			
+
 			if (moveForward <= 0.0F)
 			{
 				moveForward *= 0.25F;
@@ -705,14 +705,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					if (!worldObj.isRemote)
 					{
 						minion.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
-						minion.level = this.level;
+						minion.level = level;
 						worldObj.spawnEntityInWorld(minion);
 						worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
 					}
 				}
 			}
 		}
-		
+
 		if (minionSpawnProgress == 1 && LogicHelper.getBooleanWithProbability(25))
 		{
 			tryLevelUp(true);

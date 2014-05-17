@@ -46,7 +46,6 @@ import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
-import com.radixshock.radixcore.logic.Point3D;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -117,14 +116,14 @@ public class EventHooks
 			{
 				event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementFindSpiderStone);
 			}
-			
+
 			else if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemFlameWeb)
 			{
 				event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementPickupFlameWeb);
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onAttackEntity(AttackEntityEvent event)
 	{
@@ -219,23 +218,23 @@ public class EventHooks
 			{
 				event.entityLiving.dropItem(SpiderQueen.getInstance().itemSpiderStone, 1);
 			}
-			
+
 			if (event.entityLiving instanceof EntityVillager)
 			{
 				final List<EntityZombie> nearbyZombies = (List<EntityZombie>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityLiving, EntityZombie.class, 8);
 				final boolean cobblestoneNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.cobblestone, 5) != null;
 				final boolean planksNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.planks, 5) != null;
-				
+
 				if (nearbyZombies.size() > 0 && cobblestoneNearby && planksNearby)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementHelpZombies);
 				}
 			}
-			
+
 			if (event.entityLiving instanceof EntityFakePlayer)
 			{
 				playerExtension.totalHumansKilled++;
-				
+
 				if (playerExtension.totalHumansKilled >= 50)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementKillHumans);
@@ -284,16 +283,11 @@ public class EventHooks
 					for (int i = 0; i < 6; i++)
 					{
 						final Random rand = player.worldObj.rand;
-						final double velX  = rand.nextGaussian() * 0.02D;
+						final double velX = rand.nextGaussian() * 0.02D;
 						final double velY = rand.nextGaussian() * 0.02D;
 						final double velZ = rand.nextGaussian() * 0.02D;
 
-						SpiderQueen.packetPipeline.sendPacketToAllPlayers(
-								new Packet(EnumPacketType.CreateParticle, 
-										"heart", event.target.posX + rand.nextFloat() * event.target.width * 2.0F - event.target.width, 
-										event.target.posY + 0.5D + rand.nextFloat() * event.target.height, 
-										event.target.posZ + rand.nextFloat() * event.target.width * 2.0F - event.target.width, 
-										velX, velY, velZ));
+						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateParticle, "heart", event.target.posX + rand.nextFloat() * event.target.width * 2.0F - event.target.width, event.target.posY + 0.5D + rand.nextFloat() * event.target.height, event.target.posZ + rand.nextFloat() * event.target.width * 2.0F - event.target.width, velX, velY, velZ));
 					}
 				}
 			}
@@ -331,43 +325,44 @@ public class EventHooks
 			}
 		}
 
-		catch (ClassCastException e)
+		catch (final ClassCastException e)
 		{
-			//When hit by another player.
+			// When hit by another player.
 		}
 	}
 
 	/**
 	 * Handles crafting of a crown and setting to monarch status.
 	 * 
-	 * @param 	event	The event.
+	 * @param event
+	 *            The event.
 	 */
 	@SubscribeEvent
 	public void itemCraftedEventHandler(ItemCraftedEvent event)
 	{
 		final EntityPlayer player = event.player;
-		
+
 		if (event.crafting.getItem() == SpiderQueen.getInstance().itemWeb)
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWeb);
 		}
-		
+
 		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemBugLight)
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftBugLight);
 		}
-		
+
 		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemSpiderRod)
 		{
 			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftSpiderRod);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void itemSmeltedEventHandler(ItemSmeltedEvent event)
 	{
 	}
-	
+
 	private void doAddAttackTasks(EntityCreature mob)
 	{
 		if (mob instanceof EntityMob)

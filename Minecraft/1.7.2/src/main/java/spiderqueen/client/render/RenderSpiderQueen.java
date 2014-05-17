@@ -75,7 +75,7 @@ public class RenderSpiderQueen extends RenderPlayer
 				renderPassModel.isRiding = mainModel.isRiding;
 			}
 
-			if(clientPlayer != Minecraft.getMinecraft().thePlayer)
+			if (clientPlayer != Minecraft.getMinecraft().thePlayer)
 			{
 				GL11.glTranslatef(0, 1.7F, 0);
 			}

@@ -53,15 +53,15 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 {
 	public String					username;
 	public String					lastAttackingPlayer	= "";
-	public int 						swingProgressTicks;
+	public int						swingProgressTicks;
 	public boolean					isContributor;
 	public boolean					hasInventoryBeenPopulated;
-	public boolean 					isSwinging;
+	public boolean					isSwinging;
 	public ResourceLocation			skinResourceLocation;
 	private ThreadDownloadImageData	imageDownloadThread;
 	public Inventory				inventory			= new Inventory(this);
 
-	private Entity target = null;
+	private Entity					target				= null;
 
 	public EntityFakePlayer(World world)
 	{
@@ -173,7 +173,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			}
 		}
 
-		catch (ClassCastException e)
+		catch (final ClassCastException e)
 		{
 			SpiderQueen.getInstance().getLogger().log(e);
 		}
@@ -207,8 +207,8 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 		if (damageSource.getEntity() instanceof EntityPlayer)
 		{
-			final EntityPlayer player = (EntityPlayer)damageSource.getEntity();
-			
+			final EntityPlayer player = (EntityPlayer) damageSource.getEntity();
+
 			if (username.equals("WildBamaBoy"))
 			{
 				player.triggerAchievement(SpiderQueen.getInstance().achievementKillWildBamaBoy);
@@ -321,19 +321,15 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 		}
 	}
 
-
 	private void tryGetTarget()
 	{
-		for (Entity entity : LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15))
+		for (final Entity entity : LogicHelper.getAllEntitiesWithinDistanceOfEntity(this, 15))
 		{
-			if (canEntityBeSeen(entity) && 
-					(entity instanceof EntityCreeper || entity instanceof EntitySkeleton || entity instanceof EntityWitch ||
-							entity instanceof EntityZombie || entity instanceof EntityOtherQueen ||
-							entity instanceof EntityPlayer || entity instanceof EntitySpider || entity instanceof EntityHatchedSpider))
+			if (canEntityBeSeen(entity) && (entity instanceof EntityCreeper || entity instanceof EntitySkeleton || entity instanceof EntityWitch || entity instanceof EntityZombie || entity instanceof EntityOtherQueen || entity instanceof EntityPlayer || entity instanceof EntitySpider || entity instanceof EntityHatchedSpider))
 			{
 				if (entity instanceof EntityPlayer)
 				{
-					final EntityPlayer player = (EntityPlayer)entity;
+					final EntityPlayer player = (EntityPlayer) entity;
 					final PlayerExtension reputationHandler = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
 					if (reputationHandler.getReputationEntry(EntityFakePlayer.class).reputationValue >= 0 || player.capabilities.isCreativeMode)
@@ -344,7 +340,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 				else if (entity instanceof EntityHatchedSpider)
 				{
-					final EntityHatchedSpider spider = (EntityHatchedSpider)entity;
+					final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
 					final EntityPlayer player = worldObj.getPlayerEntityByName(spider.owner);
 
 					if (player != null)
@@ -358,7 +354,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 					}
 				}
 
-				target = entity;	
+				target = entity;
 			}
 		}
 	}
@@ -367,7 +363,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 	{
 		if (target != null)
 		{
-			if (target.isDead || (target instanceof EntityPlayer && ((EntityPlayer)target).capabilities.isCreativeMode))
+			if (target.isDead || target instanceof EntityPlayer && ((EntityPlayer) target).capabilities.isCreativeMode)
 			{
 				target = null;
 			}
@@ -414,6 +410,6 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			swingProgressTicks = 0;
 		}
 
-		swingProgress = (float)swingProgressTicks / (float)8;
+		swingProgress = (float) swingProgressTicks / (float) 8;
 	}
 }

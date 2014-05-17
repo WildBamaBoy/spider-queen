@@ -38,7 +38,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	private boolean			isEaten;
 	private int				currentDamage;
 	private int				timeSinceHit;
-	private int				timeUntilTryBreakFree = -1;
+	private int				timeUntilTryBreakFree	= -1;
 
 	public EntityCocoon(World world)
 	{
@@ -266,7 +266,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			if (!worldObj.isRemote)
 			{
-				int loops = cocoonType == EnumCocoonType.GHAST ? 6 : 1;
+				final int loops = cocoonType == EnumCocoonType.GHAST ? 6 : 1;
 
 				for (int i = 0; i < loops; i++)
 				{
@@ -280,7 +280,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 						entityDropItem(new ItemStack(SpiderQueen.getInstance().itemSpiderEgg, dropAmount, 0), 0);
 					}
 				}
-				
+
 				try
 				{
 					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());

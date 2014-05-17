@@ -1,6 +1,5 @@
 package spiderqueen.entity;
 
-import spiderqueen.core.SpiderQueen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -16,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 import com.radixshock.radixcore.logic.NBTHelper;
@@ -27,20 +25,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityMiniGhast extends EntityCreature
 {
-	public String owner = "";
+	public String	owner	= "";
 
 	public EntityMiniGhast(World world)
 	{
 		super(world);
-		this.setSize(1.0F, 3.0F);
-		this.isImmuneToFire = true;
-		this.experienceValue = 5;
-		
+		setSize(1.0F, 3.0F);
+		isImmuneToFire = true;
+		experienceValue = 5;
+
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		tasks.addTask(2, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
-	
+
 	public EntityMiniGhast(World world, String owner)
 	{
 		this(world);
@@ -50,20 +48,22 @@ public class EntityMiniGhast extends EntityCreature
 	@SideOnly(Side.CLIENT)
 	public boolean func_110182_bF()
 	{
-		return this.dataWatcher.getWatchableObjectByte(16) != 0;
+		return dataWatcher.getWatchableObjectByte(16) != 0;
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+		dataWatcher.addObject(16, Byte.valueOf((byte) 0));
 	}
 
+	@Override
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(3.8D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(3.8D);
 	}
 
 	@Override
@@ -81,12 +81,13 @@ public class EntityMiniGhast extends EntityCreature
 			return super.attackEntityFrom(damageSource, damage);
 		}
 	}
-	
+
 	@Override
 	protected void updateEntityActionState()
 	{
 		return;
 	}
+
 	@Override
 	public void setInWeb()
 	{
@@ -97,21 +98,26 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return EnumCreatureAttribute.ARTHROPOD;
 	}
+
+	@Override
 	protected String getLivingSound()
 	{
 		return "mob.ghast.moan";
 	}
 
+	@Override
 	protected String getHurtSound()
 	{
 		return "mob.ghast.scream";
 	}
 
+	@Override
 	protected String getDeathSound()
 	{
 		return "mob.ghast.death";
 	}
 
+	@Override
 	protected Item getDropItem()
 	{
 		return Items.gunpowder;
@@ -122,41 +128,46 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return true;
 	}
-	
+
+	@Override
 	protected void dropFewItems(boolean par1, int par2)
 	{
-		int j = this.rand.nextInt(2) + this.rand.nextInt(1 + par2);
+		int j = rand.nextInt(2) + rand.nextInt(1 + par2);
 		int k;
 
 		for (k = 0; k < j; ++k)
 		{
-			this.dropItem(Items.ghast_tear, 1);
+			dropItem(Items.ghast_tear, 1);
 		}
 
-		j = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
+		j = rand.nextInt(3) + rand.nextInt(1 + par2);
 
 		for (k = 0; k < j; ++k)
 		{
-			this.dropItem(Items.gunpowder, 1);
+			dropItem(Items.gunpowder, 1);
 		}
 	}
 
+	@Override
 	protected float getSoundVolume()
 	{
 		return 3.0F;
 	}
-	
+
+	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		super.writeEntityToNBT(nbt);
 		NBTHelper.autoWriteEntityToNBT(this, nbt);
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
@@ -191,13 +202,13 @@ public class EntityMiniGhast extends EntityCreature
 			rotationYawHead = renderYawOffset = rotationYaw;
 
 			moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * 0.5F / 5;
-			moveForward = ((EntityLivingBase) riddenByEntity).moveForward * 0.5F / 5;				
+			moveForward = ((EntityLivingBase) riddenByEntity).moveForward * 0.5F / 5;
 
-			if (ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, (EntityLivingBase)riddenByEntity, 41))
+			if (ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, (EntityLivingBase) riddenByEntity, 41))
 			{
 				motionY = 0.4F;
 			}
-			
+
 			if (moveForward <= 0.0F)
 			{
 				moveForward *= 0.25F;
@@ -232,23 +243,31 @@ public class EntityMiniGhast extends EntityCreature
 			super.moveEntityWithHeading(moveStrafe, moveForward);
 		}
 	}
-	
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    protected void fall(float par1) {}
 
-    /**
-     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
-     * and deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
-     */
-    protected void updateFallState(double par1, boolean par3) {}
+	/**
+	 * Called when the mob is falling. Calculates and applies fall damage.
+	 */
+	@Override
+	protected void fall(float par1)
+	{
+	}
 
-    /**
-     * returns true if this entity is by a ladder, false otherwise
-     */
-    public boolean isOnLadder()
-    {
-        return false;
-    }
+	/**
+	 * Takes in the distance the entity has fallen this tick and whether its on
+	 * the ground to update the fall distance and deal fall damage if landing on
+	 * the ground. Args: distanceFallenThisTick, onGround
+	 */
+	@Override
+	protected void updateFallState(double par1, boolean par3)
+	{
+	}
+
+	/**
+	 * returns true if this entity is by a ladder, false otherwise
+	 */
+	@Override
+	public boolean isOnLadder()
+	{
+		return false;
+	}
 }

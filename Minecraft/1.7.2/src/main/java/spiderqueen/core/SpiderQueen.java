@@ -18,11 +18,6 @@ import java.util.Scanner;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -41,7 +36,6 @@ import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.core.forge.EventHooks;
 import spiderqueen.core.forge.GuiHandlerInventory;
 import spiderqueen.core.forge.ServerTickHandler;
-import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
 import spiderqueen.entity.EntityHatchedSpider;
@@ -155,41 +149,41 @@ public class SpiderQueen implements IEnforcedCore
 	public Achievement				achievementCraftWeb;
 	public Achievement				achievementPickupFlameWeb;
 	public Achievement				achievementNightVision;
-	public Achievement	achievementCocoonSomething;
-	public Achievement	achievementLayEgg;
-	public Achievement	achievementFindSpiderStone;
-	public Achievement	achievementCraftSpiderRod;
-	public Achievement	achievementCraftBugLight;
-	public Achievement	achievementHatchSpider;
-	public Achievement	achievementHatchSkeletonSpider;
-	public Achievement	achievementHatchZombieSpider;
-	public Achievement	achievementHatchCreeperSpider;
-	public Achievement	achievementHatchEndermanSpider;
-	public Achievement	achievementHatchVillagerSpider;
-	public Achievement	achievementHatchHorseSpider;
-	public Achievement	achievementHatchWolfSpider;
-	public Achievement	achievementWarWithCreepers;
-	public Achievement	achievementWarWithSkeletons;
-	public Achievement	achievementWarWithHumans;
-	public Achievement	achievementWarWithOtherQueens;
-	public Achievement	achievementWarWithZombies;
-	public Achievement	achievementWarWithEndermen;
-	public Achievement	achievementWarWithEvilQueen;
-	public Achievement	achievementWarWithAll;
-	public Achievement	achievementDefeatEvilQueen;
-	public Achievement	achievementHatchBlazeSpider;
-	public Achievement	achievementCocoonGhast;
-	public Achievement	achievementHatchGhastSpider;
-	public Achievement	achievementFriendsWithAny;
-	public Achievement	achievementGiftBrain;
-	public Achievement	achievementGiftSkull;
-	public Achievement	achievementGiftHeart;
-	public Achievement	achievementPeaceWithAll;
-	public Achievement	achievementHelpZombies;
-	public Achievement	achievementKillHumans;
-	public Achievement	achievementKillSheWolfDeadly;
-	public Achievement	achievementKillWildBamaBoy;
-	
+	public Achievement				achievementCocoonSomething;
+	public Achievement				achievementLayEgg;
+	public Achievement				achievementFindSpiderStone;
+	public Achievement				achievementCraftSpiderRod;
+	public Achievement				achievementCraftBugLight;
+	public Achievement				achievementHatchSpider;
+	public Achievement				achievementHatchSkeletonSpider;
+	public Achievement				achievementHatchZombieSpider;
+	public Achievement				achievementHatchCreeperSpider;
+	public Achievement				achievementHatchEndermanSpider;
+	public Achievement				achievementHatchVillagerSpider;
+	public Achievement				achievementHatchHorseSpider;
+	public Achievement				achievementHatchWolfSpider;
+	public Achievement				achievementWarWithCreepers;
+	public Achievement				achievementWarWithSkeletons;
+	public Achievement				achievementWarWithHumans;
+	public Achievement				achievementWarWithOtherQueens;
+	public Achievement				achievementWarWithZombies;
+	public Achievement				achievementWarWithEndermen;
+	public Achievement				achievementWarWithEvilQueen;
+	public Achievement				achievementWarWithAll;
+	public Achievement				achievementDefeatEvilQueen;
+	public Achievement				achievementHatchBlazeSpider;
+	public Achievement				achievementCocoonGhast;
+	public Achievement				achievementHatchGhastSpider;
+	public Achievement				achievementFriendsWithAny;
+	public Achievement				achievementGiftBrain;
+	public Achievement				achievementGiftSkull;
+	public Achievement				achievementGiftHeart;
+	public Achievement				achievementPeaceWithAll;
+	public Achievement				achievementHelpZombies;
+	public Achievement				achievementKillHumans;
+	public Achievement				achievementKillSheWolfDeadly;
+	public Achievement				achievementKillWildBamaBoy;
+
 	public List<String>				fakePlayerNames				= new ArrayList<String>();
 	public boolean					doDisplayPlayerSkins		= true;
 	public boolean					inDebugMode					= true;
@@ -263,8 +257,8 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		// Creative tab
 		itemCocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN).setUnlocalizedName("cocoon.enderman");
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonEnderman);
-		tabSpiderQueen = RadixRegistry.ItemsAndBlocks.registerCreativeTab(this, itemCocoonEnderman);
+		RadixRegistry.Items.registerItem(itemCocoonEnderman);
+		tabSpiderQueen = RadixRegistry.Items.registerCreativeTab(this, itemCocoonEnderman);
 		itemCocoonEnderman.setCreativeTab(tabSpiderQueen);
 
 		itemCocoonBlaze = new ItemCocoon(EnumCocoonType.BLAZE).setUnlocalizedName("cocoon.blaze");
@@ -297,35 +291,35 @@ public class SpiderQueen implements IEnforcedCore
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
 
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonBlaze);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonChicken);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonCow);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonCreeper);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonGhast);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonHorse);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonHuman);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonPig);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonSheep);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonSkeleton);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonTestificate);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonWolf);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemCocoonZombie);
+		RadixRegistry.Items.registerItem(itemCocoonBlaze);
+		RadixRegistry.Items.registerItem(itemCocoonChicken);
+		RadixRegistry.Items.registerItem(itemCocoonCow);
+		RadixRegistry.Items.registerItem(itemCocoonCreeper);
+		RadixRegistry.Items.registerItem(itemCocoonGhast);
+		RadixRegistry.Items.registerItem(itemCocoonHorse);
+		RadixRegistry.Items.registerItem(itemCocoonHuman);
+		RadixRegistry.Items.registerItem(itemCocoonPig);
+		RadixRegistry.Items.registerItem(itemCocoonSheep);
+		RadixRegistry.Items.registerItem(itemCocoonSkeleton);
+		RadixRegistry.Items.registerItem(itemCocoonTestificate);
+		RadixRegistry.Items.registerItem(itemCocoonWolf);
+		RadixRegistry.Items.registerItem(itemCocoonZombie);
 
-		RadixRegistry.ItemsAndBlocks.registerItem(itemWeb);
-		//RadixRegistry.ItemsAndBlocks.registerItem(itemPoisonWeb);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemFlameWeb);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemWebslinger);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSpiderRod);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSpiderEgg);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemBrain);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSkull);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemHeart);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSpiderStone);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemBugLight);
+		RadixRegistry.Items.registerItem(itemWeb);
+		// RadixRegistry.ItemsAndBlocks.registerItem(itemPoisonWeb);
+		RadixRegistry.Items.registerItem(itemFlameWeb);
+		RadixRegistry.Items.registerItem(itemWebslinger);
+		RadixRegistry.Items.registerItem(itemSpiderRod);
+		RadixRegistry.Items.registerItem(itemSpiderEgg);
+		RadixRegistry.Items.registerItem(itemBrain);
+		RadixRegistry.Items.registerItem(itemSkull);
+		RadixRegistry.Items.registerItem(itemHeart);
+		RadixRegistry.Items.registerItem(itemSpiderStone);
+		RadixRegistry.Items.registerItem(itemBugLight);
 
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSpawnPlayer);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSpawnSpider);
-		RadixRegistry.ItemsAndBlocks.registerItem(itemSpawnEnemyQueen);
+		RadixRegistry.Items.registerItem(itemSpawnPlayer);
+		RadixRegistry.Items.registerItem(itemSpawnSpider);
+		RadixRegistry.Items.registerItem(itemSpawnEnemyQueen);
 	}
 
 	@Override
@@ -367,63 +361,68 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public void initializeAchievements()
 	{
-		//Initial point
-		this.achievementCraftWeb = RadixRegistry.Achievements.createAchievement(this, "craftweb", 0, 0, itemWeb);
+		// Initial point
+		achievementCraftWeb = RadixRegistry.Achievements.createAchievement(this, "craftweb", 0, 0, itemWeb);
 
-		//Crafting Tier
-		this.achievementFindSpiderStone = RadixRegistry.Achievements.createAchievement(this, "findspiderstone", -2, 0, itemSpiderStone, achievementCraftWeb).setSpecial();
-		this.achievementCraftSpiderRod = RadixRegistry.Achievements.createAchievement(this, "craftspiderrod", -3, 1, itemSpiderRod, achievementFindSpiderStone);
-		this.achievementCraftBugLight = RadixRegistry.Achievements.createAchievement(this, "craftbuglight", -3, -1, itemBugLight, achievementFindSpiderStone);
-		this.achievementNightVision = RadixRegistry.Achievements.createAchievement(this, "nightvision", -5, -1, itemBugLight, achievementCraftBugLight).setSpecial();
+		// Crafting Tier
+		achievementFindSpiderStone = RadixRegistry.Achievements.createAchievement(this, "findspiderstone", -2, 0, itemSpiderStone, achievementCraftWeb).setSpecial();
+		achievementCraftSpiderRod = RadixRegistry.Achievements.createAchievement(this, "craftspiderrod", -3, 1, itemSpiderRod, achievementFindSpiderStone);
+		achievementCraftBugLight = RadixRegistry.Achievements.createAchievement(this, "craftbuglight", -3, -1, itemBugLight, achievementFindSpiderStone);
+		achievementNightVision = RadixRegistry.Achievements.createAchievement(this, "nightvision", -5, -1, itemBugLight, achievementCraftBugLight).setSpecial();
 
-		//Walkthrough
-		this.achievementCocoonSomething = RadixRegistry.Achievements.createAchievement(this, "cocoonsomething", 2, -2, itemCocoonCow, achievementCraftWeb);
-		this.achievementLayEgg = RadixRegistry.Achievements.createAchievement(this, "layegg", 4, 0, itemSpiderEgg, achievementCocoonSomething);
-		this.achievementHatchSpider = RadixRegistry.Achievements.createAchievement(this, "hatchspider", 6, 0, itemSpawnSpider, achievementLayEgg);
+		// Walkthrough
+		achievementCocoonSomething = RadixRegistry.Achievements.createAchievement(this, "cocoonsomething", 2, -2, itemCocoonCow, achievementCraftWeb);
+		achievementLayEgg = RadixRegistry.Achievements.createAchievement(this, "layegg", 4, 0, itemSpiderEgg, achievementCocoonSomething);
+		achievementHatchSpider = RadixRegistry.Achievements.createAchievement(this, "hatchspider", 6, 0, itemSpawnSpider, achievementLayEgg);
 
-		//Mob Teir
-		this.achievementHatchSkeletonSpider = RadixRegistry.Achievements.createAchievement(this, "hatchskeletonspider", 3, -3, itemCocoonSkeleton, achievementHatchSpider);
-		this.achievementHatchZombieSpider = RadixRegistry.Achievements.createAchievement(this, "hatchzombiespider", 4, -4, itemCocoonZombie, achievementHatchSpider);
-		this.achievementHatchCreeperSpider = RadixRegistry.Achievements.createAchievement(this, "hatchcreeperspider", 5, -5, itemCocoonCreeper, achievementHatchSpider);
-		this.achievementHatchEndermanSpider = RadixRegistry.Achievements.createAchievement(this, "hatchendermanspider", 6, -6, itemCocoonEnderman, achievementHatchSpider).setSpecial();
-		this.achievementHatchVillagerSpider = RadixRegistry.Achievements.createAchievement(this, "hatchvillagerspider", 7, -5, itemCocoonTestificate, achievementHatchSpider);
-		this.achievementHatchHorseSpider = RadixRegistry.Achievements.createAchievement(this, "hatchhorsespider", 8, -4, itemCocoonHorse, achievementHatchSpider);
-		this.achievementHatchWolfSpider = RadixRegistry.Achievements.createAchievement(this, "hatchwolfspider", 9, -3, itemCocoonWolf, achievementHatchSpider);
+		// Mob Teir
+		achievementHatchSkeletonSpider = RadixRegistry.Achievements.createAchievement(this, "hatchskeletonspider", 3, -3, itemCocoonSkeleton, achievementHatchSpider);
+		achievementHatchZombieSpider = RadixRegistry.Achievements.createAchievement(this, "hatchzombiespider", 4, -4, itemCocoonZombie, achievementHatchSpider);
+		achievementHatchCreeperSpider = RadixRegistry.Achievements.createAchievement(this, "hatchcreeperspider", 5, -5, itemCocoonCreeper, achievementHatchSpider);
+		achievementHatchEndermanSpider = RadixRegistry.Achievements.createAchievement(this, "hatchendermanspider", 6, -6, itemCocoonEnderman, achievementHatchSpider).setSpecial();
+		achievementHatchVillagerSpider = RadixRegistry.Achievements.createAchievement(this, "hatchvillagerspider", 7, -5, itemCocoonTestificate, achievementHatchSpider);
+		achievementHatchHorseSpider = RadixRegistry.Achievements.createAchievement(this, "hatchhorsespider", 8, -4, itemCocoonHorse, achievementHatchSpider);
+		achievementHatchWolfSpider = RadixRegistry.Achievements.createAchievement(this, "hatchwolfspider", 9, -3, itemCocoonWolf, achievementHatchSpider);
 
-		//War Tier
-		this.achievementWarWithCreepers = RadixRegistry.Achievements.createAchievement(this, "warwithcreepers", 3, 3, Items.gunpowder, achievementHatchSpider);
-		this.achievementWarWithSkeletons = RadixRegistry.Achievements.createAchievement(this, "warwithskeletons", 9, 3, Items.bone, achievementHatchSpider);
-		this.achievementWarWithHumans = RadixRegistry.Achievements.createAchievement(this, "warwithhumans", 4, 4, Items.iron_helmet, achievementHatchSpider);
-		this.achievementWarWithOtherQueens = RadixRegistry.Achievements.createAchievement(this, "warwithotherqueens", 8, 4, Items.string, achievementHatchSpider);
-		this.achievementWarWithZombies = RadixRegistry.Achievements.createAchievement(this, "warwithzombies", 5, 5, Items.rotten_flesh, achievementHatchSpider);
-		this.achievementWarWithEndermen = RadixRegistry.Achievements.createAchievement(this, "warwithendermen", 7, 5, Items.ender_pearl, achievementHatchSpider);
-		this.achievementWarWithAll      = RadixRegistry.Achievements.createAchievement(this, "warwithall", 6, 6, Items.diamond_sword, achievementHatchSpider).setSpecial();
+		// War Tier
+		achievementWarWithCreepers = RadixRegistry.Achievements.createAchievement(this, "warwithcreepers", 3, 3, Items.gunpowder, achievementHatchSpider);
+		achievementWarWithSkeletons = RadixRegistry.Achievements.createAchievement(this, "warwithskeletons", 9, 3, Items.bone, achievementHatchSpider);
+		achievementWarWithHumans = RadixRegistry.Achievements.createAchievement(this, "warwithhumans", 4, 4, Items.iron_helmet, achievementHatchSpider);
+		achievementWarWithOtherQueens = RadixRegistry.Achievements.createAchievement(this, "warwithotherqueens", 8, 4, Items.string, achievementHatchSpider);
+		achievementWarWithZombies = RadixRegistry.Achievements.createAchievement(this, "warwithzombies", 5, 5, Items.rotten_flesh, achievementHatchSpider);
+		achievementWarWithEndermen = RadixRegistry.Achievements.createAchievement(this, "warwithendermen", 7, 5, Items.ender_pearl, achievementHatchSpider);
+		achievementWarWithAll = RadixRegistry.Achievements.createAchievement(this, "warwithall", 6, 6, Items.diamond_sword, achievementHatchSpider).setSpecial();
 
-		//Nether Tier
-		this.achievementHatchBlazeSpider = RadixRegistry.Achievements.createAchievement(this, "hatchblazespider", 10, -1, itemCocoonBlaze, achievementHatchSpider);
-		this.achievementPickupFlameWeb    = RadixRegistry.Achievements.createAchievement(this, "pickupflameweb", 12, -3, itemFlameWeb, achievementHatchBlazeSpider);
-		this.achievementCocoonGhast      = RadixRegistry.Achievements.createAchievement(this, "cocoonghast", 14, -5, itemCocoonGhast, achievementPickupFlameWeb);
-		this.achievementHatchGhastSpider = RadixRegistry.Achievements.createAchievement(this, "hatchghastspider", 14, -7, Items.nether_star, achievementCocoonGhast).setSpecial();
+		// Nether Tier
+		achievementHatchBlazeSpider = RadixRegistry.Achievements.createAchievement(this, "hatchblazespider", 10, -1, itemCocoonBlaze, achievementHatchSpider);
+		achievementPickupFlameWeb = RadixRegistry.Achievements.createAchievement(this, "pickupflameweb", 12, -3, itemFlameWeb, achievementHatchBlazeSpider);
+		achievementCocoonGhast = RadixRegistry.Achievements.createAchievement(this, "cocoonghast", 14, -5, itemCocoonGhast, achievementPickupFlameWeb);
+		achievementHatchGhastSpider = RadixRegistry.Achievements.createAchievement(this, "hatchghastspider", 14, -7, Items.nether_star, achievementCocoonGhast).setSpecial();
 
-		//Evil Queen Tier
-		this.achievementWarWithEvilQueen = RadixRegistry.Achievements.createAchievement(this, "warwithevilqueen", 10, 1, Items.spider_eye, achievementHatchSpider);
-		this.achievementDefeatEvilQueen = RadixRegistry.Achievements.createAchievement(this, "defeatevilqueen", 12, 3, itemSkull, achievementWarWithEvilQueen).setSpecial();
+		// Evil Queen Tier
+		achievementWarWithEvilQueen = RadixRegistry.Achievements.createAchievement(this, "warwithevilqueen", 10, 1, Items.spider_eye, achievementHatchSpider);
+		achievementDefeatEvilQueen = RadixRegistry.Achievements.createAchievement(this, "defeatevilqueen", 12, 3, itemSkull, achievementWarWithEvilQueen).setSpecial();
 
-		//Peace Tier
-		this.achievementFriendsWithAny = RadixRegistry.Achievements.createAchievement(this, "friendswithany", 12, 0, Items.cookie, achievementHatchSpider);
-		this.achievementGiftBrain = RadixRegistry.Achievements.createAchievement(this, "giftbrain", 14, 2, itemBrain, achievementFriendsWithAny);
-		this.achievementGiftSkull = RadixRegistry.Achievements.createAchievement(this, "giftskull", 14, 0, itemSkull, achievementFriendsWithAny);
-		this.achievementGiftHeart = RadixRegistry.Achievements.createAchievement(this, "giftheart", 14, -2, itemHeart, achievementFriendsWithAny);
-		this.achievementPeaceWithAll = RadixRegistry.Achievements.createAchievement(this, "peacewithall", 16, 0, Items.diamond, achievementFriendsWithAny).setSpecial();
-		
-		//Misc Teir
-		this.achievementHelpZombies = RadixRegistry.Achievements.createAchievement(this, "helpzombies", -5, -3, itemBrain);
-		this.achievementKillHumans = RadixRegistry.Achievements.createAchievement(this, "killhumans", -2, -3, itemHeart);
-		//this.achievementKillSheWolfDeadly = RadixRegistry.Achievements.createAchievement(this, "killshewolfdeadly", -3, -4, itemCocoonWolf, achievementKillHumans).setSpecial();
-		//this.achievementKillWildBamaBoy = RadixRegistry.Achievements.createAchievement(this, "killwildbamaboy", -1, -4, Items.diamond_helmet, achievementKillHumans).setSpecial();
-		
-		//Page
-		this.achievementPageSpiderQueen = RadixRegistry.Achievements.createAchievementPage(this, "Spider Queen Reborn");
+		// Peace Tier
+		achievementFriendsWithAny = RadixRegistry.Achievements.createAchievement(this, "friendswithany", 12, 0, Items.cookie, achievementHatchSpider);
+		achievementGiftBrain = RadixRegistry.Achievements.createAchievement(this, "giftbrain", 14, 2, itemBrain, achievementFriendsWithAny);
+		achievementGiftSkull = RadixRegistry.Achievements.createAchievement(this, "giftskull", 14, 0, itemSkull, achievementFriendsWithAny);
+		achievementGiftHeart = RadixRegistry.Achievements.createAchievement(this, "giftheart", 14, -2, itemHeart, achievementFriendsWithAny);
+		achievementPeaceWithAll = RadixRegistry.Achievements.createAchievement(this, "peacewithall", 16, 0, Items.diamond, achievementFriendsWithAny).setSpecial();
+
+		// Misc Teir
+		achievementHelpZombies = RadixRegistry.Achievements.createAchievement(this, "helpzombies", -5, -3, itemBrain);
+		achievementKillHumans = RadixRegistry.Achievements.createAchievement(this, "killhumans", -2, -3, itemHeart);
+		// this.achievementKillSheWolfDeadly =
+		// RadixRegistry.Achievements.createAchievement(this,
+		// "killshewolfdeadly", -3, -4, itemCocoonWolf,
+		// achievementKillHumans).setSpecial();
+		// this.achievementKillWildBamaBoy =
+		// RadixRegistry.Achievements.createAchievement(this, "killwildbamaboy",
+		// -1, -4, Items.diamond_helmet, achievementKillHumans).setSpecial();
+
+		// Page
+		achievementPageSpiderQueen = RadixRegistry.Achievements.createAchievementPage(this, "Spider Queen Reborn");
 	}
 
 	@Override
@@ -491,8 +490,7 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public String getRedirectURL()
 	{
-		return "http://radix-shock.com/update-page.html?userSpiderQueen=" + getVersion() + "&currentSpiderQueen=%" + 
-				"&userMC=" + Loader.instance().getMCVersionString().substring(10) + "&currentMC=%";
+		return "http://radix-shock.com/update-page.html?userSpiderQueen=" + getVersion() + "&currentSpiderQueen=%" + "&userMC=" + Loader.instance().getMCVersionString().substring(10) + "&currentMC=%";
 	}
 
 	@Override

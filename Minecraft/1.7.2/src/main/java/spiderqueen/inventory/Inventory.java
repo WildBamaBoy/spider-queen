@@ -402,7 +402,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		{
 			for (int i = 0; i < inventoryItems.length; i++)
 			{
-				if ((dropRandomly && LogicHelper.getBooleanWithProbability(25)) || !dropRandomly)
+				if (dropRandomly && LogicHelper.getBooleanWithProbability(25) || !dropRandomly)
 				{
 					final ItemStack stack = inventoryItems[i];
 
@@ -410,7 +410,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 					{
 						owner.entityDropItem(stack, owner.worldObj.rand.nextFloat());
 						setInventorySlotContents(i, null);
-					}	
+					}
 				}
 			}
 
@@ -1242,7 +1242,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 					break;
 			}
 		}
-		
+
 		inventory.setWornArmorItems();
 	}
 
