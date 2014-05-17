@@ -9,6 +9,7 @@
 
 package spiderqueen.client.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -74,6 +75,11 @@ public class RenderSpiderQueen extends RenderPlayer
 				renderPassModel.isRiding = mainModel.isRiding;
 			}
 
+			if(clientPlayer != Minecraft.getMinecraft().thePlayer)
+			{
+				GL11.glTranslatef(0, 1.7F, 0);
+			}
+
 			try
 			{
 				final float unknownConstant = -0.0925F;
@@ -111,10 +117,10 @@ public class RenderSpiderQueen extends RenderPlayer
 				rotateCorpse(entity, wrappedRotation, realRenderYaw, rotationPitch);
 
 				GL11.glTranslatef(0.0F, -0.10F, 0.0F); // Move the model down
-														// slightly so that it
-														// touches the ground.
+				// slightly so that it
+				// touches the ground.
 				GL11.glScalef(0.7F, 0.7F, -0.7F); // Scale and flip the new
-													// model.
+				// model.
 
 				float limbSwing = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * rotationPitch;
 				final float limbAngle = entity.limbSwing - entity.limbSwingAmount * (1.0F - rotationPitch);

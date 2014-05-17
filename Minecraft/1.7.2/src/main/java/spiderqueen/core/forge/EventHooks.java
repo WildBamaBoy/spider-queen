@@ -255,29 +255,37 @@ public class EventHooks
 	@SubscribeEvent
 	public void onLivingSetTarget(LivingSetAttackTargetEvent event)
 	{
-		if (event.target instanceof EntityPlayer)
+		try
 		{
-			final EntityLiving entity = (EntityLiving) event.entityLiving;
-			final EntityPlayer player = (EntityPlayer) event.target;
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-
-			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
+			if (event.target instanceof EntityPlayer)
 			{
-				if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
+				final EntityLiving entity = (EntityLiving) event.entityLiving;
+				final EntityPlayer player = (EntityPlayer) event.target;
+				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+
+				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 				{
-					if (entity instanceof EntityFakePlayer)
+					if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
 					{
-						final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
+						if (entity instanceof EntityFakePlayer)
+						{
+							final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
 
-						if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName())) { return; }
-					}
+							if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName())) { return; }
+						}
 
-					if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
-					{
-						entity.setAttackTarget(null);
+						if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
+						{
+							entity.setAttackTarget(null);
+						}
 					}
 				}
 			}
+		}
+
+		catch (ClassCastException e)
+		{
+			//When hit by another player.
 		}
 	}
 
