@@ -194,6 +194,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Achievement				achievementEatSomething;
 	public Achievement				achievementCraftWebslinger;
 	public Achievement				achievementLevelUpSpider;
+	public Achievement				achievementCreateSpiderBed;
 	
 	public List<String>				fakePlayerNames				= new ArrayList<String>();
 	public boolean					doDisplayPlayerSkins		= true;
@@ -412,6 +413,7 @@ public class SpiderQueen implements IEnforcedCore
 		achievementCraftBugLight = RadixRegistry.Achievements.createAchievement(this, "craftbuglight", -3, -1, itemBugLight, achievementFindSpiderStone);
 		achievementNightVision = RadixRegistry.Achievements.createAchievement(this, "nightvision", -5, -1, itemBugLight, achievementCraftBugLight).setSpecial();
 		achievementCraftWebslinger = RadixRegistry.Achievements.createAchievement(this, "craftwebslinger", 2, 2, itemWebslinger, achievementCraftWeb).setSpecial();
+		achievementCreateSpiderBed = RadixRegistry.Achievements.createAchievement(this, "createspiderbed", -2, 2, blockWebBed, achievementCraftWeb);
 		
 		// Walkthrough
 		achievementCocoonSomething = RadixRegistry.Achievements.createAchievement(this, "cocoonsomething", 0, -2, itemCocoonCow, achievementCraftWeb);

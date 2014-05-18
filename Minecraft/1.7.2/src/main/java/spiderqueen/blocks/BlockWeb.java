@@ -218,47 +218,54 @@ public class BlockWeb extends Block
 	{
 		if (!isPoison)
 		{
-			Block ww = SpiderQueen.getInstance().blockWebFull;
-			Block ll = Blocks.log;
+			Block fillerBlock = SpiderQueen.getInstance().blockWebFull;
+			Block outlineBlock = Blocks.log;
 
-			if(world.getBlock(x,y,z) != ww) { return; }
+			if (world.getBlock(x,y,z) != fillerBlock) { return; }
 
-			int cc = 0;
-			int wc = 0;
+			int fillerBlocksPresent = 0;
+			int outlineBlocksPresent = 0;
 
-			if(world.getBlock(x-1,y,z-1) == ww) { cc++; }
-			if(world.getBlock(x-1,y,z) == ww) { cc++; }
-			if(world.getBlock(x-1,y,z+1) == ww) { cc++; }
-			if(world.getBlock(x,y,z-1) == ww) { cc++; }
-			if(world.getBlock(x,y,z) == ww) { cc++; }
-			if(world.getBlock(x,y,z+1) == ww) { cc++; }
-			if(world.getBlock(x+1,y,z-1) == ww) { cc++; }
-			if(world.getBlock(x+1,y,z) == ww) { cc++; }
-			if(world.getBlock(x+1,y,z+1) == ww) { cc++; }
+			if (world.getBlock(x-1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
+			if (world.getBlock(x-1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
+			if (world.getBlock(x-1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
+			if (world.getBlock(x,y,z-1) == fillerBlock)   { fillerBlocksPresent++; }
+			if (world.getBlock(x,y,z) == fillerBlock)     { fillerBlocksPresent++; }
+			if (world.getBlock(x,y,z+1) == fillerBlock)   { fillerBlocksPresent++; }
+			if (world.getBlock(x+1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
+			if (world.getBlock(x+1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
+			if (world.getBlock(x+1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
 
-			if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x-2,y,z-1) == ll) { wc++; }
-			if(world.getBlock(x-2,y,z) == ll) { wc++; }
-			if(world.getBlock(x-2,y,z+1) == ll) { wc++; }
-			if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z-1) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z+1) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
-			if(world.getBlock(x-2,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x-1,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x+1,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z-2) == ll) { wc++; }
-			if(world.getBlock(x-2,y,z+2) == ll) { wc++; }
-			if(world.getBlock(x-1,y,z+2) == ll) { wc++; }
-			if(world.getBlock(x,y,z+2) == ll) { wc++; }
-			if(world.getBlock(x+1,y,z+2) == ll) { wc++; }
-			if(world.getBlock(x+2,y,z+2) == ll) { wc++; }
+			if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
+			if (world.getBlock(x-2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x,y,z-2) == outlineBlock)   { outlineBlocksPresent++; }
+			if (world.getBlock(x+1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x-1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x,y,z+2) == outlineBlock)   { outlineBlocksPresent++; }
+			if (world.getBlock(x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+			if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
 
-			if(cc == 9 & wc == 20)
+			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
 			{
+				final EntityPlayer player = world.getClosestPlayer(x, y, z, 10);
+				
+				if (player != null)
+				{
+					player.triggerAchievement(SpiderQueen.getInstance().achievementCreateSpiderBed);
+				}
+				
 				world.setBlock(x-1,y,z-1,SpiderQueen.getInstance().blockWebBed);
 				world.setBlock(x-1,y,z,SpiderQueen.getInstance().blockWebBed);
 				world.setBlock(x-1,y,z+1,SpiderQueen.getInstance().blockWebBed);
@@ -269,6 +276,7 @@ public class BlockWeb extends Block
 				world.setBlock(x+1,y,z,SpiderQueen.getInstance().blockWebBed);
 				world.setBlock(x+1,y,z+1,SpiderQueen.getInstance().blockWebBed);
 			}
+			
 			else
 			{
 				if (itr < 3)
