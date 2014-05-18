@@ -25,6 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelHatchedSpider extends ModelBase
 {
+	public ModelRenderer	villagerSpiderChestRight;
+	public ModelRenderer	villagerSpiderChestLeft;
+
 	public ModelRenderer	defaultSpiderHead;
 	public ModelRenderer	defaultSpiderNeck;
 	public ModelRenderer	defaultSpiderBody;
@@ -120,6 +123,7 @@ public class ModelHatchedSpider extends ModelBase
 		initHugeSpider();
 		initLongLegSpider();
 		initFlatSpider();
+		initVillagerSpiderChest();
 	}
 
 	@Override
@@ -135,6 +139,12 @@ public class ModelHatchedSpider extends ModelBase
 				break;
 			case NORMAL:
 				renderDefaultSpider(partialTickTime);
+
+				if (spider.cocoonType == EnumCocoonType.VILLAGER)
+				{
+					renderVillagerSpiderChest(partialTickTime);
+				}
+
 				break;
 			case RAISED:
 				renderRaisedSpider(partialTickTime);
@@ -962,6 +972,22 @@ public class ModelHatchedSpider extends ModelBase
 		setRotation(flatSpiderLeg1, 0F, 0.5759587F, -0.1919862F);
 	}
 
+	private void initVillagerSpiderChest()
+	{
+		villagerSpiderChestRight = new ModelRenderer(this, 46, 16);
+		villagerSpiderChestRight.addBox(0F, -4F, -4F, 1, 8, 8);
+		villagerSpiderChestRight.setRotationPoint(-5.9F, 20F, 11F);
+		villagerSpiderChestRight.setTextureSize(64, 32);
+		villagerSpiderChestRight.mirror = true;
+		setRotation(villagerSpiderChestRight, 0F, 0F, 0F);
+		villagerSpiderChestLeft = new ModelRenderer(this, 46, 16);
+		villagerSpiderChestLeft.addBox(0F, -4F, -4F, 1, 8, 8);
+		villagerSpiderChestLeft.setRotationPoint(5.9F, 20F, 11F);
+		villagerSpiderChestLeft.setTextureSize(64, 32);
+		villagerSpiderChestLeft.mirror = true;
+		setRotation(villagerSpiderChestLeft, 0F, 3.141593F, 0F);
+	}
+
 	private void setRotation(ModelRenderer model, float angleX, float angleY, float angleZ)
 	{
 		model.rotateAngleX = angleX;
@@ -1322,6 +1348,17 @@ public class ModelHatchedSpider extends ModelBase
 			flatSpiderLeg5.render(partialTickTime);
 			flatSpiderLeg3.render(partialTickTime);
 			flatSpiderLeg1.render(partialTickTime);
+		}
+		GL11.glPopMatrix();
+	}
+
+	private void renderVillagerSpiderChest(float partialTickTime)
+	{
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslated(0.0D, -0.30D, 0.0D);
+			villagerSpiderChestRight.render(partialTickTime);
+			villagerSpiderChestLeft.render(partialTickTime);
 		}
 		GL11.glPopMatrix();
 	}
