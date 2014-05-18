@@ -9,18 +9,14 @@
 
 package spiderqueen.command;
 
-import java.util.List;
-
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.enums.EnumPacketType;
 
-import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.network.Packet;
 
 public class CommandSetSkin extends CommandBase

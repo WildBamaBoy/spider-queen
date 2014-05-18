@@ -18,11 +18,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityHatchedSpider;
-import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.constant.Font.Color;
 import com.radixshock.radixcore.logic.LogicHelper;
-import com.radixshock.radixcore.network.Packet;
 
 /**
  * Defines the debug rule command and what it does.
