@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import spiderqueen.client.model.ModelSpiderQueen;
+import spiderqueen.core.forge.PlayerExtension;
 
 public class RenderSpiderQueen extends RenderPlayer
 {
@@ -316,6 +317,9 @@ public class RenderSpiderQueen extends RenderPlayer
 	@Override
 	protected void bindEntityTexture(Entity entity)
 	{
-		bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueen1.png"));
+		final EntityPlayer player = (EntityPlayer)entity;
+		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		
+		bindTexture(new ResourceLocation("spiderqueen:textures/entity/" + playerExtension.selectedSkin + ".png"));
 	}
 }

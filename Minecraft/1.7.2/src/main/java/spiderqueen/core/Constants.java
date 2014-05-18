@@ -20,7 +20,8 @@ public final class Constants
 	public static final String	SKINS_URL			= "http://pastebin.com/raw.php?i=L5S632xR";
 
 	public static final int		ID_GUI_INVENTORY	= 0;
-
+	public static final int		ID_GUI_SLEEP		= 1;
+	
 	private Constants()
 	{
 	}

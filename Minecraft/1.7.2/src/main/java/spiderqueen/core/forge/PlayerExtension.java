@@ -16,16 +16,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.entity.EntityWebslinger;
+import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.logic.NBTHelper;
+import com.radixshock.radixcore.network.Packet;
 
 public class PlayerExtension implements IExtendedEntityProperties
 {
 	public static final String					ID	= "SpiderQueenplayerExtension";
 	public EntityWebslinger						webEntity;
 	public int									totalHumansKilled;
+	public String								selectedSkin = "SpiderQueen1";
 	private final EntityPlayer					player;
 	private final List<CreatureReputationEntry>	reputationEntries;
 
@@ -44,6 +48,9 @@ public class PlayerExtension implements IExtendedEntityProperties
 		}
 
 		nbt.setInteger("totalHumansKilled", totalHumansKilled);
+		nbt.setString("selectedSkin", selectedSkin);
+		
+		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, selectedSkin));
 	}
 
 	@Override
@@ -55,6 +62,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 		}
 
 		totalHumansKilled = nbt.getInteger("totalHumansKilled");
+		selectedSkin = nbt.getString("selectedSkin");
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.entity.EntityHatchedSpider;
 
 public class ModelSpiderQueen extends ModelBase
@@ -200,11 +201,13 @@ public class ModelSpiderQueen extends ModelBase
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		setRotationAngles(f, f1, f2, f3, f4, f5);
-
+		boolean isKing = false;
+		
 		if (entity instanceof EntityPlayer)
 		{
 			final EntityPlayer player = (EntityPlayer) entity;
-
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			
 			if (player.ridingEntity instanceof EntityHatchedSpider)
 			{
 				final EntityHatchedSpider spider = (EntityHatchedSpider) player.ridingEntity;
@@ -226,6 +229,11 @@ public class ModelSpiderQueen extends ModelBase
 					}
 				}
 			}
+			
+			if (playerExtension.selectedSkin.contains("King"))
+			{
+				isKing = true;
+			}
 		}
 
 		head.render(f5);
@@ -244,7 +252,11 @@ public class ModelSpiderQueen extends ModelBase
 		armRight.render(f5);
 		spinner1.render(f5);
 		spinner2.render(f5);
-		breasts.render(f5);
+		
+		if (!isKing)
+		{
+			breasts.render(f5);
+		}
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)

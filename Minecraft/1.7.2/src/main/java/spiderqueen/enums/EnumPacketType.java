@@ -20,5 +20,8 @@ public enum EnumPacketType
 	DestroySlinger, 
 	CreateClientExplosion, 
 	SwingArm,
-	CreateParticle;
+	CreateParticle,
+	SetSkin,
+	OpenGui,
+	SleepComplete;
 }

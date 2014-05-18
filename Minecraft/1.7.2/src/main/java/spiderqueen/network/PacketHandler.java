@@ -11,6 +11,7 @@ package spiderqueen.network;
 
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -95,6 +96,18 @@ public final class PacketHandler extends AbstractPacketHandler
 					handleCreateParticle(packet.arguments, player);
 					break;
 
+				case SetSkin:
+					handleSetSkin(packet.arguments, player);
+					break;
+
+				case OpenGui:
+					handleOpenGui(packet.arguments, player);
+					break;
+
+				case SleepComplete:
+					handleSleepComplete(packet.arguments, player);
+					break;
+					
 				default:
 					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -278,5 +291,34 @@ public final class PacketHandler extends AbstractPacketHandler
 		final double velZ = (Double) arguments[6];
 
 		player.worldObj.spawnParticle(particleName, posX, posY, posZ, velX, velY, velZ);
+	}
+
+	private void handleSetSkin(Object[] arguments, EntityPlayer player)
+	{
+		final String skinName = arguments[0].toString();
+		final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
+
+		playerExtension.selectedSkin = skinName;
+	}
+
+	private void handleOpenGui(Object[] arguments, EntityPlayer player) 
+	{
+		final int guiId = (Integer) arguments[0];
+
+		if (guiId == -1)
+		{
+			Minecraft.getMinecraft().displayGuiScreen(null);
+		}
+		
+		else
+		{
+			player.openGui(SpiderQueen.getInstance(), guiId, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+		}
+	}
+	
+	private void handleSleepComplete(Object[] arguments, EntityPlayer player) 
+	{
+		player.worldObj.setWorldTime(13000);
+		SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.OpenGui, -1), (EntityPlayerMP)player);
 	}
 }

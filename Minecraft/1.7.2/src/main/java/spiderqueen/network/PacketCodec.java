@@ -102,6 +102,14 @@ public final class PacketCodec extends AbstractPacketCodec
 					buffer.writeDouble((Double) packet.arguments[6]);
 					break;
 
+				case SetSkin:
+					ByteBufIO.writeObject(buffer, packet.arguments[0]);
+					break;
+				
+				case OpenGui:
+					buffer.writeInt((Integer)packet.arguments[0]);
+					break;
+					
 				default:
 					break;
 			}
@@ -180,6 +188,14 @@ public final class PacketCodec extends AbstractPacketCodec
 					packet.arguments[6] = buffer.readDouble();
 					break;
 
+				case SetSkin:
+					packet.arguments[0] = ByteBufIO.readObject(buffer);
+					break;
+					
+				case OpenGui:
+					packet.arguments[0] = buffer.readInt();
+					break;
+					
 				default:
 					break;
 			}

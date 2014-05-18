@@ -11,6 +11,7 @@ package spiderqueen.core.forge;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import spiderqueen.client.gui.GuiSleep;
 import spiderqueen.client.gui.GuiSpiderInventory;
 import spiderqueen.core.Constants;
 import spiderqueen.entity.EntityHatchedSpider;
@@ -23,7 +24,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 /**
  * Handles the inventory GUI.
  */
-public class GuiHandlerInventory implements IGuiHandler
+public class GuiHandler implements IGuiHandler
 {
 	/**
 	 * Constructor
@@ -31,7 +32,7 @@ public class GuiHandlerInventory implements IGuiHandler
 	 * @param entityId
 	 *            The ID of the entity whose inventory is being edited.
 	 */
-	public GuiHandlerInventory()
+	public GuiHandler()
 	{
 	}
 
@@ -61,6 +62,11 @@ public class GuiHandlerInventory implements IGuiHandler
 			return new GuiSpiderInventory(entity, player.inventory, entity.inventory, false);
 		}
 
+		else if (guiId == Constants.ID_GUI_SLEEP)
+		{
+			return new GuiSleep(player);
+		}
+		
 		else
 		{
 			return null;

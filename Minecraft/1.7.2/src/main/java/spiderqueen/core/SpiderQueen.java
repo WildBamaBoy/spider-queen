@@ -27,15 +27,17 @@ import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 import spiderqueen.blocks.BlockSpiderRod;
 import spiderqueen.blocks.BlockWeb;
+import spiderqueen.blocks.BlockWebBed;
 import spiderqueen.blocks.BlockWebFull;
 import spiderqueen.blocks.BlockWebGround;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
+import spiderqueen.command.CommandSetSkin;
 import spiderqueen.core.forge.ClientTickHandler;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.core.forge.EventHooks;
-import spiderqueen.core.forge.GuiHandlerInventory;
+import spiderqueen.core.forge.GuiHandler;
 import spiderqueen.core.forge.ServerTickHandler;
 import spiderqueen.entity.EntityCocoon;
 import spiderqueen.entity.EntityFakePlayer;
@@ -226,7 +228,7 @@ public class SpiderQueen implements IEnforcedCore
 		}
 
 		serverTickHandler = new ServerTickHandler();
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerInventory());
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		KS();
 	}
 
@@ -342,7 +344,8 @@ public class SpiderQueen implements IEnforcedCore
 		blockPoisonWebSide = new BlockWeb(true);
 		blockPoisonWebFull = new BlockWebFull(true);
 		blockSpiderRod = new BlockSpiderRod();
-
+		blockWebBed = new BlockWebBed();
+		
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
 		GameRegistry.registerBlock(blockWebFull, "Web Full");
@@ -350,6 +353,7 @@ public class SpiderQueen implements IEnforcedCore
 		GameRegistry.registerBlock(blockPoisonWebSide, "Poison Web Side");
 		GameRegistry.registerBlock(blockPoisonWebFull, "Poison Web Full");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
+		GameRegistry.registerBlock(blockWebBed, "Web Bed");
 	}
 
 	@Override
@@ -497,6 +501,7 @@ public class SpiderQueen implements IEnforcedCore
 		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandPlayerSkins());
 		event.registerServerCommand(new CommandCheckReputation());
+		event.registerServerCommand(new CommandSetSkin());
 	}
 
 	@Override

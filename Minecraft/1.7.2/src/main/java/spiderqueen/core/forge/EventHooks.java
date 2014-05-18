@@ -24,6 +24,7 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
@@ -51,6 +53,7 @@ import com.radixshock.radixcore.network.Packet;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
@@ -107,6 +110,21 @@ public class EventHooks
 		}
 	}
 
+	@SubscribeEvent
+	public void playerLoggedInEventHandler(PlayerLoggedInEvent event)
+	{
+		final EntityPlayer player = (EntityPlayer)event.player;
+		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin), (EntityPlayerMP)player);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerSleepInBed(PlayerSleepInBedEvent event)
+	{
+		event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
+		event.entityPlayer.addChatMessage(new ChatComponentText("Spiders can't sleep in normal beds."));
+	}
+	
 	@SubscribeEvent
 	public void onEntityItemPickup(EntityItemPickupEvent event)
 	{
