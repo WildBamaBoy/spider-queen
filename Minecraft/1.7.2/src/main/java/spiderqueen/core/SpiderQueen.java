@@ -9,8 +9,6 @@
 
 package spiderqueen.core;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ import spiderqueen.blocks.BlockWebGround;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.command.CommandDebug;
 import spiderqueen.command.CommandPlayerSkins;
-import spiderqueen.command.CommandSetSkin;
 import spiderqueen.core.forge.ClientTickHandler;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.core.forge.EventHooks;
@@ -200,8 +197,8 @@ public class SpiderQueen implements IEnforcedCore
 	
 	public List<String>				fakePlayerNames				= new ArrayList<String>();
 	public boolean					doDisplayPlayerSkins		= true;
-	public boolean					inDebugMode					= true;
-	public boolean					debugDoRapidSpiderGrowth	= true;
+	public boolean					inDebugMode					= false;
+	public boolean					debugDoRapidSpiderGrowth	= false;
 
 	public SpiderQueen()
 	{
@@ -506,7 +503,6 @@ public class SpiderQueen implements IEnforcedCore
 		event.registerServerCommand(new CommandDebug());
 		event.registerServerCommand(new CommandPlayerSkins());
 		event.registerServerCommand(new CommandCheckReputation());
-		event.registerServerCommand(new CommandSetSkin());
 	}
 
 	@Override
