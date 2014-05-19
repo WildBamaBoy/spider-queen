@@ -106,11 +106,11 @@ public final class PacketCodec extends AbstractPacketCodec
 					ByteBufIO.writeObject(buffer, packet.arguments[0]);
 					ByteBufIO.writeObject(buffer, packet.arguments[1]);
 					break;
-				
+
 				case OpenGui:
-					buffer.writeInt((Integer)packet.arguments[0]);
+					buffer.writeInt((Integer) packet.arguments[0]);
 					break;
-					
+
 				default:
 					break;
 			}
@@ -193,11 +193,11 @@ public final class PacketCodec extends AbstractPacketCodec
 					packet.arguments[0] = ByteBufIO.readObject(buffer);
 					packet.arguments[1] = ByteBufIO.readObject(buffer);
 					break;
-					
+
 				case OpenGui:
 					packet.arguments[0] = buffer.readInt();
 					break;
-					
+
 				default:
 					break;
 			}

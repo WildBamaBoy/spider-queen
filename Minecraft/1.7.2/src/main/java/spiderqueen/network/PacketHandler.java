@@ -301,12 +301,12 @@ public final class PacketHandler extends AbstractPacketHandler
 
 		if (receivedPlayer != null)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension)receivedPlayer.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) receivedPlayer.getExtendedProperties(PlayerExtension.ID);
 			playerExtension.selectedSkin = skinName;
 		}
 	}
 
-	private void handleOpenGui(Object[] arguments, EntityPlayer player) 
+	private void handleOpenGui(Object[] arguments, EntityPlayer player)
 	{
 		final int guiId = (Integer) arguments[0];
 
@@ -317,13 +317,13 @@ public final class PacketHandler extends AbstractPacketHandler
 
 		else
 		{
-			player.openGui(SpiderQueen.getInstance(), guiId, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
+			player.openGui(SpiderQueen.getInstance(), guiId, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 	}
 
-	private void handleSleepComplete(Object[] arguments, EntityPlayer player) 
+	private void handleSleepComplete(Object[] arguments, EntityPlayer player)
 	{
 		player.worldObj.setWorldTime(13000);
-		SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.OpenGui, -1), (EntityPlayerMP)player);
+		SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.OpenGui, -1), (EntityPlayerMP) player);
 	}
 }
