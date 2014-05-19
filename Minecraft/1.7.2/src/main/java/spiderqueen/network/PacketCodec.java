@@ -104,6 +104,7 @@ public final class PacketCodec extends AbstractPacketCodec
 
 				case SetSkin:
 					ByteBufIO.writeObject(buffer, packet.arguments[0]);
+					ByteBufIO.writeObject(buffer, packet.arguments[1]);
 					break;
 				
 				case OpenGui:
@@ -190,6 +191,7 @@ public final class PacketCodec extends AbstractPacketCodec
 
 				case SetSkin:
 					packet.arguments[0] = ByteBufIO.readObject(buffer);
+					packet.arguments[1] = ByteBufIO.readObject(buffer);
 					break;
 					
 				case OpenGui:

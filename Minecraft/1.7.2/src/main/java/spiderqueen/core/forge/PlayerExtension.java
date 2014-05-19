@@ -50,7 +50,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 		nbt.setInteger("totalHumansKilled", totalHumansKilled);
 		nbt.setString("selectedSkin", selectedSkin);
 		
-		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, selectedSkin));
+		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, selectedSkin, player.getCommandSenderName()));
 	}
 
 	@Override

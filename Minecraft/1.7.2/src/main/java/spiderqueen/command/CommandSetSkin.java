@@ -62,7 +62,7 @@ public class CommandSetSkin extends CommandBase
 			else
 			{
 				playerExtension.selectedSkin = argument;
-				SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, argument));
+				SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, player.getCommandSenderName(), argument));
 			}
 		}
 

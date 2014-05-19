@@ -24,7 +24,6 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -126,7 +125,7 @@ public class EventHooks
 		{
 			final EntityPlayer player = (EntityPlayer)event.player;
 			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-			SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin), (EntityPlayerMP)player);
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin, player.getCommandSenderName()));
 		}
 	}
 

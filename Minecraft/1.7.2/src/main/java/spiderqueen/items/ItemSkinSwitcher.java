@@ -67,7 +67,7 @@ public class ItemSkinSwitcher extends Item
 				playerExtension.selectedSkin = "SpiderQueen1";			
 			}
 			
-			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin));					
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin, player.getCommandSenderName()));					
 			player.addChatMessage(new ChatComponentText("Skin changed to " + playerExtension.selectedSkin + "."));
 		}
 

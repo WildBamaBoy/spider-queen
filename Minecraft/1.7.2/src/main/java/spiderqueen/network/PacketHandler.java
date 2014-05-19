@@ -107,7 +107,7 @@ public final class PacketHandler extends AbstractPacketHandler
 				case SleepComplete:
 					handleSleepComplete(packet.arguments, player);
 					break;
-					
+
 				default:
 					SpiderQueen.getInstance().getLogger().log("WARNING: DEFAULTED PACKET TYPE - " + packet.packetType.toString());
 			}
@@ -296,9 +296,14 @@ public final class PacketHandler extends AbstractPacketHandler
 	private void handleSetSkin(Object[] arguments, EntityPlayer player)
 	{
 		final String skinName = arguments[0].toString();
-		final PlayerExtension playerExtension = (PlayerExtension)player.getExtendedProperties(PlayerExtension.ID);
+		final String playerName = arguments[1].toString();
+		final EntityPlayer receivedPlayer = player.worldObj.getPlayerEntityByName(playerName);
 
-		playerExtension.selectedSkin = skinName;
+		if (receivedPlayer != null)
+		{
+			final PlayerExtension playerExtension = (PlayerExtension)receivedPlayer.getExtendedProperties(PlayerExtension.ID);
+			playerExtension.selectedSkin = skinName;
+		}
 	}
 
 	private void handleOpenGui(Object[] arguments, EntityPlayer player) 
@@ -309,13 +314,13 @@ public final class PacketHandler extends AbstractPacketHandler
 		{
 			Minecraft.getMinecraft().displayGuiScreen(null);
 		}
-		
+
 		else
 		{
 			player.openGui(SpiderQueen.getInstance(), guiId, player.worldObj, (int)player.posX, (int)player.posY, (int)player.posZ);
 		}
 	}
-	
+
 	private void handleSleepComplete(Object[] arguments, EntityPlayer player) 
 	{
 		player.worldObj.setWorldTime(13000);
