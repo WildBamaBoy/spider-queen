@@ -420,58 +420,61 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 			timeInAir++;
 		}
 
-		Vec3 vec3d = Vec3.createVectorHelper(posX, posY, posZ);
-		Vec3 vec3d1 = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
-		MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(vec3d, vec3d1);
-		vec3d = Vec3.createVectorHelper(posX, posY, posZ);
-		vec3d1 = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		Vec3 playerPositionVector = Vec3.createVectorHelper(posX, posY, posZ);
+		Vec3 appliedMotionVector = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		
+		MovingObjectPosition objectPosition = worldObj.rayTraceBlocks(playerPositionVector, appliedMotionVector);
+		playerPositionVector = Vec3.createVectorHelper(posX, posY, posZ);
+		appliedMotionVector = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
 
-		if (movingobjectposition != null)
+		if (objectPosition != null)
 		{
-			vec3d1 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+			appliedMotionVector = Vec3.createVectorHelper(objectPosition.hitVec.xCoord, objectPosition.hitVec.yCoord, objectPosition.hitVec.zCoord);
 		}
 
 		Entity entity = null;
 		final List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
-		double d3 = 0.0D;
+		double leastDistanceToHitVector = 0.0D;
 
-		for (int j = 0; j < list.size(); j++)
+		for (int index = 0; index < list.size(); index++)
 		{
-			final Entity entity1 = (Entity) list.get(j);
-			if (!entity1.canBeCollidedWith() || entity1 == player && timeInAir < 5)
+			final Entity entityInList = (Entity) list.get(index);
+			
+			if (!entityInList.canBeCollidedWith() || entityInList == player && timeInAir < 5)
 			{
 				continue;
 			}
 
-			final float f2 = 0.3F;
-			final AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f2, f2, f2);
-			final MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
+			final float expansionSize = 0.3F;
+			final AxisAlignedBB axisalignedbb = entityInList.boundingBox.expand(expansionSize, expansionSize, expansionSize);
+			final MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(playerPositionVector, appliedMotionVector);
 
 			if (movingobjectposition1 == null)
 			{
 				continue;
 			}
 
-			final double d6 = vec3d.distanceTo(movingobjectposition1.hitVec);
-			if (d6 < d3 || d3 == 0.0D)
+			final double distanceToHitVector = playerPositionVector.distanceTo(movingobjectposition1.hitVec);
+			
+			if (distanceToHitVector < leastDistanceToHitVector || leastDistanceToHitVector == 0.0D)
 			{
-				entity = entity1;
-				d3 = d6;
+				entity = entityInList;
+				leastDistanceToHitVector = distanceToHitVector;
 			}
 		}
 
 		if (entity != null)
 		{
-			movingobjectposition = new MovingObjectPosition(entity);
+			objectPosition = new MovingObjectPosition(entity);
 		}
 
-		if (movingobjectposition != null)
+		if (objectPosition != null)
 		{
-			if (movingobjectposition.entityHit != null)
+			if (objectPosition.entityHit != null)
 			{
-				if (movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeMobDamage(player), 0))
+				if (objectPosition.entityHit.attackEntityFrom(DamageSource.causeMobDamage(player), 0))
 				{
-					entityStruck = movingobjectposition.entityHit;
+					entityStruck = objectPosition.entityHit;
 				}
 			}
 

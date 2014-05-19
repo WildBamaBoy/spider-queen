@@ -54,19 +54,6 @@ public class EntityMiniGhast extends EntityCreature
 		this.owner = owner;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public boolean func_110182_bF()
-	{
-		return dataWatcher.getWatchableObjectByte(16) != 0;
-	}
-
-	@Override
-	protected void entityInit()
-	{
-		super.entityInit();
-		dataWatcher.addObject(16, Byte.valueOf((byte) 0));
-	}
-
 	@Override
 	protected void applyEntityAttributes()
 	{
@@ -139,19 +126,19 @@ public class EntityMiniGhast extends EntityCreature
 	}
 
 	@Override
-	protected void dropFewItems(boolean par1, int par2)
+	protected void dropFewItems(boolean recentlyHitByPlayer, int lootingLevel)
 	{
-		int j = rand.nextInt(2) + rand.nextInt(1 + par2);
-		int k;
+		int dropAmount = rand.nextInt(2) + rand.nextInt(1 + lootingLevel);
+		int loops;
 
-		for (k = 0; k < j; ++k)
+		for (loops = 0; loops < dropAmount; ++loops)
 		{
 			dropItem(Items.ghast_tear, 1);
 		}
 
-		j = rand.nextInt(3) + rand.nextInt(1 + par2);
+		dropAmount = rand.nextInt(3) + rand.nextInt(1 + lootingLevel);
 
-		for (k = 0; k < j; ++k)
+		for (loops = 0; loops < dropAmount; ++loops)
 		{
 			dropItem(Items.gunpowder, 1);
 		}
@@ -162,13 +149,7 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return 3.0F;
 	}
-
-	@Override
-	public void onUpdate()
-	{
-		super.onUpdate();
-	}
-
+	
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
@@ -245,6 +226,7 @@ public class EntityMiniGhast extends EntityCreature
 			limbSwingAmount += (f4 - limbSwingAmount) * 0.4F;
 			limbSwing += limbSwingAmount;
 		}
+		
 		else
 		{
 			stepHeight = 0.5F;
@@ -253,27 +235,18 @@ public class EntityMiniGhast extends EntityCreature
 		}
 	}
 
-	/**
-	 * Called when the mob is falling. Calculates and applies fall damage.
-	 */
 	@Override
-	protected void fall(float par1)
+	protected void fall(float fallAmount)
 	{
+		return;
 	}
 
-	/**
-	 * Takes in the distance the entity has fallen this tick and whether its on
-	 * the ground to update the fall distance and deal fall damage if landing on
-	 * the ground. Args: distanceFallenThisTick, onGround
-	 */
 	@Override
-	protected void updateFallState(double par1, boolean par3)
+	protected void updateFallState(double distanceFallen, boolean onGround)
 	{
+		return;
 	}
 
-	/**
-	 * returns true if this entity is by a ladder, false otherwise
-	 */
 	@Override
 	public boolean isOnLadder()
 	{

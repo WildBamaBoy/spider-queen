@@ -155,57 +155,56 @@ public class RenderFakePlayer extends RenderBiped
 		if (distanceSq <= visibleDistance * visibleDistance)
 		{
 			final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
-
-			final FontRenderer fontrenderer = getFontRendererFromRenderManager();
-			final float f = 1.6F;
-			final float f1 = 0.016666668F * f;
+			final FontRenderer fontRenderer = getFontRendererFromRenderManager();
+			final float labelScale = 0.0268F;
+			
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float) posX + 0.0F, (float) posY + entity.height + 0.5F, (float) posZ);
-			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-			GL11.glScalef(-f1, -f1, f1);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glDepthMask(false);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
-			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-			final Tessellator tessellator = Tessellator.instance;
-			byte b0 = 0;
-
-			if (text.equals("deadmau5"))
 			{
-				b0 = -10;
+				GL11.glTranslatef((float) posX + 0.0F, (float) posY + entity.height + 0.5F, (float) posZ);
+				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+				GL11.glScalef(-labelScale, -labelScale, labelScale);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDepthMask(false);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
+				GL11.glEnable(GL11.GL_BLEND);
+				
+				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				
+				final Tessellator tessellator = Tessellator.instance;
+				tessellator.startDrawingQuads();
+				tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+				
+				final int halfStringWidth = fontRenderer.getStringWidth(text) / 2;
+				tessellator.addVertex(-halfStringWidth - 1, -1, 0.0D);
+				tessellator.addVertex(-halfStringWidth - 1, 8, 0.0D);
+				tessellator.addVertex(halfStringWidth + 1, 8, 0.0D);
+				tessellator.addVertex(halfStringWidth + 1, -1, 0.0D);
+				tessellator.draw();
+				
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, 553648127);
+
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				GL11.glDepthMask(true);
+
+				if (fakePlayer.isContributor)
+				{
+					fontRenderer.drawString(Color.YELLOW + Format.ITALIC + text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
+				}
+
+				else
+				{
+					fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
+				}
+
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
-
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			tessellator.startDrawingQuads();
-			final int j = fontrenderer.getStringWidth(text) / 2;
-			tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-			tessellator.addVertex(-j - 1, -1 + b0, 0.0D);
-			tessellator.addVertex(-j - 1, 8 + b0, 0.0D);
-			tessellator.addVertex(j + 1, 8 + b0, 0.0D);
-			tessellator.addVertex(j + 1, -1 + b0, 0.0D);
-			tessellator.draw();
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			fontrenderer.drawString(text, -fontrenderer.getStringWidth(text) / 2, b0, 553648127);
-
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glDepthMask(true);
-
-			if (fakePlayer.isContributor)
-			{
-				fontrenderer.drawString(Color.YELLOW + Format.ITALIC + text, -fontrenderer.getStringWidth(text) / 2, b0, -1);
-			}
-
-			else
-			{
-				fontrenderer.drawString(text, -fontrenderer.getStringWidth(text) / 2, b0, -1);
-			}
-
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		}
 	}

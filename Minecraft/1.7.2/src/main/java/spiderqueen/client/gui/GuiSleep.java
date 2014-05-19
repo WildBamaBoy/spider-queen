@@ -27,7 +27,7 @@ public class GuiSleep extends GuiScreen
 	private EntityPlayer player;
 	private int sleepProgress = 0;
 	private boolean hasSentSleepComplete = false;
-	
+
 	public GuiSleep(EntityPlayer player)
 	{
 		this.player = player;
@@ -46,12 +46,12 @@ public class GuiSleep extends GuiScreen
 	public void updateScreen()
 	{
 		super.updateScreen();
-		
+
 		if (sleepProgress != 100)
 		{
 			sleepProgress += 2;
 		}
-		
+
 		else
 		{
 			if (!hasSentSleepComplete)
@@ -69,27 +69,28 @@ public class GuiSleep extends GuiScreen
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3)
+	public void drawScreen(int posX, int posY, float partialTickTime)
 	{
-		super.drawScreen(par1, par2, par3);
+		super.drawScreen(posX, posY, partialTickTime);
 
 		if (sleepProgress > 0)
 		{
-			ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-			int k = scaledresolution.getScaledWidth();
-			int l = scaledresolution.getScaledHeight();
+			ScaledResolution scaledResolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			float l4 = sleepProgress;
-			float f3 = (float)l4 / 100.0F;
-
-			if (f3 > 1.0F)
 			{
-				f3 = 1.0F - (float)(l4 - 100) / 10.0F;
-			}
+				float colorIntensity = (float)sleepProgress / 100.0F;
 
-			int j1 = (int)(220.0F * f3) << 24 | 1052704;
-			drawRect(0, 0, k, l, j1);
+				if (colorIntensity > 1.0F)
+				{
+					colorIntensity = 1.0F - (float)(sleepProgress - 100) / 10.0F;
+				}
+
+				int color = (int)(220.0F * colorIntensity) << 24 | 1052704;
+
+				drawRect(0, 0,  scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), color);
+			}
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 		}

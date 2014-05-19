@@ -31,21 +31,21 @@ public class RenderMiniGhast extends RenderLiving
 		super(new ModelGhast(), 0.5F);
 	}
 
-	protected ResourceLocation getEntityTexture(EntityMiniGhast par1EntityGhast)
+	protected ResourceLocation getEntityTexture(EntityMiniGhast entityGhast)
 	{
 		return ghastTextures;
 	}
 
 	@Override
-	protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
+	protected void preRenderCallback(EntityLivingBase entityLivingBase, float partialTickTime)
 	{
-		super.preRenderCallback(par1EntityLivingBase, par2);
+		super.preRenderCallback(entityLivingBase, partialTickTime);
 		GL11.glTranslated(0.0D, -1.0D, 0.0D);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
+	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return this.getEntityTexture((EntityMiniGhast) par1Entity);
+		return this.getEntityTexture((EntityMiniGhast) entity);
 	}
 }

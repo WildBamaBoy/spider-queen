@@ -105,15 +105,14 @@ public class BlockWebBed extends Block
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int meta, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+	public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer entityplayer, int meta, float unknown, float unknown1, float unknown2)
 	{
 		if (!world.isRemote)
 		{
 			if (world.isDaytime())
 			{
 				SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.OpenGui, Constants.ID_GUI_SLEEP));
-				entityplayer.openGui(SpiderQueen.getInstance(), Constants.ID_GUI_SLEEP, world, i, j, k);
-//				world.setWorldTime(13000);
+				entityplayer.openGui(SpiderQueen.getInstance(), Constants.ID_GUI_SLEEP, world, posX, posY, posZ);
 			}
 
 			else

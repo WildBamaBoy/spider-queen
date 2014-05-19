@@ -474,16 +474,16 @@ public class EntityWeb extends Entity implements IProjectile
 			// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
-				int i = impactPoint.blockX;
-				int j = impactPoint.blockY;
-				int k = impactPoint.blockZ;
+				int impactX = impactPoint.blockX;
+				int impactY = impactPoint.blockY;
+				int impactZ = impactPoint.blockZ;
 
 				if (blockHit != SpiderQueen.getInstance().blockWebSide && blockHit != SpiderQueen.getInstance().blockWebGround && 
 						blockHit != SpiderQueen.getInstance().blockPoisonWebSide && blockHit != SpiderQueen.getInstance().blockPoisonWebGround)
 				{
 					if (blockHit == Blocks.tallgrass && type == 2)
 					{
-						worldObj.setBlock(i, j, k, Blocks.fire);
+						worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
 						setDead();
 						return;
 					}
@@ -495,25 +495,25 @@ public class EntityWeb extends Entity implements IProjectile
 						switch (impactPoint.sideHit)
 						{
 							case 0:
-								--j;
+								--impactY;
 								break;
 							case 1:
-								++j;
+								++impactY;
 								break;
 							case 2:
-								--k;
+								--impactZ;
 								break;
 							case 3:
-								++k;
+								++impactZ;
 								break;
 							case 4:
-								--i;
+								--impactX;
 								break;
 							case 5:
-								++i;
+								++impactX;
 						}
 
-						if (worldObj.isAirBlock(i, j, k))
+						if (worldObj.isAirBlock(impactX, impactY, impactZ))
 						{
 							int meta = 0;
 							switch (impactPoint.sideHit)
@@ -542,17 +542,17 @@ public class EntityWeb extends Entity implements IProjectile
 							{
 								if (type == 0)
 								{
-									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebGround, 0, 2);
+									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebGround, 0, 2);
 								}
 
 								else if (type == 1)
 								{
-									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebGround, 0, 2);
+									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebGround, 0, 2);
 								}
 								
 								else if (type == 2)
 								{
-									worldObj.setBlock(i, j, k, Blocks.fire);
+									worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
 								}
 							}
 
@@ -560,17 +560,17 @@ public class EntityWeb extends Entity implements IProjectile
 							{
 								if (type == 0)
 								{
-									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebSide, meta, 2);
+									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebSide, meta, 2);
 								}
 
 								else if (type == 1)
 								{
-									worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebSide, meta, 2);
+									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebSide, meta, 2);
 								}
 								
 								else if (type == 2)
 								{
-									worldObj.setBlock(i, j, k, Blocks.fire);
+									worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
 								}
 							}
 						}
@@ -583,17 +583,17 @@ public class EntityWeb extends Entity implements IProjectile
 				{
 					if (type == 0)
 					{
-						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockWebFull);
+						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebFull);
 					}
 
 					else if (type == 1)
 					{
-						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebFull);
+						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebFull);
 					}
 					
 					else if (type == 2)
 					{
-						worldObj.setBlock(i, j, k, Blocks.fire);
+						worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
 					}
 				}
 				
@@ -601,17 +601,17 @@ public class EntityWeb extends Entity implements IProjectile
 				{
 					if (type == 0)
 					{
-						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebFull);
+						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebFull);
 					}
 
 					else if (type == 1)
 					{
-						worldObj.setBlock(i, j, k, SpiderQueen.getInstance().blockPoisonWebFull);
+						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebFull);
 					}
 					
 					else if (type == 2)
 					{
-						worldObj.setBlock(i, j, k, Blocks.fire);
+						worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
 					}
 				}
 			}
