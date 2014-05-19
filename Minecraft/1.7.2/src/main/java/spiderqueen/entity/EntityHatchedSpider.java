@@ -424,13 +424,13 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (level == 3)
 			{
 				final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
-				
+
 				if (player != null)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementLevelUpSpider);
 				}
 			}
-			
+
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
 		}
@@ -450,8 +450,12 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) > 12.0F)
 			{
 				final Point3D point = LogicHelper.getRandomNearbyBlockCoordinatesOfType(entityBeingAttacked, Blocks.air, 8);
-				getNavigator().setPath(getNavigator().getPathToXYZ(point.dPosX, point.dPosY, point.dPosZ), 0.4D);
-				faceEntity(entityBeingAttacked, 1.0F, 1.0F);
+
+				if (point != null)
+				{
+					getNavigator().setPath(getNavigator().getPathToXYZ(point.dPosX, point.dPosY, point.dPosZ), 0.4D);
+					faceEntity(entityBeingAttacked, 1.0F, 1.0F);
+				}
 			}
 		}
 
@@ -630,7 +634,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.4F / 3;
 				moveForward = ((EntityLivingBase) riddenByEntity).moveForward * level * 0.5F / 3;
 			}
-			
+
 			else
 			{
 				moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * level * 0.7F / 3;
