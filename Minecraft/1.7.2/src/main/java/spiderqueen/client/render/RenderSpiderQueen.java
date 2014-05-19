@@ -9,15 +9,29 @@
 
 package spiderqueen.client.render;
 
+import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
+import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
 
@@ -28,11 +42,13 @@ public class RenderSpiderQueen extends RenderPlayer
 {
 	private static final ResourceLocation	steveTextures	= new ResourceLocation("textures/entity/steve.png");
 	private final ModelSpiderQueen			modelBipedMain;
-
+	private final ModelBiped				modelFirstPerson;
+	
 	public RenderSpiderQueen()
 	{
 		super();
 		modelBipedMain = new ModelSpiderQueen();
+		modelFirstPerson = new ModelBiped();
 		mainModel = modelBipedMain;
 	}
 
@@ -116,7 +132,7 @@ public class RenderSpiderQueen extends RenderPlayer
 
 				renderLivingAt(entity, posX, posY, posZ);
 				rotateCorpse(entity, wrappedRotation, realRenderYaw, rotationPitch);
-
+				
 				GL11.glTranslatef(0.0F, -0.10F, 0.0F); // Move the model down
 				// slightly so that it
 				// touches the ground.
@@ -133,7 +149,16 @@ public class RenderSpiderQueen extends RenderPlayer
 
 				mainModel.setLivingAnimations(entity, limbAngle, limbSwing, rotationPitch);
 				renderModel(entity, limbAngle, limbSwing, wrappedRotation, realRenderYawHead - realRenderYaw, realRotationPitch, unknownConstant);
-
+				try
+				{
+					renderEquippedItems(entity, limbSwing);
+				}
+				
+				catch (Throwable e)
+				{
+					e.printStackTrace();
+				}
+				
 				final float brightness = entity.getBrightness(rotationPitch);
 				final int colorMultiplier = getColorMultiplier(entity, brightness, rotationPitch);
 
@@ -183,12 +208,6 @@ public class RenderSpiderQueen extends RenderPlayer
 	}
 
 	@Override
-	protected void renderEquippedItems(AbstractClientPlayer clientPlayer, float partialTickTime)
-	{
-		return;
-	}
-
-	@Override
 	protected void preRenderCallback(AbstractClientPlayer clientPlayer, float partialTickTime)
 	{
 		return;
@@ -206,7 +225,25 @@ public class RenderSpiderQueen extends RenderPlayer
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		modelBipedMain.onGround = 0.0F;
 		modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, entityPlayer);
-		// modelBipedMain.armRight.render(0.0625F); //TODO
+
+		GL11.glPushMatrix();
+		{
+			GL11.glScalef(0.7F, 0.9F, 0.7F);
+			GL11.glTranslated(-0.3D, 0.1D, 0.0D);
+			
+			try
+			{
+				bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueenArms.png"));
+			}
+			
+			catch (NullPointerException e)
+			{
+				//Happens sometimes just when the player is logging in.
+			}
+			
+			modelFirstPerson.bipedRightArm.render(0.0625F);
+		}
+		GL11.glPopMatrix();
 	}
 
 	@Override
@@ -262,9 +299,240 @@ public class RenderSpiderQueen extends RenderPlayer
 	}
 
 	@Override
+	public void renderEquippedItems(AbstractClientPlayer clientPlayer, float partialTickTime)
+	{
+		RenderPlayerEvent.Specials.Pre event = new RenderPlayerEvent.Specials.Pre(clientPlayer, this, partialTickTime);
+        if (MinecraftForge.EVENT_BUS.post(event))
+        {
+            return;
+        }
+
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glScaled(-1, -1, -1);
+        GL11.glTranslated(-0.05D, 0.3D, -0.15D);
+        super.renderArrowsStuckInEntity(clientPlayer, partialTickTime);
+        ItemStack itemstack = clientPlayer.inventory.armorItemInSlot(3);
+
+        if (itemstack != null && event.renderHelmet)
+        {
+            GL11.glPushMatrix();
+            this.modelBipedMain.head.postRender(0.0625F);
+            float f1;
+
+            if (itemstack.getItem() instanceof ItemBlock)
+            {
+                IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
+                boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
+
+                if (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(itemstack.getItem()).getRenderType()))
+                {
+                    f1 = 0.625F;
+                    GL11.glTranslatef(0.0F, -0.25F, 0.0F);
+                    GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+                    GL11.glScalef(f1, -f1, -f1);
+                }
+
+                this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack, 0);
+            }
+            else if (itemstack.getItem() == Items.skull)
+            {
+                f1 = 1.0625F;
+                GL11.glScalef(f1, -f1, -f1);
+                String s = "";
+
+                if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("SkullOwner", 8))
+                {
+                    s = itemstack.getTagCompound().getString("SkullOwner");
+                }
+
+                TileEntitySkullRenderer.field_147536_b.func_147530_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack.getItemDamage(), s);
+            }
+
+            GL11.glPopMatrix();
+        }
+
+        float f3;
+
+        if (clientPlayer.getCommandSenderName().equals("deadmau5") && clientPlayer.getTextureSkin().isTextureUploaded())
+        {
+            this.bindTexture(clientPlayer.getLocationSkin());
+
+            for (int j = 0; j < 2; ++j)
+            {
+                float f10 = clientPlayer.prevRotationYaw + (clientPlayer.rotationYaw - clientPlayer.prevRotationYaw) * partialTickTime - (clientPlayer.prevRenderYawOffset + (clientPlayer.renderYawOffset - clientPlayer.prevRenderYawOffset) * partialTickTime);
+                float f2 = clientPlayer.prevRotationPitch + (clientPlayer.rotationPitch - clientPlayer.prevRotationPitch) * partialTickTime;
+                GL11.glPushMatrix();
+                GL11.glRotatef(f10, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(f2, 1.0F, 0.0F, 0.0F);
+                GL11.glTranslatef(0.375F * (float)(j * 2 - 1), 0.0F, 0.0F);
+                GL11.glTranslatef(0.0F, -0.375F, 0.0F);
+                GL11.glRotatef(-f2, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(-f10, 0.0F, 1.0F, 0.0F);
+                f3 = 1.3333334F;
+                GL11.glScalef(f3, f3, f3);
+                GL11.glPopMatrix();
+            }
+        }
+
+        boolean flag = clientPlayer.getTextureCape().isTextureUploaded();
+        flag = event.renderCape && flag;
+        float f5;
+
+        if (flag && !clientPlayer.isInvisible() && !clientPlayer.getHideCape())
+        {
+            this.bindTexture(clientPlayer.getLocationCape());
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 0.125F);
+            double d3 = clientPlayer.field_71091_bM + (clientPlayer.field_71094_bP - clientPlayer.field_71091_bM) * (double)partialTickTime - (clientPlayer.prevPosX + (clientPlayer.posX - clientPlayer.prevPosX) * (double)partialTickTime);
+            double d4 = clientPlayer.field_71096_bN + (clientPlayer.field_71095_bQ - clientPlayer.field_71096_bN) * (double)partialTickTime - (clientPlayer.prevPosY + (clientPlayer.posY - clientPlayer.prevPosY) * (double)partialTickTime);
+            double d0 = clientPlayer.field_71097_bO + (clientPlayer.field_71085_bR - clientPlayer.field_71097_bO) * (double)partialTickTime - (clientPlayer.prevPosZ + (clientPlayer.posZ - clientPlayer.prevPosZ) * (double)partialTickTime);
+            f5 = clientPlayer.prevRenderYawOffset + (clientPlayer.renderYawOffset - clientPlayer.prevRenderYawOffset) * partialTickTime;
+            double d1 = (double)MathHelper.sin(f5 * (float)Math.PI / 180.0F);
+            double d2 = (double)(-MathHelper.cos(f5 * (float)Math.PI / 180.0F));
+            float f6 = (float)d4 * 10.0F;
+
+            if (f6 < -6.0F)
+            {
+                f6 = -6.0F;
+            }
+
+            if (f6 > 32.0F)
+            {
+                f6 = 32.0F;
+            }
+
+            float f7 = (float)(d3 * d1 + d0 * d2) * 100.0F;
+            float f8 = (float)(d3 * d2 - d0 * d1) * 100.0F;
+
+            if (f7 < 0.0F)
+            {
+                f7 = 0.0F;
+            }
+
+            float f9 = clientPlayer.prevCameraYaw + (clientPlayer.cameraYaw - clientPlayer.prevCameraYaw) * partialTickTime;
+            f6 += MathHelper.sin((clientPlayer.prevDistanceWalkedModified + (clientPlayer.distanceWalkedModified - clientPlayer.prevDistanceWalkedModified) * partialTickTime) * 6.0F) * 32.0F * f9;
+
+            if (clientPlayer.isSneaking())
+            {
+                f6 += 25.0F;
+            }
+
+            GL11.glRotatef(6.0F + f7 / 2.0F + f6, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(f8 / 2.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-f8 / 2.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glPopMatrix();
+        }
+
+        ItemStack itemstack1 = clientPlayer.inventory.getCurrentItem();
+
+        if (itemstack1 != null && event.renderItem)
+        {
+            GL11.glPushMatrix();
+            this.modelBipedMain.armRight.postRender(0.0625F);
+            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+
+            if (clientPlayer.fishEntity != null)
+            {
+                itemstack1 = new ItemStack(Items.stick);
+            }
+
+            EnumAction enumaction = null;
+
+            if (clientPlayer.getItemInUseCount() > 0)
+            {
+                enumaction = itemstack1.getItemUseAction();
+            }
+
+            IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, EQUIPPED);
+            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack1, BLOCK_3D));
+
+            if (is3D || itemstack1.getItem() instanceof ItemBlock && RenderBlocks.renderItemIn3d(Block.getBlockFromItem(itemstack1.getItem()).getRenderType()))
+            {
+                f3 = 0.5F;
+                GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
+                f3 *= 0.75F;
+                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(-f3, -f3, f3);
+            }
+            else if (itemstack1.getItem() == Items.bow)
+            {
+                f3 = 0.625F;
+                GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
+                GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(f3, -f3, f3);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else if (itemstack1.getItem().isFull3D())
+            {
+                f3 = 0.625F;
+
+                if (itemstack1.getItem().shouldRotateAroundWhenRendering())
+                {
+                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
+                }
+
+                if (clientPlayer.getItemInUseCount() > 0 && enumaction == EnumAction.block)
+                {
+                    GL11.glTranslatef(0.05F, 0.0F, -0.1F);
+                    GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
+                    GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
+                }
+
+                GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
+                GL11.glScalef(f3, -f3, f3);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            }
+            else
+            {
+                f3 = 0.375F;
+                GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+                GL11.glScalef(f3, f3, f3);
+                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
+            }
+
+            float f4;
+            float f12;
+            int k;
+
+            if (itemstack1.getItem().requiresMultipleRenderPasses())
+            {
+                for (k = 0; k <= itemstack1.getItem().getRenderPasses(itemstack1.getItemDamage()); ++k)
+                {
+                    int i = itemstack1.getItem().getColorFromItemStack(itemstack1, k);
+                    f12 = (float)(i >> 16 & 255) / 255.0F;
+                    f4 = (float)(i >> 8 & 255) / 255.0F;
+                    f5 = (float)(i & 255) / 255.0F;
+                    GL11.glColor4f(f12, f4, f5, 1.0F);
+                    this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, k);
+                }
+            }
+            else
+            {
+                k = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
+                float f11 = (float)(k >> 16 & 255) / 255.0F;
+                f12 = (float)(k >> 8 & 255) / 255.0F;
+                f4 = (float)(k & 255) / 255.0F;
+                GL11.glColor4f(f11, f12, f4, 1.0F);
+                this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, 0);
+            }
+
+            GL11.glPopMatrix();
+        }
+        MinecraftForge.EVENT_BUS.post(new RenderPlayerEvent.Specials.Post(clientPlayer, this, partialTickTime));
+	}
+	
+	@Override
 	protected void renderEquippedItems(EntityLivingBase entityLivingBase, float partialTickTime)
 	{
-		return;
+		this.renderEquippedItems((AbstractClientPlayer)entityLivingBase, partialTickTime);
 	}
 
 	@Override
@@ -319,7 +587,7 @@ public class RenderSpiderQueen extends RenderPlayer
 	{
 		final EntityPlayer player = (EntityPlayer)entity;
 		final PlayerExtension playerExtension = PlayerExtension.get(player);
-		
+
 		bindTexture(new ResourceLocation("spiderqueen:textures/entity/" + playerExtension.selectedSkin + ".png"));
 	}
 }

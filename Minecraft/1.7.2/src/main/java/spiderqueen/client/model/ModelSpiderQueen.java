@@ -23,7 +23,7 @@ import spiderqueen.entity.EntityHatchedSpider;
 
 public class ModelSpiderQueen extends ModelBase
 {
-	private final ModelRenderer	head;
+	public final ModelRenderer	head;
 	private final ModelRenderer	body;
 	private final ModelRenderer	torso;
 	private final ModelRenderer	rear;

@@ -59,10 +59,10 @@ import spiderqueen.items.ItemWebslinger;
 import spiderqueen.network.PacketCodec;
 import spiderqueen.network.PacketHandler;
 
-import com.radixshock.radixcore.core.IEnforcedCore;
 import com.radixshock.radixcore.core.ModLogger;
 import com.radixshock.radixcore.core.RadixCore;
 import com.radixshock.radixcore.core.RadixRegistry;
+import com.radixshock.radixcore.core.UnenforcedCore;
 import com.radixshock.radixcore.enums.EnumNetworkType;
 import com.radixshock.radixcore.file.ModPropertiesManager;
 import com.radixshock.radixcore.lang.ILanguageLoaderHook;
@@ -87,10 +87,11 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = "spiderqueen", name = "Spider Queen", version = Constants.VERSION, dependencies = "required-after:radixcore")
-public class SpiderQueen implements IEnforcedCore
+public class SpiderQueen extends UnenforcedCore
 {
 	@Instance("spiderqueen")
 	private static SpiderQueen		instance;
+	
 	@SidedProxy(clientSide = "spiderqueen.core.forge.ClientProxy", serverSide = "spiderqueen.core.forge.CommonProxy")
 	public static CommonProxy		proxy;
 
@@ -229,30 +230,6 @@ public class SpiderQueen implements IEnforcedCore
 
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-	}
-
-	@Override
-	public void init(FMLInitializationEvent event)
-	{
-
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStopping(FMLServerStoppingEvent event)
-	{
-
 	}
 
 	@Override
@@ -460,14 +437,6 @@ public class SpiderQueen implements IEnforcedCore
 		// Misc Teir
 		achievementHelpZombies = RadixRegistry.Achievements.createAchievement(this, "helpzombies", 1, -4, itemBrain, achievementCraftWeb);
 		achievementKillHumans = RadixRegistry.Achievements.createAchievement(this, "killhumans", -1, -4, itemHeart, achievementCraftWeb);
-		
-		// this.achievementKillSheWolfDeadly =
-		// RadixRegistry.Achievements.createAchievement(this,
-		// "killshewolfdeadly", -3, -4, itemCocoonWolf,
-		// achievementKillHumans).setSpecial();
-		// this.achievementKillWildBamaBoy =
-		// RadixRegistry.Achievements.createAchievement(this, "killwildbamaboy",
-		// -1, -4, Items.diamond_helmet, achievementKillHumans).setSpecial();
 
 		// Page
 		achievementPageSpiderQueen = RadixRegistry.Achievements.createAchievementPage(this, "Spider Queen Reborn");
@@ -538,7 +507,8 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public String getRedirectURL()
 	{
-		return "http://radix-shock.com/update-page.html?userSpiderQueen=" + getVersion() + "&currentSpiderQueen=%" + "&userMC=" + Loader.instance().getMCVersionString().substring(10) + "&currentMC=%";
+		return "http://radix-shock.com/update-page.html?userSpiderQueen=" + getVersion() + 
+				"&currentSpiderQueen=%" + "&userMC=" + Loader.instance().getMCVersionString().substring(10) + "&currentMC=%";
 	}
 
 	@Override
@@ -575,36 +545,6 @@ public class SpiderQueen implements IEnforcedCore
 	public Class getEventHookClass()
 	{
 		return EventHooks.class;
-	}
-
-	@Override
-	public LanguageLoader getLanguageLoader()
-	{
-		return null;
-	}
-
-	@Override
-	public ILanguageParser getLanguageParser()
-	{
-		return null;
-	}
-
-	@Override
-	public ILanguageLoaderHook getLanguageLoaderHook()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean getLanguageLoaded()
-	{
-		return false;
-	}
-
-	@Override
-	public void setLanguageLoaded(boolean value)
-	{
-
 	}
 
 	@Override
