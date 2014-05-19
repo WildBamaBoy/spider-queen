@@ -11,5 +11,6 @@ package spiderqueen.core;
 
 public class ModPropertiesList
 {
-
+	public boolean useSpiderQueenModel = true;
+	public boolean isDisabled = false;
 }

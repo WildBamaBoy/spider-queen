@@ -71,7 +71,10 @@ public class EventHooks
 	@SubscribeEvent
 	public void clientTickEventHandler(ClientTickEvent event)
 	{
-		SpiderQueen.clientTickHandler.onTick();
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
+		{
+			SpiderQueen.clientTickHandler.onTick();
+		}
 	}
 
 	/**
@@ -83,7 +86,10 @@ public class EventHooks
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{
-		SpiderQueen.serverTickHandler.onTick();
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
+		{
+			SpiderQueen.serverTickHandler.onTick();
+		}
 	}
 
 	/**
@@ -95,16 +101,19 @@ public class EventHooks
 	@SubscribeEvent
 	public void playerInteractEventHandler(PlayerInteractEvent event)
 	{
-		if (!event.entityPlayer.worldObj.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			SpiderQueen.serverTickHandler.playersEating.clear();
-
-			if (event.entityPlayer.getCurrentEquippedItem() != null)
+			if (!event.entityPlayer.worldObj.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
 			{
-				if (event.entityPlayer.getCurrentEquippedItem().getItem() instanceof ItemFood)
+				SpiderQueen.serverTickHandler.playersEating.clear();
+
+				if (event.entityPlayer.getCurrentEquippedItem() != null)
 				{
-					event.entityPlayer.getFoodStats().setFoodLevel(19);
-					SpiderQueen.serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
+					if (event.entityPlayer.getCurrentEquippedItem().getItem() instanceof ItemFood)
+					{
+						event.entityPlayer.getFoodStats().setFoodLevel(19);
+						SpiderQueen.serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
+					}
 				}
 			}
 		}
@@ -113,31 +122,40 @@ public class EventHooks
 	@SubscribeEvent
 	public void playerLoggedInEventHandler(PlayerLoggedInEvent event)
 	{
-		final EntityPlayer player = (EntityPlayer)event.player;
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-		SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin), (EntityPlayerMP)player);
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
+		{
+			final EntityPlayer player = (EntityPlayer)event.player;
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin), (EntityPlayerMP)player);
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerSleepInBed(PlayerSleepInBedEvent event)
 	{
-		event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
-		event.entityPlayer.addChatMessage(new ChatComponentText("Spiders can't sleep in normal beds."));
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
+		{
+			event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
+			event.entityPlayer.addChatMessage(new ChatComponentText("Spiders can't sleep in normal beds."));
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void onEntityItemPickup(EntityItemPickupEvent event)
 	{
-		if (event.entityPlayer != null)
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemSpiderStone)
+			if (event.entityPlayer != null)
 			{
-				event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementFindSpiderStone);
-			}
+				if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemSpiderStone)
+				{
+					event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementFindSpiderStone);
+				}
 
-			else if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemFlameWeb)
-			{
-				event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementPickupFlameWeb);
+				else if (event.item.getEntityItem().getItem() == SpiderQueen.getInstance().itemFlameWeb)
+				{
+					event.entityPlayer.triggerAchievement(SpiderQueen.getInstance().achievementPickupFlameWeb);
+				}
 			}
 		}
 	}
@@ -145,47 +163,50 @@ public class EventHooks
 	@SubscribeEvent
 	public void onAttackEntity(AttackEntityEvent event)
 	{
-		final EntityPlayer player = event.entityPlayer;
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-
-		try
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
-			{
-				if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass())
-				{
-					for (final EntityLiving entity : (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
-					{
-						entity.setAttackTarget((EntityLivingBase) event.target);
-					}
-				}
-			}
+			final EntityPlayer player = event.entityPlayer;
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-			for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
+			try
 			{
-				if (spider.owner != null)
+				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 				{
-					if (spider.owner.equals(event.entityPlayer.getCommandSenderName()) && !(event.target instanceof EntityCocoon))
+					if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass())
 					{
-						if (event.target instanceof EntityHatchedSpider)
+						for (final EntityLiving entity : (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
 						{
-							final EntityHatchedSpider targetSpider = (EntityHatchedSpider) event.target;
-
-							if (targetSpider.owner.equals(player.getCommandSenderName()))
-							{
-								continue;
-							}
+							entity.setAttackTarget((EntityLivingBase) event.target);
 						}
+					}
+				}
 
-						spider.target = event.target;
+				for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, EntityHatchedSpider.class, 15))
+				{
+					if (spider.owner != null)
+					{
+						if (spider.owner.equals(event.entityPlayer.getCommandSenderName()) && !(event.target instanceof EntityCocoon))
+						{
+							if (event.target instanceof EntityHatchedSpider)
+							{
+								final EntityHatchedSpider targetSpider = (EntityHatchedSpider) event.target;
+
+								if (targetSpider.owner.equals(player.getCommandSenderName()))
+								{
+									continue;
+								}
+							}
+
+							spider.target = event.target;
+						}
 					}
 				}
 			}
-		}
 
-		catch (final ClassCastException e)
-		{
-			e.printStackTrace();
+			catch (final ClassCastException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -213,49 +234,52 @@ public class EventHooks
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
-		if (event.source.getEntity() instanceof EntityPlayer)
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			final EntityPlayer player = (EntityPlayer) event.source.getEntity();
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-
-			for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
+			if (event.source.getEntity() instanceof EntityPlayer)
 			{
-				if (event.entityLiving.getClass().toString().equals(entry.getCreatureClass().toString()))
-				{
-					entry.creaturesKilled++;
+				final EntityPlayer player = (EntityPlayer) event.source.getEntity();
+				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 
-					if (entry.creaturesKilled % 10 == 0 && entry.reputationValue > -5)
+				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
+				{
+					if (event.entityLiving.getClass().toString().equals(entry.getCreatureClass().toString()))
 					{
-						entry.reputationValue--;
-						player.addChatMessage(new ChatComponentText(Color.RED + "Your reputation with the " + entry.creatureGroupName + " has dropped to " + entry.reputationValue + "."));
+						entry.creaturesKilled++;
+
+						if (entry.creaturesKilled % 10 == 0 && entry.reputationValue > -5)
+						{
+							entry.reputationValue--;
+							player.addChatMessage(new ChatComponentText(Color.RED + "Your reputation with the " + entry.creatureGroupName + " has dropped to " + entry.reputationValue + "."));
+						}
 					}
 				}
-			}
 
-			if (event.entityLiving instanceof EntitySpider && LogicHelper.getBooleanWithProbability(20))
-			{
-				event.entityLiving.dropItem(SpiderQueen.getInstance().itemSpiderStone, 1);
-			}
-
-			if (event.entityLiving instanceof EntityVillager)
-			{
-				final List<EntityZombie> nearbyZombies = (List<EntityZombie>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityLiving, EntityZombie.class, 8);
-				final boolean cobblestoneNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.cobblestone, 5) != null;
-				final boolean planksNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.planks, 5) != null;
-
-				if (nearbyZombies.size() > 0 && cobblestoneNearby && planksNearby)
+				if (event.entityLiving instanceof EntitySpider && LogicHelper.getBooleanWithProbability(20))
 				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementHelpZombies);
+					event.entityLiving.dropItem(SpiderQueen.getInstance().itemSpiderStone, 1);
 				}
-			}
 
-			if (event.entityLiving instanceof EntityFakePlayer)
-			{
-				playerExtension.totalHumansKilled++;
-
-				if (playerExtension.totalHumansKilled >= 50)
+				if (event.entityLiving instanceof EntityVillager)
 				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementKillHumans);
+					final List<EntityZombie> nearbyZombies = (List<EntityZombie>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityLiving, EntityZombie.class, 8);
+					final boolean cobblestoneNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.cobblestone, 5) != null;
+					final boolean planksNearby = LogicHelper.getNearbyBlock_StartAtTop(event.entityLiving, Blocks.planks, 5) != null;
+
+					if (nearbyZombies.size() > 0 && cobblestoneNearby && planksNearby)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementHelpZombies);
+					}
+				}
+
+				if (event.entityLiving instanceof EntityFakePlayer)
+				{
+					playerExtension.totalHumansKilled++;
+
+					if (playerExtension.totalHumansKilled >= 50)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementKillHumans);
+					}
 				}
 			}
 		}
@@ -264,48 +288,51 @@ public class EventHooks
 	@SubscribeEvent
 	public void onEntityInteract(EntityInteractEvent event)
 	{
-		final EntityPlayer player = event.entityPlayer;
-
-		if (!player.worldObj.isRemote)
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-			final ItemStack currentItem = player.getCurrentEquippedItem();
-			CreatureReputationEntry entry = null;
+			final EntityPlayer player = event.entityPlayer;
 
-			if (currentItem != null)
+			if (!player.worldObj.isRemote)
 			{
-				if (event.target instanceof EntityCreeper && currentItem.getItem() == SpiderQueen.getInstance().itemHeart)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementGiftHeart);
-					entry = playerExtension.getReputationEntry(EntityCreeper.class);
-				}
+				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+				final ItemStack currentItem = player.getCurrentEquippedItem();
+				CreatureReputationEntry entry = null;
 
-				if (event.target instanceof EntityZombie && currentItem.getItem() == SpiderQueen.getInstance().itemBrain)
+				if (currentItem != null)
 				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementGiftBrain);
-					entry = playerExtension.getReputationEntry(EntityZombie.class);
-				}
-
-				if (event.target instanceof EntitySkeleton && currentItem.getItem() == SpiderQueen.getInstance().itemSkull)
-				{
-					player.triggerAchievement(SpiderQueen.getInstance().achievementGiftSkull);
-					entry = playerExtension.getReputationEntry(EntitySkeleton.class);
-				}
-
-				if (entry != null)
-				{
-					entry.reputationValue = entry.reputationValue == 5 ? 5 : entry.reputationValue + 1;
-					player.addChatMessage(new ChatComponentText(Color.YELLOW + "Your reputation with the " + entry.creatureGroupName + " has increased to " + entry.reputationValue + "."));
-					currentItem.stackSize--;
-
-					for (int i = 0; i < 6; i++)
+					if (event.target instanceof EntityCreeper && currentItem.getItem() == SpiderQueen.getInstance().itemHeart)
 					{
-						final Random rand = player.worldObj.rand;
-						final double velX = rand.nextGaussian() * 0.02D;
-						final double velY = rand.nextGaussian() * 0.02D;
-						final double velZ = rand.nextGaussian() * 0.02D;
+						player.triggerAchievement(SpiderQueen.getInstance().achievementGiftHeart);
+						entry = playerExtension.getReputationEntry(EntityCreeper.class);
+					}
 
-						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateParticle, "heart", event.target.posX + rand.nextFloat() * event.target.width * 2.0F - event.target.width, event.target.posY + 0.5D + rand.nextFloat() * event.target.height, event.target.posZ + rand.nextFloat() * event.target.width * 2.0F - event.target.width, velX, velY, velZ));
+					if (event.target instanceof EntityZombie && currentItem.getItem() == SpiderQueen.getInstance().itemBrain)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementGiftBrain);
+						entry = playerExtension.getReputationEntry(EntityZombie.class);
+					}
+
+					if (event.target instanceof EntitySkeleton && currentItem.getItem() == SpiderQueen.getInstance().itemSkull)
+					{
+						player.triggerAchievement(SpiderQueen.getInstance().achievementGiftSkull);
+						entry = playerExtension.getReputationEntry(EntitySkeleton.class);
+					}
+
+					if (entry != null)
+					{
+						entry.reputationValue = entry.reputationValue == 5 ? 5 : entry.reputationValue + 1;
+						player.addChatMessage(new ChatComponentText(Color.YELLOW + "Your reputation with the " + entry.creatureGroupName + " has increased to " + entry.reputationValue + "."));
+						currentItem.stackSize--;
+
+						for (int i = 0; i < 6; i++)
+						{
+							final Random rand = player.worldObj.rand;
+							final double velX = rand.nextGaussian() * 0.02D;
+							final double velY = rand.nextGaussian() * 0.02D;
+							final double velZ = rand.nextGaussian() * 0.02D;
+
+							SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateParticle, "heart", event.target.posX + rand.nextFloat() * event.target.width * 2.0F - event.target.width, event.target.posY + 0.5D + rand.nextFloat() * event.target.height, event.target.posZ + rand.nextFloat() * event.target.width * 2.0F - event.target.width, velX, velY, velZ));
+						}
 					}
 				}
 			}
@@ -315,37 +342,40 @@ public class EventHooks
 	@SubscribeEvent
 	public void onLivingSetTarget(LivingSetAttackTargetEvent event)
 	{
-		try
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			if (event.target instanceof EntityPlayer)
+			try
 			{
-				final EntityLiving entity = (EntityLiving) event.entityLiving;
-				final EntityPlayer player = (EntityPlayer) event.target;
-				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
-
-				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
+				if (event.target instanceof EntityPlayer)
 				{
-					if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
+					final EntityLiving entity = (EntityLiving) event.entityLiving;
+					final EntityPlayer player = (EntityPlayer) event.target;
+					final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+
+					for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 					{
-						if (entity instanceof EntityFakePlayer)
+						if (entity.getClass().toString().equals(entry.getCreatureClass().toString()))
 						{
-							final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
+							if (entity instanceof EntityFakePlayer)
+							{
+								final EntityFakePlayer fakePlayer = (EntityFakePlayer) entity;
 
-							if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName())) { return; }
-						}
+								if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName())) { return; }
+							}
 
-						if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
-						{
-							entity.setAttackTarget(null);
+							if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
+							{
+								entity.setAttackTarget(null);
+							}
 						}
 					}
 				}
 			}
-		}
 
-		catch (final ClassCastException e)
-		{
-			// When hit by another player.
+			catch (final ClassCastException e)
+			{
+				// When hit by another player.
+			}
 		}
 	}
 
@@ -358,36 +388,39 @@ public class EventHooks
 	@SubscribeEvent
 	public void itemCraftedEventHandler(ItemCraftedEvent event)
 	{
-		final EntityPlayer player = event.player;
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
+		{
+			final EntityPlayer player = event.player;
 
-		if (event.crafting.getItem() == SpiderQueen.getInstance().itemWeb)
-		{
-			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWeb);
-		}
+			if (event.crafting.getItem() == SpiderQueen.getInstance().itemWeb)
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWeb);
+			}
 
-		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemBugLight)
-		{
-			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftBugLight);
-		}
+			else if (event.crafting.getItem() == SpiderQueen.getInstance().itemBugLight)
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementCraftBugLight);
+			}
 
-		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemSpiderRod)
-		{
-			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftSpiderRod);
-		}
-		
-		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemPoisonBarbs)
-		{
-			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftPoisonBarbs);
-		}
-		
-		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemPoisonWeb)
-		{
-			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftPoisonWeb);
-		}
-		
-		else if (event.crafting.getItem() == SpiderQueen.getInstance().itemWebslinger)
-		{
-			player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWebslinger);
+			else if (event.crafting.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementCraftSpiderRod);
+			}
+
+			else if (event.crafting.getItem() == SpiderQueen.getInstance().itemPoisonBarbs)
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementCraftPoisonBarbs);
+			}
+
+			else if (event.crafting.getItem() == SpiderQueen.getInstance().itemPoisonWeb)
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementCraftPoisonWeb);
+			}
+
+			else if (event.crafting.getItem() == SpiderQueen.getInstance().itemWebslinger)
+			{
+				player.triggerAchievement(SpiderQueen.getInstance().achievementCraftWebslinger);
+			}
 		}
 	}
 
@@ -398,27 +431,30 @@ public class EventHooks
 
 	private void doAddAttackTasks(EntityCreature mob)
 	{
-		if (mob instanceof EntityMob)
+		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
-			float moveSpeed = 0.7F;
-
-			if (mob instanceof EntitySpider)
+			if (mob instanceof EntityMob)
 			{
-				moveSpeed = 1.2F;
-			}
+				float moveSpeed = 0.7F;
 
-			else if (mob instanceof EntitySkeleton)
-			{
-				moveSpeed = 1.1F;
-			}
+				if (mob instanceof EntitySpider)
+				{
+					moveSpeed = 1.2F;
+				}
 
-			else if (mob instanceof EntityZombie)
-			{
-				moveSpeed = 0.9F;
-			}
+				else if (mob instanceof EntitySkeleton)
+				{
+					moveSpeed = 1.1F;
+				}
 
-			mob.tasks.addTask(2, new EntityAIAttackOnCollide(mob, EntityFakePlayer.class, moveSpeed, false));
-			mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityFakePlayer.class, 16, false));
+				else if (mob instanceof EntityZombie)
+				{
+					moveSpeed = 0.9F;
+				}
+
+				mob.tasks.addTask(2, new EntityAIAttackOnCollide(mob, EntityFakePlayer.class, moveSpeed, false));
+				mob.targetTasks.addTask(2, new EntityAINearestAttackableTarget(mob, EntityFakePlayer.class, 16, false));
+			}
 		}
 	}
 }

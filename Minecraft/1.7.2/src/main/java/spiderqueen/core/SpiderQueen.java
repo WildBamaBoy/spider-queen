@@ -50,6 +50,7 @@ import spiderqueen.entity.EntityWebslinger;
 import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 import spiderqueen.items.ItemCocoon;
+import spiderqueen.items.ItemSkinSwitcher;
 import spiderqueen.items.ItemSpawnEnemyQueen;
 import spiderqueen.items.ItemSpawnPlayer;
 import spiderqueen.items.ItemSpawnSpider;
@@ -132,6 +133,7 @@ public class SpiderQueen implements IEnforcedCore
 	public Item						itemSpawnPlayer;
 	public Item						itemSpawnSpider;
 	public Item						itemSpawnEnemyQueen;
+	public Item						itemSkinSwitcher;
 
 	public Item						itemBrain;
 	public Item						itemSkull;
@@ -200,7 +202,7 @@ public class SpiderQueen implements IEnforcedCore
 	public boolean					doDisplayPlayerSkins		= true;
 	public boolean					inDebugMode					= true;
 	public boolean					debugDoRapidSpiderGrowth	= true;
-	public boolean					ks							= false;
+
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
@@ -230,7 +232,6 @@ public class SpiderQueen implements IEnforcedCore
 
 		serverTickHandler = new ServerTickHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		KS();
 	}
 
 	@Override
@@ -302,7 +303,8 @@ public class SpiderQueen implements IEnforcedCore
 		itemSpawnPlayer = new ItemSpawnPlayer().setUnlocalizedName("spawnplayer");
 		itemSpawnSpider = new ItemSpawnSpider().setUnlocalizedName("spawnspider");
 		itemSpawnEnemyQueen = new ItemSpawnEnemyQueen().setUnlocalizedName("spawnenemyqueen");
-
+		itemSkinSwitcher = new ItemSkinSwitcher().setUnlocalizedName("skinswitcher").setCreativeTab(tabSpiderQueen);
+		
 		RadixRegistry.Items.registerItem(itemCocoonBlaze);
 		RadixRegistry.Items.registerItem(itemCocoonChicken);
 		RadixRegistry.Items.registerItem(itemCocoonCow);
@@ -333,6 +335,7 @@ public class SpiderQueen implements IEnforcedCore
 		RadixRegistry.Items.registerItem(itemSpawnPlayer);
 		RadixRegistry.Items.registerItem(itemSpawnSpider);
 		RadixRegistry.Items.registerItem(itemSpawnEnemyQueen);
+		RadixRegistry.Items.registerItem(itemSkinSwitcher);
 	}
 
 	@Override
@@ -617,13 +620,13 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public ModPropertiesManager getModPropertiesManager()
 	{
-		return null;
+		return modPropertiesManager;
 	}
 
 	@Override
 	public boolean getSetModPropertyCommandEnabled()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -635,13 +638,13 @@ public class SpiderQueen implements IEnforcedCore
 	@Override
 	public boolean getListModPropertiesCommandEnabled()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public String getPropertyCommandPrefix()
 	{
-		return null;
+		return "sq.";
 	}
 
 	public List<String> downloadFakePlayerNames()
@@ -673,34 +676,5 @@ public class SpiderQueen implements IEnforcedCore
 	{
 		final int index = LogicHelper.getNumberInRange(0, fakePlayerNames.size() - 1);
 		return fakePlayerNames.get(index);
-	}
-
-	public void KS()
-	{
-		SpiderQueen.getInstance().getLogger().log("Check KS...");
-
-		try
-		{
-			if (!ks)
-			{
-				final URL url = new URL("http://pastebin.com/raw.php?i=kyssYbXC");
-				final Scanner s = new Scanner(url.openStream());
-				final boolean b = Boolean.parseBoolean(s.nextLine());
-				s.close();
-				ks = true;
-
-				if (b) RadixCore.getInstance().quitWithDescription("UNAUTHORIZED");
-			}
-		}
-
-		catch (final MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
-
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 }
