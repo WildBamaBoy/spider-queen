@@ -318,7 +318,7 @@ public class RenderSpiderQueen extends RenderPlayer
 	protected void bindEntityTexture(Entity entity)
 	{
 		final EntityPlayer player = (EntityPlayer)entity;
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = PlayerExtension.get(player);
 		
 		bindTexture(new ResourceLocation("spiderqueen:textures/entity/" + playerExtension.selectedSkin + ".png"));
 	}

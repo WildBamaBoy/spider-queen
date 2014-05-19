@@ -1,6 +1,11 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode
+/*******************************************************************************
+ * RenderWebslinger.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
 
 package spiderqueen.client.render;
 
@@ -16,19 +21,13 @@ import org.lwjgl.opengl.GL12;
 
 import spiderqueen.entity.EntityWebslinger;
 
-// Referenced classes of package net.minecraft.src:
-//            Render, Vec3, EntityPlayer, MathHelper,
-//            GameSettings, EntityWebslinger, Tessellator, RenderManager,
-//            Entity
-
 public class RenderWebslinger extends Render
 {
-
 	public RenderWebslinger()
 	{
 	}
 
-	public void func_4011_a(EntityWebslinger entitysweb, double d, double d1, double d2, float f, float f1)
+	public void renderWebSlinger(EntityWebslinger entityWebslinger, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
 		final Tessellator tessellator = Tessellator.instance;
 
@@ -36,12 +35,12 @@ public class RenderWebslinger extends Render
 		{
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
-			GL11.glTranslated(d, d1, d2);
+			GL11.glTranslated(posX, posY, posZ);
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			GL11.glRotatef(180F - renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
-			bindTexture(getEntityTexture(entitysweb));
+			bindTexture(getEntityTexture(entityWebslinger));
 
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 1.0F, 0.0F);
@@ -55,61 +54,58 @@ public class RenderWebslinger extends Render
 		}
 		GL11.glPopMatrix();
 
-		if (entitysweb.player != null)
+		if (entityWebslinger.player != null)
 		{
-			final float f9 = (entitysweb.player.prevRotationYaw + (entitysweb.player.rotationYaw - entitysweb.player.prevRotationYaw) * f1) * 3.141593F / 180F;
-			MathHelper.sin(f9);
-			MathHelper.cos(f9);
-			final float f11 = 0;// entitysweb.angler.getSwingProgress(f1);
-			final float f12 = MathHelper.sin(MathHelper.sqrt_float(f11) * 3.141593F);
+			final float deltaYaw = (entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F;
 
 			final Vec3 vec3d = Vec3.createVectorHelper(-0.5D, 0.03D, 0.8D);
-			vec3d.rotateAroundX(-(entitysweb.player.prevRotationPitch + (entitysweb.player.rotationPitch - entitysweb.player.prevRotationPitch) * f1) * 3.141593F / 180F);
-			vec3d.rotateAroundY(-(entitysweb.player.prevRotationYaw + (entitysweb.player.rotationYaw - entitysweb.player.prevRotationYaw) * f1) * 3.141593F / 180F);
-			vec3d.rotateAroundY(f12 * 0.5F);
-			vec3d.rotateAroundX(-f12 * 0.7F);
+			vec3d.rotateAroundX(-(entityWebslinger.player.prevRotationPitch + (entityWebslinger.player.rotationPitch - entityWebslinger.player.prevRotationPitch) * rotationPitch) * 3.141593F / 180F);
+			vec3d.rotateAroundY(-(entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F);
 
-			double correctedPosX = entitysweb.player.prevPosX + (entitysweb.player.posX - entitysweb.player.prevPosX) * f1 + vec3d.xCoord;
-			double correctedPosY = entitysweb.player.prevPosY + (entitysweb.player.posY - entitysweb.player.prevPosY) * f1 + vec3d.yCoord;
-			double correctedPosZ = entitysweb.player.prevPosZ + (entitysweb.player.posZ - entitysweb.player.prevPosZ) * f1 + vec3d.zCoord;
+			double correctedPosX = entityWebslinger.player.prevPosX + (entityWebslinger.player.posX - entityWebslinger.player.prevPosX) * rotationPitch + vec3d.xCoord;
+			double correctedPosY = entityWebslinger.player.prevPosY + (entityWebslinger.player.posY - entityWebslinger.player.prevPosY) * rotationPitch + vec3d.yCoord;
+			double correctedPosZ = entityWebslinger.player.prevPosZ + (entityWebslinger.player.posZ - entityWebslinger.player.prevPosZ) * rotationPitch + vec3d.zCoord;
 
 			if (renderManager.options.thirdPersonView > 0)
 			{
-				final float f10 = (entitysweb.player.prevRenderYawOffset + (entitysweb.player.renderYawOffset - entitysweb.player.prevRenderYawOffset) * f1) * 3.141593F / 180F;
-				final double d4 = MathHelper.sin(f10);
-				final double d6 = MathHelper.cos(f10);
-				correctedPosX = entitysweb.player.prevPosX + (entitysweb.player.posX - entitysweb.player.prevPosX) * f1 - d6 * 0.34999999999999998D - d4 * 0.84999999999999998D;
-				correctedPosY = entitysweb.player.prevPosY + (entitysweb.player.posY - entitysweb.player.prevPosY) * f1 - 0.45000000000000001D;
-				correctedPosZ = entitysweb.player.prevPosZ + (entitysweb.player.posZ - entitysweb.player.prevPosZ) * f1 - d4 * 0.34999999999999998D + d6 * 0.84999999999999998D;
+				final float deltaYawOffset = (entityWebslinger.player.prevRenderYawOffset + (entityWebslinger.player.renderYawOffset - entityWebslinger.player.prevRenderYawOffset) * rotationPitch) * 3.141593F / 180F;
+				final double sinDeltaYawOffset = MathHelper.sin(deltaYawOffset);
+				final double cosDeltaYawOffset = MathHelper.cos(deltaYawOffset);
+				correctedPosX = entityWebslinger.player.prevPosX + (entityWebslinger.player.posX - entityWebslinger.player.prevPosX) * rotationPitch - cosDeltaYawOffset * 0.35D - sinDeltaYawOffset * 0.85D;
+				correctedPosY = entityWebslinger.player.prevPosY + (entityWebslinger.player.posY - entityWebslinger.player.prevPosY) * rotationPitch - 0.45D;
+				correctedPosZ = entityWebslinger.player.prevPosZ + (entityWebslinger.player.posZ - entityWebslinger.player.prevPosZ) * rotationPitch - sinDeltaYawOffset * 0.35D + cosDeltaYawOffset * 0.85D;
 			}
 
-			final double d10 = entitysweb.prevPosX + (entitysweb.posX - entitysweb.prevPosX) * f1;
-			final double d11 = entitysweb.prevPosY + (entitysweb.posY - entitysweb.prevPosY) * f1 + 0.25D;
-			final double d12 = entitysweb.prevPosZ + (entitysweb.posZ - entitysweb.prevPosZ) * f1;
-			final double d13 = (float) (correctedPosX - d10);
-			final double d14 = (float) (correctedPosY - d11);
-			final double d15 = (float) (correctedPosZ - d12);
-			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
-			GL11.glDisable(2896 /* GL_LIGHTING */);
+			final double deltaPosX = entityWebslinger.prevPosX + (entityWebslinger.posX - entityWebslinger.prevPosX) * rotationPitch;
+			final double deltaPosY = entityWebslinger.prevPosY + (entityWebslinger.posY - entityWebslinger.prevPosY) * rotationPitch + 0.25D;
+			final double deltaPosZ = entityWebslinger.prevPosZ + (entityWebslinger.posZ - entityWebslinger.prevPosZ) * rotationPitch;
+			final double correctedDeltaPosX = (float) (correctedPosX - deltaPosX);
+			final double correctedDeltaPosY = (float) (correctedPosY - deltaPosY);
+			final double correctedDeltaPosZ = (float) (correctedPosZ - deltaPosZ);
+			
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			
 			tessellator.startDrawing(3);
-			tessellator.setColorOpaque_I(0x7c889d);
-			final int j = 16;
-			for (int k = 0; k <= j; k++)
+			tessellator.setColorOpaque_I(8161437);
+			
+			final int verteces = 16;
+			for (int currentVertex = 0; currentVertex <= verteces; currentVertex++)
 			{
-				final float f13 = (float) k / (float) j;
-				tessellator.addVertex(d + d13 * f13, d1 + d14 * f13 + 0.2F, d2 + d15 * f13);
+				final float vertexPos = (float) currentVertex / (float) verteces;
+				tessellator.addVertex(posX + correctedDeltaPosX * vertexPos, posY + correctedDeltaPosY * vertexPos + 0.2F, posZ + correctedDeltaPosZ * vertexPos);
 			}
 
 			tessellator.draw();
-			GL11.glEnable(2896 /* GL_LIGHTING */);
-			GL11.glEnable(3553 /* GL_TEXTURE_2D */);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		}
 	}
 
 	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1)
 	{
-		func_4011_a((EntityWebslinger) entity, d, d1, d2, f, f1);
+		renderWebSlinger((EntityWebslinger) entity, d, d1, d2, f, f1);
 	}
 
 	@Override

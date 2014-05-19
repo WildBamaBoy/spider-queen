@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * EntityWebslinger.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
+
 package spiderqueen.entity;
 
 import io.netty.buffer.ByteBuf;
@@ -76,7 +85,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	{
 		super(world);
 
-		final PlayerExtension playerExtension = (PlayerExtension) entityPlayer.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = PlayerExtension.get(entityPlayer);
 
 		tileX = -1;
 		tileY = -1;
@@ -168,7 +177,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 		if (player != null)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 			playerExtension.webEntity = null;
 		}
 	}
@@ -363,7 +372,7 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 
 				if (player != null)
 				{
-					final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+					final PlayerExtension playerExtension = PlayerExtension.get(player);
 					playerExtension.webEntity = null;
 				}
 
@@ -618,7 +627,8 @@ public class EntityWebslinger extends Entity implements IEntityAdditionalSpawnDa
 	public void readSpawnData(ByteBuf additionalData)
 	{
 		player = Minecraft.getMinecraft().thePlayer;
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		
+		final PlayerExtension playerExtension = PlayerExtension.get(player);
 		playerExtension.webEntity = this;
 	}
 }

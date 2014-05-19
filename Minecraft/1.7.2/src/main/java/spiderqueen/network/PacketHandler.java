@@ -227,7 +227,7 @@ public final class PacketHandler extends AbstractPacketHandler
 	private void handleSetDistance(Object[] arguments, EntityPlayer player)
 	{
 		final double distance = (Double) arguments[0];
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 		playerExtension.webEntity.distance = distance;
 	}
@@ -236,7 +236,7 @@ public final class PacketHandler extends AbstractPacketHandler
 	{
 		final int slingerId = (Integer) arguments[0];
 		final EntityWebslinger webslinger = (EntityWebslinger) player.worldObj.getEntityByID(slingerId);
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 		playerExtension.webEntity.player = null;
 		playerExtension.webEntity = null;
@@ -301,7 +301,7 @@ public final class PacketHandler extends AbstractPacketHandler
 
 		if (receivedPlayer != null)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension) receivedPlayer.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 			playerExtension.selectedSkin = skinName;
 		}
 	}

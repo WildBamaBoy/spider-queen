@@ -330,9 +330,9 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 				if (entity instanceof EntityPlayer)
 				{
 					final EntityPlayer player = (EntityPlayer) entity;
-					final PlayerExtension reputationHandler = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+					final PlayerExtension playerExtension = PlayerExtension.get(player);
 
-					if (reputationHandler.getReputationEntry(EntityFakePlayer.class).reputationValue >= 0 || player.capabilities.isCreativeMode)
+					if (playerExtension.getReputationEntry(EntityFakePlayer.class).reputationValue >= 0 || player.capabilities.isCreativeMode)
 					{
 						continue;
 					}
@@ -345,9 +345,9 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 					if (player != null)
 					{
-						final PlayerExtension reputationHandler = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+						final PlayerExtension playerExtension = PlayerExtension.get(player);
 
-						if (reputationHandler.getReputationEntry(EntityFakePlayer.class).reputationValue >= 0 || player.capabilities.isCreativeMode)
+						if (playerExtension.getReputationEntry(EntityFakePlayer.class).reputationValue >= 0 || player.capabilities.isCreativeMode)
 						{
 							continue;
 						}

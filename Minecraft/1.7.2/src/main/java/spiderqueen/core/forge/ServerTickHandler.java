@@ -87,7 +87,7 @@ public class ServerTickHandler
 			for (final Object obj : worldServer.playerEntities)
 			{
 				final EntityPlayer player = (EntityPlayer) obj;
-				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+				final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 				modifyReputations(playerExtension);
 				new CommandCheckReputation().processCommand(player, null);
@@ -480,7 +480,7 @@ public class ServerTickHandler
 				for (final Object obj : worldServer.playerEntities)
 				{
 					final EntityPlayer player = (EntityPlayer) obj;
-					final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+					final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 					for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 					{
@@ -510,7 +510,7 @@ public class ServerTickHandler
 			for (final Object obj : worldServer.playerEntities)
 			{
 				final EntityPlayer player = (EntityPlayer) obj;
-				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+				final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 				{

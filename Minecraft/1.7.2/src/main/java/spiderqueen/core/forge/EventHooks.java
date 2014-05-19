@@ -124,7 +124,7 @@ public class EventHooks
 		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
 			final EntityPlayer player = (EntityPlayer)event.player;
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin, player.getCommandSenderName()));
 		}
 	}
@@ -165,7 +165,7 @@ public class EventHooks
 		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
 			final EntityPlayer player = event.entityPlayer;
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 			try
 			{
@@ -238,7 +238,7 @@ public class EventHooks
 			if (event.source.getEntity() instanceof EntityPlayer)
 			{
 				final EntityPlayer player = (EntityPlayer) event.source.getEntity();
-				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+				final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 				{
@@ -293,7 +293,7 @@ public class EventHooks
 
 			if (!player.worldObj.isRemote)
 			{
-				final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+				final PlayerExtension playerExtension = PlayerExtension.get(player);
 				final ItemStack currentItem = player.getCurrentEquippedItem();
 				CreatureReputationEntry entry = null;
 
@@ -349,7 +349,7 @@ public class EventHooks
 				{
 					final EntityLiving entity = (EntityLiving) event.entityLiving;
 					final EntityPlayer player = (EntityPlayer) event.target;
-					final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+					final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 					for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 					{

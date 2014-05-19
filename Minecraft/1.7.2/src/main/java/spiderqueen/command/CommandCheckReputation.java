@@ -48,7 +48,7 @@ public class CommandCheckReputation extends CommandBase
 	public void processCommand(ICommandSender sender, String[] arguments)
 	{
 		final EntityPlayer player = (EntityPlayer) sender;
-		final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = PlayerExtension.get(player);
 		new StringBuilder();
 
 		player.addChatMessage(new ChatComponentText(Color.YELLOW + "Spider Queen Reputations"));

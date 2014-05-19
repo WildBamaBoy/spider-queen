@@ -1,7 +1,11 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode
-
+/*******************************************************************************
+ * ItemWebslinger.java
+ * Copyright (c) 2014 Radix-Shock Entertainment.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ ******************************************************************************/
 package spiderqueen.items;
 
 import java.util.List;
@@ -18,10 +22,6 @@ import spiderqueen.entity.EntityWebslinger;
 import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.network.Packet;
-
-// Referenced classes of package net.minecraft.src:
-//            Item, World, EntityPlayer, ItemStack,
-//            EntityFish
 
 public class ItemWebslinger extends Item
 {
@@ -45,16 +45,16 @@ public class ItemWebslinger extends Item
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack itemstack, EntityLivingBase entityliving, EntityLivingBase entityliving1)
+	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entitySource, EntityLivingBase entityHit)
 	{
-		if (entityliving1 instanceof EntityPlayer)
+		if (entityHit instanceof EntityPlayer)
 		{
-			final EntityPlayer ell = (EntityPlayer) entityliving1;
-			final PlayerExtension playerExtension = (PlayerExtension) ell.getExtendedProperties(PlayerExtension.ID);
+			final EntityPlayer player = (EntityPlayer) entityHit;
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 			if (playerExtension.webEntity != null)
 			{
-				if (!(entityliving instanceof EntityPlayer))
+				if (!(entitySource instanceof EntityPlayer))
 				{
 					playerExtension.webEntity.player = null;
 				}
@@ -65,15 +65,15 @@ public class ItemWebslinger extends Item
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
+	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityPlayer)
 	{
-		final PlayerExtension playerExtension = (PlayerExtension) entityplayer.getExtendedProperties(PlayerExtension.ID);
+		final PlayerExtension playerExtension = PlayerExtension.get(entityPlayer);
 
 		if (playerExtension.webEntity != null)
 		{
 			if (world.isRemote)
 			{
-				SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.DestroySlinger, playerExtension.webEntity.getEntityId(), entityplayer.posX, entityplayer.posY, entityplayer.posZ));
+				SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.DestroySlinger, playerExtension.webEntity.getEntityId(), entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ));
 
 				playerExtension.webEntity.player = null;
 				playerExtension.webEntity = null;
@@ -82,11 +82,11 @@ public class ItemWebslinger extends Item
 
 		else
 		{
-			world.playSoundAtEntity(entityplayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			world.playSoundAtEntity(entityPlayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 			if (!world.isRemote)
 			{
-				world.spawnEntityInWorld(new EntityWebslinger(world, entityplayer));
+				world.spawnEntityInWorld(new EntityWebslinger(world, entityPlayer));
 			}
 		}
 

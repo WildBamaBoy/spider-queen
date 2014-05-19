@@ -1,5 +1,5 @@
 /*******************************************************************************
- * AbstractItemSpawner.java
+ * ItemSkinSwitcher.java
  * Copyright (c) 2014 Radix-Shock Entertainment.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
@@ -34,7 +34,7 @@ public class ItemSkinSwitcher extends Item
 	{
 		if (!world.isRemote)
 		{
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 
 			try
 			{

@@ -28,6 +28,10 @@ Build/*
 Submissions/*
 Crowdin/*
 
+# Base Files #
+/Original Assets.rar
+/Original Source.zip
+
 # 1.7.2 Files #
 Minecraft/1.7.2/gradlew
 

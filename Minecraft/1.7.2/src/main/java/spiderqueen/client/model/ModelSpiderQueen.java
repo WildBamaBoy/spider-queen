@@ -206,7 +206,7 @@ public class ModelSpiderQueen extends ModelBase
 		if (entity instanceof EntityPlayer)
 		{
 			final EntityPlayer player = (EntityPlayer) entity;
-			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = PlayerExtension.get(player);
 			
 			if (player.ridingEntity instanceof EntityHatchedSpider)
 			{

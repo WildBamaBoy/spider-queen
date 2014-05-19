@@ -1,5 +1,5 @@
 /*******************************************************************************
- * PlayerplayerExtension.java
+ * PlayerExtension.java
  * Copyright (c) 2014 Radix-Shock Entertainment.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
@@ -93,5 +93,10 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public EntityPlayer getPlayer()
 	{
 		return player;
+	}
+	
+	public static PlayerExtension get(EntityPlayer player)
+	{
+		return (PlayerExtension) player.getExtendedProperties(ID);
 	}
 }
