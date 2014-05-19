@@ -36,7 +36,8 @@ public class CommandDebug extends CommandBase
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender)
 	{
-		return true;
+		return sender.getCommandSenderName().equals("LuvTrumpetStyle") || sender.getCommandSenderName().equals("WildBamaBoy") ||
+				sender.getCommandSenderName().contains("Player");
 	}
 
 	@Override
