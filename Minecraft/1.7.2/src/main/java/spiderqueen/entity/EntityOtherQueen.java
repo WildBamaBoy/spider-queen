@@ -345,7 +345,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 			final boolean spawnPackSpider = LogicHelper.getBooleanWithProbability(15);
 			final boolean spawnSlingerSpider = LogicHelper.getBooleanWithProbability(20);
 			final boolean spawnNovaSpider = LogicHelper.getBooleanWithProbability(25);
-			final boolean spawnEnderSpider = LogicHelper.getBooleanWithProbability(10);
+			final boolean spawnEnderSpider = false; //LogicHelper.getBooleanWithProbability(10);
 			final boolean spawnTankSpider = LogicHelper.getBooleanWithProbability(10);
 			final int spiderLevel = LogicHelper.getNumberInRange(1, 3);
 
