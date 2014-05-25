@@ -192,9 +192,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				if (!worldObj.isRemote && !isEaten())
 				{
 					dropItem(cocoonType.getCocoonItem(), 1);
+					setDead();
 				}
-
-				setDead();
 			}
 		}
 
