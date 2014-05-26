@@ -144,7 +144,7 @@ public class ServerTickHandler
 						player.triggerAchievement(SpiderQueen.getInstance().achievementWarWithSkeletons);
 					}
 				}
-				
+
 				if (entry.reputationValue < 3)
 				{
 					atFriendsWithAll = false;
@@ -348,7 +348,7 @@ public class ServerTickHandler
 			}
 
 			else
-			// They've moved to a different slot. Ignore.
+				// They've moved to a different slot. Ignore.
 			{
 				playersNoLongerEating.add(eatEntry);
 			}
@@ -363,38 +363,41 @@ public class ServerTickHandler
 
 	private void updateSpawnPlayers()
 	{
-		timeUntilSpawnPlayers--;
-
-		if (timeUntilSpawnPlayers <= 0)
+		if (!SpiderQueen.getInstance().debugHaltSpawnPlayers)
 		{
-			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+			timeUntilSpawnPlayers--;
+
+			if (timeUntilSpawnPlayers <= 0)
 			{
-				for (final Object obj : worldServer.playerEntities)
+				for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 				{
-					final EntityPlayer player = (EntityPlayer) obj;
-					final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
-					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
-					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
-
-					final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30);
-					int numberOfPlayersNearby = 0;
-
-					for (final Object entity : nearbyEntities)
+					for (final Object obj : worldServer.playerEntities)
 					{
-						if (entity instanceof EntityFakePlayer)
+						final EntityPlayer player = (EntityPlayer) obj;
+						final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
+						final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
+						final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
+
+						final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30);
+						int numberOfPlayersNearby = 0;
+
+						for (final Object entity : nearbyEntities)
 						{
-							numberOfPlayersNearby++;
+							if (entity instanceof EntityFakePlayer)
+							{
+								numberOfPlayersNearby++;
+							}
+						}
+
+						if (doSpawnPlayers && numberOfPlayersNearby < 5)
+						{
+							LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
 						}
 					}
-
-					if (doSpawnPlayers && numberOfPlayersNearby < 5)
-					{
-						LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
-					}
 				}
-			}
 
-			timeUntilSpawnPlayers = Time.SECOND * 30;
+				timeUntilSpawnPlayers = Time.SECOND * 30;
+			}
 		}
 	}
 

@@ -101,6 +101,12 @@ public class CommandDebug extends CommandBase
 						e.printStackTrace();
 					}
 				}
+				
+				else if (arguments[0].equalsIgnoreCase("haltspawnplayers"))
+				{
+					SpiderQueen.getInstance().debugHaltSpawnPlayers = setValue;
+					sender.addChatMessage(new ChatComponentText(Color.YELLOW + "Rule haltSpawnPlayers set to " + setValue + "."));
+				}
 
 				else
 				{

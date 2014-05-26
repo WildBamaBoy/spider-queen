@@ -200,6 +200,7 @@ public class SpiderQueen extends UnenforcedCore
 	public boolean					doDisplayPlayerSkins		= true;
 	public boolean					inDebugMode					= false;
 	public boolean					debugDoRapidSpiderGrowth	= false;
+	public boolean					debugHaltSpawnPlayers		= false;
 
 	public SpiderQueen()
 	{
