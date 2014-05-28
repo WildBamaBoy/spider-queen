@@ -27,6 +27,9 @@ import spiderqueen.enums.EnumPacketType;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.Packet;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class EntitySpiderEgg extends EntityCreature
 {
 	private String	owner;
@@ -42,6 +45,7 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		super(world);
 		this.owner = owner;
+		this.renderDistanceWeight = 50.0F;
 		setSize(0.15F, 0.15F);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 		timeUntilEggHatch = LogicHelper.getNumberInRange(500, 5000);
@@ -159,6 +163,14 @@ public class EntitySpiderEgg extends EntityCreature
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean isInRangeToRenderDist(double distance)
+	{
+		final int sqrtDistance = (int)Math.sqrt(distance);
+		return sqrtDistance < 50;
+	}
+	
 	private EntityCocoon getConsumableCocoon()
 	{
 		final List<EntityCocoon> nearbyCocoons = (List<EntityCocoon>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityCocoon.class, 5);
