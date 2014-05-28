@@ -47,11 +47,9 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 		else
 		{
 			final EntityHatchedSpider entityHatchedSpider = new EntityHatchedSpider(world, player.getCommandSenderName(), EnumCocoonType.getRandomCocoonType());
-			final int spiderLevel = LogicHelper.getNumberInRange(1, 3);
-
+			final int spiderLevel = entityHatchedSpider.cocoonType == EnumCocoonType.VILLAGER ? 1 : LogicHelper.getNumberInRange(1, 3);
 			entityHatchedSpider.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);
-			entityHatchedSpider.level = spiderLevel;
-
+			
 			if (!world.isRemote)
 			{
 				player.addChatMessage(new ChatComponentText("Spawned " + entityHatchedSpider.cocoonType.toString() + " spider at level " + entityHatchedSpider.level));
