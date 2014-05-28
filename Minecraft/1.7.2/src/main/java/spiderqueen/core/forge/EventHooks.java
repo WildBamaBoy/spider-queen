@@ -362,7 +362,7 @@ public class EventHooks
 								if (fakePlayer.lastAttackingPlayer.equals(player.getCommandSenderName())) { return; }
 							}
 
-							if (entry.reputationValue >= 0 && entity.getAttackTarget() != null)
+							if (entry.reputationValue >= 0 && entity.getAttackTarget() != null && entity.getHealth() > entity.getMaxHealth() / 2)
 							{
 								entity.setAttackTarget(null);
 							}
