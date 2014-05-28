@@ -831,7 +831,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				final double distanceToOwner = LogicHelper.getDistanceToEntity(this, ownerPlayer);
 				final ItemStack currentItemStack = ownerPlayer.inventory.mainInventory[ownerPlayer.inventory.currentItem];
 
-				if (currentItemStack != null && distanceToOwner < 30.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+				if (currentItemStack != null && distanceToOwner < 20.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
 				{
 					if (!checkOnly)
 					{
@@ -867,26 +867,6 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			{
 				final boolean pathSet = getNavigator().tryMoveToEntityLiving(player, 0.4D);
 				getNavigator().onUpdateNavigation();
-
-				if (!pathSet && getDistanceToEntity(player) >= 10.0D)
-				{
-					final int playerX = MathHelper.floor_double(player.posX) - 2;
-					final int playerY = MathHelper.floor_double(player.boundingBox.minY);
-					final int playerZ = MathHelper.floor_double(player.posZ) - 2;
-
-					for (int i = 0; i <= 4; ++i)
-					{
-						for (int i2 = 0; i2 <= 4; ++i2)
-						{
-							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && World.doesBlockHaveSolidTopSurface(worldObj, playerX + i, playerY - 1, playerZ + i2) && !worldObj.getBlock(playerX + i, playerY, playerZ + i2).isNormalCube() && !worldObj.getBlock(playerX + i, playerY + 1, playerZ + i2).isNormalCube())
-							{
-								setLocationAndAngles(playerX + i + 0.5F, playerY, playerZ + i2 + 0.5F, rotationYaw, rotationPitch);
-								getNavigator().clearPathEntity();
-								return;
-							}
-						}
-					}
-				}
 			}
 		}
 	}
