@@ -9,6 +9,7 @@
 
 package spiderqueen.entity;
 
+import spiderqueen.core.SpiderQueen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -194,11 +195,17 @@ public class EntityMiniGhast extends EntityCreature
 			moveStrafe = ((EntityLivingBase) riddenByEntity).moveStrafing * 0.5F / 5;
 			moveForward = ((EntityLivingBase) riddenByEntity).moveForward * 0.5F / 5;
 
+			if (onGround)
+			{
+				moveStrafe /= 4;
+				moveForward /= 4;
+			}
+			
 			if (ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, (EntityLivingBase) riddenByEntity, 41))
 			{
 				motionY = 0.4F;
 			}
-
+			
 			if (moveForward <= 0.0F)
 			{
 				moveForward *= 0.25F;
