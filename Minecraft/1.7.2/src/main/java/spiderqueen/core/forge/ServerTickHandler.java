@@ -374,7 +374,7 @@ public class ServerTickHandler
 					for (final Object obj : worldServer.playerEntities)
 					{
 						final EntityPlayer player = (EntityPlayer) obj;
-						final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(30);
+						final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(20);
 						final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 						final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 
@@ -391,7 +391,17 @@ public class ServerTickHandler
 
 						if (doSpawnPlayers && numberOfPlayersNearby < 5)
 						{
-							LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
+							final boolean spawnGroup = LogicHelper.getBooleanWithProbability(20);
+							
+							if (spawnGroup)
+							{
+								LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
+							}
+							
+							else
+							{
+								LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 1);
+							}
 						}
 					}
 				}
