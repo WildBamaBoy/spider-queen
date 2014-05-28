@@ -35,6 +35,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import spiderqueen.core.SpiderQueen;
@@ -107,6 +108,12 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 		if (!worldObj.isRemote)
 		{
+			if (worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+			{
+				setDead();
+				return;
+			}
+			
 			tryGetTarget();
 			moveToTarget();
 			damageTarget();

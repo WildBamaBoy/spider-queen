@@ -33,6 +33,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.enums.EnumCocoonType;
@@ -109,6 +110,12 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		// Server-side only
 		if (!worldObj.isRemote)
 		{
+			if (worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
+			{
+				setDead();
+				return;
+			}
+			
 			setBesideClimbableBlock(isCollidedHorizontally);
 			target = findPlayerToAttack();
 
