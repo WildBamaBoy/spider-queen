@@ -356,8 +356,17 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				if (cocoonType == EnumCocoonType.SKELETON && timeUntilWebshot <= 0)
 				{
 					resetTimeUntilWebshot();
-					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-					worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
+
+					try
+					{
+						worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+						worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
+					}
+
+					catch (ClassCastException e)
+					{
+						//When the entity to be attacked turns out to be a web.
+					}
 				}
 
 				if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
