@@ -136,23 +136,6 @@ public class EventHooks
 		}
 	}
 
-	/**
-	 * Fired when the player right-clicks something.
-	 * 
-	 * @param event
-	 *            An instance of the PlayerInteractEvent.
-	 */
-	@SubscribeEvent
-	public void onLivingUpdate(LivingEvent.LivingUpdateEvent event)
-	{
-		if (event.entityLiving instanceof EntityPlayer)
-		{
-			final EntityPlayer player = (EntityPlayer)event.entityLiving;
-			System.out.println(player.getItemInUseDuration());
-			//player.getFoodStats().setFoodLevel(3);
-		}
-	}
-
 	@SubscribeEvent
 	public void playerLoggedInEventHandler(PlayerLoggedInEvent event)
 	{
