@@ -794,7 +794,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		else if (cocoonType == EnumCocoonType.WOLF)
 		{
-			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.8D);
+			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.4D);
 		}
 
 		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + level * 10)
