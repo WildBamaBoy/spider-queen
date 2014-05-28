@@ -12,6 +12,7 @@ package spiderqueen.core.forge;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,9 +29,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
@@ -104,17 +107,49 @@ public class EventHooks
 		{
 			if (!event.entityPlayer.worldObj.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
 			{
+				if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
+				{
+					final World world = event.entityPlayer.worldObj;
+					final Block block = world.getBlock(event.x, event.y, event.z);
+
+					if (block == Blocks.farmland)
+					{
+						return;
+					}
+				}
+
 				SpiderQueen.serverTickHandler.playersEating.clear();
 
 				if (event.entityPlayer.getCurrentEquippedItem() != null)
 				{
 					if (event.entityPlayer.getCurrentEquippedItem().getItem() instanceof ItemFood)
 					{
-						event.entityPlayer.getFoodStats().setFoodLevel(19);
+						if (event.entityPlayer.getFoodStats().getFoodLevel() == 20)
+						{
+							event.entityPlayer.getFoodStats().setFoodLevel(19);
+						}
+
 						SpiderQueen.serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Fired when the player right-clicks something.
+	 * 
+	 * @param event
+	 *            An instance of the PlayerInteractEvent.
+	 */
+	@SubscribeEvent
+	public void onLivingUpdate(LivingEvent.LivingUpdateEvent event)
+	{
+		if (event.entityLiving instanceof EntityPlayer)
+		{
+			final EntityPlayer player = (EntityPlayer)event.entityLiving;
+			System.out.println(player.getItemInUseDuration());
+			//player.getFoodStats().setFoodLevel(3);
 		}
 	}
 
