@@ -484,6 +484,28 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		inventory.dropAllItems(false);
 	}
 
+
+	@Override
+	public void onDeath(DamageSource damageSource)
+	{
+		super.onDeath(damageSource);
+
+		if (cocoonType == EnumCocoonType.HORSE && riddenByEntity != null)
+		{
+			try
+			{
+				final EntityPlayer player = (EntityPlayer)riddenByEntity;
+				player.dismountEntity(this);
+				player.ridingEntity = null;
+			}
+
+			catch (ClassCastException e)
+			{
+				//Should never happen. Just in case.
+			}
+		}
+	}
+
 	@Override
 	public boolean isOnLadder()
 	{
