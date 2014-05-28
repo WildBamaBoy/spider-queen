@@ -333,74 +333,77 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	@Override
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
-		damageAmount = getAttackDamage();
-		setAttackPath(entityBeingAttacked);
-
-		if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON && cocoonType != EnumCocoonType.ENDERMAN)
+		if (riddenByEntity == null)
 		{
-			if (onGround)
-			{
-				final double d0 = entityBeingAttacked.posX - posX;
-				final double d1 = entityBeingAttacked.posZ - posZ;
-				final float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-				motionX = d0 / f2 * 0.5D * 0.8D + motionX * 0.2D;
-				motionZ = d1 / f2 * 0.5D * 0.8D + motionZ * 0.2D;
-				motionY = 0.4D;
-			}
-		}
+			damageAmount = getAttackDamage();
+			setAttackPath(entityBeingAttacked);
 
-		else
-		{
-			if (cocoonType == EnumCocoonType.SKELETON && timeUntilWebshot <= 0)
+			if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON && cocoonType != EnumCocoonType.ENDERMAN)
 			{
-				resetTimeUntilWebshot();
-				worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-				worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
-			}
-
-			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
-			{
-				final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
-				entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
-
-				if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
+				if (onGround)
 				{
-					resetTimeUntilExplosion();
-					SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateClientExplosion, posX, posY, posZ, 5.0F, false));
+					final double d0 = entityBeingAttacked.posX - posX;
+					final double d1 = entityBeingAttacked.posZ - posZ;
+					final float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+					motionX = d0 / f2 * 0.5D * 0.8D + motionX * 0.2D;
+					motionZ = d1 / f2 * 0.5D * 0.8D + motionZ * 0.2D;
+					motionY = 0.4D;
+				}
+			}
 
-					for (final EntityLivingBase entity : (List<EntityLivingBase>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
-					{
-						if (entity instanceof EntityPlayer)
-						{
-							final EntityPlayer player = (EntityPlayer) entity;
-
-							if (owner.equals(player.getCommandSenderName()))
-							{
-								continue;
-							}
-						}
-
-						else if (entity instanceof EntityHatchedSpider)
-						{
-							final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
-
-							if (spider.owner.equals(owner))
-							{
-								continue;
-							}
-						}
-
-						else
-						{
-							entity.attackEntityFrom(DamageSource.generic, 5.0F);
-						}
-					}
+			else
+			{
+				if (cocoonType == EnumCocoonType.SKELETON && timeUntilWebshot <= 0)
+				{
+					resetTimeUntilWebshot();
+					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+					worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
 				}
 
-				if (entityLiving.getHealth() <= 0.0F)
+				if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 				{
-					killsUntilLevelUp--;
-					tryLevelUp();
+					final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
+					entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
+
+					if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
+					{
+						resetTimeUntilExplosion();
+						SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.CreateClientExplosion, posX, posY, posZ, 5.0F, false));
+
+						for (final EntityLivingBase entity : (List<EntityLivingBase>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
+						{
+							if (entity instanceof EntityPlayer)
+							{
+								final EntityPlayer player = (EntityPlayer) entity;
+
+								if (owner.equals(player.getCommandSenderName()))
+								{
+									continue;
+								}
+							}
+
+							else if (entity instanceof EntityHatchedSpider)
+							{
+								final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
+
+								if (spider.owner.equals(owner))
+								{
+									continue;
+								}
+							}
+
+							else
+							{
+								entity.attackEntityFrom(DamageSource.generic, 5.0F);
+							}
+						}
+					}
+
+					if (entityLiving.getHealth() <= 0.0F)
+					{
+						killsUntilLevelUp--;
+						tryLevelUp();
+					}
 				}
 			}
 		}
