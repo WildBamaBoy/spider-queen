@@ -490,6 +490,15 @@ public class EntityWeb extends Entity implements IProjectile
 
 					else if (blockHit == Blocks.tallgrass && type != 2) { return; }
 
+					else if (blockHit == Blocks.snow_layer)
+					{
+						if (doBlockSpawn)
+						{
+							worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebGround, 0, 2);
+							return;
+						}
+					}
+					
 					if (doBlockSpawn)
 					{
 						switch (impactPoint.sideHit)
