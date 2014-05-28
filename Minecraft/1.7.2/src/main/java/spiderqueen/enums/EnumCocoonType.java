@@ -122,6 +122,14 @@ public enum EnumCocoonType
 		final int maxRange = EnumCocoonType.values().length - 1;
 		final int typeIndexToReturn = LogicHelper.getNumberInRange(0, maxRange);
 
-		return EnumCocoonType.values()[typeIndexToReturn];
+		if (EnumCocoonType.values()[typeIndexToReturn] == GHAST)
+		{
+			return getRandomCocoonType();
+		}
+		
+		else
+		{
+			return EnumCocoonType.values()[typeIndexToReturn];
+		}
 	}
 }
