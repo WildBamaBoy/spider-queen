@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -143,9 +144,10 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		final Entity entity = damageSource.getEntity();
 
-		if (entity instanceof EntityPlayer)
+		if (entity instanceof EntityPlayer && !entity.worldObj.isRemote)
 		{
-			setBeenAttacked();
+			setDead();
+			entityDropItem(new ItemStack(SpiderQueen.getInstance().itemSpiderEgg), entity.worldObj.rand.nextFloat());
 		}
 
 		return true;
