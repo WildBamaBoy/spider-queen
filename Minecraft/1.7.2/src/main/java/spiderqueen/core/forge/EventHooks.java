@@ -126,7 +126,7 @@ public class EventHooks
 					{
 						if (event.entityPlayer.getFoodStats().getFoodLevel() == 20)
 						{
-							event.entityPlayer.getFoodStats().setFoodLevel(19);
+							event.entityPlayer.getFoodStats().addStats(-1, 0);
 						}
 
 						SpiderQueen.serverTickHandler.playersEating.add(new PlayerEatEntry(event.entityPlayer, event.entityPlayer.inventory.currentItem, event.entityPlayer.getCurrentEquippedItem().stackSize));
