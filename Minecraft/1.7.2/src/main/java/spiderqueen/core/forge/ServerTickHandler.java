@@ -341,7 +341,7 @@ public class ServerTickHandler
 					playersNoLongerEating.add(eatEntry);
 				}
 
-				if (eatEntry.getPlayer().getItemInUseCount() == 1 && eatEntry.getPlayer().getFoodStats().getFoodLevel() == 19)
+				if (eatEntry.getPlayer().getHeldItem().animationsToGo == 1 && eatEntry.getPlayer().getFoodStats().getFoodLevel() == 19)
 				{
 					eatEntry.getPlayer().getFoodStats().setFoodLevel(20);
 				}
