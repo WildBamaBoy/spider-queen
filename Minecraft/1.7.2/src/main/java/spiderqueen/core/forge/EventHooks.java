@@ -272,7 +272,7 @@ public class EventHooks
 					}
 				}
 
-				if (event.entityLiving instanceof EntitySpider && LogicHelper.getBooleanWithProbability(20))
+				if (event.entityLiving instanceof EntitySpider && LogicHelper.getBooleanWithProbability(30))
 				{
 					event.entityLiving.dropItem(SpiderQueen.getInstance().itemSpiderStone, 1);
 				}
