@@ -283,7 +283,7 @@ public class ServerTickHandler
 						if (player.getActivePotionEffect(Potion.nightVision) == null)
 						{
 							player.triggerAchievement(SpiderQueen.getInstance().achievementNightVision);
-							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 1, true));
+							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
 						}
 					}
 
