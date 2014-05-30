@@ -9,6 +9,7 @@
 
 package spiderqueen.core;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -363,6 +364,13 @@ public class SpiderQueen extends UnenforcedCore
 				'G', Blocks.glass_pane, 
 				'X', itemSpiderStone);
 		
+		GameRegistry.addRecipe(new ItemStack(itemSkinSwitcher), 
+				" I ", 
+				"IGI", 
+				" I ", 
+				'G', Blocks.glass_pane, 
+				'I', Items.iron_ingot);
+		
 		GameRegistry.addShapelessRecipe(new ItemStack(itemPoisonWeb), 
 				itemPoisonBarbs,
 				itemWeb);
@@ -590,15 +598,8 @@ public class SpiderQueen extends UnenforcedCore
 
 		try
 		{
-			final URL url = new URL(Constants.SKINS_URL);
-			final Scanner scanner = new Scanner(url.openStream());
-
-			while (scanner.hasNext())
-			{
-				returnList.add(scanner.next());
-			}
-
-			scanner.close();
+			readSkinsFromURL(Constants.PERM_SKINS_URL, returnList);
+			readSkinsFromURL(Constants.SKINS_URL, returnList);
 		}
 
 		catch (final Throwable e)
@@ -613,5 +614,19 @@ public class SpiderQueen extends UnenforcedCore
 	{
 		final int index = LogicHelper.getNumberInRange(0, fakePlayerNames.size() - 1);
 		return fakePlayerNames.get(index);
+	}
+	
+
+	private void readSkinsFromURL(String stringUrl, List<String> returnList) throws IOException
+	{
+		URL url = new URL(stringUrl);
+		Scanner scanner = new Scanner(url.openStream());
+
+		while (scanner.hasNext())
+		{
+			returnList.add(scanner.next());
+		}
+
+		scanner.close();
 	}
 }
