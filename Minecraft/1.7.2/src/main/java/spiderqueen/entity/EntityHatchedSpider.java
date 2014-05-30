@@ -142,7 +142,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilSpawnMinions <= 0)
 				{
 					resetTimeUntilSpawnMinions();
-					minionSpawnProgress = 10 * LogicHelper.getNumberInRange(1, 5);
+					minionSpawnProgress = 10 * LogicHelper.getNumberInRange(level, 5);
 				}
 			}
 
@@ -420,7 +420,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	public void tryLevelUp(boolean doForce)
 	{
-		if (doForce || cocoonType != EnumCocoonType._ENDERMINION && level < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode))
+		if ((doForce && level < 3) || cocoonType != EnumCocoonType._ENDERMINION && level < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode))
 		{
 			timeUntilExplosion = 0;
 			timeUntilWebshot = 0;
