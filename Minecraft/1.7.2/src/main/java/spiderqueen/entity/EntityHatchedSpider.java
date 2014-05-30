@@ -775,26 +775,29 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void spawnFlameWeb()
 	{
-		if (flameWebSpawnProgress % 5 == 0)
+		if (flameWebProduced < 10)
 		{
-			if (!worldObj.isRemote)
+			if (flameWebSpawnProgress % 5 == 0)
 			{
-				worldObj.playSoundAtEntity(this, "random.fizz", 0.75F, 1.5F);
-			}
-		}
-
-		if (flameWebSpawnProgress == 1)
-		{
-			flameWebSpawnProgress = 0;
-			flameWebProduced += LogicHelper.getNumberInRange(1, 4);
-
-			if (flameWebProduced >= 64)
-			{
-				flameWebProduced = 64;
+				if (!worldObj.isRemote)
+				{
+					worldObj.playSoundAtEntity(this, "random.fizz", 0.75F, 1.5F);
+				}
 			}
 
-			dataWatcher.updateObject(17, flameWebProduced);
-			resetTimeUntilMakeFlameWeb();
+			if (flameWebSpawnProgress == 1)
+			{
+				flameWebSpawnProgress = 0;
+				flameWebProduced += LogicHelper.getNumberInRange(1, 4);
+
+				if (flameWebProduced >= 10)
+				{
+					flameWebProduced = 10;
+				}
+
+				dataWatcher.updateObject(17, flameWebProduced);
+				resetTimeUntilMakeFlameWeb();
+			}
 		}
 	}
 
