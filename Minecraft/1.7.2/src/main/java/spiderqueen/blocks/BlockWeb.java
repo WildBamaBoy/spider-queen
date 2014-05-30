@@ -39,6 +39,7 @@ public class BlockWeb extends Block
 	{
 		super(Material.circuits);
 		this.isPoison = isPoison;
+		this.setHardness(0.2F);
 	}
 
 	@Override
