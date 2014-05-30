@@ -341,7 +341,7 @@ public class ServerTickHandler
 					playersNoLongerEating.add(eatEntry);
 				}
 
-				if (eatEntry.getPlayer().getHeldItem().animationsToGo == 1 && eatEntry.getPlayer().getFoodStats().getFoodLevel() == 19)
+				if (currentItemStack != null && currentItemStack.animationsToGo == 1 && eatEntry.getPlayer().getFoodStats().getFoodLevel() == 19)
 				{
 					eatEntry.getPlayer().getFoodStats().setFoodLevel(20);
 				}
@@ -392,12 +392,12 @@ public class ServerTickHandler
 						if (doSpawnPlayers && numberOfPlayersNearby < 5)
 						{
 							final boolean spawnGroup = LogicHelper.getBooleanWithProbability(20);
-							
+
 							if (spawnGroup)
 							{
 								LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 4);
 							}
-							
+
 							else
 							{
 								LogicHelper.spawnGroupOfEntitiesAroundPoint(player.worldObj, new Point3D(player.posX + modX, player.posY, player.posZ + modZ), EntityFakePlayer.class, 1, 1);
