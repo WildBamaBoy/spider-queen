@@ -148,6 +148,7 @@ public class SpiderQueen extends UnenforcedCore
 	public Block					blockPoisonWebFull;
 	public Block					blockPoisonWebGround;
 	public Block					blockPoisonWebSide;
+	public Block					blockFlameWebFull;
 	public Block					blockWebBed;
 	public Block					blockSpiderRod;
 
@@ -317,14 +318,15 @@ public class SpiderQueen extends UnenforcedCore
 	@Override
 	public void initializeBlocks()
 	{
-		blockWebGround = new BlockWebGround(false);
-		blockWebSide = new BlockWeb(false);
-		blockWebFull = new BlockWebFull(false);
-		blockPoisonWebGround = new BlockWebGround(true);
-		blockPoisonWebSide = new BlockWeb(true);
-		blockPoisonWebFull = new BlockWebFull(true);
+		blockWebGround = new BlockWebGround(1);
+		blockWebSide = new BlockWeb(1);
+		blockWebFull = new BlockWebFull(1);
+		blockPoisonWebGround = new BlockWebGround(2);
+		blockPoisonWebSide = new BlockWeb(2);
+		blockPoisonWebFull = new BlockWebFull(2);
 		blockSpiderRod = new BlockSpiderRod();
 		blockWebBed = new BlockWebBed();
+		blockFlameWebFull = new BlockWebFull(3);
 		
 		GameRegistry.registerBlock(blockWebGround, "Web Ground");
 		GameRegistry.registerBlock(blockWebSide, "Web Side");
@@ -332,6 +334,7 @@ public class SpiderQueen extends UnenforcedCore
 		GameRegistry.registerBlock(blockPoisonWebGround, "Poison Web Ground");
 		GameRegistry.registerBlock(blockPoisonWebSide, "Poison Web Side");
 		GameRegistry.registerBlock(blockPoisonWebFull, "Poison Web Full");
+		GameRegistry.registerBlock(blockFlameWebFull, "Flame Web Full");
 		GameRegistry.registerBlock(blockSpiderRod, "Spider Rod");
 		GameRegistry.registerBlock(blockWebBed, "Web Bed");
 	}

@@ -15,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,12 +34,13 @@ import com.radixshock.radixcore.logic.LogicHelper;
 
 public class BlockWeb extends Block
 {
-	private boolean isPoison;
+	/** 1 = Normal, 2 = Poison, 3 = Flame */
+	private int type;
 
-	public BlockWeb(boolean isPoison)
+	public BlockWeb(int type)
 	{
 		super(Material.circuits);
-		this.isPoison = isPoison;
+		this.type = type;
 		this.setHardness(0.2F);
 	}
 
@@ -65,16 +67,47 @@ public class BlockWeb extends Block
 
 		else
 		{
-			entity.setInWeb();
-
-			entity.motionX = entity.motionX * -0.1D;
-			entity.motionZ = entity.motionZ * -0.1D;
-			entity.motionY = entity.motionY * 0.1D;
-
-			if (isPoison && LogicHelper.getBooleanWithProbability(40) && entity instanceof EntityLivingBase)
+			if (type != 3)
 			{
-				final EntityLivingBase entityLiving = (EntityLivingBase)entity;
-				entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, Time.SECOND * 5));
+				entity.setInWeb();
+
+				entity.motionX = entity.motionX * -0.1D;
+				entity.motionZ = entity.motionZ * -0.1D;
+				entity.motionY = entity.motionY * 0.1D;
+
+				if (type == 2 && LogicHelper.getBooleanWithProbability(40) && entity instanceof EntityLivingBase)
+				{
+					final EntityLivingBase entityLiving = (EntityLivingBase)entity;
+					entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, Time.SECOND * 5));
+				}
+			}
+
+			else
+			{
+				if (entity instanceof EntityLiving)
+				{
+					world.playSoundAtEntity(entity, "fire.ignite", 1.0F, 1.0F);
+					world.playSoundAtEntity(entity, "random.fizz", 1.0F, 1.0F);
+					
+					if (!world.isRemote)
+					{
+						entity.setFire(5);
+						world.setBlock(posX, posY, posZ, Blocks.fire);
+
+					}
+
+					else
+					{
+						for (int i = 0; i < 32; i++)
+						{
+							final double motionX = world.rand.nextGaussian() / 2;
+							final double motionY = world.rand.nextGaussian() / 2;
+							final double motionZ = world.rand.nextGaussian() / 2;
+
+							world.spawnParticle("smoke", posX, posY, posZ, motionX, motionY, motionZ);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -100,14 +133,12 @@ public class BlockWeb extends Block
 	@Override
 	public void registerBlockIcons(IIconRegister IIconRegister)
 	{
-		if (isPoison)
+		switch (type)
 		{
-			blockIcon = IIconRegister.registerIcon("spiderqueen:WebPoison");
-		}
+			case 1: blockIcon = IIconRegister.registerIcon("spiderqueen:Web"); break;
+			case 2: blockIcon = IIconRegister.registerIcon("spiderqueen:WebPoison"); break;
+			case 3: blockIcon = IIconRegister.registerIcon("spiderqueen:WebFlame"); break;
 
-		else
-		{
-			blockIcon = IIconRegister.registerIcon("spiderqueen:Web");
 		}
 	}
 
@@ -217,7 +248,7 @@ public class BlockWeb extends Block
 
 	private void checkForBed(World world, int x, int y, int z, int itr)
 	{
-		if (!isPoison)
+		if (type == 1)
 		{
 			Block fillerBlock = SpiderQueen.getInstance().blockWebFull;
 			Block outlineBlock = Blocks.log;
@@ -261,12 +292,12 @@ public class BlockWeb extends Block
 			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
 			{
 				final EntityPlayer player = world.getClosestPlayer(x, y, z, 10);
-				
+
 				if (player != null)
 				{
 					player.triggerAchievement(SpiderQueen.getInstance().achievementCreateSpiderBed);
 				}
-				
+
 				world.setBlock(x-1,y,z-1,SpiderQueen.getInstance().blockWebBed);
 				world.setBlock(x-1,y,z,SpiderQueen.getInstance().blockWebBed);
 				world.setBlock(x-1,y,z+1,SpiderQueen.getInstance().blockWebBed);
@@ -277,7 +308,7 @@ public class BlockWeb extends Block
 				world.setBlock(x+1,y,z,SpiderQueen.getInstance().blockWebBed);
 				world.setBlock(x+1,y,z+1,SpiderQueen.getInstance().blockWebBed);
 			}
-			
+
 			else
 			{
 				if (itr < 3)

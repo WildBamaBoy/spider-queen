@@ -13,9 +13,9 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockWebGround extends BlockWeb
 {
-	public BlockWebGround(boolean isPoison)
+	public BlockWebGround(int type)
 	{
-		super(isPoison);
+		super(type);
 	}
 
 	@Override

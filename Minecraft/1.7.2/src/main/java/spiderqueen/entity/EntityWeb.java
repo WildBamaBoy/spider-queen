@@ -561,7 +561,7 @@ public class EntityWeb extends Entity implements IProjectile
 								
 								else if (type == 2)
 								{
-									worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
+									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockFlameWebFull);
 								}
 							}
 
@@ -579,7 +579,7 @@ public class EntityWeb extends Entity implements IProjectile
 								
 								else if (type == 2)
 								{
-									worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
+									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockFlameWebFull);
 								}
 							}
 						}

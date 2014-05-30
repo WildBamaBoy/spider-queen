@@ -13,9 +13,9 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockWebFull extends BlockWeb
 {
-	public BlockWebFull(boolean isPoison)
+	public BlockWebFull(int type)
 	{
-		super(isPoison);
+		super(type);
 	}
 
 	@Override
