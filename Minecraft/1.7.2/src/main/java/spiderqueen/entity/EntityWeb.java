@@ -399,7 +399,7 @@ public class EntityWeb extends Entity implements IProjectile
 					setDead();
 				}
 
-				if (cocoonType != null)
+				if (cocoonType != null && type == 0)
 				{
 					if (entityHit.getHealth() > 0.4F)
 					{
