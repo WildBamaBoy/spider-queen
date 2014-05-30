@@ -171,7 +171,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 				{
 					if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
 					{
-						if (attackTarget.attackEntityFrom(DamageSource.generic, inventory.getDamageVsEntity(attackTarget)))
+						if (attackTarget.attackEntityFrom(DamageSource.causeMobDamage(this), inventory.getDamageVsEntity(attackTarget)))
 						{
 							swingItem();
 						}
