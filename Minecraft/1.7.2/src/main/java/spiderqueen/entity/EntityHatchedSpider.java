@@ -859,7 +859,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private boolean tryFollowOwnerPlayer(boolean checkOnly)
 	{
-		if (owner != null)
+		if (owner != null && target == null)
 		{
 			final EntityPlayer ownerPlayer = worldObj.getPlayerEntityByName(owner);
 
