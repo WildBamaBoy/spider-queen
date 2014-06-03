@@ -324,6 +324,7 @@ public final class PacketHandler extends AbstractPacketHandler
 	private void handleSleepComplete(Object[] arguments, EntityPlayer player)
 	{
 		player.worldObj.setWorldTime(13000);
+		player.setSpawnChunk(player.getPlayerCoordinates(), true);
 		SpiderQueen.packetPipeline.sendPacketToPlayer(new Packet(EnumPacketType.OpenGui, -1), (EntityPlayerMP) player);
 	}
 }
