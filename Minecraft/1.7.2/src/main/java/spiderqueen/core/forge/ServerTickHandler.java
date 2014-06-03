@@ -31,6 +31,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenOcean;
+import net.minecraft.world.chunk.Chunk;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
@@ -374,7 +377,9 @@ public class ServerTickHandler
 					for (final Object obj : worldServer.playerEntities)
 					{
 						final EntityPlayer player = (EntityPlayer) obj;
-						final boolean doSpawnPlayers = LogicHelper.getBooleanWithProbability(20);
+						final Chunk chunk = worldServer.getChunkFromBlockCoords((int)player.posX, (int)player.posZ);
+						final BiomeGenBase biome = chunk.getBiomeGenForWorldCoords((int)player.posX & 15, (int)player.posY & 15, worldServer.getWorldChunkManager());
+						final boolean doSpawnPlayers = !(biome instanceof BiomeGenOcean) && LogicHelper.getBooleanWithProbability(20);
 						final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 						final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 
