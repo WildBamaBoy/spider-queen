@@ -235,7 +235,8 @@ public class RenderSpiderQueen extends RenderPlayer
 			
 			try
 			{
-				bindTexture(new ResourceLocation("spiderqueen:textures/entity/SpiderQueenArms.png"));
+				final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+				bindTexture(new ResourceLocation("spiderqueen:textures/entity/Arms" + modPropertiesList.spiderSkin.substring(6) + ".png"));
 			}
 			
 			catch (NullPointerException e)
