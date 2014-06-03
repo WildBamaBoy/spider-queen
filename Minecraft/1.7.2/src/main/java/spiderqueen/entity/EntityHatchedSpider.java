@@ -874,7 +874,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				final double distanceToOwner = LogicHelper.getDistanceToEntity(this, ownerPlayer);
 				final ItemStack currentItemStack = ownerPlayer.inventory.mainInventory[ownerPlayer.inventory.currentItem];
 
-				if (currentItemStack != null && distanceToOwner < 20.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
+				if (currentItemStack != null && distanceToOwner < 25.0D && currentItemStack.getItem() == SpiderQueen.getInstance().itemSpiderRod)
 				{
 					if (!checkOnly)
 					{
