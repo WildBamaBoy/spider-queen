@@ -11,10 +11,12 @@ package spiderqueen.entity;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.AxisAlignedBB;
@@ -25,6 +27,7 @@ import spiderqueen.enums.EnumCocoonType;
 import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.logic.LogicHelper;
+import com.radixshock.radixcore.logic.Point3D;
 import com.radixshock.radixcore.network.Packet;
 
 import cpw.mods.fml.relauncher.Side;
@@ -261,7 +264,15 @@ public class EntitySpiderEgg extends EntityCreature
 				}
 			}
 
-			hatchedSpider.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
+			final Block spawnBlock = worldObj.getBlock((int)posX,(int)posY,(int)posZ);
+			Point3D spawnPoint = new Point3D(posX, posY, posZ);
+
+			if (worldObj.getBlock(spawnPoint.iPosX + 1, spawnPoint.iPosY, spawnPoint.iPosZ) == Blocks.air) { spawnPoint = new Point3D(posX + 1, posY, posZ); System.out.println("1"); }
+			else if (worldObj.getBlock(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ + 1) == Blocks.air) { spawnPoint = new Point3D(posX, posY, posZ + 1); System.out.println("1"); }
+			else if (worldObj.getBlock(spawnPoint.iPosX - 1, spawnPoint.iPosY, spawnPoint.iPosZ) == Blocks.air) { spawnPoint = new Point3D(posX - 1, posY, posZ); System.out.println("3"); }
+			else if (worldObj.getBlock(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ - 1) == Blocks.air) { spawnPoint = new Point3D(posX, posY, posZ - 1); System.out.println("4"); }
+
+			hatchedSpider.setLocationAndAngles(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ, rotationYaw, rotationPitch);
 			worldObj.spawnEntityInWorld(hatchedSpider);
 			setDead();
 		}
