@@ -20,10 +20,8 @@ import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.entity.EntityWebslinger;
-import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.logic.NBTHelper;
-import com.radixshock.radixcore.network.Packet;
 
 public class PlayerExtension implements IExtendedEntityProperties
 {

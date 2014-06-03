@@ -38,7 +38,6 @@ import org.lwjgl.opengl.GL11;
 import spiderqueen.client.model.ModelSpiderQueen;
 import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
-import spiderqueen.core.forge.PlayerExtension;
 
 public class RenderSpiderQueen extends RenderPlayer
 {

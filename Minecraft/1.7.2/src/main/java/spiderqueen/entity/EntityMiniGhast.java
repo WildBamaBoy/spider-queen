@@ -9,7 +9,6 @@
 
 package spiderqueen.entity;
 
-import spiderqueen.core.SpiderQueen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -30,8 +29,6 @@ import net.minecraft.world.World;
 import com.radixshock.radixcore.logic.NBTHelper;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityMiniGhast extends EntityCreature
 {

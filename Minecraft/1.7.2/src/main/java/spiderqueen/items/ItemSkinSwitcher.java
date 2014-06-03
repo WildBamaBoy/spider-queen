@@ -17,7 +17,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
-import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.enums.EnumPacketType;
 
 import com.radixshock.radixcore.network.Packet;
