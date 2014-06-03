@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityFakePlayer;
 
@@ -69,8 +70,9 @@ public class RenderFakePlayer extends RenderBiped
 		if (Minecraft.isGuiEnabled())
 		{
 			final EntityFakePlayer entityFakePlayer = (EntityFakePlayer) entityLivingBase;
-
-			if (SpiderQueen.getInstance().doDisplayPlayerSkins)
+			final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+			
+			if (modPropertiesList.usePlayerSkins)
 			{
 				renderLabel(entityFakePlayer, posX, posY, posZ, entityFakePlayer.username);
 			}
@@ -81,8 +83,9 @@ public class RenderFakePlayer extends RenderBiped
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		final EntityFakePlayer player = (EntityFakePlayer) entity;
-
-		if (SpiderQueen.getInstance().doDisplayPlayerSkins)
+		final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+		
+		if (modPropertiesList.usePlayerSkins)
 		{
 			return player.skinResourceLocation;
 		}

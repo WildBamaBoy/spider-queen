@@ -31,7 +31,6 @@ import spiderqueen.blocks.BlockWebFull;
 import spiderqueen.blocks.BlockWebGround;
 import spiderqueen.command.CommandCheckReputation;
 import spiderqueen.command.CommandDebug;
-import spiderqueen.command.CommandPlayerSkins;
 import spiderqueen.core.forge.ClientTickHandler;
 import spiderqueen.core.forge.CommonProxy;
 import spiderqueen.core.forge.EventHooks;
@@ -66,9 +65,6 @@ import com.radixshock.radixcore.core.RadixRegistry;
 import com.radixshock.radixcore.core.UnenforcedCore;
 import com.radixshock.radixcore.enums.EnumNetworkType;
 import com.radixshock.radixcore.file.ModPropertiesManager;
-import com.radixshock.radixcore.lang.ILanguageLoaderHook;
-import com.radixshock.radixcore.lang.ILanguageParser;
-import com.radixshock.radixcore.lang.LanguageLoader;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketCodec;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
@@ -79,11 +75,8 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -199,7 +192,6 @@ public class SpiderQueen extends UnenforcedCore
 	public Achievement				achievementCreateSpiderBed;
 	
 	public List<String>				fakePlayerNames				= new ArrayList<String>();
-	public boolean					doDisplayPlayerSkins		= true;
 	public boolean					inDebugMode					= false;
 	public boolean					debugDoRapidSpiderGrowth	= false;
 	public boolean					debugHaltSpawnPlayers		= false;
@@ -482,7 +474,6 @@ public class SpiderQueen extends UnenforcedCore
 	public void initializeCommands(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandDebug());
-		event.registerServerCommand(new CommandPlayerSkins());
 		event.registerServerCommand(new CommandCheckReputation());
 	}
 

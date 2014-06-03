@@ -15,5 +15,6 @@ public class ModPropertiesList
 	
 	public boolean useSpiderQueenModel = true;
 	public boolean isDisabled = false;
+	public boolean usePlayerSkins = true;
 	public String spiderSkin = "SpiderQueen1";
 }
