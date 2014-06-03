@@ -189,7 +189,7 @@ public class EventHooks
 			{
 				for (final CreatureReputationEntry entry : playerExtension.getReputationEntries())
 				{
-					if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass())
+					if (entry.reputationValue > 0 && entry.getCreatureClass() != event.target.getClass() && event.target instanceof EntityLivingBase && !(event.target instanceof EntityCocoon))
 					{
 						for (final EntityLiving entity : (List<EntityLiving>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(event.entityPlayer, entry.getCreatureClass(), 15))
 						{
