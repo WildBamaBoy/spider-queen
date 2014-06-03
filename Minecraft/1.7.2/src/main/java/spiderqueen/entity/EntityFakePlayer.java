@@ -339,7 +339,10 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 					if (playerExtension.getReputationEntry(EntityFakePlayer.class).reputationValue >= 0 || player.capabilities.isCreativeMode)
 					{
-						continue;
+						if (getMaxHealth() / 2 <= getHealth())
+						{
+							continue;	
+						}
 					}
 				}
 
