@@ -40,6 +40,7 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.core.util.PlayerEatEntry;
@@ -142,8 +143,9 @@ public class EventHooks
 		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
 			final EntityPlayer player = (EntityPlayer)event.player;
-			final PlayerExtension playerExtension = PlayerExtension.get(player);
-			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin, player.getCommandSenderName()));
+			final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+			
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, modPropertiesList.spiderSkin, player.getCommandSenderName()));
 		}
 	}
 

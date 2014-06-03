@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.util.CreatureReputationEntry;
 import spiderqueen.entity.EntityWebslinger;
@@ -29,7 +30,6 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public static final String					ID	= "SpiderQueenplayerExtension";
 	public EntityWebslinger						webEntity;
 	public int									totalHumansKilled;
-	public String								selectedSkin = "SpiderQueen1";
 	private final EntityPlayer					player;
 	private final List<CreatureReputationEntry>	reputationEntries;
 
@@ -48,9 +48,9 @@ public class PlayerExtension implements IExtendedEntityProperties
 		}
 
 		nbt.setInteger("totalHumansKilled", totalHumansKilled);
-		nbt.setString("selectedSkin", selectedSkin);
 		
-		SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, selectedSkin, player.getCommandSenderName()));
+		final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+		//SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, modPropertiesList.spiderSkin, player.getCommandSenderName()));
 	}
 
 	@Override
@@ -62,7 +62,6 @@ public class PlayerExtension implements IExtendedEntityProperties
 		}
 
 		totalHumansKilled = nbt.getInteger("totalHumansKilled");
-		selectedSkin = nbt.getString("selectedSkin");
 	}
 
 	@Override

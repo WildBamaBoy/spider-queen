@@ -18,7 +18,8 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
-import spiderqueen.core.forge.PlayerExtension;
+import spiderqueen.core.ModPropertiesList;
+import spiderqueen.core.SpiderQueen;
 import spiderqueen.entity.EntityHatchedSpider;
 
 public class ModelSpiderQueen extends ModelBase
@@ -206,7 +207,7 @@ public class ModelSpiderQueen extends ModelBase
 		if (entity instanceof EntityPlayer)
 		{
 			final EntityPlayer player = (EntityPlayer) entity;
-			final PlayerExtension playerExtension = PlayerExtension.get(player);
+			final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
 			
 			if (player.ridingEntity instanceof EntityHatchedSpider)
 			{
@@ -230,7 +231,7 @@ public class ModelSpiderQueen extends ModelBase
 				}
 			}
 			
-			if (playerExtension.selectedSkin.contains("King"))
+			if (modPropertiesList.spiderSkin.contains("King"))
 			{
 				isKing = true;
 			}

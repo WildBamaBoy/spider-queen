@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.enums.EnumPacketType;
@@ -34,41 +35,41 @@ public class ItemSkinSwitcher extends Item
 	{
 		if (!world.isRemote)
 		{
-			final PlayerExtension playerExtension = PlayerExtension.get(player);
+			final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
 
 			try
 			{
-				boolean isQueen = playerExtension.selectedSkin.contains("Queen");
-				int index = Integer.parseInt(playerExtension.selectedSkin.substring(playerExtension.selectedSkin.length() - 1));
+				boolean isQueen = modPropertiesList.spiderSkin.contains("Queen");
+				int index = Integer.parseInt(modPropertiesList.spiderSkin.substring(modPropertiesList.spiderSkin.length() - 1));
 
 				if (isQueen)
 				{
 					if (index < 4)
 					{
 						index++;
-						playerExtension.selectedSkin = "SpiderQueen" + index;
+						modPropertiesList.spiderSkin = "SpiderQueen" + index;
 					}
 
 					else
 					{
 						index = 1;
-						playerExtension.selectedSkin = "SpiderKing" + index;
+						modPropertiesList.spiderSkin = "SpiderKing" + index;
 					}
 				}
 
 				else
 				{
-					playerExtension.selectedSkin = "SpiderQueen1";
+					modPropertiesList.spiderSkin = "SpiderQueen1";
 				}
 			}
 
 			catch (Throwable e)
 			{
-				playerExtension.selectedSkin = "SpiderQueen1";			
+				modPropertiesList.spiderSkin = "SpiderQueen1";			
 			}
 			
-			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, playerExtension.selectedSkin, player.getCommandSenderName()));					
-			player.addChatMessage(new ChatComponentText("Skin changed to " + playerExtension.selectedSkin + "."));
+			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetSkin, modPropertiesList.spiderSkin, player.getCommandSenderName()));					
+			player.addChatMessage(new ChatComponentText("Skin changed to " + modPropertiesList.spiderSkin + "."));
 		}
 
 		return itemStack;

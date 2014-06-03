@@ -36,6 +36,8 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import spiderqueen.client.model.ModelSpiderQueen;
+import spiderqueen.core.ModPropertiesList;
+import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
 
 public class RenderSpiderQueen extends RenderPlayer
@@ -586,8 +588,8 @@ public class RenderSpiderQueen extends RenderPlayer
 	protected void bindEntityTexture(Entity entity)
 	{
 		final EntityPlayer player = (EntityPlayer)entity;
-		final PlayerExtension playerExtension = PlayerExtension.get(player);
-
-		bindTexture(new ResourceLocation("spiderqueen:textures/entity/" + playerExtension.selectedSkin + ".png"));
+		final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+		
+		bindTexture(new ResourceLocation("spiderqueen:textures/entity/" + modPropertiesList.spiderSkin + ".png"));
 	}
 }

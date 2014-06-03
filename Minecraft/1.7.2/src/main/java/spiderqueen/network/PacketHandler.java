@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import spiderqueen.core.ModPropertiesList;
 import spiderqueen.core.SpiderQueen;
 import spiderqueen.core.forge.PlayerExtension;
 import spiderqueen.entity.EntityCocoon;
@@ -301,8 +302,9 @@ public final class PacketHandler extends AbstractPacketHandler
 
 		if (receivedPlayer != null)
 		{
-			final PlayerExtension playerExtension = PlayerExtension.get(player);
-			playerExtension.selectedSkin = skinName;
+			final ModPropertiesList modPropertiesList = SpiderQueen.getInstance().getModProperties();
+			modPropertiesList.spiderSkin = skinName;
+			SpiderQueen.getInstance().getModPropertiesManager().saveModProperties();
 		}
 	}
 

@@ -11,6 +11,9 @@ package spiderqueen.core;
 
 public class ModPropertiesList
 {
+	public int _112saveLevel_ = 1;
+	
 	public boolean useSpiderQueenModel = true;
 	public boolean isDisabled = false;
+	public String spiderSkin = "SpiderQueen1";
 }
