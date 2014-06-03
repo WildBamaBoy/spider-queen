@@ -99,7 +99,7 @@ public class EntityWeb extends Entity implements IProjectile
 			yOffset = 0.0F;
 
 			final float modDeltaY = (float) distanceXZ * 0.2F;
-			setThrowableHeading(deltaX, deltaY + modDeltaY, deltaZ, speed, 16F);
+			setThrowableHeading(deltaX, deltaY - modDeltaY, deltaZ, speed, 16F);
 		}
 	}
 
