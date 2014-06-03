@@ -82,16 +82,25 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
 		updateEntityAttributes();
+		setHitboxSize();
 		dataWatcher.addObject(17, flameWebProduced);
 	}
 
 	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
 	{
-		this(world);
+		super(world);
 		this.owner = owner;
 		this.cocoonType = cocoonType;
-
 		setHitboxSize();
+		
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
+		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(3, new EntityAIWander(this, 0.4D));
+		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+
+		updateEntityAttributes();
+		dataWatcher.addObject(17, flameWebProduced);
 	}
 
 	@Override
