@@ -73,11 +73,6 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 			addAI();
 			username = SpiderQueen.getInstance().getRandomPlayerName();
 
-//			if ((username.equals("WildBamaBoy*") || username.equals("LuvTrumpetStyle*")) && LogicHelper.getBooleanWithProbability(90))
-//			{
-//				username = SpiderQueen.getInstance().getRandomPlayerName();
-//			}
-
 			if (username.endsWith("*"))
 			{
 				isContributor = true;
@@ -113,7 +108,7 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 				setDead();
 				return;
 			}
-			
+
 			tryGetTarget();
 			moveToTarget();
 			damageTarget();
@@ -144,45 +139,48 @@ public class EntityFakePlayer extends EntityCreature implements IEntityAdditiona
 
 	private void damageTarget()
 	{
-		try
+		if (getHealth() > 0.0F)
 		{
-			if (target instanceof EntityCreature)
+			try
 			{
-				final EntityCreature attackTarget = (EntityCreature) target;
-
-				if (attackTarget != null)
+				if (target instanceof EntityCreature)
 				{
-					if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
+					final EntityCreature attackTarget = (EntityCreature) target;
+
+					if (attackTarget != null)
 					{
-						if (attackTarget.attackEntityFrom(DamageSource.generic, inventory.getDamageVsEntity(attackTarget)))
+						if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
 						{
-							attackTarget.setAttackTarget(this);
-							swingItem();
+							if (attackTarget.attackEntityFrom(DamageSource.generic, inventory.getDamageVsEntity(attackTarget)))
+							{
+								attackTarget.setAttackTarget(this);
+								swingItem();
+							}
+						}
+					}
+				}
+
+				else if (target instanceof EntityPlayer)
+				{
+					final EntityPlayer attackTarget = (EntityPlayer) target;
+
+					if (attackTarget != null)
+					{
+						if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
+						{
+							if (attackTarget.attackEntityFrom(DamageSource.causeMobDamage(this), inventory.getDamageVsEntity(attackTarget)))
+							{
+								swingItem();
+							}
 						}
 					}
 				}
 			}
 
-			else if (target instanceof EntityPlayer)
+			catch (final ClassCastException e)
 			{
-				final EntityPlayer attackTarget = (EntityPlayer) target;
-
-				if (attackTarget != null)
-				{
-					if (LogicHelper.getDistanceToEntity(this, attackTarget) < 2.0F)
-					{
-						if (attackTarget.attackEntityFrom(DamageSource.causeMobDamage(this), inventory.getDamageVsEntity(attackTarget)))
-						{
-							swingItem();
-						}
-					}
-				}
+				SpiderQueen.getInstance().getLogger().log(e);
 			}
-		}
-
-		catch (final ClassCastException e)
-		{
-			SpiderQueen.getInstance().getLogger().log(e);
 		}
 	}
 
