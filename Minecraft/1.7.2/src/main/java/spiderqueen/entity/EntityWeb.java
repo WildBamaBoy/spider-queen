@@ -399,7 +399,7 @@ public class EntityWeb extends Entity implements IProjectile
 					setDead();
 				}
 
-				if (cocoonType != null && type == 0)
+				if (cocoonType != null)
 				{
 					if (entityHit.getHealth() > 0.4F)
 					{
@@ -418,7 +418,7 @@ public class EntityWeb extends Entity implements IProjectile
 						{
 							EntityCocoon entityCocoon = null;
 
-							if (shooter instanceof EntityPlayer && type != 2)
+							if (shooter instanceof EntityPlayer && type != 1 && type != 2)
 							{
 								final EntityPlayer player = (EntityPlayer) shooter;
 								player.triggerAchievement(SpiderQueen.getInstance().achievementCocoonSomething);
@@ -438,7 +438,7 @@ public class EntityWeb extends Entity implements IProjectile
 								}
 							}
 
-							else
+							else if (type == 0)
 							{
 								if (impactPoint.entityHit instanceof EntityGhast)
 								{
