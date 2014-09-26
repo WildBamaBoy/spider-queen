@@ -1,0 +1,63 @@
+buildscript 
+{
+    repositories 
+	{
+        mavenCentral()
+        maven 
+		{
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+		
+        maven 
+		{
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+	
+    dependencies 
+	{
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'forge'
+
+fileTree('gradle').include('*.gradle').collect().sort().each { apply from: it }
+
+version = "1.2.0"
+group= "com.radixshock"
+archivesBaseName = "SpiderQueenReborn"
+
+minecraft 
+{
+    version = "1.7.10-10.13.0.1180"
+    runDir =  "eclipse/"
+    replaceIn "sqr/core/Constants.java"
+    replace   "@VERSION@", project.version
+}
+
+version = "${project.minecraft.version}-${project.version}"
+
+dependencies 
+{
+	compile fileTree(dir: 'lib', includes: ['*.jar'])
+}
+
+processResources 
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) 
+	{
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+	
+    from(sourceSets.main.resources.srcDirs)	
+	{
+        exclude 'mcmod.info'
+    }
+}

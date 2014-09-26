@@ -1,0 +1,16 @@
+[
+{
+  "modid": "spiderqueen",
+  "name": "Spider Queen - Reborn",
+  "description": "A revival of the popular Spider Queen mod by djoslin.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["WildBamaBoy", "SheWolfDeadly"],
+  "credits": "djoslin, Pullahoko, pelindolok, lemonszz, others",
+  "logoFile": "/spiderqueen.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
