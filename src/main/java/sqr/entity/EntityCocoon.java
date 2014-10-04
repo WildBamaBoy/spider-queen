@@ -17,6 +17,7 @@ import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -45,6 +46,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		super(world);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+		
+		tasks.addTask(0, new EntityAISwimming(this));
 	}
 
 	public EntityCocoon(World world, EnumCocoonType cocoonType)
