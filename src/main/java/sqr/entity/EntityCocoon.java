@@ -69,9 +69,11 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		super.entityInit();
 		
+		/* IsEaten */
 		dataWatcher.addObject(20, 0);
 	}
 
+	
 	@Override
 	public boolean isAIEnabled()
 	{
