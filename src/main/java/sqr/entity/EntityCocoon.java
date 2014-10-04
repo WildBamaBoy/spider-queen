@@ -13,6 +13,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.Random;
 
+import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -36,9 +37,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 {
 	private EnumCocoonType	cocoonType;
 
-	/** 0 if cocoon is not eaten. 1 if it is. */
-	private int				isEaten;
-	
 	private int				currentDamage;
 	private int				timeSinceHit;
 	private int				timeUntilTryBreakFree	= -1;
@@ -47,8 +45,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		super(world);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
-
-		dataWatcher.addObject(20, isEaten);
 	}
 
 	public EntityCocoon(World world, EnumCocoonType cocoonType)
@@ -72,6 +68,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	protected void entityInit()
 	{
 		super.entityInit();
+		
+		dataWatcher.addObject(20, 0);
 	}
 
 	@Override
@@ -114,7 +112,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public void onUpdate()
 	{
 		super.onUpdate();
-
+		
 		if (timeSinceHit > 0)
 		{
 			timeSinceHit--;
@@ -198,7 +196,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				{
 					dropItem(cocoonType.getCocoonItem(), 1);
 				}
-				
+
 				setDead();
 			}
 		}
@@ -212,6 +210,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		try
 		{
 			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
+			dataWatcher.updateObject(20, nbt.getInteger("isEaten"));
 		}
 
 		catch (final IllegalAccessException e)
@@ -219,7 +218,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			e.printStackTrace();
 		}
 
-		isEaten = nbt.getInteger("isEaten");
 		timeUntilTryBreakFree = nbt.getInteger("timeUntilTryBreakFree");
 		setHitboxSize();
 	}
@@ -228,8 +226,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		nbt.setInteger("cocoonType", cocoonType.ordinal());
-		nbt.setInteger("isEaten", isEaten);
 		nbt.setInteger("timeUntilTryBreakFree", timeUntilTryBreakFree);
+		nbt.setInteger("isEaten", dataWatcher.getWatchableObjectInt(20));
 		setHitboxSize();
 	}
 
@@ -237,7 +235,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	public void writeSpawnData(ByteBuf buffer)
 	{
 		buffer.writeInt(cocoonType.ordinal());
-		buffer.writeInt(isEaten);
+		buffer.writeInt(dataWatcher.getWatchableObjectInt(20));
 	}
 
 	@Override
@@ -246,6 +244,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		try
 		{
 			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[buffer.readInt()].get(EnumCocoonType.class);
+			dataWatcher.updateObject(20, buffer.readInt());
 		}
 
 		catch (final IllegalAccessException e)
@@ -253,7 +252,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			e.printStackTrace();
 		}
 
-		isEaten = buffer.readInt();
 		setHitboxSize();
 	}
 
@@ -268,9 +266,9 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
 			worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
-			
+
 			setEaten(true);
-			
+
 			if (!worldObj.isRemote)
 			{
 				final int loops = cocoonType == EnumCocoonType.GHAST ? 6 : 1;
@@ -313,12 +311,12 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		switch (cocoonType)
 		{
-			case GHAST:
-				setSize(3.8F, 3.8F);
-				break;
-			default:
-				setSize(1.0F, 1.0F);
-				break;
+		case GHAST:
+			setSize(3.8F, 3.8F);
+			break;
+		default:
+			setSize(1.0F, 1.0F);
+			break;
 		}
 	}
 
@@ -329,24 +327,26 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 	public boolean isEaten()
 	{
-		return isEaten == 1;
+		return dataWatcher.getWatchableObjectInt(20) == 1;
 	}
 
 	public void setEaten(boolean isEaten)
 	{
-		this.isEaten = isEaten ? 1 : 0;
-		dataWatcher.updateObject(20, isEaten);
-		
-		if (isEaten)
+		if (!worldObj.isRemote)
 		{
-			try
-			{
-				worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
-			}
+			this.getDataWatcher().updateObject(20, isEaten ? 1 : 0);
 
-			catch (final Throwable e)
+			if (isEaten)
 			{
-				e.printStackTrace();
+				try
+				{
+					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
+				}
+
+				catch (final Throwable e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
