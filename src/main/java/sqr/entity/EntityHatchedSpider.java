@@ -84,7 +84,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		updateEntityAttributes();
 		setHitboxSize();
-		
+
 		dataWatcher.addObject(17, flameWebProduced);
 		dataWatcher.addObject(18, level);
 	}
@@ -95,7 +95,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		this.owner = owner;
 		this.cocoonType = cocoonType;
 		setHitboxSize();
-		
+
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
 		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -338,92 +338,91 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		return super.attackEntityFrom(damageSource, damageAmount);
 	}
 
-	/**
-	 * Basic mob attack. Default to touch of death in EntityCreature. Overridden
-	 * by each mob to define their attack.
-	 */
 	@Override
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
-		if (riddenByEntity == null)
+		if (getHealth() > 0.0F)
 		{
-			damageAmount = getAttackDamage();
-			setAttackPath(entityBeingAttacked);
-
-			if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON && cocoonType != EnumCocoonType.ENDERMAN)
+			if (riddenByEntity == null)
 			{
-				if (onGround)
+				damageAmount = getAttackDamage();
+				setAttackPath(entityBeingAttacked);
+
+				if (rand.nextInt(10) == 0 && cocoonType != EnumCocoonType.SKELETON && cocoonType != EnumCocoonType.ENDERMAN)
 				{
-					final double d0 = entityBeingAttacked.posX - posX;
-					final double d1 = entityBeingAttacked.posZ - posZ;
-					final float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-					motionX = d0 / f2 * 0.5D * 0.8D + motionX * 0.2D;
-					motionZ = d1 / f2 * 0.5D * 0.8D + motionZ * 0.2D;
-					motionY = 0.4D;
-				}
-			}
-
-			else
-			{
-				if (cocoonType == EnumCocoonType.SKELETON && timeUntilWebshot <= 0)
-				{
-					resetTimeUntilWebshot();
-
-					try
+					if (onGround)
 					{
-						worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-						worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
-					}
-
-					catch (ClassCastException e)
-					{
-						//When the entity to be attacked turns out to be a web.
+						final double d0 = entityBeingAttacked.posX - posX;
+						final double d1 = entityBeingAttacked.posZ - posZ;
+						final float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+						motionX = d0 / f2 * 0.5D * 0.8D + motionX * 0.2D;
+						motionZ = d1 / f2 * 0.5D * 0.8D + motionZ * 0.2D;
+						motionY = 0.4D;
 					}
 				}
 
-				if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
+				else
 				{
-					final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
-					entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
-
-					if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
+					if (cocoonType == EnumCocoonType.SKELETON && timeUntilWebshot <= 0)
 					{
-						resetTimeUntilExplosion();
-						SpiderQueen.packetHandler.sendPacketToAllPlayers(new PacketCreateExplosion(posX, posY, posZ, 5.0F, false));
+						resetTimeUntilWebshot();
 
-						for (final EntityLivingBase entity : (List<EntityLivingBase>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
+						try
 						{
-							if (entity instanceof EntityPlayer)
-							{
-								final EntityPlayer player = (EntityPlayer) entity;
+							worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+							worldObj.spawnEntityInWorld(new EntityWeb(this, (EntityLivingBase) entityBeingAttacked, 2.6F));
+						}
 
-								if (owner.equals(player.getCommandSenderName()))
-								{
-									continue;
-								}
-							}
-
-							else if (entity instanceof EntityHatchedSpider)
-							{
-								final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
-
-								if (spider.owner.equals(owner))
-								{
-									continue;
-								}
-							}
-
-							else
-							{
-								entity.attackEntityFrom(DamageSource.generic, 5.0F);
-							}
+						catch (ClassCastException e)
+						{
+							//When the entity to be attacked turns out to be a web.
 						}
 					}
 
-					if (entityLiving.getHealth() <= 0.0F)
+					if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 					{
-						killsUntilLevelUp--;
-						tryLevelUp();
+						final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
+						entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
+
+						if (cocoonType == EnumCocoonType.CREEPER && timeUntilExplosion <= 0)
+						{
+							resetTimeUntilExplosion();
+							SpiderQueen.packetHandler.sendPacketToAllPlayers(new PacketCreateExplosion(posX, posY, posZ, 5.0F, false));
+
+							for (final EntityLivingBase entity : (List<EntityLivingBase>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(this, EntityLivingBase.class, 5))
+							{
+								if (entity instanceof EntityPlayer)
+								{
+									final EntityPlayer player = (EntityPlayer) entity;
+
+									if (owner.equals(player.getCommandSenderName()))
+									{
+										continue;
+									}
+								}
+
+								else if (entity instanceof EntityHatchedSpider)
+								{
+									final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
+
+									if (spider.owner.equals(owner))
+									{
+										continue;
+									}
+								}
+
+								else
+								{
+									entity.attackEntityFrom(DamageSource.generic, 5.0F);
+								}
+							}
+						}
+
+						if (entityLiving.getHealth() <= 0.0F)
+						{
+							killsUntilLevelUp--;
+							tryLevelUp();
+						}
 					}
 				}
 			}
@@ -730,31 +729,31 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (cocoonType.getSpiderSize())
 		{
-			case HUGE:
-				setSize(1.6F + 0.20F * level, 0.75F + 0.25F * level);
-				break;
-			case NORMAL:
-				setSize(1.6F, 0.75F);
-				break;
-			case RAISED:
-				setSize(1.6F, 0.95F);
-				break;
-			case THIN:
-				setSize(1.2F, 1.1F);
-				break;
-			case TINY:
-				setSize(0.8F, 0.375F);
-				break;
-			case LONGLEG:
-				setSize(1.4F, 1.3F);
-				break;
-			case TINYLONGLEG:
-				setSize(0.3F, 0.15F);
-				break;
-			case SWARM:
-				setSize(1.0F, 0.6F);
-			default:
-				break;
+		case HUGE:
+			setSize(1.6F + 0.20F * level, 0.75F + 0.25F * level);
+			break;
+		case NORMAL:
+			setSize(1.6F, 0.75F);
+			break;
+		case RAISED:
+			setSize(1.6F, 0.95F);
+			break;
+		case THIN:
+			setSize(1.2F, 1.1F);
+			break;
+		case TINY:
+			setSize(0.8F, 0.375F);
+			break;
+		case LONGLEG:
+			setSize(1.4F, 1.3F);
+			break;
+		case TINYLONGLEG:
+			setSize(0.3F, 0.15F);
+			break;
+		case SWARM:
+			setSize(1.0F, 0.6F);
+		default:
+			break;
 		}
 	}
 
@@ -855,7 +854,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D);
 			setHealth((float) getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
 		}
-		
+
 		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + level * 10)
 		{
 			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + level * 10);
@@ -868,14 +867,14 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (cocoonType)
 		{
-			case EMPTY:
-				return 0.5F;
-			case _ENDERMINION:
-				return 0.3F;
-			case WOLF:
-				return 1.0F;
-			default:
-				return 2.5F + level / 2;
+		case EMPTY:
+			return 0.5F;
+		case _ENDERMINION:
+			return 0.3F;
+		case WOLF:
+			return 1.0F;
+		default:
+			return 2.5F + level / 2;
 		}
 	}
 
@@ -935,7 +934,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		if (!hasSyncedInventory)
 		{
 			//TODO CHeck
-//			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
+			//			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
 			hasSyncedInventory = true;
 		}
 	}
@@ -967,15 +966,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-			case 1:
-				timeUntilMakeFlameWeb = Time.MINUTE * 2;
-				break;
-			case 2:
-				timeUntilMakeFlameWeb = Time.MINUTE;
-				break;
-			case 3:
-				timeUntilMakeFlameWeb = Time.SECOND * 30;
-				break;
+		case 1:
+			timeUntilMakeFlameWeb = Time.MINUTE * 2;
+			break;
+		case 2:
+			timeUntilMakeFlameWeb = Time.MINUTE;
+			break;
+		case 3:
+			timeUntilMakeFlameWeb = Time.SECOND * 30;
+			break;
 		}
 	}
 
@@ -983,15 +982,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-			case 1:
-				timeUntilSpawnMinions = Time.MINUTE;
-				break;
-			case 2:
-				timeUntilSpawnMinions = Time.SECOND * 30;
-				break;
-			case 3:
-				timeUntilSpawnMinions = Time.SECOND * 10;
-				break;
+		case 1:
+			timeUntilSpawnMinions = Time.MINUTE;
+			break;
+		case 2:
+			timeUntilSpawnMinions = Time.SECOND * 30;
+			break;
+		case 3:
+			timeUntilSpawnMinions = Time.SECOND * 10;
+			break;
 		}
 	}
 
@@ -999,15 +998,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-			case 1:
-				timeUntilExplosion = Time.MINUTE;
-				break;
-			case 2:
-				timeUntilExplosion = Time.SECOND * 30;
-				break;
-			case 3:
-				timeUntilExplosion = Time.SECOND * 10;
-				break;
+		case 1:
+			timeUntilExplosion = Time.MINUTE;
+			break;
+		case 2:
+			timeUntilExplosion = Time.SECOND * 30;
+			break;
+		case 3:
+			timeUntilExplosion = Time.SECOND * 10;
+			break;
 		}
 	}
 
@@ -1015,15 +1014,15 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		switch (level)
 		{
-			case 1:
-				timeUntilWebshot = Time.SECOND * 5;
-				break;
-			case 2:
-				timeUntilWebshot = Time.SECOND * 3;
-				break;
-			case 3:
-				timeUntilWebshot = Time.SECOND * 1;
-				break;
+		case 1:
+			timeUntilWebshot = Time.SECOND * 5;
+			break;
+		case 2:
+			timeUntilWebshot = Time.SECOND * 3;
+			break;
+		case 3:
+			timeUntilWebshot = Time.SECOND * 1;
+			break;
 		}
 	}
 

@@ -114,7 +114,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 				setDead();
 				return;
 			}
-			
+
 			setBesideClimbableBlock(isCollidedHorizontally);
 			target = findPlayerToAttack();
 
@@ -131,7 +131,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		}
 
 		else
-		// Client-side only
+			// Client-side only
 		{
 			syncInventory();
 		}
@@ -232,41 +232,44 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	@Override
 	protected void attackEntity(Entity entityBeingAttacked, float damageAmount)
 	{
-		damageAmount = 5.0F;
-		getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
-		alertSpidersOfTarget();
-
-		if (rand.nextInt(10) == 0)
+		if (getHealth() > 0.0F)
 		{
-			if (onGround)
-			{
-				final double deltaX = entityBeingAttacked.posX - posX;
-				final double deltaZ = entityBeingAttacked.posZ - posZ;
-				final float distanceBetweenPoints = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ);
-				motionX = deltaX / distanceBetweenPoints * 0.5D * 0.8D + motionX * 0.2D;
-				motionZ = deltaZ / distanceBetweenPoints * 0.5D * 0.8D + motionZ * 0.2D;
-				motionY = 0.4D;
-			}
-		}
+			damageAmount = 5.0F;
+			getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
+			alertSpidersOfTarget();
 
-		else
-		{
-			if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
+			if (rand.nextInt(10) == 0)
 			{
-				if (entityBeingAttacked instanceof EntityPlayer)
+				if (onGround)
 				{
-					final EntityPlayer player = (EntityPlayer) entityBeingAttacked;
-					player.attackEntityFrom(DamageSource.generic, damageAmount);
+					final double deltaX = entityBeingAttacked.posX - posX;
+					final double deltaZ = entityBeingAttacked.posZ - posZ;
+					final float distanceBetweenPoints = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ);
+					motionX = deltaX / distanceBetweenPoints * 0.5D * 0.8D + motionX * 0.2D;
+					motionZ = deltaZ / distanceBetweenPoints * 0.5D * 0.8D + motionZ * 0.2D;
+					motionY = 0.4D;
 				}
+			}
 
-				else
+			else
+			{
+				if (LogicHelper.getDistanceToEntity(this, entityBeingAttacked) < 2.0D)
 				{
-					final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
-					entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
-
-					if (entityLiving.getHealth() <= 0.0F)
+					if (entityBeingAttacked instanceof EntityPlayer)
 					{
-						target = null;
+						final EntityPlayer player = (EntityPlayer) entityBeingAttacked;
+						player.attackEntityFrom(DamageSource.generic, damageAmount);
+					}
+
+					else
+					{
+						final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
+						entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
+
+						if (entityLiving.getHealth() <= 0.0F)
+						{
+							target = null;
+						}
 					}
 				}
 			}
@@ -460,7 +463,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 		if (!hasSyncedInventory)
 		{
 			//TODO check
-//			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
+			//			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
 			hasSyncedInventory = true;
 		}
 	}
