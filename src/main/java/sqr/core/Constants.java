@@ -11,7 +11,7 @@ package sqr.core;
 
 public final class Constants
 {
-	public static final String	VERSION				= "@Version@";
+	public static final String	VERSION				= "@VERSION@";
 	public static final String  REQUIRED_RADIX		= "1.3.3";
 	
 	public static final String  PERM_SKINS_URL		= "http://pastebin.com/raw.php?i=MNWrUxwa";

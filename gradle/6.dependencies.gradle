@@ -1,0 +1,4 @@
+dependencies 
+{
+	compile fileTree(dir: 'lib', includes: ['*.jar']) 
+}
