@@ -139,7 +139,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 		if (timeUntilTryBreakFree == 0)
 		{
-			if (!worldObj.isRemote)
+			if (!worldObj.isRemote && !isEaten())
 			{
 				if (LogicHelper.getBooleanWithProbability(75))
 				{
@@ -157,6 +157,11 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 					worldObj.playSoundAtEntity(this, "random.levelup", 10.0F, 1.0F);
 					timeUntilTryBreakFree = -1;
 				}
+			}
+			
+			else if (isEaten())
+			{
+				timeUntilTryBreakFree = -1;
 			}
 		}
 	}
