@@ -77,6 +77,12 @@ public class EntityMiniGhast extends EntityCreature
 	}
 
 	@Override
+	protected boolean canDespawn()
+	{
+		return false;
+	}
+	
+	@Override
 	protected void updateEntityActionState()
 	{
 		return;
