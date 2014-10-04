@@ -60,18 +60,8 @@ public class ItemWeb extends Item
 
 		if (!entityPlayer.capabilities.isCreativeMode)
 		{
-			switch (type)
-			{
-				case 0:
-					entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemWeb);
-					break;
-				case 1:
-					entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemPoisonWeb);
-					break;
-				case 2:
-					entityPlayer.inventory.consumeInventoryItem(SpiderQueen.getInstance().itemFlameWeb);
-					break;
-			}
+			final ItemStack currentItem = entityPlayer.inventory.mainInventory[entityPlayer.inventory.currentItem];
+			currentItem.stackSize--;
 		}
 
 		return itemStack;
@@ -82,15 +72,15 @@ public class ItemWeb extends Item
 	{
 		switch (type)
 		{
-			case 0:
-				itemIcon = iconRegister.registerIcon("spiderqueen:Web");
-				break;
-			case 1:
-				itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison");
-				break;
-			case 2:
-				itemIcon = iconRegister.registerIcon("spiderqueen:WebFlame");
-				break;
+		case 0:
+			itemIcon = iconRegister.registerIcon("spiderqueen:Web");
+			break;
+		case 1:
+			itemIcon = iconRegister.registerIcon("spiderqueen:WebPoison");
+			break;
+		case 2:
+			itemIcon = iconRegister.registerIcon("spiderqueen:WebFlame");
+			break;
 		}
 	}
 
@@ -102,7 +92,7 @@ public class ItemWeb extends Item
 			list.add("Cocoons enemies and");
 			list.add("creates climbable webs.");
 		}
-		
+
 		else if (type == 1)
 		{
 			list.add(Color.GREEN + "Poison");
