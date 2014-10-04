@@ -42,44 +42,46 @@ public class RenderHatchedSpider extends RenderLiving
 
 	protected ResourceLocation getEntityTexture(EntityHatchedSpider entitySpider)
 	{
+		final int level = entitySpider.getLevel();
+		
 		if (entitySpider.cocoonType == EnumCocoonType.VILLAGER)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderVillager" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderVillager" + level + ".png");
 		}
 
 		else if (entitySpider.cocoonType == EnumCocoonType.ENDERMAN || entitySpider.cocoonType == EnumCocoonType._ENDERMINION)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderEnderman" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderEnderman" + level + ".png");
 		}
 
 		else if (entitySpider.cocoonType == EnumCocoonType.CREEPER)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderCreeper" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderCreeper" + level + ".png");
 		}
 
 		else if (entitySpider.cocoonType == EnumCocoonType.WOLF)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderWolf" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderWolf" + level + ".png");
 		}
 
 		else if (entitySpider.cocoonType == EnumCocoonType.SKELETON)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderSkeleton" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderSkeleton" + level + ".png");
 		}
 
 		else if (entitySpider.cocoonType == EnumCocoonType.ZOMBIE)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderZombie" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderZombie" + level + ".png");
 		}
 
 		else if (entitySpider.cocoonType == EnumCocoonType.BLAZE)
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderBlaze" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderBlaze" + level + ".png");
 		}
 
 		else
 		{
-			return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + entitySpider.level + ".png");
+			return new ResourceLocation("spiderqueen:textures/entity/SpiderNormal" + level + ".png");
 		}
 	}
 
@@ -101,9 +103,10 @@ public class RenderHatchedSpider extends RenderLiving
 
 		else if (hatchedSpider.cocoonType == EnumCocoonType.ZOMBIE)
 		{
+			final int level = hatchedSpider.getLevel();
 			double scale = 1.0D;
 
-			switch (hatchedSpider.level)
+			switch (level)
 			{
 				case 1:
 					scale = 1.0D;

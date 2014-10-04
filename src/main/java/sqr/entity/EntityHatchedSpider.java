@@ -31,7 +31,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -40,9 +39,10 @@ import net.minecraft.world.World;
 import sqr.core.Constants;
 import sqr.core.SpiderQueen;
 import sqr.enums.EnumCocoonType;
-import sqr.enums.EnumPacketType;
 import sqr.inventory.Inventory;
 import sqr.network.packets.PacketCreateExplosion;
+import sqr.network.packets.PacketGetInventory;
+import sqr.network.packets.PacketSetInventory;
 
 import com.radixshock.radixcore.constant.Time;
 import com.radixshock.radixcore.logic.LogicHelper;
@@ -55,7 +55,6 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 {
 	public String				owner					= "";
 	public EnumCocoonType		cocoonType				= EnumCocoonType.EMPTY;
-	public int					level					= 1;
 	public int					killsUntilLevelUp		= LogicHelper.getNumberInRange(5, 15);
 	public int					timeUntilLevelUp		= Time.MINUTE * LogicHelper.getNumberInRange(1, 5);
 	public int					timeUntilWebshot		= 0;
@@ -67,7 +66,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public int					flameWebSpawnProgress	= 0;
 	public int					flameWebProduced		= 0;
 	public boolean				isHostile				= false;
-	public Inventory			inventory				= new Inventory(this);
+	public Inventory			inventory;
 
 	public transient boolean	hasSyncedInventory		= false;
 	public Entity				target;
@@ -76,6 +75,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		super(world);
 
+		dataWatcher.addObject(17, flameWebProduced);
+		setLevel(1);
+		
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.6D));
 		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
@@ -84,9 +86,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		updateEntityAttributes();
 		setHitboxSize();
-
-		dataWatcher.addObject(17, flameWebProduced);
-		dataWatcher.addObject(18, level);
+		
+		inventory = new Inventory(this);
 	}
 
 	public EntityHatchedSpider(World world, String owner, EnumCocoonType cocoonType)
@@ -94,6 +95,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		super(world);
 		this.owner = owner;
 		this.cocoonType = cocoonType;
+
+		dataWatcher.addObject(17, flameWebProduced);
+		setLevel(1);
+		
 		setHitboxSize();
 
 		tasks.addTask(0, new EntityAISwimming(this));
@@ -103,7 +108,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
 		updateEntityAttributes();
-		dataWatcher.addObject(17, flameWebProduced);
+		
+		inventory = new Inventory(this);
 	}
 
 	@Override
@@ -154,7 +160,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				if (cocoonType == EnumCocoonType.ENDERMAN && timeUntilSpawnMinions <= 0)
 				{
 					resetTimeUntilSpawnMinions();
-					minionSpawnProgress = 10 * LogicHelper.getNumberInRange(level, 5);
+					minionSpawnProgress = 10 * LogicHelper.getNumberInRange(getLevel(), 5);
 				}
 			}
 
@@ -431,7 +437,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	public void tryLevelUp(boolean doForce)
 	{
-		if ((doForce && level < 3) || cocoonType != EnumCocoonType._ENDERMINION && level < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode))
+		if ((doForce && getLevel() < 3) || cocoonType != EnumCocoonType._ENDERMINION && getLevel() < 3 && (killsUntilLevelUp <= 0 || cocoonType == EnumCocoonType.HORSE && timeUntilLevelUp < 0 || SpiderQueen.getInstance().inDebugMode))
 		{
 			timeUntilExplosion = 0;
 			timeUntilWebshot = 0;
@@ -441,10 +447,10 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 			worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
 			killsUntilLevelUp = LogicHelper.getNumberInRange(5, 15);
-			level++;
+			setLevel(getLevel() + 1);
 			setHitboxSize();
 
-			if (level == 3)
+			if (getLevel() == 3)
 			{
 				final EntityPlayer player = worldObj.getPlayerEntityByName(owner);
 
@@ -454,12 +460,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 				}
 			}
 
-			dataWatcher.updateObject(18, level);
-
-			//TODO Check
-			// SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetLevel, getEntityId(), level));
-			//TODO Check
-			//			SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, getEntityId(), inventory));
+			SpiderQueen.packetHandler.sendPacketToAllPlayers(new PacketSetInventory(getEntityId(), inventory));
 		}
 
 		target = null;
@@ -541,7 +542,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		if (returnBool)
 		{
 			limbSwingAmount += 0.1;
-			motionY = level * 0.115F;
+			motionY = getLevel() * 0.115F;
 		}
 
 		return returnBool;
@@ -608,7 +609,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 		NBTHelper.autoWriteEntityToNBT(this, nbt);
 		nbt.setInteger("cocoonType", cocoonType.ordinal());
-
+		nbt.setInteger("level", getLevel());
+		
 		inventory.writeInventoryToNBT(nbt);
 	}
 
@@ -621,6 +623,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		try
 		{
 			cocoonType = (EnumCocoonType) EnumCocoonType.class.getFields()[nbt.getInteger("cocoonType")].get(EnumCocoonType.class);
+			setLevel(nbt.getInteger("level"));
 		}
 
 		catch (final IllegalAccessException e)
@@ -636,7 +639,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	public void writeSpawnData(ByteBuf buffer)
 	{
 		buffer.writeInt(cocoonType.ordinal());
-		buffer.writeInt(level);
+		buffer.writeInt(dataWatcher.getWatchableObjectInt(18));
 	}
 
 	@Override
@@ -652,7 +655,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			e.printStackTrace();
 		}
 
-		level = additionalData.readInt();
+		setLevel(additionalData.readInt());
 		setHitboxSize();
 	}
 
@@ -667,6 +670,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (riddenByEntity != null)
 		{
+			final int level = getLevel();
+			
 			prevRotationYaw = rotationYaw = riddenByEntity.rotationYaw;
 			rotationPitch = riddenByEntity.rotationPitch * 0.5F;
 			setRotation(rotationYaw, rotationPitch);
@@ -727,6 +732,8 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	public void setHitboxSize()
 	{
+		final int level = getLevel();
+		
 		switch (cocoonType.getSpiderSize())
 		{
 		case HUGE:
@@ -774,7 +781,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 					if (!worldObj.isRemote)
 					{
 						minion.timeUntilDespawn = Time.SECOND * LogicHelper.getNumberInRange(15, 45);
-						minion.level = level;
+						minion.setLevel(this.getLevel());
 						worldObj.spawnEntityInWorld(minion);
 						worldObj.playSoundAtEntity(this, "mob.endermen.portal", 0.75F, 1.0F);
 					}
@@ -855,9 +862,9 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 			setHealth((float) getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
 		}
 
-		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + level * 10)
+		else if (cocoonType == EnumCocoonType.ZOMBIE && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + getLevel() * 10)
 		{
-			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + level * 10);
+			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + getLevel() * 10);
 			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);
 			setHealth((float) getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
 		}
@@ -874,7 +881,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		case WOLF:
 			return 1.0F;
 		default:
-			return 2.5F + level / 2;
+			return 2.5F + getLevel() / 2;
 		}
 	}
 
@@ -933,8 +940,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 	{
 		if (!hasSyncedInventory)
 		{
-			//TODO CHeck
-			//			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
+			SpiderQueen.packetHandler.sendPacketToServer(new PacketGetInventory(getEntityId()));
 			hasSyncedInventory = true;
 		}
 	}
@@ -964,7 +970,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void resetTimeUntilMakeFlameWeb()
 	{
-		switch (level)
+		switch (getLevel())
 		{
 		case 1:
 			timeUntilMakeFlameWeb = Time.MINUTE * 2;
@@ -980,7 +986,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void resetTimeUntilSpawnMinions()
 	{
-		switch (level)
+		switch (getLevel())
 		{
 		case 1:
 			timeUntilSpawnMinions = Time.MINUTE;
@@ -996,7 +1002,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void resetTimeUntilExplosion()
 	{
-		switch (level)
+		switch (getLevel())
 		{
 		case 1:
 			timeUntilExplosion = Time.MINUTE;
@@ -1012,7 +1018,7 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 
 	private void resetTimeUntilWebshot()
 	{
-		switch (level)
+		switch (getLevel())
 		{
 		case 1:
 			timeUntilWebshot = Time.SECOND * 5;
@@ -1062,6 +1068,35 @@ public class EntityHatchedSpider extends EntityCreature implements IEntityAdditi
 		else
 		{
 			return false;
+		}
+	}
+	
+	public int getLevel()
+	{
+		try
+		{
+			return dataWatcher.getWatchableObjectInt(18);
+		}
+		
+		catch (NullPointerException e)
+		{
+			SpiderQueen.getInstance().getLogger().log("[WARNING] Error getting level. Resetting to 1.");
+			e.printStackTrace();
+			dataWatcher.addObject(18, 1);
+			return 1;
+		}
+	}
+	
+	protected void setLevel(int level)
+	{
+		try
+		{
+			dataWatcher.updateObject(18, level);
+		}
+		
+		catch (Exception e)
+		{
+			dataWatcher.addObject(18, level);
 		}
 	}
 }

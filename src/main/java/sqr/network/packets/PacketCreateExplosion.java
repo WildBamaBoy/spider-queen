@@ -8,9 +8,7 @@
 package sqr.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import sqr.core.SpiderQueen;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.packets.AbstractPacket;

@@ -16,8 +16,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import sqr.core.SpiderQueen;
 import sqr.entity.EntityHatchedSpider;
-import sqr.enums.EnumPacketType;
 import sqr.inventory.ContainerSpiderInventory;
+import sqr.network.packets.PacketSetInventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -107,7 +107,6 @@ public class GuiSpiderInventory extends InventoryEffectRenderer
 		super.onGuiClosed();
 		owner.inventory.closeInventory();
 
-		//TODO CHECK
-		//		SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.SetInventory, owner.getEntityId(), owner.inventory));
+		SpiderQueen.packetHandler.sendPacketToServer(new PacketSetInventory(owner.getEntityId(), owner.inventory));
 	}
 }

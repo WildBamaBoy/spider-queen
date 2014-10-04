@@ -7,7 +7,6 @@
 
 package sqr.network.packets;
 
-import ibxm.Player;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 

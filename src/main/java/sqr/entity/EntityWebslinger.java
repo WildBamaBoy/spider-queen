@@ -25,9 +25,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import sqr.core.SpiderQueen;
 import sqr.core.forge.PlayerExtension;
-import sqr.enums.EnumPacketType;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 

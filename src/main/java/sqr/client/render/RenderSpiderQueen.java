@@ -41,11 +41,11 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.authlib.GameProfile;
-
 import sqr.client.model.ModelSpiderQueen;
 import sqr.core.ModPropertiesList;
 import sqr.core.SpiderQueen;
+
+import com.mojang.authlib.GameProfile;
 
 public class RenderSpiderQueen extends RenderPlayer
 {

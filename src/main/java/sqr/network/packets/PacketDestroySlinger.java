@@ -2,11 +2,9 @@ package sqr.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.Packet;
 import sqr.core.SpiderQueen;
 import sqr.core.forge.PlayerExtension;
 import sqr.entity.EntityWebslinger;
-import sqr.enums.EnumPacketType;
 
 import com.radixshock.radixcore.network.packets.AbstractPacket;
 

@@ -2,7 +2,6 @@ package sqr.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 import com.radixshock.radixcore.network.ByteBufIO;
 import com.radixshock.radixcore.network.packets.AbstractPacket;

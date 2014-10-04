@@ -24,7 +24,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import sqr.core.SpiderQueen;
 import sqr.enums.EnumCocoonType;
-import sqr.enums.EnumPacketType;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.logic.Point3D;

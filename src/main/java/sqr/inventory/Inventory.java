@@ -31,9 +31,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import scala.actors.threadpool.Arrays;
 import sqr.core.SpiderQueen;
 import sqr.entity.EntityHatchedSpider;
-import sqr.enums.EnumPacketType;
+import sqr.network.packets.PacketSetInventory;
 
 import com.radixshock.radixcore.logic.LogicHelper;
 
@@ -132,7 +133,14 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 		if (owner instanceof EntityHatchedSpider)
 		{
 			final EntityHatchedSpider spider = (EntityHatchedSpider) owner;
-			return spider.level * 10;
+			final int size = spider.getLevel() * 10;
+			
+			if (inventoryItems != null && inventoryItems.length != size - 1) //Up the size on level up.
+			{
+				inventoryItems = (ItemStack[]) Arrays.copyOf(inventoryItems, size - 1);
+			}
+			
+			return size;
 		}
 
 		else
@@ -299,8 +307,7 @@ public class Inventory implements IInventory, IInvBasic, Serializable
 	 */
 	public void onInventoryChanged(Inventory inventory)
 	{
-		//TODO check
-		//SpiderQueen.packetPipeline.sendPacketToAllPlayers(new Packet(EnumPacketType.SetInventory, owner.getEntityId(), this));
+		SpiderQueen.packetHandler.sendPacketToAllPlayers(new PacketSetInventory(owner.getEntityId(), this));
 	}
 
 	/**

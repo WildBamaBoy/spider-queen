@@ -1113,7 +1113,8 @@ public class ModelHatchedSpider extends ModelBase
 	private void renderSwarmSpiders(Entity entity, float partialTickTime)
 	{
 		final EntityHatchedSpider spider = (EntityHatchedSpider) entity;
-
+		final int level = spider.getLevel();
+		
 		if (spider.isOnLadder())
 		{
 			final Vec3 lookVector = spider.getLookVec();
@@ -1131,7 +1132,7 @@ public class ModelHatchedSpider extends ModelBase
 			}
 		}
 
-		if (spider.level == 1)
+		if (level == 1)
 		{
 			for (int pass = 0; pass < 9; pass++)
 			{
@@ -1175,7 +1176,7 @@ public class ModelHatchedSpider extends ModelBase
 			}
 		}
 
-		else if (spider.level == 2)
+		else if (level == 2)
 		{
 			for (int pass = 0; pass < 13; pass++)
 			{
@@ -1234,7 +1235,7 @@ public class ModelHatchedSpider extends ModelBase
 			}
 		}
 
-		else if (spider.level == 3)
+		else if (level == 3)
 		{
 			for (int pass = 0; pass < 25; pass++)
 			{

@@ -37,8 +37,8 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import sqr.core.SpiderQueen;
 import sqr.enums.EnumCocoonType;
-import sqr.enums.EnumPacketType;
 import sqr.inventory.Inventory;
+import sqr.network.packets.PacketGetInventory;
 
 import com.radixshock.radixcore.crypto.HashGenerator;
 import com.radixshock.radixcore.logic.LogicHelper;
@@ -404,7 +404,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 				}
 			}
 
-			spiderToSpawn.level = spiderLevel;
+			spiderToSpawn.setLevel(spiderLevel);
 			spiderToSpawn.isHostile = isHostile;
 			spiderToSpawn.setPosition(posX, posY, posZ);
 			worldObj.spawnEntityInWorld(spiderToSpawn);
@@ -462,8 +462,7 @@ public class EntityOtherQueen extends EntityCreature implements IEntityAdditiona
 	{
 		if (!hasSyncedInventory)
 		{
-			//TODO check
-			//			SpiderQueen.packetPipeline.sendPacketToServer(new Packet(EnumPacketType.GetInventory, getEntityId()));
+			SpiderQueen.packetHandler.sendPacketToServer(new PacketGetInventory(getEntityId()));
 			hasSyncedInventory = true;
 		}
 	}

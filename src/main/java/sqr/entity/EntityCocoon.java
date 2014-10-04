@@ -13,7 +13,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.Random;
 
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;

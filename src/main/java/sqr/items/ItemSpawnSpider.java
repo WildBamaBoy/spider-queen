@@ -14,7 +14,6 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import sqr.core.SpiderQueen;
 import sqr.entity.EntityHatchedSpider;
@@ -52,7 +51,6 @@ public class ItemSpawnSpider extends AbstractItemSpawner
 			
 			if (!world.isRemote)
 			{
-				player.addChatMessage(new ChatComponentText("Spawned " + entityHatchedSpider.cocoonType.toString() + " spider at level " + entityHatchedSpider.level));
 				world.spawnEntityInWorld(entityHatchedSpider);
 			}
 

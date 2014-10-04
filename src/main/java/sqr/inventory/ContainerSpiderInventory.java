@@ -95,8 +95,10 @@ public class ContainerSpiderInventory extends Container
 	 */
 	private void bindPlayerInventory(InventoryPlayer inventoryPlayer)
 	{
-		final int heldItemsHeightMod = entity.level == 1 ? 107 : entity.level == 2 ? 125 : 143;
-		final int storedItemsHeightMod = entity.level == 1 ? 49 : entity.level == 2 ? 67 : 85;
+		final int level = entity.getLevel();
+		
+		final int heldItemsHeightMod = level == 1 ? 107 : level == 2 ? 125 : 143;
+		final int storedItemsHeightMod = level == 1 ? 49 : level == 2 ? 67 : 85;
 		;
 
 		try

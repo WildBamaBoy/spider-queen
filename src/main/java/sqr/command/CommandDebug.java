@@ -89,7 +89,7 @@ public class CommandDebug extends CommandBase
 
 						for (final EntityHatchedSpider spider : (List<EntityHatchedSpider>) LogicHelper.getAllEntitiesOfTypeWithinDistanceOfEntity(player, EntityHatchedSpider.class, 20))
 						{
-							if (spider.level < 3)
+							if (spider.getLevel() < 3)
 							{
 								spider.tryLevelUp(true);
 							}
