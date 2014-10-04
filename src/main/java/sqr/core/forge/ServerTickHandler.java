@@ -383,7 +383,7 @@ public class ServerTickHandler
 						final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 						final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 
-						final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30);
+						final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 100);
 						int numberOfPlayersNearby = 0;
 
 						for (final Object entity : nearbyEntities)
@@ -394,7 +394,7 @@ public class ServerTickHandler
 							}
 						}
 
-						if (doSpawnPlayers && numberOfPlayersNearby < 5)
+						if (doSpawnPlayers && numberOfPlayersNearby < 8)
 						{
 							final boolean spawnGroup = LogicHelper.getBooleanWithProbability(20);
 
@@ -431,7 +431,7 @@ public class ServerTickHandler
 					final int modX = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 					final int modZ = LogicHelper.getBooleanWithProbability(50) ? LogicHelper.getNumberInRange(35, 60) : LogicHelper.getNumberInRange(35, 60) * -1;
 
-					final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 30);
+					final List<Entity> nearbyEntities = LogicHelper.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX + modX, player.posY, player.posZ + modZ, 100);
 					int numberOfQueensNearby = 0;
 
 					for (final Object entity : nearbyEntities)
@@ -442,7 +442,7 @@ public class ServerTickHandler
 						}
 					}
 
-					if (doSpawnQueens && numberOfQueensNearby < 3)
+					if (doSpawnQueens && numberOfQueensNearby < 4)
 					{
 						final World world = player.worldObj;
 						final Point3D point = new Point3D(player.posX + modX, player.posY, player.posZ + modZ);
