@@ -370,12 +370,6 @@ public class SpiderQueen extends UnenforcedCore
 	}
 
 	@Override
-	public void initializeSmeltings()
-	{
-
-	}
-
-	@Override
 	public void initializeAchievements()
 	{
 		// Initial point
