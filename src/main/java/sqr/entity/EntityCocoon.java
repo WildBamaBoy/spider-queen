@@ -281,7 +281,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			if (!worldObj.isRemote)
 			{
-				final int loops = cocoonType == EnumCocoonType.GHAST ? 6 : 1;
+				final int loops = cocoonType == EnumCocoonType.GHAST ? 16 : 1;
 
 				for (int i = 0; i < loops; i++)
 				{
