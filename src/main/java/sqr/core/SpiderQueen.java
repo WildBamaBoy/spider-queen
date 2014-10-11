@@ -9,9 +9,12 @@
 
 package sqr.core;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -64,15 +67,18 @@ import com.radixshock.radixcore.core.RadixCore;
 import com.radixshock.radixcore.core.RadixRegistry;
 import com.radixshock.radixcore.core.UnenforcedCore;
 import com.radixshock.radixcore.file.ModPropertiesManager;
+import com.radixshock.radixcore.frontend.RDXServerBridge;
 import com.radixshock.radixcore.logic.LogicHelper;
 import com.radixshock.radixcore.network.AbstractPacketHandler;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -191,6 +197,9 @@ public class SpiderQueen extends UnenforcedCore
 	public boolean					debugDoRapidSpiderGrowth	= false;
 	public boolean					debugHaltSpawnPlayers		= false;
 
+	public static long startupTimestamp = 0L;
+	public boolean hasSentCrashReport = false;
+	
 	public SpiderQueen()
 	{
 		RadixCore.registeredMods.add(this);
@@ -209,6 +218,8 @@ public class SpiderQueen extends UnenforcedCore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		startupTimestamp = new Date().getTime();
+		
 		logger = new ModLogger(this);
 		modPropertiesManager = new ModPropertiesManager(this, ModPropertiesList.class);
 		fakePlayerNames = downloadFakePlayerNames();
@@ -564,6 +575,49 @@ public class SpiderQueen extends UnenforcedCore
 		return "sq.";
 	}
 
+	@EventHandler
+	public void serverStopped(FMLServerStoppedEvent event)
+	{
+		File crashReportsFolder = new File(RadixCore.getInstance().runningDirectory + "/crash-reports/");
+
+		try
+		{
+			File[] files = crashReportsFolder.listFiles(new FileFilter() 
+			{			
+				public boolean accept(File file) 
+				{
+					return file.isFile();
+				}
+			});
+			
+			long lastModTime = Long.MIN_VALUE;
+			File lastModifiedFile = null;
+			
+			for (File file : files) 
+			{
+				if (file.lastModified() > lastModTime) 
+				{
+					lastModifiedFile = file;
+					lastModTime = file.lastModified();
+				}
+			}
+			
+			if (lastModTime > startupTimestamp)
+			{
+				Scanner scanner = new Scanner(lastModifiedFile);
+				String fileContent = scanner.useDelimiter("\\Z").next();
+
+				RDXServerBridge.sendCrashReport(fileContent, true);
+				
+				scanner.close();
+			}
+		}
+
+		catch (Throwable e)
+		{
+		}
+	}
+	
 	public List<String> downloadFakePlayerNames()
 	{
 		final List<String> returnList = new ArrayList<String>();

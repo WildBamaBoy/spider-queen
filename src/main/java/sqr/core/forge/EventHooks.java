@@ -12,6 +12,8 @@ package sqr.core.forge;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,6 +29,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -38,6 +42,7 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import sqr.core.ModPropertiesList;
 import sqr.core.SpiderQueen;
 import sqr.core.util.CreatureReputationEntry;
@@ -45,16 +50,18 @@ import sqr.core.util.PlayerEatEntry;
 import sqr.entity.EntityCocoon;
 import sqr.entity.EntityFakePlayer;
 import sqr.entity.EntityHatchedSpider;
+import sqr.frontend.RDXServerBridge;
 import sqr.network.packets.PacketSetSkin;
 
 import com.radixshock.radixcore.constant.Font.Color;
+import com.radixshock.radixcore.file.WorldPropertiesManager;
 import com.radixshock.radixcore.logic.LogicHelper;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 /**
  * Contains methods that perform a function when an event in Minecraft occurs.
@@ -77,20 +84,44 @@ public class EventHooks
 	}
 
 	/**
-	 * Ticks the server tick handler.
+	 * Fires when the world is saving.
 	 * 
-	 * @param event
-	 *            The event.
+	 * @param event An instance of the WorldEvent.Unload event.
 	 */
 	@SubscribeEvent
-	public void serverTickEventHandler(ServerTickEvent event)
+	public void worldSaveEventHandler(WorldEvent.Unload event)
 	{
-		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
+		if (!event.world.isRemote)
 		{
-			SpiderQueen.serverTickHandler.onTick();
+			if (!SpiderQueen.getInstance().hasSentCrashReport)
+			{
+				final MinecraftServer server = MinecraftServer.getServer();
+
+				try
+				{
+					if (server instanceof IntegratedServer)
+					{
+						//1.7.2:  11 and 12
+						//1.7.10: 12 and 13
+						final Boolean isCrashed = (Boolean) ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), 12);
+						final CrashReport crashReport = (CrashReport) ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), 13);
+
+						if (isCrashed)
+						{
+							RDXServerBridge.sendCrashReport(crashReport.getCompleteReport(), false);
+							SpiderQueen.getInstance().hasSentCrashReport = true;
+						}
+					}
+				}
+
+				catch (NoClassDefFoundError e) //Dedicated server.
+				{
+					//TODO
+				}
+			}
 		}
 	}
-
+	
 	/**
 	 * Fired when the player right-clicks something.
 	 * 
