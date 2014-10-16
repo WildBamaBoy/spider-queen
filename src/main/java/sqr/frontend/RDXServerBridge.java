@@ -11,7 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 
-import com.radixshock.radixcore.core.Constants;
+import sqr.core.Constants;
 
 public final class RDXServerBridge
 {
