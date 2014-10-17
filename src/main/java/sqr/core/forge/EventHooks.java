@@ -54,7 +54,6 @@ import sqr.frontend.RDXServerBridge;
 import sqr.network.packets.PacketSetSkin;
 
 import com.radixshock.radixcore.constant.Font.Color;
-import com.radixshock.radixcore.file.WorldPropertiesManager;
 import com.radixshock.radixcore.logic.LogicHelper;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -62,6 +61,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 /**
  * Contains methods that perform a function when an event in Minecraft occurs.
@@ -122,6 +122,12 @@ public class EventHooks
 		}
 	}
 	
+	@SubscribeEvent
+	public void serverTickEventHandler(ServerTickEvent event)
+	{
+		SpiderQueen.serverTickHandler.onTick();
+	}
+	
 	/**
 	 * Fired when the player right-clicks something.
 	 * 
@@ -134,7 +140,7 @@ public class EventHooks
 		if (!SpiderQueen.getInstance().getModProperties().isDisabled)
 		{
 			if (!event.entityPlayer.worldObj.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
-			{
+			{				
 				if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
 				{
 					final World world = event.entityPlayer.worldObj;
