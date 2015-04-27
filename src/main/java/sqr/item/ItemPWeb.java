@@ -19,7 +19,7 @@ public class ItemPWeb extends Item
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
 	{
-		if (entityplayer.inventory.consumeInventoryItem(ModItems.itemPWeb))
+		if (entityplayer.inventory.consumeInventoryItem(ModItems.poisonWeb))
 		{
 			world.playSoundAtEntity(entityplayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			if (!world.isRemote)

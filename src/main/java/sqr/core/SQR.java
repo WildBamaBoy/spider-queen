@@ -1,31 +1,116 @@
 package sqr.core;
 
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.common.Mod;
 
-@Mod(modid = SQR.ID, name = SQR.NAME, version = SQR.VERSION, dependencies = "required-after:RadixCore@[2.0.0,)", acceptedMinecraftVersions = "[1.7.10]", guiFactory = "mca.core.forge.client.SQRGuiFactory")
+import org.apache.logging.log4j.Logger;
+
+import radixcore.core.ModMetadataEx;
+import radixcore.core.RadixCore;
+import radixcore.update.RDXUpdateProtocol;
+import sqr.core.forge.ServerProxy;
+import sqr.core.minecraft.ModBlocks;
+import sqr.core.minecraft.ModItems;
+import sqr.core.radix.CrashWatcher;
+import sqr.entity.EntityCocoon;
+import sqr.enums.EnumTypeVariant;
+import sqr.item.ItemCocoon;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+
+@Mod(modid = SQR.ID, name = SQR.NAME, version = SQR.VERSION, dependencies = "required-after:RadixCore@[2.0.0,)", acceptedMinecraftVersions = "[1.7.10]", guiFactory = "sqr.core.forge.client.SQRGuiFactory")
 public class SQR
 {
-	public static final String ID = "SQR";
+	public static final String ID = "spiderqueen";
 	public static final String NAME = "Spider Queen - Reborn";
 	public static final String VERSION = "1.0.0-relaunch";
 	
-	public static String outputTxt = "";
-	public static int id;
-	public static int id2;
-	public static boolean tMale;
-	public static int idEnt2 = DJRead.readInt("/mods/SpiderQueen/Block_and_Item_IDs.txt", "Web_EntID", 25);
-	public static int isMale = DJRead.readInt("/mods/SpiderQueen/Block_and_Item_IDs.txt", "KingMode", 0);
-	public static int ZombieLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "zombielike", 0);
-	public static int SkeletonLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "skeletonlike", 0);
-	public static int CreeperLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "creeperlike", 0);
-	public static int HumanLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "humanlike", 15);
-	public static int AntLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "antlike", 30);
-	public static int SpiderLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "spiderlike", 0);
-	private RenderBlocks myRenderBlocks;
-	private IBlockAccess blockAccess;
+	@Instance(ID)
+	private static SQR instance;
+	private static ModMetadata metadata;
+	private static ModItems items;
+	private static ModBlocks blocks;
+	private static CreativeTabs creativeTab;
+	private static Config config;
+	private static CrashWatcher crashWatcher;
+	
+	private static Logger logger;
+	
+	@SidedProxy(clientSide = "sqr.core.forge.ClientProxy", serverSide = "sqr.core.forge.ServerProxy")
+	public static ServerProxy proxy;
+	
+	@EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {	
+    	instance = this;
+		metadata = event.getModMetadata();
+    	logger = event.getModLog();
+    	config = new Config(event);
+    	crashWatcher = new CrashWatcher();
+    	proxy.registerRenderers();
+    	
+    	ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
+    	exData.updateProtocolClass = RDXUpdateProtocol.class;
+    	
+    	RadixCore.registerMod(exData);
+    }
+	
+	@EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		ModItems.cocoonEnderman = new ItemCocoon(EnumTypeVariant.ENDERMAN);
+		creativeTab = new CreativeTabs("tabSQR")
+		{
+			@Override
+			public Item getTabIconItem()
+			{
+				return ModItems.cocoonEnderman;
+			}
+		};
+		
+		items = new ModItems();
+		blocks = new ModBlocks();
+		
+		//Register entities.
+		EntityRegistry.registerModEntity(EntityCocoon.class, "Cocoon", config.baseEntityId, this, 50, 2, true);
+		
+		//Register tiles.
+		
+		//Register recipes.
+		
+		//Register smeltings.
+		
+		//Register world gen.
+	}
+	
+	public static SQR getInstance()
+	{
+		return instance;
+	}
+	
+	public static Logger getLog()
+	{
+		return logger;
+	}
+	
+	public static Config getConfig()
+	{
+		return config;
+	}
+	
+	public static CreativeTabs getCreativeTab()
+	{
+		return creativeTab;
+	}
 	
 	// public SQR()
 	// {
@@ -1363,4 +1448,19 @@ public class SQR
 	// }
 	
 	// private final int generateWeb;
+	
+	public static String outputTxt = "";
+	public static int id;
+	public static int id2;
+	public static boolean tMale;
+	public static int idEnt2 = DJRead.readInt("/mods/SpiderQueen/Block_and_Item_IDs.txt", "Web_EntID", 25);
+	public static int isMale = DJRead.readInt("/mods/SpiderQueen/Block_and_Item_IDs.txt", "KingMode", 0);
+	public static int ZombieLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "zombielike", 0);
+	public static int SkeletonLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "skeletonlike", 0);
+	public static int CreeperLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "creeperlike", 0);
+	public static int HumanLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "humanlike", 15);
+	public static int AntLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "antlike", 30);
+	public static int SpiderLike = DJRead.readInt("/mods/SpiderQueen/mobsettings.txt", "spiderlike", 0);
+	private RenderBlocks myRenderBlocks;
+	private IBlockAccess blockAccess;
 }

@@ -134,7 +134,7 @@ public class BlockPoisonWeb extends Block
 	@Override
 	public Item getItemDropped(int x, Random random, int j)
 	{
-		return ModItems.itemPWeb;
+		return ModItems.poisonWeb;
 	}
 	
 	@Override

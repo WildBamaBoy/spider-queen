@@ -129,7 +129,7 @@ public class BlockSmallWeb extends Block
 	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
-		return ModItems.itemWeb;
+		return ModItems.web;
 	}
 	
 	@Override

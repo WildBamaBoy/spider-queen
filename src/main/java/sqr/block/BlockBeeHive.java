@@ -43,7 +43,7 @@ public class BlockBeeHive extends BlockContainer
 	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
-		return ModItems.itemNectar;
+		return ModItems.nectar;
 	}
 	
 	@Override

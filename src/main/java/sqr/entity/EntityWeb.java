@@ -659,7 +659,7 @@ public class EntityWeb extends Entity
 		{
 			return;
 		}
-		if (this.inGround && this.field_682_g == entityplayer && this.arrowShake <= 0 && entityplayer.inventory.addItemStackToInventory(new ItemStack(ModItems.itemWeb, 1)))
+		if (this.inGround && this.field_682_g == entityplayer && this.arrowShake <= 0 && entityplayer.inventory.addItemStackToInventory(new ItemStack(ModItems.web, 1)))
 		{
 			entityplayer.onItemPickup(this, 1);
 			this.setDead();

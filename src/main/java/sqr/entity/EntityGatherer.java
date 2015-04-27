@@ -87,7 +87,7 @@ public class EntityGatherer extends EntityCreature
 	@Override
 	protected void dropFewItems(boolean par1, int par2)
 	{
-		final Item i = ModItems.itemPWeb;
+		final Item i = ModItems.poisonWeb;
 		this.dropItem(i, 1);
 		this.dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1);
 	}

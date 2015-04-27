@@ -1,40 +1,77 @@
 package sqr.core.minecraft;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.item.Item;
+import sqr.enums.EnumTypeVariant;
+import sqr.item.ItemCocoon;
+import sqr.item.ItemGhastEgg;
+import sqr.item.ItemSpiderEgg;
+import sqr.item.ItemWeb;
+import sqr.item.ItemWebslinger;
 
 public final class ModItems
 {
-	public static Item itemWeb;
-	public static Item itemPWeb;
-	public static Item itemSpiderEgg;
-	public static Item itemGhastEgg;
-	public static Item itemCocoonEmpty;
-	public static Item itemCocoonPig;
-	public static Item itemCocoonSheep;
-	public static Item itemCocoonCreeper;
-	public static Item itemCocoonZombie;
-	public static Item itemCocoonSkeleton;
-	public static Item itemCocoonCow;
-	public static Item itemCocoonHuman;
-	public static Item itemCocoonGatherer;
-	public static Item itemCocoonWarrior;
-	public static Item itemCocoonQueenBee;
-	public static Item itemCocoonWasp;
-	public static Item itemCocoonAnt;
-	public static Item itemCocoonWolf;
-	public static Item itemCocoonBlaze;
-	public static Item itemCocoonChicken;
-	public static Item itemCocoonEnderman;
-	public static Item itemCocoonGhast;
-	public static Item itemCocoonHorse;
-	public static Item itemCocoonVillager;
-	public static Item itemNectar;
-	public static Item itemRareFruit;
-	public static Item itemSWeb;
-	public static Item itemSkull;
+	public static ItemWeb web;
+	public static ItemWeb poisonWeb;
+	public static ItemSpiderEgg spiderEgg;
+	public static ItemGhastEgg ghastEgg;
+	
+	public static ItemCocoon cocoonEmpty;
+	public static ItemCocoon cocoonPig;
+	public static ItemCocoon cocoonSheep;
+	public static ItemCocoon cocoonCreeper;
+	public static ItemCocoon cocoonZombie;
+	public static ItemCocoon cocoonSkeleton;
+	public static ItemCocoon cocoonCow;
+	public static ItemCocoon cocoonHuman;
+	public static ItemCocoon cocoonGathererBee;
+	public static ItemCocoon cocoonWarriorBee;
+	public static ItemCocoon cocoonQueenBee;
+	public static ItemCocoon cocoonWasp;
+	public static ItemCocoon cocoonAnt;
+	public static ItemCocoon cocoonWolf;
+	public static ItemCocoon cocoonBlaze;
+	public static ItemCocoon cocoonChicken;
+	public static ItemCocoon cocoonEnderman;
+	public static ItemCocoon cocoonGhast;
+	public static ItemCocoon cocoonHorse;
+	public static ItemCocoon cocoonVillager;
+	
+	public static Item nectar;
+	public static Item rareFruit;
+	public static Item skull;
+	
+	public static ItemWebslinger webSlinger;
 	
 	public ModItems()
 	{
+		for (final Field f : getClass().getFields())
+		{
+			try
+			{
+				//Check that the field is not null to account for cocoons that may already be assigned.
+				if (f.getName().contains("cocoon") && f.get(null) == null)
+				{
+					EnumTypeVariant type = EnumTypeVariant.getByName(f.getName().replace("cocoon", ""));
+					
+					if (type == null)
+					{
+						continue;
+					}
+					
+					else
+					{
+						f.set(null, new ItemCocoon(type));
+					}
+				}
+			}
+			
+			catch (Exception e)
+			{
+				continue;
+			}
+		}
 		// TODO
 		/*
 		 * itemWeb = new

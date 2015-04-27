@@ -232,8 +232,8 @@ public class EntityESpiderQueen extends EntityCreature
 		final int j = 3;
 		for (int k = 0; k < j; k++)
 		{
-			this.dropItem(ModItems.itemSpiderEgg, 1);
-			this.dropItem(ModItems.itemWeb, 1);
+			this.dropItem(ModItems.spiderEgg, 1);
+			this.dropItem(ModItems.web, 1);
 		}
 		
 		this.dropItem(Item.getItemFromBlock(ModBlocks.royalblood), 1);
@@ -477,7 +477,7 @@ public class EntityESpiderQueen extends EntityCreature
 		defaultHeldItem = new ItemStack(Items.stone_sword, 1);
 		defaultHeldItem1 = new ItemStack(Items.bow, 1);
 		defaultHeldItem2 = new ItemStack(Items.lava_bucket, 1);
-		defaultHeldItem3 = new ItemStack(ModItems.itemSpiderEgg, 1);
+		defaultHeldItem3 = new ItemStack(ModItems.spiderEgg, 1);
 	}
 	
 	private int backoff;

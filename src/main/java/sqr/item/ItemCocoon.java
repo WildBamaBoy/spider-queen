@@ -1,39 +1,59 @@
 package sqr.item;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import sqr.core.SQR;
 import sqr.entity.EntityCocoon;
 import sqr.enums.EnumTypeVariant;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemCocoon extends Item
 {
-	public ItemCocoon(EnumTypeVariant cocoonType)
+	private EnumTypeVariant type;
+	
+	public ItemCocoon(EnumTypeVariant type)
 	{
-		super();
+		String name = "Cocoon" + type.toString();
+		
 		this.maxStackSize = 1;
+		this.type = type;
+		this.setMaxDamage(0);
+		this.setUnlocalizedName(name);
+		this.setTextureName("sqr:" + name);
+		this.setCreativeTab(SQR.getCreativeTab());
+		
+		GameRegistry.registerItem(this, name);
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
 	{
-		if (entityplayer.inventory.consumeInventoryItem(itemstack.getItem()))
+		if (!world.isRemote)
 		{
-			// world.playSoundAtEntity(entityplayer, "random.bow", 1.0F, 1.0F /
-			// (itemRand.nextFloat() * 0.4F + 0.8F));
-			if (!world.isRemote)
+			if (!player.capabilities.isCreativeMode)
 			{
-				final EntityCocoon entCocoon = new EntityCocoon(world);
-				entCocoon.posX = entityplayer.posX;
-				entCocoon.posY = entityplayer.posY;
-				entCocoon.posZ = entityplayer.posZ;
-				entCocoon.setPosition(entCocoon.posX, entCocoon.posY, entCocoon.posZ);
-				
-				world.spawnEntityInWorld(entCocoon);
+				stack.stackSize--;
 			}
+			
+			posX += Facing.offsetsXForSide[meta];
+			posY += Facing.offsetsYForSide[meta];
+			posZ += Facing.offsetsZForSide[meta];
+			
+			final EntityCocoon cocoon = new EntityCocoon(world, type);
+			cocoon.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw * -1, 0.0F);
+			world.spawnEntityInWorld(cocoon);
 		}
 		
-		return itemstack;
+		return true;
+	}
+	
+	@Override
+	public void registerIcons(IIconRegister register)
+	{
+		itemIcon = register.registerIcon("spiderqueen:Cocoon" + type.toString());
 	}
 }

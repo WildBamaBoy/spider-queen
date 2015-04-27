@@ -94,7 +94,7 @@ public class BlockSkull extends BlockContainer
 	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
-		return ModItems.itemSkull;
+		return ModItems.skull;
 	}
 	
 	@Override

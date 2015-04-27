@@ -1,79 +1,108 @@
 package sqr.enums;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.item.Item;
+import radixcore.util.RadixString;
+import sqr.core.SQR;
 import sqr.core.minecraft.ModItems;
 
 public enum EnumTypeVariant
 {
-	ANT, COW, CREEPER, GATHERER, HUMAN, PIG, QUEEN_BEE, SHEEP, SKELETON, WARRIOR, WASP, WOLF, ZOMBIE, ENDERMAN, BLAZE, CHICKEN, VILLAGER, HORSE, GHAST, _ENDERMINION;
+	ANT (0), 
+	COW (1), 
+	CREEPER (2), 
+	GATHERERBEE (3), 
+	HUMAN (4), 
+	PIG (5), 
+	QUEENBEE (6), 
+	SHEEP (7), 
+	SKELETON (8), 
+	WARRIORBEE (9), 
+	WASP (10), 
+	WOLF (11), 
+	ZOMBIE (12), 
+	ENDERMAN (13), 
+	BLAZE (14), 
+	CHICKEN (15), 
+	VILLAGER (16), 
+	HORSE (17), 
+	GHAST (18), 
+	_ENDERMINION (19);
+	
+	int id;
+	
+	EnumTypeVariant(int id)
+	{
+		this.id = id;
+	}
 	
 	public Item getCocoon()
 	{
 		Item item = null;
 		
-		switch (this)
+		//Lookup the field that would contain this type.
+		for (Field f : ModItems.class.getFields())
 		{
-		case ANT:
-			item = ModItems.itemCocoonAnt;
-			break;
-		case BLAZE:
-			item = ModItems.itemCocoonBlaze;
-			break;
-		case CHICKEN:
-			item = ModItems.itemCocoonChicken;
-			break;
-		case COW:
-			item = ModItems.itemCocoonCow;
-			break;
-		case CREEPER:
-			item = ModItems.itemCocoonCreeper;
-			break;
-		case ENDERMAN:
-			item = ModItems.itemCocoonEnderman;
-			break;
-		case GATHERER:
-			item = ModItems.itemCocoonGatherer;
-			break;
-		case HUMAN:
-			item = ModItems.itemCocoonHuman;
-			break;
-		case PIG:
-			item = ModItems.itemCocoonPig;
-			break;
-		case QUEEN_BEE:
-			item = ModItems.itemCocoonQueenBee;
-			break;
-		case SHEEP:
-			item = ModItems.itemCocoonSheep;
-			break;
-		case SKELETON:
-			item = ModItems.itemCocoonSkeleton;
-			break;
-		case WARRIOR:
-			item = ModItems.itemCocoonWarrior;
-			break;
-		case WASP:
-			item = ModItems.itemCocoonWasp;
-			break;
-		case WOLF:
-			item = ModItems.itemCocoonWolf;
-			break;
-		case ZOMBIE:
-			item = ModItems.itemCocoonZombie;
-			break;
-		case GHAST:
-			item = ModItems.itemCocoonGhast;
-			break;
-		case HORSE:
-			item = ModItems.itemCocoonHorse;
-			break;
-		case VILLAGER:
-			item = ModItems.itemCocoonVillager;
-			break;
-		default:
-			item = ModItems.itemCocoonEmpty;
+			try
+			{
+				if (f.getName().equals("cocoon" + this.toString()))
+				{
+					item = (Item) f.get(null);
+				}
+			}
+			
+			catch (Exception e)
+			{
+				SQR.getLog().error("Unable to lookup item containing type variant for " + toString() + ".");
+			}
+		}
+		
+		if (item == null)
+		{
+			item = ModItems.cocoonEmpty;
 		}
 		
 		return item;
+	}
+	
+	/**
+	 * @return	The defined name of this enum with the first letter capitalized and all others lower-case.
+	 */
+	@Override
+	public String toString()
+	{
+		return RadixString.upperFirstLetter(this.name().toLowerCase());
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+
+	public static EnumTypeVariant getByName(String name)
+	{
+		for (EnumTypeVariant e : EnumTypeVariant.values())
+		{
+			if (name.toLowerCase().equals(e.name().toLowerCase()))
+			{
+				return e;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static EnumTypeVariant getById(int id)
+	{
+		for (EnumTypeVariant e : EnumTypeVariant.values())
+		{
+			if (id == e.id)
+			{
+				return e;
+			}
+		}
+		
+		return null;		
 	}
 }

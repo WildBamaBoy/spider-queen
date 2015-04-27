@@ -12,17 +12,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.data.DataWatcherEx;
+import radixcore.data.IWatchable;
+import radixcore.data.WatchedBoolean;
+import radixcore.data.WatchedInt;
+import sqr.core.SQR;
 import sqr.core.minecraft.ModBlocks;
 import sqr.core.minecraft.ModItems;
+import sqr.data.WatcherIDsCocoon;
 import sqr.enums.EnumTypeVariant;
 
-public class EntityCocoon extends Entity
+public class EntityCocoon extends Entity implements IWatchable
 {
-	private EnumTypeVariant type;
+	private DataWatcherEx dataWatcherEx;
+	
+	private WatchedInt type;
+	private WatchedBoolean isEaten;
 	
 	public EntityCocoon(World world)
 	{
 		super(world);
+		dataWatcherEx = new DataWatcherEx(this, SQR.ID);
+		
 		this.boatCurrentDamage = 0;
 		this.boatTimeSinceHit = 0;
 		this.boatRockDirection = 1;
@@ -30,13 +41,19 @@ public class EntityCocoon extends Entity
 		this.yOffset = 0.8F;
 		this.eggHatch = 0;
 		this.myType = 0;
-		this.eaten = false;
 		this.preventEntitySpawning = true;
+	}
+	
+	public EntityCocoon(World world, EnumTypeVariant type)
+	{
+		this(world);
+		this.type = new WatchedInt(type.getId(), WatcherIDsCocoon.TYPE, dataWatcherEx);
+		this.isEaten = new WatchedBoolean(false, WatcherIDsCocoon.IS_EATEN, dataWatcherEx);
 	}
 	
 	public EnumTypeVariant getType()
 	{
-		return this.type;
+		return EnumTypeVariant.getById(type.getInt());
 	}
 	
 	@Override
@@ -45,9 +62,9 @@ public class EntityCocoon extends Entity
 		return false;
 	}
 	
-	public boolean getEaten()
+	public boolean getIsEaten()
 	{
-		return this.eaten;
+		return isEaten.getBoolean();
 	}
 	
 	@Override
@@ -79,30 +96,10 @@ public class EntityCocoon extends Entity
 		this.setSize(1F, 1F);
 	}
 	
-	public EntityCocoon(World world, double d, double d1, double d2, float rr, int Typ)
-	{
-		this(world);
-		this.setPosition(d, d1 + this.yOffset, d2);
-		this.setRotation(rr, 0);
-		this.motionX = 0.0D;
-		this.motionY = 0.0D;
-		this.motionZ = 0.0D;
-		this.prevPosX = d;
-		this.prevPosY = d1;
-		this.prevPosZ = d2;
-		this.myType = Typ;
-		this.eaten = false;
-	}
-	
 	@Override
 	public double getMountedYOffset()
 	{
-		return this.height * 0.0D - 0.30000001192092896D;
-	}
-	
-	public void doSound()
-	{
-		this.worldObj.playSoundAtEntity(this, "mob.chickenhurt", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+		return this.height * 0.0D - 0.3D;
 	}
 	
 	@Override
@@ -115,7 +112,6 @@ public class EntityCocoon extends Entity
 			return true;
 		}
 		
-		this.doSound();
 		this.boatRockDirection = -this.boatRockDirection;
 		this.boatTimeSinceHit = 10;
 		this.boatCurrentDamage += damage * 10;
@@ -123,14 +119,14 @@ public class EntityCocoon extends Entity
 		
 		if (this.boatCurrentDamage > 80)
 		{
-			if (this.eaten)
+			if (getIsEaten())
 			{
 				this.worldObj.spawnParticle("largesmoke", this.posX - this.motionX * 2, this.posY - this.motionY * 2, this.posZ - this.motionZ * 2, this.motionX, this.motionY, this.motionZ);
 				this.setDead();
 				return true;
 			}
 			
-			this.dropItem(this.type.getCocoon(), 1);
+			this.dropItem(this.getType().getCocoon(), 1);
 			
 			this.setDead();
 		}
@@ -330,6 +326,7 @@ public class EntityCocoon extends Entity
 			}
 			
 		}
+		
 		if (this.riddenByEntity != null && this.riddenByEntity.isDead)
 		{
 			this.riddenByEntity = null;
@@ -337,29 +334,13 @@ public class EntityCocoon extends Entity
 	}
 	
 	@Override
-	public void updateRiderPosition()
+	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		/*
-		 * if(riddenByEntity == null) { return; } else { double d =
-		 * Math.cos(((double)rotationYaw * 3.1415926535897931D) / 180D) *
-		 * 0.40000000000000002D; double d1 = Math.sin(((double)rotationYaw *
-		 * 3.1415926535897931D) / 180D) * 0.40000000000000002D;
-		 * riddenByEntity.setPosition(posX + d, posY + getMountedYOffset() +
-		 * riddenByEntity.getYOffset(), posZ + d1); return; }
-		 */
-		
 	}
 	
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
+	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		nbttagcompound.setBoolean("eaten", this.getEaten());
-	}
-	
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
-	{
-		this.setEaten(nbttagcompound.getBoolean("eaten"));
 	}
 	
 	@Override
@@ -375,7 +356,7 @@ public class EntityCocoon extends Entity
 		 * && riddenByEntity != entityplayer) { return true; }
 		 * if(!worldObj.isRemote) { entityplayer.mountEntity(this); }
 		 */
-		if (this.eaten)
+		if (this.getIsEaten())
 		{
 			return true;
 		}
@@ -385,18 +366,19 @@ public class EntityCocoon extends Entity
 		entityplayer.getFoodStats().addStats(4, 0.4f);
 		this.worldObj.spawnParticle("largesmoke", this.posX - this.motionX * 2, this.posY - this.motionY * 2, this.posZ - this.motionZ * 2, this.motionX, this.motionY, this.motionZ);
 		this.worldObj.spawnParticle("largesmoke", this.posX - this.motionX * 2, this.posY - this.motionY * 2, this.posZ - this.motionZ * 2, this.motionX, this.motionY, this.motionZ);
-		this.eaten = true;
+		this.setIsEaten(true);
 		return true;
 	}
 	
-	public void setEaten(boolean ee)
+	public void setIsEaten(boolean value)
 	{
-		this.eaten = ee;
+		this.isEaten.setValue(value);
 	}
 	
 	public void onEaten()
 	{
-		this.entityDropItem(new ItemStack(ModItems.itemWeb, 5, 0), 0);
+		this.entityDropItem(new ItemStack(ModItems.web, 5, 0), 0);
+		this.setIsEaten(true);
 	}
 	
 	public int boatCurrentDamage;
@@ -412,6 +394,11 @@ public class EntityCocoon extends Entity
 	private double field_9388_j;
 	private double field_9387_k;
 	private double field_9386_l;
-	private boolean eaten;
 	private int myType;
+
+	@Override
+	public DataWatcherEx getDataWatcherEx()
+	{
+		return dataWatcherEx;
+	}
 }

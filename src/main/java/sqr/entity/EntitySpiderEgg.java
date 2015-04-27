@@ -184,7 +184,7 @@ public class EntitySpiderEgg extends Entity
 			if (entityplayer1 instanceof EntityCocoon)
 			{
 				final EntityCocoon coc = (EntityCocoon) entityplayer1;
-				if (!coc.getEaten())
+				if (!coc.getIsEaten())
 				{
 					final double d5 = entityplayer1.getDistanceSq(d, d1, d2);
 					if ((d3 < 0.0D || d5 < d3 * d3) && (d4 == -1D || d5 < d4))
