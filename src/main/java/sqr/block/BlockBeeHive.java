@@ -18,40 +18,40 @@ public class BlockBeeHive extends BlockContainer
 	{
 		super(Material.rock);
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World world, int i)
 	{
 		return new TileEntityBeeHive();
 	}
-
+	
 	@Override
 	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int l)
 	{
-		//TODO
-//		SQR.hiveAlert = true;
-//		SQR.pissOffBees(world, null, x, y, z, 64F);
-		this.dropBlockAsItem(world, x, y, z, l,1);
+		// TODO
+		// SQR.hiveAlert = true;
+		// SQR.pissOffBees(world, null, x, y, z, 64F);
+		this.dropBlockAsItem(world, x, y, z, l, 1);
 	}
-
+	
 	@Override
 	public void registerBlockIcons(IIconRegister IIconRegister)
 	{
 		this.blockIcon = SQR.texx[2];
 	}
-
+	
 	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
 		return ModItems.itemNectar;
 	}
-
+	
 	@Override
 	public int quantityDropped(Random random)
 	{
 		return 4;
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube()
 	{

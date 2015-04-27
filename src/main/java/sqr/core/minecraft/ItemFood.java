@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package sqr.item;
 //
 //import net.minecraft.entity.player.EntityPlayer;
@@ -126,4 +127,4 @@ package sqr.core.minecraft;
 //    {
 //        return super.setItemName(par1Str);
 //    }
-//}
+// }

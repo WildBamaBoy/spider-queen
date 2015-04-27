@@ -8,9 +8,9 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntitySpiderBait extends TileEntity
 {
-
+	
 	public TileEntitySpiderBait()
 	{
 	}
-
+	
 }

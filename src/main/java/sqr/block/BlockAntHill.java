@@ -17,44 +17,44 @@ public class BlockAntHill extends BlockContainer
 	{
 		super(Material.rock);
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World worldObj, int i)
 	{
 		return new TileEntityAntHill();
 	}
-
+	
 	@Override
 	public int getRenderType()
 	{
 		return 1;
 	}
-
+	
 	@Override
 	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int l)
 	{
-
-		this.dropBlockAsItem(world, x, y, z, l,1);
+		
+		this.dropBlockAsItem(world, x, y, z, l, 1);
 	}
-
+	
 	@Override
 	public void registerBlockIcons(IIconRegister IIconRegister)
 	{
 		this.blockIcon = SQR.texx[5];
 	}
-
+	
 	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
 		return null;
 	}
-
+	
 	@Override
 	public int quantityDropped(Random random)
 	{
 		return 0;
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube()
 	{

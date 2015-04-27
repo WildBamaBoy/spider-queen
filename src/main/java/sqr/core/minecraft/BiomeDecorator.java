@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package sqr.gen;
 //
 //import java.util.Random;
@@ -416,4 +417,4 @@ package sqr.core.minecraft;
 //		genStandardOre1(1, diamondGen, 0, 16);
 //		genStandardOre2(1, lapisGen, 16, 16);
 //	}
-//}
+// }

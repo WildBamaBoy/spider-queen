@@ -448,4 +448,4 @@
 //	{
 //		this.renderPlayer((EntityPlayer)par1Entity, par2, par4, par6, par8, par9);
 //	}
-//}
+// }

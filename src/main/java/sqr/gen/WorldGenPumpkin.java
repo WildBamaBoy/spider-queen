@@ -12,7 +12,7 @@ public class WorldGenPumpkin extends WorldGenerator
 	public WorldGenPumpkin()
 	{
 	}
-
+	
 	@Override
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
 	{
@@ -21,11 +21,11 @@ public class WorldGenPumpkin extends WorldGenerator
 			final int j = par3 + par2Random.nextInt(8) - par2Random.nextInt(8);
 			final int k = par4 + par2Random.nextInt(4) - par2Random.nextInt(4);
 			final int l = par5 + par2Random.nextInt(8) - par2Random.nextInt(8);
-
+			
 			if (par1World.isAirBlock(j, k, l) && par1World.getBlock(j, k - 1, l) == Blocks.grass && Blocks.pumpkin.canPlaceBlockAt(par1World, j, k, l))
 			{
-
-				if(par2Random.nextInt(6) == 0)
+				
+				if (par2Random.nextInt(6) == 0)
 				{
 					par1World.setBlock(j, k, l, ModBlocks.bjack, par2Random.nextInt(4), 2);
 				}
@@ -35,7 +35,7 @@ public class WorldGenPumpkin extends WorldGenerator
 				}
 			}
 		}
-
+		
 		return true;
 	}
 }

@@ -1,5 +1,3 @@
-
-
 package sqr.item;
 
 import net.minecraft.block.Block;
@@ -9,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import sqr.core.minecraft.ModBlocks;
-
 
 // Referenced classes of package net.minecraft.src:
 //            Item, Material, Block, EntityPlayer,
@@ -22,28 +19,28 @@ public class ItemSkull extends Item
 		super();
 		this.maxStackSize = 16;
 	}
-
+	
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int l)
 	{
-		if(l != 1)
+		if (l != 1)
 		{
 			return false;
 		}
-
+		
 		y++;
-
+		
 		final Block block = ModBlocks.bskull;
-		if(!block.canPlaceBlockAt(world, x, y, z))
+		if (!block.canPlaceBlockAt(world, x, y, z))
 		{
 			return false;
 		}
-
+		
 		world.setBlock(x, y, z, block);
 		world.notifyBlocksOfNeighborChange(x, y, z, block);
-
+		
 		itemstack.stackSize--;
 		return true;
 	}
-
+	
 	private Material doorMaterial;
 }

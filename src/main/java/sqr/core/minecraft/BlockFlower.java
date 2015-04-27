@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package sqr.block;
 //
 //import java.util.Random;
@@ -95,4 +96,4 @@ package sqr.core.minecraft;
 //	{
 //		return 1;
 //	}
-//}
+// }

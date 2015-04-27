@@ -16,83 +16,85 @@ public class BlockLantern extends Block
 	{
 		super(Material.ground);
 		final float f = 0.375F;
-
-		//setBlockBounds(f, 0F, f, 1.0F - f, 1.0F - f * 2F, 1.0F - f);
+		
+		// setBlockBounds(f, 0F, f, 1.0F - f, 1.0F - f * 2F, 1.0F - f);
 		this.setBlockBounds(f, 0.63F, f, 1.0F - f, 1.0F, 1.0F - f);
 		this.setTickRandomly(true);
 	}
-
+	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random)
 	{
-
+		
 	}
-
+	
+	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
 		return Item.getItemFromBlock(ModBlocks.lantern);
 	}
-
+	
 	@Override
 	public int quantityDropped(Random random)
 	{
 		return 1;
 	}
-
+	
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
-		if(side == 1 || side == 0) 
-		{ 
-			return SQR.texx[15]; 
+		if (side == 1 || side == 0)
+		{
+			return SQR.texx[15];
 		}
 		
 		return SQR.texx[14];
 	}
-
+	
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube()
 	{
 		return false;
 	}
-
+	
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z)
 	{
-		if(!super.canPlaceBlockAt(world, x, y, z))
+		if (!super.canPlaceBlockAt(world, x, y, z))
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			return this.canBlockStay(world, x, y, z);
 		}
 	}
-
+	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block b)
 	{
-		if(!this.canBlockStay(world, x, y, z))
+		if (!this.canBlockStay(world, x, y, z))
 		{
-			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z),1);
+			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 1);
 			world.setBlockToAir(x, y, z);
 		}
 	}
-
+	
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z)
 	{
-		if(world.getBlock(x, y + 1, z).getMaterial().isSolid())
+		if (world.getBlock(x, y + 1, z).getMaterial().isSolid())
 		{
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 }

@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package net.minecraft.src;
 //
 //import java.util.Iterator;
@@ -1858,4 +1859,4 @@ package sqr.core.minecraft;
 //    public void func_50009_aI()
 //    {
 //    }
-//}
+// }

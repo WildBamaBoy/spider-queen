@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package sqr.gen;
 //
 //import java.util.ArrayList;
@@ -375,4 +376,4 @@ package sqr.core.minecraft;
 //        double d1 = MathHelper.clamp_float(getFloatRainfall(), 0.0F, 1.0F);
 //        return ColorizerFoliage.getFoliageColor(d, d1);
 //    }
-//}
+// }

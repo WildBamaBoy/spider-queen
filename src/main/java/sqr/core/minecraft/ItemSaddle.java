@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package sqr.item;
 //
 //import net.minecraft.entity.EntityLivingBase;
@@ -47,4 +48,4 @@ package sqr.core.minecraft;
 //        useItemOnEntity(par1ItemStack, par2EntityLivingBase);
 //        return true;
 //    }
-//}
+// }

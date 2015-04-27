@@ -1,4 +1,5 @@
 package sqr.core.minecraft;
+
 //package net.minecraft.src;
 //
 //import net.minecraft.entity.EnumCreatureAttribute;
@@ -206,4 +207,4 @@ package sqr.core.minecraft;
 //
 //        dataWatcher.updateObject(16, Byte.valueOf(byte0));
 //    }
-//}
+// }

@@ -18,49 +18,51 @@ public class BlockSpiderBait extends BlockContainer
 	{
 		super(Material.circuits);
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World world, int i)
 	{
 		return new TileEntitySpiderBait();
 	}
-
+	
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z)
 	{
 		return world.isBlockNormalCubeDefault(x, y - 1, z, false);
 	}
-
+	
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
 		return SQR.texx[3];
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube()
 	{
 		return false;
 	}
-
+	
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
-
+	
+	@Override
 	public Item getItemDropped(int i, Random random, int j)
 	{
-		//TODO Spider rod?
+		// TODO Spider rod?
 		return null;
 	}
-
+	
 	@Override
 	public int quantityDropped(Random random)
 	{
 		return 1;
 	}
-
+	
+	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block b)
 	{
 		if (world.isRemote)
@@ -77,11 +79,11 @@ public class BlockSpiderBait extends BlockContainer
 		
 		if (flag)
 		{
-			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z),1);
+			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 1);
 			world.setBlockToAir(x, y, z);
 		}
 	}
-
+	
 	@Override
 	public int getRenderType()
 	{
