@@ -1,12 +1,3 @@
-/*******************************************************************************
- * EntityMiniGhast.java
- * Copyright (c) 2014 Radix-Shock Entertainment.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl.html
- ******************************************************************************/
-
 package sqr.entity;
 
 import net.minecraft.entity.Entity;
@@ -25,9 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import com.radixshock.radixcore.logic.NBTHelper;
-
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 public class EntityMiniGhast extends EntityCreature
@@ -158,14 +146,12 @@ public class EntityMiniGhast extends EntityCreature
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		super.writeEntityToNBT(nbt);
-		NBTHelper.autoWriteEntityToNBT(this, nbt);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
-		NBTHelper.autoReadEntityFromNBT(this, nbt);
 	}
 
 	@Override
