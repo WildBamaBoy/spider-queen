@@ -49,20 +49,29 @@ public class SQR
 	public static ServerProxy proxy;
 	
 	@EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {	
-    	instance = this;
+	public void preInit(FMLPreInitializationEvent event)
+	{	
+		instance = this;
 		metadata = event.getModMetadata();
-    	logger = event.getModLog();
-    	config = new Config(event);
-    	crashWatcher = new CrashWatcher();
-    	proxy.registerRenderers();
-    	
-    	ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
-    	exData.updateProtocolClass = RDXUpdateProtocol.class;
-    	
-    	RadixCore.registerMod(exData);
-    }
+		logger = event.getModLog();
+		config = new Config(event);
+		crashWatcher = new CrashWatcher();
+		proxy.registerRenderers();
+		
+		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
+		
+		if (config.allowUpdateChecking)
+		{
+			exData.updateProtocolClass = RDXUpdateProtocol.class;
+		}
+		
+		else
+		{
+			logger.fatal("Config: Update checking has been disabled for Spider Queen Reborn in the config. You will not recieve any update notifications.");
+		}
+		
+		RadixCore.registerMod(exData);
+	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
