@@ -12,12 +12,14 @@ package sqr.client.render;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
 import sqr.client.model.ModelCocoon;
 import sqr.entity.EntityCocoon;
+import sqr.enums.EnumTypeVariant;
 
 public class RenderCocoon extends Render
 {
@@ -35,31 +37,31 @@ public class RenderCocoon extends Render
 		{
 			GL11.glTranslated(posX, posY, posZ);
 			GL11.glRotatef(entityCocoon.rotationYaw, 0.0F, 1.0F, 0.0F);
-//			final float rotateAdjustForHit = entityCocoon.getTimeSinceHit() - rotationPitch / 2;
-//			float rotateAdjustForDamage = entityCocoon.getCurrentDamage() - rotationPitch / 2;
-//
-//			if (rotateAdjustForDamage < 0.0F)
-//			{
-//				rotateAdjustForDamage = 0.0F;
-//			}
-//
-//			if (rotateAdjustForHit > 0.0F)
-//			{
-//				GL11.glRotatef(MathHelper.sin(rotateAdjustForHit) * rotateAdjustForHit * rotateAdjustForDamage / 10F, 1.0F, 0.0F, 0.0F);
-//			}
-//
-//			bindTexture(getEntityTexture(entityCocoon));
-//
-//			if (entityCocoon.getCocoonType() == EnumCocoonType.GHAST)
-//			{
-//				GL11.glScalef(3.5F, 3.5F, 3.5F);
-//				GL11.glTranslated(0.0D, -0.5D, 0.0);
-//			}
-//
-//			else
-//			{
-//				GL11.glScalef(-1F, -1F, 1.0F);
-//			}
+			final float rotateAdjustForHit = entityCocoon.getTimeSinceHit() - rotationPitch / 2;
+			float rotateAdjustForDamage = entityCocoon.getCurrentDamage() - rotationPitch / 2;
+
+			if (rotateAdjustForDamage < 0.0F)
+			{
+				rotateAdjustForDamage = 0.0F;
+			}
+
+			if (rotateAdjustForHit > 0.0F)
+			{
+				GL11.glRotatef(MathHelper.sin(rotateAdjustForHit) * rotateAdjustForHit * rotateAdjustForDamage / 10F, 1.0F, 0.0F, 0.0F);
+			}
+
+			bindTexture(getEntityTexture(entityCocoon));
+
+			if (entityCocoon.getType() == EnumTypeVariant.GHAST)
+			{
+				GL11.glScalef(3.5F, 3.5F, 3.5F);
+				GL11.glTranslated(0.0D, -0.5D, 0.0);
+			}
+
+			else
+			{
+				GL11.glScalef(-1F, -1F, 1.0F);
+			}
 
 			modelCocoon.render(entityCocoon, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		}
@@ -80,7 +82,7 @@ public class RenderCocoon extends Render
 		String name = entityCocoon.getType().toString();
 		name = Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();
 
-		String resourceLocation = "spiderqueen:textures/entity/" + name;
+		String resourceLocation = "spiderqueen:textures/entity/cocoon/" + name;
 
 		if (entityCocoon.getIsEaten())
 		{

@@ -9,32 +9,41 @@ import sqr.core.minecraft.ModItems;
 
 public enum EnumTypeVariant
 {
+	EMPTY (-1),
 	ANT (0), 
 	COW (1), 
 	CREEPER (2), 
 	GATHERERBEE (3), 
 	HUMAN (4), 
 	PIG (5), 
-	QUEENBEE (6), 
+	QUEENBEE (6),
 	SHEEP (7), 
 	SKELETON (8), 
 	WARRIORBEE (9), 
 	WASP (10), 
 	WOLF (11), 
 	ZOMBIE (12), 
-	ENDERMAN (13), 
+	ENDERMAN (13, EnumCocoonSize.TALL), 
 	BLAZE (14), 
-	CHICKEN (15), 
-	VILLAGER (16), 
+	CHICKEN (15, EnumCocoonSize.SMALL), 
+	VILLAGER (16, EnumCocoonSize.TALL), 
 	HORSE (17), 
-	GHAST (18), 
+	GHAST (18, EnumCocoonSize.HUGE), 
 	_ENDERMINION (19);
 	
 	int id;
+	EnumCocoonSize size;
 	
 	EnumTypeVariant(int id)
 	{
 		this.id = id;
+		this.size = EnumCocoonSize.NORMAL;
+	}
+	
+	EnumTypeVariant(int id, EnumCocoonSize size)
+	{
+		this(id);
+		this.size = size;
 	}
 	
 	public Item getCocoon()
@@ -64,6 +73,11 @@ public enum EnumTypeVariant
 		}
 		
 		return item;
+	}
+	
+	public EnumCocoonSize getCocoonSize()
+	{
+		return size;
 	}
 	
 	/**

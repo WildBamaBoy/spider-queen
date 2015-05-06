@@ -16,7 +16,6 @@ public final class Config
 	public int baseBlockId;
 	public int baseEntityId;
 	
-	public boolean inTutorialMode;
 	public boolean allowCrashReporting;
 	public boolean allowUpdateChecking;
 	

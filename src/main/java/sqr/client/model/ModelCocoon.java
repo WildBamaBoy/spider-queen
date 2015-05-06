@@ -13,6 +13,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import sqr.entity.EntityCocoon;
+import sqr.enums.EnumCocoonSize;
 import sqr.enums.EnumTypeVariant;
 
 public class ModelCocoon extends ModelBase
@@ -145,8 +146,8 @@ public class ModelCocoon extends ModelBase
 	{
 		final EntityCocoon entityCocoon = (EntityCocoon) entity;
 		final EnumTypeVariant cocoonType = entityCocoon.getType();
-
-		renderCocoonBase(partialTickTime);
+		
+		renderCocoonBase(cocoonType.getCocoonSize(), partialTickTime);
 
 		if (cocoonType == EnumTypeVariant.WOLF)
 		{
@@ -197,28 +198,28 @@ public class ModelCocoon extends ModelBase
 		}
 	}
 
-	private void renderCocoonBase(float partialTickTime)
+	private void renderCocoonBase(EnumCocoonSize size, float partialTickTime)
 	{
-//		if (cocoonSize == EnumCocoonSize.SMALL)
-//		{
-//			modelWrappedBody.render(partialTickTime);
-//		}
-//
-//		else if (cocoonSize == EnumCocoonSize.NORMAL)
-//		{
+		if (size == EnumCocoonSize.SMALL)
+		{
+			modelWrappedBody.render(partialTickTime);
+		}
+
+		else if (size == EnumCocoonSize.NORMAL)
+		{
 			modelWrappedHead.render(partialTickTime);
 			modelWrappedBody.render(partialTickTime);
-//		}
-//
-//		else if (cocoonSize == EnumCocoonSize.TALL)
-//		{
-//			modelWrappedBodyTall.render(partialTickTime);
-//		}
-//
-//		else if (cocoonSize == EnumCocoonSize.HUGE)
-//		{
-//			modelGhastBody.render(partialTickTime);
-//		}
+		}
+
+		else if (size == EnumCocoonSize.TALL)
+		{
+			modelWrappedBodyTall.render(partialTickTime);
+		}
+
+		else if (size == EnumCocoonSize.HUGE)
+		{
+			modelGhastBody.render(partialTickTime);
+		}
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
