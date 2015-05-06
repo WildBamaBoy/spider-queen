@@ -1,0 +1,208 @@
+package sqr.core;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+
+import org.apache.logging.log4j.Logger;
+
+import radixcore.core.ModMetadataEx;
+import radixcore.core.RadixCore;
+import radixcore.data.AbstractPlayerData;
+import radixcore.data.DataContainer;
+import radixcore.update.RDXUpdateProtocol;
+import sqr.command.CommandSQR;
+import sqr.core.forge.EventHooksFML;
+import sqr.core.forge.EventHooksForge;
+import sqr.core.forge.GuiHandler;
+import sqr.core.forge.ServerProxy;
+import sqr.core.minecraft.ModAchievements;
+import sqr.core.minecraft.ModBlocks;
+import sqr.core.minecraft.ModItems;
+import sqr.core.radix.CrashWatcher;
+import sqr.core.radix.PlayerData;
+import sqr.core.radix.SQRPacketHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@Mod(modid = SQR.ID, name = SQR.NAME, version = SQR.VERSION, dependencies = "required-after:RadixCore@[2.0.0,)", acceptedMinecraftVersions = "[1.7.10]",
+		guiFactory = "mca.core.forge.client.SQRGuiFactory")
+public final class SQR
+{
+	public static final String ID = "spiderqueen";
+	public static final String NAME = "Spider Queen - Reborn";
+	public static final String VERSION = "1.0.0";
+
+	@Instance(ID)
+	private static SQR instance;
+	private static ModMetadata metadata;
+	private static ModItems items;
+	private static ModBlocks blocks;
+	private static ModAchievements achievements;
+	private static CreativeTabs creativeTab;
+	private static Config config;
+	private static SQRPacketHandler packetHandler;
+	private static CrashWatcher crashWatcher;
+	
+	private static Logger logger;
+	
+	@SidedProxy(clientSide = "sqr.core.forge.ClientProxy", serverSide = "sqr.core.forge.ServerProxy")
+	public static ServerProxy proxy;
+	
+	public static Map<String, AbstractPlayerData> playerDataMap;
+	
+	@SideOnly(Side.CLIENT)
+	public static DataContainer playerDataContainer;
+	
+	@EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {	
+    	instance = this;
+		metadata = event.getModMetadata();
+    	logger = event.getModLog();
+    	config = new Config(event);
+    	crashWatcher = new CrashWatcher();
+    	packetHandler = new SQRPacketHandler(ID);
+    	proxy.registerRenderers();
+    	proxy.registerEventHandlers();
+    	playerDataMap = new HashMap<String, AbstractPlayerData>();
+    	
+    	ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
+    	exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
+    	exData.classContainingClientDataContainer = SQR.class;
+    	exData.classContainingGetPlayerDataMethod = SQR.class;
+    	exData.playerDataMap = playerDataMap;
+    	
+    	RadixCore.registerMod(exData);
+    	
+    	if (exData.updateProtocolClass == null)
+    	{
+    		logger.fatal("Config: Update checking is turned off. You will not be notified of any available updates for SQR.");
+    	}
+    	
+    	FMLCommonHandler.instance().bus().register(new EventHooksFML());
+    	MinecraftForge.EVENT_BUS.register(new EventHooksForge());
+    	NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+    }
+    
+    @EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+//    	creativeTab = RadixStartup.registerCreativeTab(ModItems.class, "creativeTabIcon", metadata, null);
+    	
+    	items = new ModItems();
+    	blocks = new ModBlocks();
+    	achievements = new ModAchievements();
+    	
+    	//Entity registry
+
+    	//Tile registry
+    	
+    	//Recipes
+    	
+    	//Smeltings
+    }
+    
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event)
+    {
+    }
+    
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+    	event.registerServerCommand(new CommandSQR());
+    	    	
+    	File playerDataPath = new File(AbstractPlayerData.getPlayerDataPath(event.getServer().getEntityWorld(), SQR.ID));
+    	playerDataPath.mkdirs();
+    	
+    	for (File f : playerDataPath.listFiles())
+    	{
+    		String uuid = f.getName().replace(".dat", "");
+    		PlayerData data = new PlayerData(uuid, event.getServer().getEntityWorld());
+    		data = data.readDataFromFile(null, PlayerData.class, f);
+    		
+    		SQR.playerDataMap.put(uuid, data);
+    	}
+    }
+    
+    @EventHandler
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+    	for (AbstractPlayerData data : playerDataMap.values())
+    	{
+   			data.saveDataToFile();
+       	}
+    	
+    	SQR.playerDataMap.clear();
+    }
+    
+	public static SQR getInstance()
+	{
+		return instance;
+	}
+	
+	public static Logger getLog()
+	{
+		return logger;
+	}
+	
+	public static Config getConfig()
+	{
+		return config;
+	}
+	
+	public static ModMetadata getMetadata()
+	{
+		return metadata;
+	}
+	
+	public static CreativeTabs getCreativeTab()
+	{
+		return creativeTab;
+	}
+	
+	public static SQRPacketHandler getPacketHandler()
+	{
+		return packetHandler;
+	}
+	
+	public static PlayerData getPlayerData(EntityPlayer player)
+	{
+		if (!player.worldObj.isRemote)
+		{
+			return (PlayerData) playerDataMap.get(player.getUniqueID().toString());
+		}
+		
+		else
+		{
+			return playerDataContainer.getPlayerData(PlayerData.class);
+		}
+	}
+
+	public static PlayerData getPlayerData(String uuid)
+	{
+		return (PlayerData) playerDataMap.get(uuid);
+	}
+	
+	public static CrashWatcher getCrashWatcher() 
+	{
+		return crashWatcher;
+	}
+}
