@@ -10,6 +10,8 @@ import cpw.mods.fml.common.ModMetadata;
 
 public final class PlayerData extends AbstractPlayerData
 {
+	public static final long serialVersionUID = 1L;
+
 	public WatchedBoolean isMale;
 
 	public PlayerData(String playerUUID, World world)
