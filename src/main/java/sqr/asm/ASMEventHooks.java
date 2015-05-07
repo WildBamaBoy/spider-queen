@@ -11,7 +11,7 @@ public final class ASMEventHooks
 	{
 		if (!world.isRemote)
 		{
-			player.dropItem(Items.string, world.rand.nextInt(3) + 1);
+			player.entityDropItem(new ItemStack(Items.string, world.rand.nextInt(3) + 1), 1.0F);
 		}
 	}
 }
