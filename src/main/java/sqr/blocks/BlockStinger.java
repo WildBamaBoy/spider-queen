@@ -1,11 +1,13 @@
 package sqr.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import sqr.core.SQR;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import sqr.core.SQR;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockStinger extends Block
 {
@@ -17,10 +19,17 @@ public class BlockStinger extends Block
 		setBlockName(name);
 		setBlockTextureName("sqr:" + name);
 		setCreativeTab(SQR.getCreativeTab());
+		setHardness(1.0F);
 		
 		GameRegistry.registerBlock(this, name);
 	}
-	
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) 
+	{
+		entity.attackEntityFrom(DamageSource.cactus, 3);
+	}
+
 	@Override
 	public boolean isOpaqueCube()
 	{

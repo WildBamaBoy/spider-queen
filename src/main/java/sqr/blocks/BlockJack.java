@@ -1,7 +1,7 @@
 package sqr.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import sqr.core.SQR;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import sqr.core.SQR;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockJack extends Block
 {
@@ -19,16 +21,30 @@ public class BlockJack extends Block
 	
 	public BlockJack() 
 	{
-		super(Material.ground);
+		super(Material.gourd);
 		
 		final String name = "jack";
 		setBlockName(name);
 		setBlockTextureName("sqr:" + name);
 		setCreativeTab(SQR.getCreativeTab());
+		setTickRandomly(true);
+		setHardness(3.0F);
 		
 		GameRegistry.registerBlock(this, name);
 	}
 
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random random) 
+    {
+		super.updateTick(world, x, y, z, random);
+		
+		if (!world.isDaytime())
+		{
+			world.setBlockToAir(x, y, z);
+			//TODO Spawn Jack.
+		}
+	}
+	
 	@Override
 	public IIcon getIcon(int side, int meta) 
 	{

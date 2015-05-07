@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import sqr.core.SQR;
 import sqr.enums.EnumWebType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -24,6 +23,7 @@ public class BlockWeb extends Block
 		setWebType(type);
 		setBlockName(name);
 		setBlockTextureName("sqr:" + name);
+		setHardness(1.0F);
 		
 		GameRegistry.registerBlock(this, name);
 	}
