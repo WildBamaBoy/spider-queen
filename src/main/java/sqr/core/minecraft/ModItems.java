@@ -1,6 +1,5 @@
 package sqr.core.minecraft;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import sqr.core.SQR;
 import sqr.enums.EnumCocoonType;
@@ -17,6 +16,7 @@ import sqr.items.ItemSpiderRod;
 import sqr.items.ItemStinger;
 import sqr.items.ItemWeb;
 import sqr.items.ItemWebslinger;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModItems
 {

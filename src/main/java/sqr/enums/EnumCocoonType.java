@@ -2,7 +2,6 @@ package sqr.enums;
 
 import java.lang.reflect.Field;
 
-import radixcore.util.RadixString;
 import sqr.core.minecraft.ModItems;
 import sqr.items.ItemCocoon;
 

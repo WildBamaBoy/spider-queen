@@ -1,8 +1,8 @@
 package sqr.items;
 
+import net.minecraft.item.ItemFood;
 import sqr.core.SQR;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.ItemFood;
 
 public class ItemRareFruit extends ItemFood
 {

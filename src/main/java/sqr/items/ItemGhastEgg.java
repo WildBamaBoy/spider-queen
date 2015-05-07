@@ -1,12 +1,12 @@
 package sqr.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import sqr.core.SQR;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
+import sqr.core.SQR;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemGhastEgg extends Item
 {

@@ -33,7 +33,7 @@ public final class PlayerData extends AbstractPlayerData
 	@Override
 	public void instantiateData()
 	{
-		isMale = new WatchedBoolean(true, WatcherIDsPlayerData.IS_MALE, dataWatcher);
+		isMale = new WatchedBoolean(false, WatcherIDsPlayerData.IS_MALE, dataWatcher);
 	}
 	
 	@Override
