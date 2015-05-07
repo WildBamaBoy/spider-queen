@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import sqr.core.SQR;
+import sqr.core.minecraft.ModItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockBeeHive extends Block
@@ -32,7 +33,13 @@ public class BlockBeeHive extends Block
 	@Override
 	public Item getItemDropped(int unknown, Random random, int unknown2) 
 	{
-		return null;
+		return ModItems.nectar;
+	}
+
+	@Override
+	public int quantityDropped(int meta, int fortune, Random random) 
+	{
+		return random.nextInt(8) + 1;
 	}
 
 	@Override

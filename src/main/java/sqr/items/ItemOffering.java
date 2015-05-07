@@ -1,5 +1,6 @@
 package sqr.items;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import sqr.core.SQR;
 import sqr.enums.EnumOfferingType;
@@ -30,5 +31,12 @@ public final class ItemOffering extends Item
 	private EnumOfferingType getOfferingType()
 	{
 		return offeringType;
+	}
+
+	@Override
+	public boolean onEntityItemUpdate(EntityItem entityItem) 
+	{
+		//TODO Implement offerings.
+		return false;
 	}
 }

@@ -13,7 +13,6 @@ import sqr.items.ItemOffering;
 import sqr.items.ItemRareFruit;
 import sqr.items.ItemSpiderEgg;
 import sqr.items.ItemSpiderRod;
-import sqr.items.ItemStinger;
 import sqr.items.ItemWeb;
 import sqr.items.ItemWebslinger;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -50,7 +49,6 @@ public final class ModItems
 	public static ItemSpiderRod spiderRod;
 	public static ItemWebslinger webslinger;
 	public static ItemNectar nectar;
-	public static ItemStinger stinger;
 	public static ItemMandSeeds mandragoraSeeds;
 	public static Item bugLight;
 	
@@ -85,7 +83,6 @@ public final class ModItems
 		spiderRod = new ItemSpiderRod();
 		webslinger = new ItemWebslinger();
 		nectar = new ItemNectar();
-//		stinger = new ItemStinger();
 		mandragoraSeeds = new ItemMandSeeds();
 
 		bugLight = new Item().setCreativeTab(SQR.getCreativeTab()).setUnlocalizedName("buglight").setTextureName("sqr:buglight").setMaxStackSize(1);
