@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import sqr.core.SQR;
+import sqr.core.minecraft.ModBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemMandSeeds extends Item
@@ -33,7 +34,7 @@ public class ItemMandSeeds extends Item
 				stack.stackSize--;
 			}
 			
-			//TODO Place mand crop at location y + 1.
+			world.setBlock(posX, posY + 1, posZ, ModBlocks.cropMand);
 		}
 		
 		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);

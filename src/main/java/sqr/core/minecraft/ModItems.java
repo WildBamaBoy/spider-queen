@@ -85,7 +85,7 @@ public final class ModItems
 		spiderRod = new ItemSpiderRod();
 		webslinger = new ItemWebslinger();
 		nectar = new ItemNectar();
-		stinger = new ItemStinger();
+//		stinger = new ItemStinger();
 		mandragoraSeeds = new ItemMandSeeds();
 
 		bugLight = new Item().setCreativeTab(SQR.getCreativeTab()).setUnlocalizedName("buglight").setTextureName("sqr:buglight").setMaxStackSize(1);
