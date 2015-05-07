@@ -1,5 +1,7 @@
 package sqr.blocks;
 
+import java.util.Random;
+
 import sqr.core.minecraft.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -9,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -16,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMandCrop extends BlockCrops
 {
-	private IIcon icons[];
+	private IIcon icon;
 	
 	public BlockMandCrop()
 	{
@@ -31,7 +34,7 @@ public class BlockMandCrop extends BlockCrops
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-    	return icons[meta];
+    	return icon;
     }
 
     protected Item func_149866_i()
@@ -44,14 +47,21 @@ public class BlockMandCrop extends BlockCrops
         return ModItems.mandragoraSeeds;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	public void updateTick(World world, int x, int y, int z, Random random) 
+    {
+		super.updateTick(world, x, y, z, random);
+		
+		if (world.getBlockMetadata(x, y, z) >= 7)
+		{
+			world.setBlockToAir(x, y, z);
+			//TODO Spawn mandragora.
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister)
     {
-    	icons = new IIcon[3];
-
-        for (int i = 0; i < icons.length; ++i)
-        {
-            icons[i] = iconRegister.registerIcon("sqr:mand_stage_" + i);
-        }
+    	icon = iconRegister.registerIcon("sqr:mand_crop");
     }
 }
