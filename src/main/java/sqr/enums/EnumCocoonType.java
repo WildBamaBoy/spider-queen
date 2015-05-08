@@ -7,17 +7,17 @@ import sqr.items.ItemCocoon;
 
 public enum EnumCocoonType
 {
-	ANT 		(0, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
+	ANT 		(0, 50, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL),
 	COW 		(1, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
 	CREEPER 	(2, 40, EnumCocoonSize.NORMAL, EnumSpiderType.BOOM),
-	GATHERER_BEE (3, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
+	GATHERER_BEE (3, 50, EnumCocoonSize.BEE, EnumSpiderType.NORMAL),
 	HUMAN 		(4, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
 	PIG 		(5, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
-	QUEEN_BEE 	(6, 20, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
+	QUEEN_BEE 	(6, 20, EnumCocoonSize.BEE, EnumSpiderType.NORMAL),
 	SHEEP 		(7, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
 	SKELETON 	(8, 40, EnumCocoonSize.NORMAL, EnumSpiderType.SLINGER),
-	WARRIOR_BEE (9, 35, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
-	WASP 		(10, 35, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
+	WARRIOR_BEE (9, 35, EnumCocoonSize.BEE, EnumSpiderType.NORMAL),
+	WASP 		(10, 35, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL),
 	WOLF 		(11, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NOVA),
 	ZOMBIE 		(12, 40, EnumCocoonSize.NORMAL, EnumSpiderType.TANK),
 	ENDERMAN 	(13, 30, EnumCocoonSize.TALL, EnumSpiderType.ENDER),
