@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,7 +72,8 @@ public final class SQR
 	private static CrashWatcher crashWatcher;
 
 	private static Logger logger;
-
+	public static Random rand;
+	
 	@SidedProxy(clientSide = "sqr.core.forge.ClientProxy", serverSide = "sqr.core.forge.ServerProxy")
 	public static ServerProxy proxy;
 
