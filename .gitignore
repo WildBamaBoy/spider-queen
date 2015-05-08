@@ -9,6 +9,8 @@
 !/lib/*
 !/*.gradle
 !/*.md
+!/gfx/
+!/gfx/*
 .gradle
 gitlog-to-changelog
 CHANGELOG
