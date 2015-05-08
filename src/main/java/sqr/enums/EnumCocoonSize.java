@@ -4,5 +4,7 @@ public enum EnumCocoonSize
 {
 	SMALL,
 	NORMAL,
-	TALL;
+	TALL,
+	INSECT,
+	BEE;
 }
