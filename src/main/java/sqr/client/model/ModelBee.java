@@ -27,7 +27,6 @@ public class ModelBee extends ModelBase
 	private final ModelRenderer crown;
 	private final ModelRenderer scepter1;
 	private final ModelRenderer scepter2;
-	private final ModelRenderer eyes;
 
 	public ModelBee()
 	{
@@ -173,13 +172,6 @@ public class ModelBee extends ModelBase
 		scepter2.setTextureSize(64, 32);
 		scepter2.mirror = true;
 		setRotation(scepter2, -1.570796F, 0F, 0.2617994F);
-
-		eyes = new ModelRenderer(this, 18, 25);
-		eyes.addBox(-5F, -6F, -4.1F, 10, 4, 1);
-		eyes.setRotationPoint(0F, 10F, 0F);
-		eyes.setTextureSize(64, 32);
-		eyes.mirror = true;
-		setRotation(eyes, 0F, 0F, 0F);
 	}
 
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
@@ -212,7 +204,6 @@ public class ModelBee extends ModelBase
 		crown.render(f5);
 		scepter1.render(f5);
 		scepter2.render(f5);
-		eyes.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -257,7 +248,6 @@ public class ModelBee extends ModelBase
 		handle2.rotateAngleX = leftArm.rotateAngleX;handle2.rotateAngleY = leftArm.rotateAngleY;handle2.rotateAngleZ = leftArm.rotateAngleZ;
 		
 		crown.rotateAngleY = head.rotateAngleY; crown.rotateAngleX = head.rotateAngleX;
-		eyes.rotateAngleY = eyes.rotateAngleY; eyes.rotateAngleX = eyes.rotateAngleX;
 		scepter1.rotateAngleX = rightArm.rotateAngleX-(3.14F/3F);scepter1.rotateAngleY = rightArm.rotateAngleY;scepter1.rotateAngleZ = rightArm.rotateAngleZ;
 		scepter2.rotateAngleX = rightArm.rotateAngleX-(3.14F/3F);scepter2.rotateAngleY = rightArm.rotateAngleY;scepter2.rotateAngleZ = rightArm.rotateAngleZ;
 	}

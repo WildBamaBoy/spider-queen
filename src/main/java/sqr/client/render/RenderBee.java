@@ -22,7 +22,7 @@ public class RenderBee extends RenderLiving
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return null;
+		return textures[3];
 		
 		//TODO
 //		EntityBee bee = (EntityBee)entity;
