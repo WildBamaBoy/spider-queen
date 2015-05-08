@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,6 +35,19 @@ import sqr.core.minecraft.ModItems;
 import sqr.core.radix.CrashWatcher;
 import sqr.core.radix.PlayerData;
 import sqr.core.radix.SQRPacketHandler;
+import sqr.entity.EntityAnt;
+import sqr.entity.EntityBee;
+import sqr.entity.EntityBeetle;
+import sqr.entity.EntityCocoon;
+import sqr.entity.EntityFly;
+import sqr.entity.EntityJack;
+import sqr.entity.EntityMandragora;
+import sqr.entity.EntityMiniGhast;
+import sqr.entity.EntityOctopus;
+import sqr.entity.EntitySpiderEgg;
+import sqr.entity.EntitySpiderQueen;
+import sqr.entity.EntityWasp;
+import sqr.entity.EntityYuki;
 import sqr.enums.EnumCocoonType;
 import sqr.items.ItemCocoon;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -48,6 +62,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -86,6 +101,7 @@ public final class SQR
 	public void preInit(FMLPreInitializationEvent event)
 	{	
 		instance = this;
+		rand = new Random();
 		metadata = event.getModMetadata();
 		logger = event.getModLog();
 		config = new Config(event);
@@ -157,7 +173,17 @@ public final class SQR
 		achievements = new ModAchievements();
 
 		//Entity registry
-
+		int id = config.baseEntityId;
+		dualRegisterEntity(EntityAnt.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityBee.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityBeetle.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityFly.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityJack.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityMandragora.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityOctopus.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityWasp.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityYuki.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		
 		//Tile registry
 
 		//Recipes
@@ -204,6 +230,12 @@ public final class SQR
 		SQR.playerDataMap.clear();
 	}
 
+	private void dualRegisterEntity(Class<? extends Entity> clazz, int id, int backgroundColor, int foregroundColor)
+	{
+		EntityRegistry.registerGlobalEntityID(clazz, clazz.getSimpleName(), id, backgroundColor, foregroundColor);
+		EntityRegistry.registerModEntity(clazz, clazz.getSimpleName(), id, this, 50, 2, true);
+	}
+	
 	public static SQR getInstance()
 	{
 		return instance;
