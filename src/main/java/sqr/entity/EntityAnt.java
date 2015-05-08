@@ -13,7 +13,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import radixcore.util.RadixLogic;
 import sqr.core.SQR;
 import sqr.enums.EnumAntType;
 
