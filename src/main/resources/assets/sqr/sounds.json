@@ -1,0 +1,29 @@
+{
+    "ant.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "ant-death"
+        ]
+    },
+    "ant.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "ant-hurt"
+        ]
+    },
+    "ant.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "ant-idle-1",
+            "ant-idle-2",
+            "ant-idle-3",
+            "ant-idle-4"
+        ]
+    }
+}

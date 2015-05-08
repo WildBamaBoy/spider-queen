@@ -1,12 +1,19 @@
 package sqr.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import radixcore.constant.Time;
+import radixcore.util.RadixLogic;
 import sqr.core.SQR;
+import sqr.entity.EntityAnt;
+import sqr.enums.EnumAntType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockAntHill extends Block
@@ -25,15 +32,40 @@ public class BlockAntHill extends Block
 		GameRegistry.registerBlock(this, name);
 	}
 	
+	public int tickRate()
+	{
+		return Time.SECOND * 15;
+	}
+	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) 
     {
 		super.updateTick(world, x, y, z, random);
 		
-		if (world.getClosestPlayer((double)x, (double)y, (double)z, 16.0D) != null)
+		final EntityPlayer player = world.getClosestPlayer((double)x, (double)y, (double)z, 16.0D);
+
+		if (player != null)
 		{
-			//TODO Spawn ant.
+			List<Entity> nearbyEntities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, x, y, z, 16);
+			int nearbyAnts = 0;
+			
+			for (Entity entity : nearbyEntities)
+			{
+				if (entity instanceof EntityAnt)
+				{
+					nearbyAnts++;
+				}
+			}
+			
+			if (nearbyAnts < SQR.getConfig().antSpawnCap)
+			{
+				EntityAnt ant = new EntityAnt(world, EnumAntType.BLACK);
+				ant.setPositionAndRotation((double) x, (double) y, (double) z, (float)random.nextInt(360) + 1, 0.0F);
+				world.spawnEntityInWorld(ant);
+			}
 		}
+		
+		world.scheduleBlockUpdate(x, y, z, this, tickRate());
 	}
 	
 	@Override
@@ -41,6 +73,12 @@ public class BlockAntHill extends Block
 	{
 		return false;
 	}
+	
+	@Override
+    public boolean isNormalCube()
+    {
+    	return false;
+    }
 	
 	@Override
 	public int getRenderType()

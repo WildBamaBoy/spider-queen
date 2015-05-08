@@ -26,6 +26,8 @@ public final class Config
 	public boolean enableBeetle;
 	public boolean enableAnt;
 	
+	public int antSpawnCap;
+	
 	public Config(FMLPreInitializationEvent event)
 	{
 		config = new Configuration(event.getSuggestedConfigurationFile());
@@ -44,6 +46,9 @@ public final class Config
 		enableFly = config.get("Init", "Enable Flies?", true, "Enables/disables flies.").getBoolean();
 		enableBeetle = config.get("Init", "Enable Beetles?", true, "Enables/disables beetles.").getBoolean();
 		enableAnt = config.get("Init", "Enable Ants?", true, "Enables/disables ants.").getBoolean();
+		
+		config.setCategoryComment("Performance", "Settings that can affect your game performance.");
+		antSpawnCap = config.get("Performance", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();
 		
 		config.setCategoryComment("Privacy", "Setting pertaining to your privacy while using SQR.");
 		allowCrashReporting = config.get("Privacy", "Allow crash reporting", true, "True if SQR can send crash reports to the mod authors. Crash reports may include your Minecraft username, OS version, Java version, and PC username.").getBoolean();

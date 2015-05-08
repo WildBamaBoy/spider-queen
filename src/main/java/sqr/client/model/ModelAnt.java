@@ -1,5 +1,7 @@
 package sqr.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -117,6 +119,7 @@ public class ModelAnt extends ModelBase
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5);
+		
 		head.render(f5);
 		body.render(f5);
 		rearEnd1.render(f5);
