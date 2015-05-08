@@ -19,6 +19,13 @@ public final class Config
 	public boolean allowCrashReporting;
 	public boolean allowUpdateChecking;
 	
+	public boolean enableYuki;
+	public boolean enableJack;
+	public boolean enableMandragora;
+	public boolean enableFly;
+	public boolean enableBeetle;
+	public boolean enableAnt;
+	
 	public Config(FMLPreInitializationEvent event)
 	{
 		config = new Configuration(event.getSuggestedConfigurationFile());
@@ -31,7 +38,7 @@ public final class Config
 		baseItemId = config.get("Init", "Base Item ID", 38955, "The base ID to use for items in SQR. Only applicable in 1.6.4.").getInt();
 		baseBlockId = config.get("Init", "Base Block ID", 3121, "The base ID to use for blocks in SQR. Only applicable in 1.6.4.").getInt();
 		baseEntityId = config.get("Init", "Base Entity ID", 127, "The base ID to use for entities in SQR. Only change if you know what you are doing!").getInt();
-
+		
 		config.setCategoryComment("Privacy", "Setting pertaining to your privacy while using SQR.");
 		allowCrashReporting = config.get("Privacy", "Allow crash reporting", true, "True if SQR can send crash reports to the mod authors. Crash reports may include your Minecraft username, OS version, Java version, and PC username.").getBoolean();
 		allowUpdateChecking = config.get("Privacy", "Allow update checking", true, "True if SQR can check for updates. This setting requires a restart in order to take effect.").getBoolean();
