@@ -38,6 +38,12 @@ public final class Config
 		baseItemId = config.get("Init", "Base Item ID", 38955, "The base ID to use for items in SQR. Only applicable in 1.6.4.").getInt();
 		baseBlockId = config.get("Init", "Base Block ID", 3121, "The base ID to use for blocks in SQR. Only applicable in 1.6.4.").getInt();
 		baseEntityId = config.get("Init", "Base Entity ID", 127, "The base ID to use for entities in SQR. Only change if you know what you are doing!").getInt();
+		enableYuki = config.get("Init", "Enable Yuki?", true, "Enables/disables Yuki.").getBoolean();
+		enableJack = config.get("Init", "Enable Jack?", true, "Enables/disables Jack. WARNING: You will not be able to acquire the bug light!").getBoolean();
+		enableMandragora = config.get("Init", "Enable Mandragora?", true, "Enables/disables the mandragora. WARNING: Removes friendly mandragoras as well!").getBoolean();
+		enableFly = config.get("Init", "Enable Flies?", true, "Enables/disables flies.").getBoolean();
+		enableBeetle = config.get("Init", "Enable Beetles?", true, "Enables/disables beetles.").getBoolean();
+		enableAnt = config.get("Init", "Enable Ants?", true, "Enables/disables ants.").getBoolean();
 		
 		config.setCategoryComment("Privacy", "Setting pertaining to your privacy while using SQR.");
 		allowCrashReporting = config.get("Privacy", "Allow crash reporting", true, "True if SQR can send crash reports to the mod authors. Crash reports may include your Minecraft username, OS version, Java version, and PC username.").getBoolean();
