@@ -14,8 +14,13 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class TransformDistributor implements IClassTransformer
 {
+	public static final Logger logger = LogManager.getLogger("SQR");
+	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass)
 	{
@@ -37,7 +42,7 @@ public class TransformDistributor implements IClassTransformer
 		{
 			if (method.name.equals("onEaten"))
 			{
-				System.out.println("Spider Queen is now patching onEaten()...");
+				logger.info("Patching onEaten()...");
 				
 				//Target instruction node is the return statement.
 				AbstractInsnNode target = null;
@@ -55,7 +60,7 @@ public class TransformDistributor implements IClassTransformer
 				//Make sure we found the target.
 				if (target == null)
 				{
-					System.out.println("Patching onEaten() failed! Things aren't going to work well!");
+					logger.fatal("Patching onEaten() failed! Things aren't going to work well!");
 					return basicClass;
 				}
 				
@@ -70,7 +75,7 @@ public class TransformDistributor implements IClassTransformer
 					inject.add(new MethodInsnNode(INVOKESTATIC, "sqr/asm/ASMEventHooks", "onEaten", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;)V", false));
 					
 					method.instructions.insertBefore(target, inject);
-					System.out.println("Spider Queen has successfully patched onEaten().");
+					logger.info("Successfully patched onEaten().");
 				}
 				
 				break;
@@ -82,5 +87,4 @@ public class TransformDistributor implements IClassTransformer
 		
 		return writer.toByteArray();
 	}
-
 }
