@@ -11,6 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import sqr.core.SQR;
+import sqr.entity.EntityJack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockJack extends Block
@@ -41,7 +42,10 @@ public class BlockJack extends Block
 		if (!world.isDaytime())
 		{
 			world.setBlockToAir(x, y, z);
-			//TODO Spawn Jack.
+			
+			EntityJack jack = new EntityJack(world);
+			jack.setPosition(x, y + 1, z);
+			world.spawnEntityInWorld(jack);
 		}
 	}
 	

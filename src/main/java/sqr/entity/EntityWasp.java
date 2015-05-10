@@ -1,13 +1,30 @@
 package sqr.entity;
 
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.world.World;
 
-public class EntityWasp extends EntityCreature
+public class EntityWasp extends AbstractFlyingMob
 {
 	public EntityWasp(World world) 
 	{
-		super(world);
+		super(world, "wasp");
+	}
+
+	@Override
+	public float getMobMaxHealth() 
+	{
+		return 20.0F;
+	}
+
+	@Override
+	public float getHitDamage() 
+	{
+		return 4.0F;
+	}
+
+	@Override
+	public double getMoveSpeed() 
+	{
+		return 0.9F;
 	}
 }
 

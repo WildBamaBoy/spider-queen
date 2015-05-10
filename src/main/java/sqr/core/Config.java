@@ -27,6 +27,7 @@ public final class Config
 	public boolean enableAnt;
 	
 	public int antSpawnCap;
+	public int beeSpawnCap;
 	
 	public Config(FMLPreInitializationEvent event)
 	{
@@ -49,6 +50,7 @@ public final class Config
 		
 		config.setCategoryComment("Performance", "Settings that can affect your game performance.");
 		antSpawnCap = config.get("Performance", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();
+		beeSpawnCap = config.get("Performance", "Bee spawn cap", 10, "The maximum number of bees that can spawn within a 16 block radius.").getInt();
 		
 		config.setCategoryComment("Privacy", "Setting pertaining to your privacy while using SQR.");
 		allowCrashReporting = config.get("Privacy", "Allow crash reporting", true, "True if SQR can send crash reports to the mod authors. Crash reports may include your Minecraft username, OS version, Java version, and PC username.").getBoolean();

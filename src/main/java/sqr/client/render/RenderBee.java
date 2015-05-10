@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sqr.client.model.ModelBee;
+import sqr.entity.EntityBee;
 
 public class RenderBee extends RenderLiving
 {
@@ -22,18 +23,15 @@ public class RenderBee extends RenderLiving
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return textures[3];
+		EntityBee bee = (EntityBee)entity;
 		
-		//TODO
-//		EntityBee bee = (EntityBee)entity;
-//		
-//		switch (bee.getBeeType)
-//		{
-//		case GATHERER: return textures[0];
-//		case WARRIOR: return bee.getIsAttacking() ? textures[2] : textures[1];
-//		case QUEEN: return textures[3];
-//		}
-//		
-//		return null;
+		switch (bee.getBeeType())
+		{
+		case GATHERER: return textures[0];
+		case WARRIOR: return textures[1]; //return bee.getIsAttacking() ? textures[2] : textures[1];
+		case QUEEN: return textures[3];
+		}
+		
+		return null;
 	}
 }

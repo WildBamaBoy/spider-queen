@@ -4,6 +4,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import sqr.entity.EntityBee;
+import sqr.entity.EnumBeeType;
 
 public class ModelBee extends ModelBase
 {
@@ -179,6 +181,9 @@ public class ModelBee extends ModelBase
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5);
 
+		final EntityBee bee = (EntityBee)entity;
+		final EnumBeeType type = bee.getBeeType();
+
 		//TODO check for warrior attack		
 		head.render(f5);
 		body.render(f5);
@@ -194,16 +199,20 @@ public class ModelBee extends ModelBase
 		stinger2.render(f5);
 		stinger1.render(f5);
 
-		//TODO if gatherer
-		handle1.render(f5);
-		handle2.render(f5);
-		bucket1.render(f5);
-		bucket2.render(f5);
+		if (bee.getBeeType() == EnumBeeType.GATHERER)
+		{
+			handle1.render(f5);
+			handle2.render(f5);
+			bucket1.render(f5);
+			bucket2.render(f5);
+		}
 
-		//TODO if queen
-		crown.render(f5);
-		scepter1.render(f5);
-		scepter2.render(f5);
+		if (bee.getBeeType() == EnumBeeType.QUEEN)
+		{
+			crown.render(f5);
+			scepter1.render(f5);
+			scepter2.render(f5);
+		}
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -246,7 +255,7 @@ public class ModelBee extends ModelBase
 
 		bucket1.rotateAngleX = leftArm.rotateAngleX;bucket1.rotateAngleY = leftArm.rotateAngleY;bucket1.rotateAngleZ = leftArm.rotateAngleZ;
 		handle2.rotateAngleX = leftArm.rotateAngleX;handle2.rotateAngleY = leftArm.rotateAngleY;handle2.rotateAngleZ = leftArm.rotateAngleZ;
-		
+
 		crown.rotateAngleY = head.rotateAngleY; crown.rotateAngleX = head.rotateAngleX;
 		scepter1.rotateAngleX = rightArm.rotateAngleX-(3.14F/3F);scepter1.rotateAngleY = rightArm.rotateAngleY;scepter1.rotateAngleZ = rightArm.rotateAngleZ;
 		scepter2.rotateAngleX = rightArm.rotateAngleX-(3.14F/3F);scepter2.rotateAngleY = rightArm.rotateAngleY;scepter2.rotateAngleZ = rightArm.rotateAngleZ;

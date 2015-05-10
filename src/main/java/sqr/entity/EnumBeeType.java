@@ -1,5 +1,7 @@
 package sqr.entity;
 
+import radixcore.util.RadixString;
+
 public enum EnumBeeType 
 {
 	WARRIOR (0),
@@ -18,6 +20,11 @@ public enum EnumBeeType
 		return id;
 	}
 
+	public String getFriendlyName()
+	{
+		return RadixString.upperFirstLetter(name().toLowerCase());
+	}
+	
 	public static EnumBeeType getById(int id)
 	{
 		for (EnumBeeType type : values())
