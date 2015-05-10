@@ -25,5 +25,58 @@
             "ant-idle-3",
             "ant-idle-4"
         ]
+    },
+    "bee.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "bee-idle-1",
+            "bee-idle-2",
+            "bee-idle-3",
+            "bee-idle-4"
+        ]
+    },
+    "bee.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "bee-hurt"
+        ]
+    },
+    "bee.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "bee-death"
+        ]
+    },
+    "jack.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "jack-idle-1",
+            "jack-idle-2",
+            "jack-idle-3"
+        ]
+    },
+    "jack.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "jack-hurt"
+        ]
+    },
+    "jack.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "jack-death"
+        ]
     }
 }
