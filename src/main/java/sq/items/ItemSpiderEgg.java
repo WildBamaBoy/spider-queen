@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemSpiderEgg extends Item
@@ -17,7 +17,7 @@ public class ItemSpiderEgg extends Item
 		final String name = "spider-egg";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
 		
 		GameRegistry.registerItem(this, name);

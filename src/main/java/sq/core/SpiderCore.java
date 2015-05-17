@@ -63,16 +63,16 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(modid = SQ.ID, name = SQ.NAME, version = SQ.VERSION, dependencies = "required-after:RadixCore@[2.0.0,)", acceptedMinecraftVersions = "[1.7.10]",
+@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.0.0,)", acceptedMinecraftVersions = "[1.7.10]",
 guiFactory = "sq.core.forge.client.SpiderGuiFactory")
-public final class SQ
+public final class SpiderCore
 {
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
 	public static final String VERSION = "1.0.0";
 
 	@Instance(ID)
-	private static SQ instance;
+	private static SpiderCore instance;
 	private static ModMetadata metadata;
 	private static ModItems items;
 	private static ModBlocks blocks;
@@ -109,8 +109,8 @@ public final class SQ
 
 		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
-		exData.classContainingClientDataContainer = SQ.class;
-		exData.classContainingGetPlayerDataMethod = SQ.class;
+		exData.classContainingClientDataContainer = SpiderCore.class;
+		exData.classContainingGetPlayerDataMethod = SpiderCore.class;
 		exData.playerDataMap = playerDataMap;
 
 		RadixCore.registerMod(exData);
@@ -202,7 +202,7 @@ public final class SQ
 	{
 		event.registerServerCommand(new CommandSQ());
 
-		File playerDataPath = new File(AbstractPlayerData.getPlayerDataPath(event.getServer().getEntityWorld(), SQ.ID));
+		File playerDataPath = new File(AbstractPlayerData.getPlayerDataPath(event.getServer().getEntityWorld(), SpiderCore.ID));
 		playerDataPath.mkdirs();
 
 		for (File f : playerDataPath.listFiles())
@@ -211,7 +211,7 @@ public final class SQ
 			PlayerData data = new PlayerData(uuid, event.getServer().getEntityWorld());
 			data = data.readDataFromFile(null, PlayerData.class, f);
 
-			SQ.playerDataMap.put(uuid, data);
+			SpiderCore.playerDataMap.put(uuid, data);
 		}
 	}
 
@@ -223,7 +223,7 @@ public final class SQ
 			data.saveDataToFile();
 		}
 
-		SQ.playerDataMap.clear();
+		SpiderCore.playerDataMap.clear();
 	}
 
 	private void dualRegisterEntity(Class<? extends Entity> clazz, int id, int backgroundColor, int foregroundColor)
@@ -232,7 +232,7 @@ public final class SQ
 		EntityRegistry.registerModEntity(clazz, clazz.getSimpleName(), id, this, 50, 2, true);
 	}
 	
-	public static SQ getInstance()
+	public static SpiderCore getInstance()
 	{
 		return instance;
 	}

@@ -2,7 +2,7 @@ package sq.entity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 
 public class EntityFly extends AbstractFlyingMob
 {
@@ -17,7 +17,7 @@ public class EntityFly extends AbstractFlyingMob
 	{
 		super.onUpdate();
 
-		if (!SQ.getConfig().enableFly)
+		if (!SpiderCore.getConfig().enableFly)
 		{
 			setDead();
 		}

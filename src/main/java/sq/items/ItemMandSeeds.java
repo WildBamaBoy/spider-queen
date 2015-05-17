@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -18,7 +18,7 @@ public class ItemMandSeeds extends Item
 		final String name = "mandragora-seeds";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(64);
 		
 		GameRegistry.registerItem(this, name);

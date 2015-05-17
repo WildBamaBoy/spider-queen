@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.enums.EnumCocoonType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -18,7 +18,7 @@ public class ItemCocoon extends Item
 		super();
 		
 		final String name = "cocoon-" + type.getName();
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		

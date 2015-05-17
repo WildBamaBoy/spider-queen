@@ -3,7 +3,7 @@ package sq.core.forge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import radixcore.packets.PacketDataContainer;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.core.radix.PlayerData;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -15,10 +15,10 @@ public final class EventHooksFML
 	@SubscribeEvent
 	public void onConfigChanges(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
 	{
-		if (eventArgs.modID.equals(SQ.ID))
+		if (eventArgs.modID.equals(SpiderCore.ID))
 		{
-			SQ.getConfig().getConfigInstance().save();
-			SQ.getConfig().syncConfiguration();
+			SpiderCore.getConfig().getConfigInstance().save();
+			SpiderCore.getConfig().syncConfiguration();
 		}
 	}
 
@@ -28,7 +28,7 @@ public final class EventHooksFML
 		EntityPlayer player = event.player;
 		PlayerData data = null;
 
-		if (!SQ.playerDataMap.containsKey(player.getUniqueID().toString()))
+		if (!SpiderCore.playerDataMap.containsKey(player.getUniqueID().toString()))
 		{
 			data = new PlayerData(player);
 
@@ -42,23 +42,23 @@ public final class EventHooksFML
 				data.initializeNewData(event.player);
 			}
 
-			SQ.playerDataMap.put(event.player.getUniqueID().toString(), data);
+			SpiderCore.playerDataMap.put(event.player.getUniqueID().toString(), data);
 		}
 
 		else
 		{
-			data = SQ.getPlayerData(player);
+			data = SpiderCore.getPlayerData(player);
 			data = data.readDataFromFile(event.player, PlayerData.class, null);  //Read from the file again to assign owner.
-			SQ.playerDataMap.put(event.player.getUniqueID().toString(), data);  //Put updated data back into the map.
+			SpiderCore.playerDataMap.put(event.player.getUniqueID().toString(), data);  //Put updated data back into the map.
 		}
 
-		SQ.getPacketHandler().sendPacketToPlayer(new PacketDataContainer(SQ.ID, data), (EntityPlayerMP)event.player);
+		SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketDataContainer(SpiderCore.ID, data), (EntityPlayerMP)event.player);
 	}
 
 	@SubscribeEvent
 	public void playerLoggedOutEventHandler(PlayerLoggedOutEvent event)
 	{
-		PlayerData data = SQ.getPlayerData(event.player);
+		PlayerData data = SpiderCore.getPlayerData(event.player);
 
 		if (data != null)
 		{

@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.enums.EnumAntType;
 
 public class EntityAnt extends AbstractNewMob
@@ -36,7 +36,7 @@ public class EntityAnt extends AbstractNewMob
 	{
 		super.onUpdate();
 
-		if (!SQ.getConfig().enableAnt)
+		if (!SpiderCore.getConfig().enableAnt)
 		{
 			setDead();
 		}
@@ -56,9 +56,9 @@ public class EntityAnt extends AbstractNewMob
 
 				for (int xMov = -1; xMov <= 1; xMov++){ for(int yMov = -1; yMov <= 1; yMov++) { for(int zMov = -1; zMov <= 1; zMov++)
 				{
-					if (yMov < 1 || SQ.rand.nextInt(5) == 0)
+					if (yMov < 1 || SpiderCore.rand.nextInt(5) == 0)
 					{
-						if (SQ.rand.nextInt(10) == 0 && (SQ.rand.nextInt(4) == 0 || xMov != 0 || zMov != 0 || yMov < 1)) 
+						if (SpiderCore.rand.nextInt(10) == 0 && (SpiderCore.rand.nextInt(4) == 0 || xMov != 0 || zMov != 0 || yMov < 1)) 
 						{ 
 							Block block = worldObj.getBlock((int)posX + xMov, (int)posY + yMov, (int)posZ + zMov);
 

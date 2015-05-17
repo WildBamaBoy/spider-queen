@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.entity.EntityJack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -27,7 +27,7 @@ public class BlockJack extends Block
 		final String name = "jack";
 		setBlockName(name);
 		setBlockTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(3.0F);
 		

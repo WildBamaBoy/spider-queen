@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockStinger extends Block
@@ -18,7 +18,7 @@ public class BlockStinger extends Block
 		final String name = "stinger";
 		setBlockName(name);
 		setBlockTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setHardness(1.0F);
 		
 		GameRegistry.registerBlock(this, name);

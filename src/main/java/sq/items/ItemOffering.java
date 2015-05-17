@@ -2,7 +2,7 @@ package sq.items;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.enums.EnumOfferingType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -18,7 +18,7 @@ public final class ItemOffering extends Item
 		setOfferingType(type);
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		
 		GameRegistry.registerItem(this, name);
 	}

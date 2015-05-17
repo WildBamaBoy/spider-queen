@@ -18,7 +18,7 @@ import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.EntityBee;
 import sq.entity.EnumBeeType;
@@ -36,7 +36,7 @@ public class BlockBeeHive extends Block
 		final String name = "beehive";
 		setBlockName(name);
 		setBlockTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(3.0F);
 
@@ -86,7 +86,7 @@ public class BlockBeeHive extends Block
 				}
 			}
 
-			if (nearbyBees < SQ.getConfig().antSpawnCap)
+			if (nearbyBees < SpiderCore.getConfig().antSpawnCap)
 			{
 				//getSafeSpawnArea()
 				List<Point3D> safeSpawnAreas = new ArrayList<Point3D>();

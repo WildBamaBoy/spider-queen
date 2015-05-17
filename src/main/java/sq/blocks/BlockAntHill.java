@@ -11,7 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.entity.EntityAnt;
 import sq.enums.EnumAntType;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,7 +25,7 @@ public class BlockAntHill extends Block
 		final String name = "anthill";
 		setBlockName(name);
 		setBlockTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(1.0F);
 		
@@ -57,7 +57,7 @@ public class BlockAntHill extends Block
 				}
 			}
 			
-			if (nearbyAnts < SQ.getConfig().antSpawnCap)
+			if (nearbyAnts < SpiderCore.getConfig().antSpawnCap)
 			{
 				EntityAnt ant = new EntityAnt(world, EnumAntType.BLACK);
 				ant.setPositionAndRotation((double) x, (double) y, (double) z, (float)random.nextInt(360) + 1, 0.0F);

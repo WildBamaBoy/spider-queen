@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import radixcore.core.ModCrashWatcher;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public final class CrashWatcher extends ModCrashWatcher
@@ -21,7 +21,7 @@ public final class CrashWatcher extends ModCrashWatcher
 
 			if (report.contains("at sq."))
 			{
-				if (SQ.getConfig().allowCrashReporting)
+				if (SpiderCore.getConfig().allowCrashReporting)
 				{
 					final Socket connectSocket = new Socket("asp.radix-shock.com", 3577);
 					final DataOutputStream dataOut = new DataOutputStream(connectSocket.getOutputStream());
@@ -29,26 +29,26 @@ public final class CrashWatcher extends ModCrashWatcher
 					dataOut.writeByte(2);
 					dataOut.writeUTF("@Validate@");
 					dataOut.writeUTF("SQ");
-					dataOut.writeUTF(SQ.VERSION);
+					dataOut.writeUTF(SpiderCore.VERSION);
 					dataOut.writeBoolean(isServer);
 					dataOut.writeUTF(report);
 					connectSocket.close();
 
-					SQ.getLog().fatal("Sent crash report to mod authors for review. Sorry about that!");
+					SpiderCore.getLog().fatal("Sent crash report to mod authors for review. Sorry about that!");
 				}
 
 				else
 				{
 					Thread.sleep(1000); //Give the crash report time to be displayed to the console so this message appears after the fact.
-					SQ.getLog().fatal("Detected a crash involving Spider Queen, but crash reporting has been disabled! :(");
-					SQ.getLog().fatal("Please consider enabling crash reporting. It will help us find and stop crashes such as this!");
+					SpiderCore.getLog().fatal("Detected a crash involving Spider Queen, but crash reporting has been disabled! :(");
+					SpiderCore.getLog().fatal("Please consider enabling crash reporting. It will help us find and stop crashes such as this!");
 				}
 			}
 		}
 
 		catch (Exception e)
 		{
-			SQ.getLog().fatal("Spider Queen detected a crash and attempted to report it, but failed to do so! " + e.getMessage());
+			SpiderCore.getLog().fatal("Spider Queen detected a crash and attempted to report it, but failed to do so! " + e.getMessage());
 		}
 	}
 }

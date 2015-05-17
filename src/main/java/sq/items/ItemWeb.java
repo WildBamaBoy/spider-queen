@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.enums.EnumWebType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -20,7 +20,7 @@ public class ItemWeb extends Item
 		setWebType(type);
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		
 		GameRegistry.registerItem(this, name);
 	}

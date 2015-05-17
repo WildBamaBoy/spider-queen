@@ -1,7 +1,7 @@
 package sq.items;
 
 import net.minecraft.item.ItemFood;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemNectar extends ItemFood
@@ -14,7 +14,7 @@ public class ItemNectar extends ItemFood
 		final String name = "nectar";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
-		setCreativeTab(SQ.getCreativeTab());
+		setCreativeTab(SpiderCore.getCreativeTab());
 		
 		GameRegistry.registerItem(this, name);
 	}

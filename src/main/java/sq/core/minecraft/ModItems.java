@@ -1,7 +1,7 @@
 package sq.core.minecraft;
 
 import net.minecraft.item.Item;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumOfferingType;
 import sq.enums.EnumWebType;
@@ -85,7 +85,7 @@ public final class ModItems
 		nectar = new ItemNectar();
 		mandragoraSeeds = new ItemMandSeeds();
 
-		bugLight = new Item().setCreativeTab(SQ.getCreativeTab()).setUnlocalizedName("buglight").setTextureName("sq:buglight").setMaxStackSize(1);
+		bugLight = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("buglight").setTextureName("sq:buglight").setMaxStackSize(1);
 		GameRegistry.registerItem(bugLight, "buglight");
 	}
 }

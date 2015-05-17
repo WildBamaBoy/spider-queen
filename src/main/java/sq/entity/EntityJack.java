@@ -3,7 +3,7 @@ package sq.entity;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 
 public class EntityJack extends AbstractFlyingMob
@@ -20,7 +20,7 @@ public class EntityJack extends AbstractFlyingMob
 		super.onUpdate();
 		fallDistance = 0.0F;
 		
-		if (!SQ.getConfig().enableJack)
+		if (!SpiderCore.getConfig().enableJack)
 		{
 			setDead();
 		}

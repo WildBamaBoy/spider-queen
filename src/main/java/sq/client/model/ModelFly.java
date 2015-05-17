@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 
 public class ModelFly extends ModelBase
 {
@@ -150,7 +150,7 @@ public class ModelFly extends ModelBase
 		leg5.rotateAngleX = leg1.rotateAngleX; leg5.rotateAngleY = leg1.rotateAngleY; leg5.rotateAngleZ = leg1.rotateAngleZ; 
 		leg6.rotateAngleX = leg1.rotateAngleX; leg6.rotateAngleY = leg1.rotateAngleY; leg6.rotateAngleZ = leg1.rotateAngleZ; 
 
-		wing1.rotateAngleX = -0.122173F + ((float)SQ.rand.nextInt(5)) * 0.122173F;
-		wing2.rotateAngleX = -0.122173F + ((float)SQ.rand.nextInt(5)) * 0.122173F;
+		wing1.rotateAngleX = -0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
+		wing2.rotateAngleX = -0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
 	}
 }

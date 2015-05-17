@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import radixcore.data.AbstractPlayerData;
 import radixcore.data.WatchedBoolean;
-import sq.core.SQ;
+import sq.core.SpiderCore;
 import sq.data.WatcherIDsPlayerData;
 import cpw.mods.fml.common.ModMetadata;
 
@@ -16,18 +16,18 @@ public final class PlayerData extends AbstractPlayerData
 
 	public PlayerData(String playerUUID, World world)
 	{
-		super(playerUUID, SQ.ID, world);
+		super(playerUUID, SpiderCore.ID, world);
 	}
 	
 	public PlayerData(EntityPlayer player)
 	{
-		super(player, SQ.ID);
+		super(player, SpiderCore.ID);
 	}
 
 	@Override
 	public ModMetadata getModMetadata() 
 	{
-		return SQ.getMetadata();
+		return SpiderCore.getMetadata();
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public final class PlayerData extends AbstractPlayerData
 
 	public void dumpToConsole()
 	{
-		SQ.getLog().info("--------PLAYER DATA DUMP--------");
-		SQ.getLog().info("Owner: " + owner);
-		SQ.getLog().info("Owner's Identity: " + ownerIdentifier);
+		SpiderCore.getLog().info("--------PLAYER DATA DUMP--------");
+		SpiderCore.getLog().info("Owner: " + owner);
+		SpiderCore.getLog().info("Owner's Identity: " + ownerIdentifier);
 	}
 }
