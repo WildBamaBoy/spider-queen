@@ -4,6 +4,9 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+//TODO
+// Can fly to attack targets.
+// Changes texture if flying.
 public class EntityBeetle extends AbstractNewMob
 {
 	public EntityBeetle(World world) 
