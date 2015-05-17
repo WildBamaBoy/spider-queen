@@ -78,5 +78,40 @@
         [
             "jack-death"
         ]
+    },
+    "mand.vine":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "mand-vine"
+        ]
+    },
+    "mand.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "mand-idle-1",
+            "mand-idle-2",
+            "mand-idle-3",
+            "mand-idle-4"
+        ]
+    },
+    "mand.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "mand-death"
+        ]
+    },
+    "mand.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "mand-hurt"
+        ]
     }
 }

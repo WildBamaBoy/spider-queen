@@ -43,6 +43,7 @@ import sq.entity.EntityFly;
 import sq.entity.EntityJack;
 import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
+import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityYuki;
 import sq.enums.EnumCocoonType;
@@ -181,6 +182,7 @@ public final class SpiderCore
 		dualRegisterEntity(EntityWasp.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityYuki.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityAttackBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityVines.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		
 		//Tile registry
 
