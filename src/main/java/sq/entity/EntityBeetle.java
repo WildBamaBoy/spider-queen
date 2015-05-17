@@ -1,7 +1,6 @@
 package sq.entity;
 
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 //TODO

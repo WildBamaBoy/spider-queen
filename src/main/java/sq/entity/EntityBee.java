@@ -1,9 +1,9 @@
 package sq.entity;
 
-import radixcore.data.WatchedInt;
-import sq.core.radix.PlayerData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import radixcore.data.WatchedInt;
+import sq.core.radix.PlayerData;
 
 public class EntityBee extends AbstractFlyingMob implements IRep
 {

@@ -1,9 +1,6 @@
 package sq.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
 

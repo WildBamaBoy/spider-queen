@@ -6,9 +6,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
-import radixcore.util.RadixMath;
 import sq.core.minecraft.ModItems;
-import sq.enums.EnumAntType;
 
 //TODO Make friendly version.
 public class EntityMandragora extends AbstractNewMob

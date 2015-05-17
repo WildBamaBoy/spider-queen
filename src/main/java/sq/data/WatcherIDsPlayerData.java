@@ -1,6 +1,5 @@
 package sq.data;
 
-import radixcore.data.WatchedInt;
 
 public final class WatcherIDsPlayerData
 {
