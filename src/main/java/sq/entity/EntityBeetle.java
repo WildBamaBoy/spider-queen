@@ -26,7 +26,7 @@ public class EntityBeetle extends AbstractNewMob
 	@Override
 	public double getMoveSpeed() 
 	{
-		return 0.8F;
+		return 0.45F;
 	}
 
 	@Override

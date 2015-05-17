@@ -46,6 +46,8 @@ public abstract class AbstractNewMob extends EntityMob
 
 			this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
 		}
+		
+		appendAI();
 	}
 
 	protected final void applyEntityAttributes()
