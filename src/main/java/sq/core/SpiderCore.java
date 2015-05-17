@@ -36,6 +36,7 @@ import sq.core.radix.CrashWatcher;
 import sq.core.radix.PlayerData;
 import sq.core.radix.SpiderPacketHandler;
 import sq.entity.EntityAnt;
+import sq.entity.EntityAttackBall;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
 import sq.entity.EntityFly;
@@ -179,6 +180,7 @@ public final class SpiderCore
 		dualRegisterEntity(EntityOctopus.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityWasp.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityYuki.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityAttackBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		
 		//Tile registry
 

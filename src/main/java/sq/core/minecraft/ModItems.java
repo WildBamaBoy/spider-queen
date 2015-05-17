@@ -51,6 +51,7 @@ public final class ModItems
 	public static ItemNectar nectar;
 	public static ItemMandSeeds mandragoraSeeds;
 	public static Item bugLight;
+	public static Item jackBall;
 	
 	public ModItems()
 	{
@@ -87,5 +88,8 @@ public final class ModItems
 
 		bugLight = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("buglight").setTextureName("sq:buglight").setMaxStackSize(1);
 		GameRegistry.registerItem(bugLight, "buglight");
+		
+		jackBall = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("jackball").setTextureName("sq:jackball");
+		GameRegistry.registerItem(jackBall, "jackball");
 	}
 }

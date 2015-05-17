@@ -1,13 +1,18 @@
 package sq.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import radixcore.constant.Time;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
+import sq.enums.EnumAttackBallType;
 
 public class EntityJack extends AbstractFlyingMob
 {
+	private int attackTimer;
+
 	public EntityJack(World world) 
 	{
 		super(world, "jack");
@@ -18,36 +23,60 @@ public class EntityJack extends AbstractFlyingMob
 	public void onUpdate() 
 	{
 		super.onUpdate();
-		fallDistance = 0.0F;
-		
+
 		if (!SpiderCore.getConfig().enableJack)
 		{
 			setDead();
 		}
-		
-		if (!worldObj.isRemote && worldObj.isDaytime())
-		{
-			int yMov = 0;
-			boolean allowBlockPlace =  false;
 
-			while (yMov > -255)
+		if (!worldObj.isRemote)
+		{
+			//Turn into a block during the day.
+			if (worldObj.isDaytime())
 			{
-				Block block = worldObj.getBlock((int)posX, (int)posY + yMov, (int)posZ);
-				
-				if (block != Blocks.air)
+				int yMov = 0;
+				boolean allowBlockPlace =  false;
+
+				while (yMov > -255)
 				{
-					allowBlockPlace = true;
-					break;
+					Block block = worldObj.getBlock((int)posX, (int)posY + yMov, (int)posZ);
+
+					if (block != Blocks.air)
+					{
+						allowBlockPlace = true;
+						break;
+					}
+					yMov--;
 				}
-				yMov--;
+
+				if (allowBlockPlace)
+				{
+					worldObj.setBlock((int)posX, (int)posY + yMov + 1, (int)posZ, ModBlocks.jack);
+					setDead();
+				}
 			}
 			
-			if (allowBlockPlace)
+			//Decrease attack timer constantly.
+			attackTimer--;
+			
+			//Check for next attack.
+			if (attackTimer <= 0)
 			{
-				worldObj.setBlock((int)posX, (int)posY + yMov + 1, (int)posZ, ModBlocks.jack);
-				setDead();
+				attackTimer = Time.SECOND;
+				
+				if (this.getEntityToAttack() != null)
+				{
+					EntityAttackBall attackBall = new EntityAttackBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 1.6F, 4.0F, EnumAttackBallType.JACK);
+					worldObj.spawnEntityInWorld(attackBall);
+				}
 			}
 		}
+	}
+
+	@Override
+	public boolean isAIEnabled() 
+	{
+		return false;
 	}
 
 	@Override

@@ -1,0 +1,64 @@
+package sq.entity;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import sq.enums.EnumAttackBallType;
+
+public class EntityAttackBall extends EntityThrowable
+{
+	private int attackBallType;
+	private Entity shooter;
+	
+	public EntityAttackBall(World world) 
+	{
+		super(world);
+	}
+
+    public EntityAttackBall(World world, EntityLivingBase shooter, EntityLivingBase target, float speed, float unknown, EnumAttackBallType type)
+    {
+        this(world);
+        this.shooter = shooter;
+        this.renderDistanceWeight = 10.0D;
+        this.attackBallType = type.getId();
+        
+        this.posY = shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D;
+        double d0 = target.posX - shooter.posX;
+        double d1 = target.boundingBox.minY + (double)(target.height / 3.0F) - this.posY;
+        double d2 = target.posZ - shooter.posZ;
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+
+        if (d3 >= 1.0E-7D)
+        {
+            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+            double d4 = d0 / d3;
+            double d5 = d2 / d3;
+            this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f2, f3);
+            this.yOffset = 0.0F;
+            float f4 = (float)d3 * 0.2F;
+            this.setThrowableHeading(d0, d1 + (double)f4, d2, speed, unknown);
+        }
+    }
+    
+	@Override
+	protected void onImpact(MovingObjectPosition objectPosition) 
+	{
+		if (objectPosition.entityHit != null && objectPosition.entityHit != shooter)
+		{
+			Entity entityHit = objectPosition.entityHit;
+			entityHit.attackEntityFrom(DamageSource.magic, 3.0F);
+			setDead();
+		}
+	}
+	
+	public EnumAttackBallType getType()
+	{
+		return EnumAttackBallType.getById(attackBallType);
+	}
+}

@@ -9,9 +9,11 @@ import sq.client.render.RenderJack;
 import sq.client.render.RenderMandragora;
 import sq.client.render.RenderOctopus;
 import sq.client.render.RenderSpiderQueen;
+import sq.client.render.RenderThrowable;
 import sq.client.render.RenderWasp;
 import sq.client.render.RenderYuki;
 import sq.entity.EntityAnt;
+import sq.entity.EntityAttackBall;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
 import sq.entity.EntityFly;
@@ -37,6 +39,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityOctopus.class, new RenderOctopus());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWasp.class, new RenderWasp());
 		RenderingRegistry.registerEntityRenderingHandler(EntityYuki.class, new RenderYuki());
+		RenderingRegistry.registerEntityRenderingHandler(EntityAttackBall.class, new RenderThrowable());
 	}
 
 	@Override
