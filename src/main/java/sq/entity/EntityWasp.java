@@ -26,5 +26,11 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		return 0.9F;
 	}
+	
+	@Override
+	public boolean isPassive()
+	{
+		return false;
+	}
 }
 

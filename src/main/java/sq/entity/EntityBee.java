@@ -1,9 +1,11 @@
 package sq.entity;
 
+import radixcore.data.WatchedInt;
+import sq.core.radix.PlayerData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class EntityBee extends AbstractFlyingMob
+public class EntityBee extends AbstractFlyingMob implements IRep
 {
 	public EntityBee(World world) 
 	{
@@ -72,5 +74,25 @@ public class EntityBee extends AbstractFlyingMob
 	public EnumBeeType getBeeType()
 	{
 		return EnumBeeType.getById(dataWatcher.getWatchableObjectInt(12));
+	}
+
+	@Override
+	public WatchedInt getLikeData(PlayerData data) 
+	{
+		return data.beeLike;
+	}
+
+	@Override
+	public boolean isPassive() 
+	{
+		if (getBeeType() == EnumBeeType.GATHERER)
+		{
+			return true;
+		}
+		
+		else
+		{
+			return false;
+		}
 	}
 }

@@ -5,10 +5,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.data.WatchedInt;
 import sq.core.SpiderCore;
+import sq.core.radix.PlayerData;
 import sq.enums.EnumAntType;
 
-public class EntityAnt extends AbstractNewMob
+public class EntityAnt extends AbstractNewMob implements IRep
 {
 	private int eatTime;
 
@@ -30,7 +32,7 @@ public class EntityAnt extends AbstractNewMob
 		super.entityInit();
 		this.dataWatcher.addObject(12, EnumAntType.BLACK.getId());
 	}
-
+    
 	@Override
 	public void onUpdate() 
 	{
@@ -116,5 +118,17 @@ public class EntityAnt extends AbstractNewMob
 	public EnumAntType getAntType()
 	{
 		return EnumAntType.getById(dataWatcher.getWatchableObjectInt(12));
+	}
+
+	@Override
+	public WatchedInt getLikeData(PlayerData data) 
+	{
+		return data.antLike;
+	}
+
+	@Override
+	public boolean isPassive() 
+	{
+		return false;
 	}
 }

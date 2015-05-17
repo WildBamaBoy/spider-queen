@@ -1,31 +1,51 @@
 package sq.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAICreeperSwell;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import radixcore.util.RadixString;
+import sq.entity.ai.AIAttackPlayerOnUnlike;
 
 public abstract class AbstractNewMob extends EntityMob 
 {
 	private final String codeName;
-	
+
 	public AbstractNewMob(World world, String codeName)
 	{
 		super(world);
 		this.codeName = codeName;
-		
+
 		this.getNavigator().setAvoidsWater(false);
-		this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(1, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		this.tasks.addTask(1, new EntityAIWander(this, getMoveSpeed()));
+		this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(3, new EntityAILookIdle(this));
+
+		if (!this.isPassive())
+		{
+			this.tasks.addTask(4, new EntityAIAttackOnCollide(this, getMoveSpeed(), false));
+
+			if (this instanceof IRep)
+			{
+				this.targetTasks.addTask(1, new AIAttackPlayerOnUnlike(this));
+			}
+
+			else
+			{
+				this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+			}
+
+			this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+		}
 	}
 
 	protected final void applyEntityAttributes()
@@ -38,10 +58,16 @@ public abstract class AbstractNewMob extends EntityMob
 	}
 	
 	public abstract float getMobMaxHealth();
-	
+
 	public abstract float getHitDamage();
-	
+
 	public abstract double getMoveSpeed();
+
+	@Override
+    public boolean isAIEnabled()
+    {
+        return true;
+    }
 	
 	@Override
 	protected final String getHurtSound() 
@@ -60,10 +86,17 @@ public abstract class AbstractNewMob extends EntityMob
 	{
 		return "sq:" + codeName + ".idle";
 	}
-	
+
 	@Override
 	public String getCommandSenderName() 
 	{
 		return RadixString.upperFirstLetter(codeName);
 	}
+
+	public void appendAI()
+	{
+		
+	}
+	
+	public abstract boolean isPassive();
 }

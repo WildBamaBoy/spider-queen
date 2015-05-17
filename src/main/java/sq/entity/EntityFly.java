@@ -1,5 +1,8 @@
 package sq.entity;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
@@ -16,34 +19,19 @@ public class EntityFly extends AbstractFlyingMob
 	public void onUpdate() 
 	{
 		super.onUpdate();
-
+		
+		this.entityToAttack = null;
+		
 		if (!SpiderCore.getConfig().enableFly)
 		{
 			setDead();
 		}
-		
-		if (motionY > 0)
-		{
-			motionY = motionY * 1.03F;
-		}
-		
-		else
-		{
-			double yMod = Math.sqrt((motionX * motionX) + (motionZ * motionZ));
-			motionY = motionY * 0.3F + yMod * 0.3F;
-		}
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) 
+	public boolean isAIEnabled()
 	{
-		super.writeEntityToNBT(nbt);
-	}
-
-	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) 
-	{
-		super.readEntityFromNBT(nbt);
+		return false;
 	}
 
 	@Override
@@ -61,12 +49,23 @@ public class EntityFly extends AbstractFlyingMob
 	@Override
 	public double getMoveSpeed() 
 	{
-		return 0.9D;
+		return 0.7D;
 	}
 
 	@Override
 	public float getMobMaxHealth() 
 	{
 		return 20.0F;
+	}
+
+    protected Entity findPlayerToAttack()
+    {
+    	return null;
+    }
+
+	@Override
+	public boolean isPassive() 
+	{
+		return true;
 	}
 }

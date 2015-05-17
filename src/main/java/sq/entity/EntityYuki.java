@@ -26,5 +26,11 @@ public class EntityYuki extends AbstractFlyingMob
 	{
 		return 0.75F;
 	}
+	
+	@Override
+	public boolean isPassive()
+	{
+		return false;
+	}
 }
 

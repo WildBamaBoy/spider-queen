@@ -26,4 +26,10 @@ public class EntityMandragora extends AbstractNewMob
 	{
 		return 0.4F;
 	}
+
+	@Override
+	public boolean isPassive() 
+	{
+		return false;
+	}
 }

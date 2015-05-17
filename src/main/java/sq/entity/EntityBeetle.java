@@ -1,5 +1,7 @@
 package sq.entity;
 
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class EntityBeetle extends AbstractNewMob
@@ -25,5 +27,17 @@ public class EntityBeetle extends AbstractNewMob
 	public double getMoveSpeed() 
 	{
 		return 0.8F;
+	}
+
+	@Override
+	public boolean isPassive() 
+	{
+		return false;
+	}
+	
+	@Override
+	public void appendAI()
+	{
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, 0, true));
 	}
 }

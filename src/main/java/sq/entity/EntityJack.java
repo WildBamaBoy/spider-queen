@@ -67,4 +67,10 @@ public class EntityJack extends AbstractFlyingMob
 	{
 		return 80.0F;
 	}
+
+	@Override
+	public boolean isPassive() 
+	{
+		return false;
+	}
 }
