@@ -1,6 +1,5 @@
 package sq.entity;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -13,7 +12,7 @@ import sq.enums.EnumAttackBallType;
 public class EntityAttackBall extends EntityThrowable
 {
 	private int attackBallType;
-	private Entity shooter;
+	private EntityLivingBase shooter;
 	
 	public EntityAttackBall(World world) 
 	{
@@ -49,10 +48,10 @@ public class EntityAttackBall extends EntityThrowable
 	@Override
 	protected void onImpact(MovingObjectPosition objectPosition) 
 	{
-		if (objectPosition.entityHit != null && objectPosition.entityHit != shooter)
+		if (objectPosition.entityHit instanceof EntityLivingBase && objectPosition.entityHit != shooter)
 		{
-			Entity entityHit = objectPosition.entityHit;
-			entityHit.attackEntityFrom(DamageSource.magic, 3.0F);
+			EntityLivingBase entityHit = (EntityLivingBase)objectPosition.entityHit;
+			entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 6.0F);
 			setDead();
 		}
 	}

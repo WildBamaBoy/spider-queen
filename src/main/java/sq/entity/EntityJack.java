@@ -3,10 +3,13 @@ package sq.entity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
+import sq.core.minecraft.ModItems;
 import sq.enums.EnumAttackBallType;
 
 public class EntityJack extends AbstractFlyingMob
@@ -62,7 +65,7 @@ public class EntityJack extends AbstractFlyingMob
 			//Check for next attack.
 			if (attackTimer <= 0)
 			{
-				attackTimer = Time.SECOND;
+				attackTimer = Time.SECOND * RadixMath.getNumberInRange(2, 5);
 				
 				if (this.getEntityToAttack() != null)
 				{
@@ -101,5 +104,14 @@ public class EntityJack extends AbstractFlyingMob
 	public boolean isPassive() 
 	{
 		return false;
+	}
+	
+	@Override
+	protected void dropFewItems(boolean hitByPlayer, int lootLevel)
+	{
+		if (hitByPlayer)
+		{
+			this.dropItem(ModItems.bugLight, 1);
+		}
 	}
 }
