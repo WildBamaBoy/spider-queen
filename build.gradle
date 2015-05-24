@@ -26,9 +26,9 @@ apply plugin: 'forge'
 
 fileTree('gradle').include('*.gradle').collect().sort().each { apply from: it }
 
-version = "1.0.0-relaunch"
+version = "1.0.0"
 group= "com.radixshock"
-archivesBaseName = "SpiderQueenReborn"
+archivesBaseName = "SpiderQueen"
 
 minecraft 
 {
@@ -43,6 +43,14 @@ version = "${project.minecraft.version}-${project.version}"
 dependencies 
 {
 	compile fileTree(dir: 'lib', includes: ['*.jar'])
+}
+
+jar
+{
+    manifest
+    {
+        attributes("FMLCorePlugin": "sq.asm.SpiderLoadingPlugin")
+    }
 }
 
 processResources 
