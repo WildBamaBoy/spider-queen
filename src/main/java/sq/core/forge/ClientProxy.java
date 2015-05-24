@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import sq.client.render.RenderAnt;
 import sq.client.render.RenderBee;
 import sq.client.render.RenderBeetle;
+import sq.client.render.RenderCocoon;
 import sq.client.render.RenderFly;
 import sq.client.render.RenderJack;
 import sq.client.render.RenderMandragora;
@@ -17,6 +18,7 @@ import sq.entity.EntityAnt;
 import sq.entity.EntityAttackBall;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
+import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
 import sq.entity.EntityJack;
 import sq.entity.EntityMandragora;
@@ -43,6 +45,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityYuki.class, new RenderYuki());
 		RenderingRegistry.registerEntityRenderingHandler(EntityAttackBall.class, new RenderThrowable());
 		RenderingRegistry.registerEntityRenderingHandler(EntityVines.class, new RenderVines());
+		RenderingRegistry.registerEntityRenderingHandler(EntityCocoon.class, new RenderCocoon());
 	}
 
 	@Override

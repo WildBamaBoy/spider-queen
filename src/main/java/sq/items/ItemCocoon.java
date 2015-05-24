@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
+import sq.entity.EntityCocoon;
 import sq.enums.EnumCocoonType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -19,6 +20,7 @@ public class ItemCocoon extends Item
 		
 		final String name = "cocoon-" + type.getName();
 		setCreativeTab(SpiderCore.getCreativeTab());
+		setCocoonType(type);
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		
@@ -49,10 +51,9 @@ public class ItemCocoon extends Item
 			posY += Facing.offsetsYForSide[meta];
 			posZ += Facing.offsetsZForSide[meta];
 
-			//TODO
-//			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-//			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
-//			world.spawnEntityInWorld(entityCocoon);
+			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
+			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
+			world.spawnEntityInWorld(entityCocoon);
 			
 			return true;
 		}
