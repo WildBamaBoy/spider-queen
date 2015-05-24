@@ -7,7 +7,7 @@ import sq.items.ItemCocoon;
 
 public enum EnumCocoonType
 {
-	ANT 		(0, 50, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL),
+	BLACK_ANT 	(0, 50, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL),
 	COW 		(1, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL),
 	CREEPER 	(2, 40, EnumCocoonSize.NORMAL, EnumSpiderType.BOOM),
 	GATHERER_BEE (3, 50, EnumCocoonSize.BEE, EnumSpiderType.NORMAL),
@@ -24,7 +24,8 @@ public enum EnumCocoonType
 	BLAZE 		(14, 30, EnumCocoonSize.NORMAL, EnumSpiderType.INFERNO),
 	CHICKEN 	(15, 80, EnumCocoonSize.SMALL, EnumSpiderType.NORMAL),
 	VILLAGER 	(16, 80, EnumCocoonSize.TALL, EnumSpiderType.PACK),
-	HORSE 		(17, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER);
+	HORSE 		(17, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER),
+	RED_ANT		(18, 40, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL);
 	
 	final int id;
 	final int catchChance;
@@ -58,7 +59,7 @@ public enum EnumCocoonType
 		{
 			for (Field f : ModItems.class.getDeclaredFields())
 			{
-				if (f.getName().equalsIgnoreCase("cocoon" + name().toLowerCase()))
+				if (f.getName().equalsIgnoreCase("cocoon" + name().toLowerCase().replace("_", "")))
 				{
 					ItemCocoon item = (ItemCocoon) f.get(null);
 					return item;
@@ -85,6 +86,20 @@ public enum EnumCocoonType
 	
 	public String getDeathSound()
 	{
+		//Apply some corrections here
+		switch (this)
+		{
+		case ENDERMAN: return "mob.endermen.death";
+		case COW: return "mob.cow.hurt";
+		case SHEEP: return "mob.sheep.hurt";
+		case WARRIOR_BEE:
+		case GATHERER_BEE:
+		case QUEEN_BEE:
+		case WASP: return "sq:bee.hurt";
+		case BLACK_ANT:
+		case RED_ANT: return "sq:ant.death";
+		}
+		
 		return deathSound;
 	}
 	

@@ -226,16 +226,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				{
 					entityDropItem(new ItemStack(ModItems.spiderEgg, dropAmount, 0), 0);
 				}
-
-				try
-				{
-					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
-				}
-
-				catch (final Throwable e)
-				{
-					e.printStackTrace();
-				}
 			}
 		}
 
@@ -276,15 +266,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			if (isEaten)
 			{
-				try
-				{
-					worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), getSoundVolume(), getSoundPitch());
-				}
-
-				catch (final Throwable e)
-				{
-					e.printStackTrace();
-				}
+				worldObj.playSoundAtEntity(this, cocoonType.getDeathSound(), 0.3F, getSoundPitch());
 			}
 		}
 	}

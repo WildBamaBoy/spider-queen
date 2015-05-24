@@ -19,7 +19,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModItems
 {
-	public static ItemCocoon cocoonAnt;
+	public static ItemCocoon cocoonBlackAnt;
+	public static ItemCocoon cocoonRedAnt;
 	public static ItemCocoon cocoonCow;
 	public static ItemCocoon cocoonCreeper;
 	public static ItemCocoon cocoonGathererBee;
@@ -55,7 +56,8 @@ public final class ModItems
 	
 	public ModItems()
 	{
-		cocoonAnt = new ItemCocoon(EnumCocoonType.ANT);
+		cocoonBlackAnt = new ItemCocoon(EnumCocoonType.BLACK_ANT);
+		cocoonRedAnt = new ItemCocoon(EnumCocoonType.RED_ANT);
 		cocoonCow = new ItemCocoon(EnumCocoonType.COW);
 		cocoonCreeper = new ItemCocoon(EnumCocoonType.CREEPER);
 		cocoonGathererBee = new ItemCocoon(EnumCocoonType.GATHERER_BEE);

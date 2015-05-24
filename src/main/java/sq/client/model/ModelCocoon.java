@@ -1,8 +1,11 @@
 package sq.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import sq.entity.EntityCocoon;
 import sq.enums.EnumCocoonSize;
 import sq.enums.EnumCocoonType;
 
@@ -158,28 +161,28 @@ public class ModelCocoon extends ModelBase
 		modelInsectHead.setTextureSize(64, 32);
 		modelInsectHead.mirror = true;
 		setRotation(modelInsectHead, 0F, 0F, 0F);
-		
+
 		modelInsectCocoon = new ModelRenderer(this, 20, 13);
 		modelInsectCocoon.addBox(0F, 0F, 0F, 10, 9, 10);
 		modelInsectCocoon.setRotationPoint(-5F, 3F, -2F);
 		modelInsectCocoon.setTextureSize(64, 32);
 		modelInsectCocoon.mirror = true;
 		setRotation(modelInsectCocoon, 0F, 0F, 0F);
-		
+
 		modelInsectFeeler1 = new ModelRenderer(this, 0, -3);
 		modelInsectFeeler1.addBox(0F, -6F, -2F, 0, 6, 4);
 		modelInsectFeeler1.setRotationPoint(-2F, 6F, -4F);
 		modelInsectFeeler1.setTextureSize(64, 32);
 		modelInsectFeeler1.mirror = true;
 		setRotation(modelInsectFeeler1, 0.4363323F, 0.5235988F, 0F);
-		
+
 		modelInsectFeeler2 = new ModelRenderer(this, 0, -3);
 		modelInsectFeeler2.addBox(0F, -6F, -2F, 0, 6, 4);
 		modelInsectFeeler2.setRotationPoint(2F, 6F, -4F);
 		modelInsectFeeler2.setTextureSize(64, 32);
 		modelInsectFeeler2.mirror = true;
 		setRotation(modelInsectFeeler2, 0.4363323F, -0.5235988F, 0F);
-		
+
 		modelInsectPincer = new ModelRenderer(this, 28, 4);
 		modelInsectPincer.addBox(-3F, -1F, -3F, 8, 1, 4);
 		modelInsectPincer.setRotationPoint(-1F, 12F, -7F);
@@ -191,12 +194,8 @@ public class ModelCocoon extends ModelBase
 	@Override
 	public void render(Entity entity, float posX, float posY, float posZ, float rotationYaw, float rotationPitch, float partialTickTime)
 	{
-//		final EntityCocoon entityCocoon = (EntityCocoon) entity;
-//		final EnumCocoonType cocoonType = entityCocoon.getCocoonType();
-//		final EnumCocoonSize cocoonSize = cocoonType.getCocoonSize();
-
-		//TODO
-		final EnumCocoonType cocoonType = EnumCocoonType.COW;
+		final EntityCocoon entityCocoon = (EntityCocoon) entity;
+		final EnumCocoonType cocoonType = entityCocoon.getCocoonType();
 		final EnumCocoonSize cocoonSize = cocoonType.getCocoonSize();
 
 		renderCocoonBase(cocoonSize, partialTickTime);
@@ -241,17 +240,27 @@ public class ModelCocoon extends ModelBase
 
 		else if (cocoonSize == EnumCocoonSize.BEE)
 		{
-			modelBeeHead.render(partialTickTime);
-			modelBeeFeeler1.render(partialTickTime);
-			modelBeeFeeler2.render(partialTickTime);
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslated(0.0D, -0.75D, 0.0D);
+				modelBeeHead.render(partialTickTime);
+				modelBeeFeeler1.render(partialTickTime);
+				modelBeeFeeler2.render(partialTickTime);
+			}
+			GL11.glPopMatrix();
 		}
 
 		else if (cocoonSize == EnumCocoonSize.INSECT)
 		{
-			modelInsectHead.render(partialTickTime);
-			modelInsectFeeler1.render(partialTickTime);
-			modelInsectFeeler2.render(partialTickTime);
-			modelInsectPincer.render(partialTickTime);
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslated(0.0D, -0.75D, 0.0D);
+				modelInsectHead.render(partialTickTime);
+				modelInsectFeeler1.render(partialTickTime);
+				modelInsectFeeler2.render(partialTickTime);
+				modelInsectPincer.render(partialTickTime);
+			}
+			GL11.glPopMatrix();
 		}
 
 		else
@@ -280,12 +289,22 @@ public class ModelCocoon extends ModelBase
 
 		else if (cocoonSize == EnumCocoonSize.INSECT)
 		{
-			modelInsectCocoon.render(partialTickTime);
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslated(0.0D, -0.75D, 0.0D);
+				modelInsectCocoon.render(partialTickTime);
+			}
+			GL11.glPopMatrix();
 		}
 
 		else if (cocoonSize == EnumCocoonSize.BEE)
 		{
-			modelBeeCocoon.render(partialTickTime);
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslated(0.0D, -0.75D, 0.0D);
+				modelBeeCocoon.render(partialTickTime);
+			}
+			GL11.glPopMatrix();
 		}
 	}
 

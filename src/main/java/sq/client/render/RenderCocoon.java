@@ -60,15 +60,14 @@ public class RenderCocoon extends Render
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		final EntityCocoon entityCocoon = (EntityCocoon) entity;
-
-		String name = entityCocoon.getCocoonType().toString();
-		name = Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();
-
-		String resourceLocation = "spiderqueen:textures/entity/" + name;
-
+		String name = entityCocoon.getCocoonType().toString().toLowerCase();
+		name = name.replace("_", "-"); //For bees
+		
+		String resourceLocation = "sq:textures/entities/cocoon-" + name;
+		
 		if (entityCocoon.isEaten())
 		{
-			resourceLocation += "Dead";
+			resourceLocation += "-dead";
 		}
 
 		return new ResourceLocation(resourceLocation += ".png");
