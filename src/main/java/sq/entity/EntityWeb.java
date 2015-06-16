@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -16,17 +15,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
-import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
+import sq.enums.EnumWebType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityWeb extends Entity implements IProjectile
 {
 	private int				ticksInAir;
-	private int				type;
+	private EnumWebType		type;
 	private boolean			doBlockSpawn;
 
 	public EntityLivingBase	shooter;
@@ -58,7 +56,7 @@ public class EntityWeb extends Entity implements IProjectile
 		doBlockSpawn = true;
 	}
 
-	public EntityWeb(EntityPlayer player, int type)
+	public EntityWeb(EntityPlayer player, EnumWebType type)
 	{
 		this(player);
 		this.type = type;
@@ -94,7 +92,6 @@ public class EntityWeb extends Entity implements IProjectile
 	@Override
 	protected void entityInit()
 	{
-		// No init.
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -117,26 +114,6 @@ public class EntityWeb extends Entity implements IProjectile
 		else
 		{
 			super.onUpdate();
-
-			if (!worldObj.isRemote)
-			{
-				if (shooter != null && getDistanceToEntity(shooter) > 150.0D)
-				{
-					setDead();
-					return;
-				}
-
-				if (type == 2 && worldObj.getBlock((int) posX, (int) posY, (int) posZ) == Blocks.lava)
-				{
-					for (final Point3D point : RadixLogic.getNearbyBlocks(this, Blocks.lava, 2))
-					{
-						worldObj.setBlock(point.iPosX, point.iPosY, point.iPosZ, Blocks.fire);
-					}
-
-					setDead();
-				}
-			}
-
 			updateCollision();
 			updateMotion();
 		}
@@ -169,37 +146,7 @@ public class EntityWeb extends Entity implements IProjectile
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
-		if (isEntityInvulnerable())
-		{
-			return false;
-		}
-
-		else
-		{
-			setBeenAttacked();
-
-			if (damageSource.getEntity() != null)
-			{
-				final Vec3 sourceLookVector = damageSource.getEntity().getLookVec();
-
-				if (sourceLookVector != null)
-				{
-					motionX = sourceLookVector.xCoord;
-					motionY = sourceLookVector.yCoord;
-					motionZ = sourceLookVector.zCoord;
-					accelerationX = motionX * 0.1D;
-					accelerationY = motionY * 0.1D;
-					accelerationZ = motionZ * 0.1D;
-				}
-
-				return true;
-			}
-
-			else
-			{
-				return false;
-			}
-		}
+		return false;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -250,19 +197,6 @@ public class EntityWeb extends Entity implements IProjectile
 	public void setDead()
 	{
 		super.setDead();
-
-		if (type == 2)
-		{
-			for (int i = -2; i < 2; i++)
-			{
-				worldObj.getBlock((int) posX, (int) posY + i, (int) posZ);
-
-				for (final Point3D point : RadixLogic.getNearbyBlocks(this, Blocks.lava, 2))
-				{
-					worldObj.setBlock(point.iPosX, point.iPosY, point.iPosZ, Blocks.fire);
-				}
-			}
-		}
 	}
 
 	private void updateCollision()
@@ -351,13 +285,7 @@ public class EntityWeb extends Entity implements IProjectile
 
 		if (isInWater())
 		{
-			for (int counter = 0; counter < 4; ++counter)
-			{
-				final float speedFactor = 0.25F;
-				worldObj.spawnParticle("bubble", posX - motionX * speedFactor, posY - motionY * speedFactor, posZ - motionZ * speedFactor, motionX, motionY, motionZ);
-			}
-
-			motionFactor = 0.8F;
+			setDead();
 		}
 
 		motionX += accelerationX;
@@ -374,231 +302,62 @@ public class EntityWeb extends Entity implements IProjectile
 	{
 		if (!worldObj.isRemote)
 		{
-			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
+			skewMotion();
+			doBlockSpawn = false;
+			
+			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase && type == EnumWebType.NORMAL)
 			{
 				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(impactPoint.entityHit);
 				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
-				final float attackPower = type == 1 ? 4.0F : type == 2 ? 0.0F : 0.0F;
-				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), attackPower);
-
-				if (type == 2)
-				{
-					entityHit.setFire(5);
-					setDead();
-				}
+				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 0.0F);
 
 				if (cocoonType != null)
 				{
-					if (entityHit.getHealth() > 0.4F)
+					final int intHealth = (int) entityHit.getHealth();
+					final int catchChance = (int) (cocoonType.getCatchChance() + (entityHit.getMaxHealth() - intHealth) * 2);
+
+					if (RadixLogic.getBooleanWithProbability(catchChance))
 					{
-						final Random rand = new Random();
-						final int intHealth = (int) entityHit.getHealth();
-						final int captureDifficulty = cocoonType.getCatchChance();
-
-						if (captureDifficulty != 0 && rand.nextInt(intHealth / captureDifficulty + 1) != 0)
-						{
-							setToInactive();
-							setNoBlockSpawn();
-							return;
-						}
-
-						else
-						{
-							EntityCocoon entityCocoon = null;
-
-							if (type == 0)
-							{
-								entityCocoon = new EntityCocoon(worldObj, cocoonType);
-							}
-
-							if (entityCocoon != null)
-							{
-								entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
-								worldObj.spawnEntityInWorld(entityCocoon);
-								entityHit.setDead();
-								setDead();
-							}
-						}
+						EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
+						entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
+						worldObj.spawnEntityInWorld(entityCocoon);
+						
+						entityHit.setDead();
+						setDead();
 					}
 				}
 			}
 
 			else
-				// Hit a block.
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int impactX = impactPoint.blockX;
 				int impactY = impactPoint.blockY;
 				int impactZ = impactPoint.blockZ;
 
-				if (blockHit != ModBlocks.blockWebSide && blockHit != ModBlocks.blockWebGround && 
-						blockHit != ModBlocks.blockPoisonWebSide && blockHit != ModBlocks.blockPoisonWebGround)
-				{
-					if (blockHit == Blocks.tallgrass && type == 2)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
-						setDead();
-						return;
-					}
-
-					else if (blockHit == Blocks.tallgrass && type != 2) { return; }
-
-					else if (blockHit == Blocks.snow_layer)
-					{
-						if (doBlockSpawn)
-						{
-							worldObj.setBlock(impactX, impactY, impactZ, ModBlocks.web, 0, 2);
-							return;
-						}
-					}
-
-					if (doBlockSpawn)
-					{
-						switch (impactPoint.sideHit)
-						{
-						case 0:
-							--impactY;
-							break;
-						case 1:
-							++impactY;
-							break;
-						case 2:
-							--impactZ;
-							break;
-						case 3:
-							++impactZ;
-							break;
-						case 4:
-							--impactX;
-							break;
-						case 5:
-							++impactX;
-						}
-
-						if (worldObj.isAirBlock(impactX, impactY, impactZ))
-						{
-							int meta = 0;
-							switch (impactPoint.sideHit)
-							{
-							case 0:
-								meta = 0;
-								break;
-							case 1:
-								meta = -1;
-								break;
-							case 2:
-								meta = 1;
-								break;
-							case 3:
-								meta = 4;
-								break;
-							case 4:
-								meta = 8;
-								break;
-							case 5:
-								meta = 2;
-								break;
-							}
-
-							if (meta == -1)
-							{
-								if (type == 0)
-								{
-									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebGround, 0, 2);
-								}
-
-								else if (type == 1)
-								{
-									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebGround, 0, 2);
-								}
-
-								else if (type == 2)
-								{
-									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockFlameWebFull);
-								}
-							}
-
-							else
-							{
-								if (type == 0)
-								{
-									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebSide, meta, 2);
-								}
-
-								else if (type == 1)
-								{
-									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebSide, meta, 2);
-								}
-
-								else if (type == 2)
-								{
-									worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockFlameWebFull);
-								}
-							}
-						}
-
-						setDead();
-					}
-				}
-
-				else if (blockHit == SpiderQueen.getInstance().blockWebGround || blockHit == SpiderQueen.getInstance().blockWebSide)
-				{
-					if (type == 0)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockWebFull);
-					}
-
-					else if (type == 1)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebFull);
-					}
-
-					else if (type == 2)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
-					}
-				}
-
-				else if (blockHit == SpiderQueen.getInstance().blockPoisonWebGround || blockHit == SpiderQueen.getInstance().blockPoisonWebSide)
-				{
-					if (type == 0)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebFull);
-					}
-
-					else if (type == 1)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, SpiderQueen.getInstance().blockPoisonWebFull);
-					}
-
-					else if (type == 2)
-					{
-						worldObj.setBlock(impactX, impactY, impactZ, Blocks.fire);
-					}
-				}
+				//TODO Spawn web blocks.
+				setDead();
 			}
 		}
 	}
 
-	private void setToInactive()
+	private void skewMotion()
 	{
 		final Random rand = new Random();
+		
 		if (rand.nextInt(2) == 0)
 		{
 			motionX = motionX * -0.2F;
 		}
+		
 		if (rand.nextInt(2) == 0)
 		{
 			motionY = motionY * -0.2F;
 		}
+		
 		if (rand.nextInt(2) == 0)
 		{
 			motionZ = motionZ * -0.2F;
 		}
-	}
-
-	private void setNoBlockSpawn()
-	{
-		doBlockSpawn = false;
 	}
 }

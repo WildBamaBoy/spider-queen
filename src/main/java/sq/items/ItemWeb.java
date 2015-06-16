@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
+import sq.entity.EntityWeb;
 import sq.enums.EnumWebType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -47,9 +48,8 @@ public class ItemWeb extends Item
 				itemStack.stackSize--;
 			}
 
-			//TODO
-//			final EntityWeb web = new EntityWeb(entityPlayer, type);
-//			world.spawnEntityInWorld(web);
+			final EntityWeb web = new EntityWeb(entityPlayer, webType);
+			world.spawnEntityInWorld(web);
 		}
 		
 		return itemStack;
