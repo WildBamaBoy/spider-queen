@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import sq.entity.EntityBee;
-import sq.entity.EnumBeeType;
+import sq.enums.EnumBeeType;
 
 public class ModelBee extends ModelBase
 {

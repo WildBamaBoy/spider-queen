@@ -28,7 +28,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalSpawnData
+public class EntityWebShot extends Entity implements IProjectile, IEntityAdditionalSpawnData
 {
 	private int				ticksInAir;
 	private EnumWebType		type;
@@ -39,12 +39,12 @@ public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalS
 	public double			accelerationY;
 	public double			accelerationZ;
 
-	public EntityWeb(World worldObj)
+	public EntityWebShot(World worldObj)
 	{
 		super(worldObj);
 	}
 
-	public EntityWeb(EntityPlayer player)
+	public EntityWebShot(EntityPlayer player)
 	{
 		this(player.worldObj);
 
@@ -63,13 +63,13 @@ public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalS
 		doBlockSpawn = true;
 	}
 
-	public EntityWeb(EntityPlayer player, EnumWebType type)
+	public EntityWebShot(EntityPlayer player, EnumWebType type)
 	{
 		this(player);
 		this.type = type;
 	}
 
-	public EntityWeb(EntityLivingBase shooter, EntityLivingBase target, float speed)
+	public EntityWebShot(EntityLivingBase shooter, EntityLivingBase target, float speed)
 	{
 		this(shooter.worldObj);
 		this.shooter = shooter;

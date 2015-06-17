@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import radixcore.data.WatchedInt;
 import sq.core.radix.PlayerData;
+import sq.enums.EnumBeeType;
 
 public class EntityBee extends AbstractFlyingMob implements IRep
 {

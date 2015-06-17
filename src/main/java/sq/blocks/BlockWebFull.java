@@ -12,6 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import sq.entity.IWebClimber;
 import sq.enums.EnumWebType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -79,7 +80,7 @@ public class BlockWebFull extends Block
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) 
 	{
-		if (entity instanceof EntitySpider || entity instanceof EntityPlayer) //TODO
+		if (entity instanceof EntitySpider || entity instanceof EntityPlayer || entity instanceof IWebClimber)
 		{
 			return;
 		}
@@ -107,7 +108,7 @@ public class BlockWebFull extends Block
 	@Override
 	public boolean isLadder(IBlockAccess world, int posX, int posY, int posZ, EntityLivingBase entity)
 	{
-		if (entity instanceof EntityPlayer || entity instanceof EntitySpider)
+		if (entity instanceof EntityPlayer || entity instanceof EntitySpider || entity instanceof IWebClimber)
 		{
 			return true;
 		}

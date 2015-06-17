@@ -26,7 +26,7 @@ import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
 import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
-import sq.entity.EntityWeb;
+import sq.entity.EntityWebShot;
 import sq.entity.EntityYuki;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -48,7 +48,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityAttackBall.class, new RenderThrowable());
 		RenderingRegistry.registerEntityRenderingHandler(EntityVines.class, new RenderVines());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCocoon.class, new RenderCocoon());
-		RenderingRegistry.registerEntityRenderingHandler(EntityWeb.class, new RenderWeb());
+		RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, new RenderWeb());
 	}
 
 	@Override

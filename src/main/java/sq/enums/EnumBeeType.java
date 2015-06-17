@@ -1,4 +1,4 @@
-package sq.entity;
+package sq.enums;
 
 import radixcore.util.RadixString;
 

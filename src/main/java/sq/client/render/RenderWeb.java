@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import sq.entity.EntityWeb;
+import sq.entity.EntityWebShot;
 import sq.enums.EnumWebType;
 
 public class RenderWeb extends Render
@@ -20,7 +20,7 @@ public class RenderWeb extends Render
 	{
 	}
 
-	public void render(EntityWeb entityWeb, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
+	public void render(EntityWebShot entityWeb, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
 		bindEntityTexture(entityWeb);
 
@@ -85,13 +85,13 @@ public class RenderWeb extends Render
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{	
-		EntityWeb web = (EntityWeb)entity;		
+		EntityWebShot web = (EntityWebShot)entity;		
 		return web.getType() == EnumWebType.NORMAL ? textureWebShot : textureWebShotPoison;
 	}
 
 	@Override
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9)
 	{
-		render((EntityWeb) var1, var2, var4, var6, var8, var9);
+		render((EntityWebShot) var1, var2, var4, var6, var8, var9);
 	}
 }

@@ -21,7 +21,7 @@ import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.EntityBee;
-import sq.entity.EnumBeeType;
+import sq.enums.EnumBeeType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockBeeHive extends Block
