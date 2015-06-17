@@ -414,6 +414,8 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 					case WEST: meta = 4; break;
 					case NORTH: meta = 8; break;
 					case SOUTH: meta = 2; break;
+					default:
+						break;
 					}
 				}
 
