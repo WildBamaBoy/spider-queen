@@ -18,7 +18,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import radixcore.util.RadixLogic;
+import sq.blocks.BlockWebGround;
+import sq.blocks.BlockWebSide;
+import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
+import sq.enums.EnumSide;
 import sq.enums.EnumWebType;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
@@ -323,15 +327,16 @@ public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalS
 		if (!worldObj.isRemote)
 		{
 			skewMotion();
-			doBlockSpawn = false;
-			
-			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase && type == EnumWebType.NORMAL)
+
+			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
 			{
+				doBlockSpawn = false;
+				
 				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(impactPoint.entityHit);
 				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
 				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 0.0F);
 
-				if (cocoonType != null)
+				if (type == EnumWebType.NORMAL && cocoonType != null)
 				{
 					final int intHealth = (int) entityHit.getHealth();
 					final int catchChance = (int) (cocoonType.getCatchChance() + (entityHit.getMaxHealth() - intHealth) * 2);
@@ -341,21 +346,83 @@ public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalS
 						EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
 						entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
 						worldObj.spawnEntityInWorld(entityCocoon);
-						
+
 						entityHit.setDead();
 						setDead();
 					}
 				}
 			}
 
-			else
+			else if (doBlockSpawn)
 			{
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int impactX = impactPoint.blockX;
 				int impactY = impactPoint.blockY;
 				int impactZ = impactPoint.blockZ;
 
-				//TODO Spawn web blocks.
+				EnumSide sideHit = EnumSide.byId(impactPoint.sideHit);
+				int xMov = sideHit == EnumSide.NORTH ? -1 : sideHit == EnumSide.SOUTH ? 1 : 0;
+				int yMov = sideHit == EnumSide.BOTTOM ? -1 : sideHit == EnumSide.TOP ? 1 : 0;
+				int zMov = sideHit == EnumSide.EAST ? -1 : sideHit == EnumSide.WEST ? 1 : 0;
+
+				Block blockPlaced = null;
+
+				//When hitting a 'partial' web, the web will be made full.
+				if (blockHit instanceof BlockWebGround || blockHit instanceof BlockWebSide)
+				{
+					blockPlaced = ModBlocks.webFull;
+
+					if (blockHit instanceof BlockWebGround)
+					{
+						yMov -= 1;
+					}
+
+					else if (blockHit instanceof BlockWebSide)
+					{
+						//Set to zero to replace the impact block.
+						xMov = 0;
+						zMov = 0;
+
+						if (sideHit == EnumSide.BOTTOM)
+						{
+							yMov += 1;
+						}
+					}
+				}
+
+				else
+				{
+					if (sideHit == EnumSide.TOP)
+					{
+						blockPlaced = ModBlocks.webGround;
+					}
+
+					else
+					{
+						blockPlaced = ModBlocks.webSide;
+					}
+				}
+
+				int meta = 0;
+
+				//Calculate meta for the side web.
+				if (blockPlaced instanceof BlockWebSide)
+				{
+					switch (sideHit)
+					{
+					case EAST: meta = 1; break;
+					case WEST: meta = 4; break;
+					case NORTH: meta = 8; break;
+					case SOUTH: meta = 2; break;
+					}
+				}
+
+				if (type == EnumWebType.POISON)
+				{
+					blockPlaced = ModBlocks.getPoisonWebVariant(blockPlaced);
+				}
+
+				worldObj.setBlock(impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta, 2);
 				setDead();
 			}
 		}
@@ -364,17 +431,17 @@ public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalS
 	private void skewMotion()
 	{
 		final Random rand = new Random();
-		
+
 		if (rand.nextInt(2) == 0)
 		{
 			motionX = motionX * -0.2F;
 		}
-		
+
 		if (rand.nextInt(2) == 0)
 		{
 			motionY = motionY * -0.2F;
 		}
-		
+
 		if (rand.nextInt(2) == 0)
 		{
 			motionZ = motionZ * -0.2F;

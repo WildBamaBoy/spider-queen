@@ -1,12 +1,15 @@
 package sq.core.minecraft;
 
+import net.minecraft.block.Block;
 import sq.blocks.BlockAntHill;
 import sq.blocks.BlockBeeHive;
 import sq.blocks.BlockJack;
 import sq.blocks.BlockMandCrop;
 import sq.blocks.BlockSpiderRod;
 import sq.blocks.BlockStinger;
-import sq.blocks.BlockWeb;
+import sq.blocks.BlockWebFull;
+import sq.blocks.BlockWebGround;
+import sq.blocks.BlockWebSide;
 import sq.enums.EnumWebType;
 
 public final class ModBlocks
@@ -14,10 +17,14 @@ public final class ModBlocks
 	public static BlockAntHill antHill;
 	public static BlockBeeHive beeHive;
 	public static BlockJack jack;
-	public static BlockWeb poisonWeb;
+	public static BlockWebFull poisonWebFull;
+	public static BlockWebSide poisonWebSide;
+	public static BlockWebGround poisonWebGround;
 	public static BlockSpiderRod spiderRod;
 	public static BlockStinger stinger;
-	public static BlockWeb web;
+	public static BlockWebFull webFull;
+	public static BlockWebSide webSide;
+	public static BlockWebGround webGround;
 	public static BlockMandCrop cropMand;
 	
 	public ModBlocks()
@@ -25,10 +32,34 @@ public final class ModBlocks
 		antHill = new BlockAntHill();
 		beeHive = new BlockBeeHive();
 		jack = new BlockJack();
-		poisonWeb = new BlockWeb(EnumWebType.POISON);
+		poisonWebFull = new BlockWebFull(EnumWebType.POISON);
+		poisonWebSide = new BlockWebSide(EnumWebType.POISON);
+		poisonWebGround = new BlockWebGround(EnumWebType.POISON);
 		spiderRod = new BlockSpiderRod();
 		stinger = new BlockStinger();
-		web = new BlockWeb(EnumWebType.NORMAL);
+		webFull = new BlockWebFull(EnumWebType.NORMAL);
+		webSide = new BlockWebSide(EnumWebType.NORMAL);
+		webGround = new BlockWebGround(EnumWebType.NORMAL);
 		cropMand = new BlockMandCrop();
+	}
+	
+	public static Block getPoisonWebVariant(Block web)
+	{	
+		if (web instanceof BlockWebGround)
+		{
+			return poisonWebGround;
+		}
+		
+		else if (web instanceof BlockWebSide)
+		{
+			return poisonWebSide;
+		}
+		
+		else if (web instanceof BlockWebFull)
+		{
+			return poisonWebFull;
+		}
+		
+		return null;
 	}
 }

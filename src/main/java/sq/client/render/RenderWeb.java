@@ -85,8 +85,7 @@ public class RenderWeb extends Render
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{	
-		EntityWeb web = (EntityWeb)entity;
-		System.out.println(web.getType());
+		EntityWeb web = (EntityWeb)entity;		
 		return web.getType() == EnumWebType.NORMAL ? textureWebShot : textureWebShotPoison;
 	}
 
