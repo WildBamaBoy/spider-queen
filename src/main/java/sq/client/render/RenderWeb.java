@@ -9,9 +9,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import sq.entity.EntityWeb;
+import sq.enums.EnumWebType;
 
 public class RenderWeb extends Render
 {
+	private static ResourceLocation textureWebShot = new ResourceLocation("sq:textures/entities/webshot.png");
+	private static ResourceLocation textureWebShotPoison = new ResourceLocation("sq:textures/entities/webshot-poison.png");
+	
 	public RenderWeb()
 	{
 	}
@@ -79,9 +83,11 @@ public class RenderWeb extends Render
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1)
-	{
-		return new ResourceLocation("sq:textures/entities/webshot.png");
+	protected ResourceLocation getEntityTexture(Entity entity)
+	{	
+		EntityWeb web = (EntityWeb)entity;
+		System.out.println(web.getType());
+		return web.getType() == EnumWebType.NORMAL ? textureWebShot : textureWebShotPoison;
 	}
 
 	@Override

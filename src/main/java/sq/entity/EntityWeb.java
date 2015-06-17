@@ -1,5 +1,7 @@
 package sq.entity;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 import java.util.Random;
 
@@ -18,10 +20,11 @@ import net.minecraft.world.World;
 import radixcore.util.RadixLogic;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumWebType;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityWeb extends Entity implements IProjectile
+public class EntityWeb extends Entity implements IProjectile, IEntityAdditionalSpawnData
 {
 	private int				ticksInAir;
 	private EnumWebType		type;
@@ -197,6 +200,23 @@ public class EntityWeb extends Entity implements IProjectile
 	public void setDead()
 	{
 		super.setDead();
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buffer) 
+	{
+		buffer.writeInt(type.getId());
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf buffer) 
+	{
+		type = EnumWebType.byId(buffer.readInt());
+	}
+
+	public EnumWebType getType()
+	{
+		return type;
 	}
 
 	private void updateCollision()
