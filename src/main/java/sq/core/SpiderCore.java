@@ -36,14 +36,17 @@ import sq.core.radix.CrashWatcher;
 import sq.core.radix.PlayerData;
 import sq.core.radix.SpiderPacketHandler;
 import sq.entity.EntityAnt;
-import sq.entity.EntityAttackBall;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
+import sq.entity.EntityBoomBall;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
 import sq.entity.EntityJack;
+import sq.entity.EntityJackBall;
 import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
+import sq.entity.EntitySpiderEgg;
+import sq.entity.EntitySpiderEx;
 import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
@@ -183,10 +186,13 @@ public final class SpiderCore
 		dualRegisterEntity(EntityOctopus.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityWasp.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityYuki.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityAttackBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityJackBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityVines.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityCocoon.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		dualRegisterEntity(EntityWebShot.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntitySpiderEx.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntityBoomBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		dualRegisterEntity(EntitySpiderEgg.class, id, 0xFFFFFF, 0xFFFFFF); id++;
 		
 		//Tile registry
 

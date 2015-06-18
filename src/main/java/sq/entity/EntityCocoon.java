@@ -108,11 +108,6 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		{
 			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 1 + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
-
-		if (cocoonType == EnumCocoonType.BLAZE && !isEaten())
-		{
-			worldObj.spawnParticle("largesmoke", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-		}
 	}
 
 	@Override

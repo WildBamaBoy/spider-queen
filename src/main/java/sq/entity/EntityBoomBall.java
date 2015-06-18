@@ -28,52 +28,20 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityWebShot extends Entity implements IProjectile, IEntityAdditionalSpawnData
+public class EntityBoomBall extends Entity implements IProjectile
 {
-	private int				ticksInAir;
-	private EnumWebType		type;
-	private boolean			doBlockSpawn;
-
+	private int	ticksInAir;
 	public EntityLivingBase	shooter;
-	public double			accelerationX;
-	public double			accelerationY;
-	public double			accelerationZ;
 
-	public EntityWebShot(World worldObj)
+	public EntityBoomBall(World worldObj)
 	{
 		super(worldObj);
 	}
 
-	public EntityWebShot(EntityPlayer player)
-	{
-		this(player.worldObj);
-
-		final Vec3 vec = player.getLookVec();
-
-		shooter = player;
-		setPosition(player.posX, player.posY + 1.4F, player.posZ);
-		accelerationX = vec.xCoord * 1.5;
-		accelerationY = vec.yCoord * 1.5;
-		accelerationZ = vec.zCoord * 1.5;
-
-		motionX = accelerationX;
-		motionY = accelerationY;
-		motionZ = accelerationZ;
-
-		doBlockSpawn = true;
-	}
-
-	public EntityWebShot(EntityPlayer player, EnumWebType type)
-	{
-		this(player);
-		this.type = type;
-	}
-
-	public EntityWebShot(EntityLivingBase shooter, EntityLivingBase target, float speed)
+	public EntityBoomBall(EntityLivingBase shooter, EntityLivingBase target, float speed)
 	{
 		this(shooter.worldObj);
 		this.shooter = shooter;
-
 		renderDistanceWeight = 10.0D;
 
 		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
@@ -207,23 +175,6 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		super.setDead();
 	}
 
-	@Override
-	public void writeSpawnData(ByteBuf buffer) 
-	{
-		buffer.writeInt(type.getId());
-	}
-
-	@Override
-	public void readSpawnData(ByteBuf buffer) 
-	{
-		type = EnumWebType.byId(buffer.readInt());
-	}
-
-	public EnumWebType getType()
-	{
-		return type;
-	}
-
 	private void updateCollision()
 	{
 		Vec3 currentVector = Vec3.createVectorHelper(posX, posY, posZ);
@@ -313,9 +264,6 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 			setDead();
 		}
 
-		motionX += accelerationX;
-		motionY += accelerationY;
-		motionZ += accelerationZ;
 		motionX *= motionFactor;
 		motionY *= motionFactor;
 		motionZ *= motionFactor;
@@ -327,127 +275,8 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	{
 		if (!worldObj.isRemote)
 		{
-			skewMotion();
-
-			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
-			{
-				doBlockSpawn = false;
-				
-				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(impactPoint.entityHit);
-				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
-				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 0.0F);
-
-				if (type == EnumWebType.NORMAL && cocoonType != null)
-				{
-					final int intHealth = (int) entityHit.getHealth();
-					final int catchChance = (int) (cocoonType.getCatchChance() + (entityHit.getMaxHealth() - intHealth) * 2);
-
-					if (RadixLogic.getBooleanWithProbability(catchChance))
-					{
-						EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
-						entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
-						worldObj.spawnEntityInWorld(entityCocoon);
-
-						entityHit.setDead();
-						setDead();
-					}
-				}
-			}
-
-			else if (doBlockSpawn)
-			{
-				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
-				int impactX = impactPoint.blockX;
-				int impactY = impactPoint.blockY;
-				int impactZ = impactPoint.blockZ;
-
-				EnumSide sideHit = EnumSide.byId(impactPoint.sideHit);
-				int xMov = sideHit == EnumSide.NORTH ? -1 : sideHit == EnumSide.SOUTH ? 1 : 0;
-				int yMov = sideHit == EnumSide.BOTTOM ? -1 : sideHit == EnumSide.TOP ? 1 : 0;
-				int zMov = sideHit == EnumSide.EAST ? -1 : sideHit == EnumSide.WEST ? 1 : 0;
-
-				Block blockPlaced = null;
-
-				//When hitting a 'partial' web, the web will be made full.
-				if (blockHit instanceof BlockWebGround || blockHit instanceof BlockWebSide)
-				{
-					blockPlaced = ModBlocks.webFull;
-
-					if (blockHit instanceof BlockWebGround)
-					{
-						yMov -= 1;
-					}
-
-					else if (blockHit instanceof BlockWebSide)
-					{
-						//Set to zero to replace the impact block.
-						xMov = 0;
-						zMov = 0;
-
-						if (sideHit == EnumSide.BOTTOM)
-						{
-							yMov += 1;
-						}
-					}
-				}
-
-				else
-				{
-					if (sideHit == EnumSide.TOP)
-					{
-						blockPlaced = ModBlocks.webGround;
-					}
-
-					else
-					{
-						blockPlaced = ModBlocks.webSide;
-					}
-				}
-
-				int meta = 0;
-
-				//Calculate meta for the side web.
-				if (blockPlaced instanceof BlockWebSide)
-				{
-					switch (sideHit)
-					{
-					case EAST: meta = 1; break;
-					case WEST: meta = 4; break;
-					case NORTH: meta = 8; break;
-					case SOUTH: meta = 2; break;
-					default:
-						break;
-					}
-				}
-
-				if (type == EnumWebType.POISON)
-				{
-					blockPlaced = ModBlocks.getPoisonWebVariant(blockPlaced);
-				}
-
-				worldObj.setBlock(impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta, 2);
-				setDead();
-			}
-		}
-	}
-
-	private void skewMotion()
-	{
-		final Random rand = new Random();
-
-		if (rand.nextInt(2) == 0)
-		{
-			motionX = motionX * -0.2F;
-		}
-
-		if (rand.nextInt(2) == 0)
-		{
-			motionY = motionY * -0.2F;
-		}
-
-		if (rand.nextInt(2) == 0)
-		{
-			motionZ = motionZ * -0.2F;
+			worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false);
+			setDead();
 		}
 	}
 }

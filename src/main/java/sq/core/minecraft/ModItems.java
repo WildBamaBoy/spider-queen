@@ -34,7 +34,6 @@ public final class ModItems
 	public static ItemCocoon cocoonWolf;
 	public static ItemCocoon cocoonZombie;
 	public static ItemCocoon cocoonEnderman;
-	public static ItemCocoon cocoonBlaze;
 	public static ItemCocoon cocoonChicken;
 	public static ItemCocoon cocoonVillager;
 	public static ItemCocoon cocoonHorse;
@@ -70,7 +69,6 @@ public final class ModItems
 		cocoonWasp = new ItemCocoon(EnumCocoonType.WASP);
 		cocoonWolf = new ItemCocoon(EnumCocoonType.WOLF);
 		cocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE);
-		cocoonBlaze = new ItemCocoon(EnumCocoonType.BLAZE);
 		cocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN);
 		cocoonVillager = new ItemCocoon(EnumCocoonType.VILLAGER);
 		cocoonHorse = new ItemCocoon(EnumCocoonType.HORSE);

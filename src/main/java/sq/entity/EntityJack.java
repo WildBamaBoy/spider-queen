@@ -68,7 +68,7 @@ public class EntityJack extends AbstractFlyingMob
 				
 				if (this.getEntityToAttack() != null)
 				{
-					EntityAttackBall attackBall = new EntityAttackBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 1.6F, 4.0F, EnumAttackBallType.JACK);
+					EntityJackBall attackBall = new EntityJackBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 1.6F, 4.0F);
 					worldObj.spawnEntityInWorld(attackBall);
 				}
 			}

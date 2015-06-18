@@ -9,6 +9,8 @@ import sq.client.render.RenderFly;
 import sq.client.render.RenderJack;
 import sq.client.render.RenderMandragora;
 import sq.client.render.RenderOctopus;
+import sq.client.render.RenderSpiderEgg;
+import sq.client.render.RenderSpiderEx;
 import sq.client.render.RenderSpiderQueen;
 import sq.client.render.RenderThrowable;
 import sq.client.render.RenderVines;
@@ -16,14 +18,17 @@ import sq.client.render.RenderWasp;
 import sq.client.render.RenderWeb;
 import sq.client.render.RenderYuki;
 import sq.entity.EntityAnt;
-import sq.entity.EntityAttackBall;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
+import sq.entity.EntityBoomBall;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
 import sq.entity.EntityJack;
+import sq.entity.EntityJackBall;
 import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
+import sq.entity.EntitySpiderEgg;
+import sq.entity.EntitySpiderEx;
 import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
@@ -45,10 +50,14 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityOctopus.class, new RenderOctopus());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWasp.class, new RenderWasp());
 		RenderingRegistry.registerEntityRenderingHandler(EntityYuki.class, new RenderYuki());
-		RenderingRegistry.registerEntityRenderingHandler(EntityAttackBall.class, new RenderThrowable());
+		RenderingRegistry.registerEntityRenderingHandler(EntityJackBall.class, new RenderThrowable());
 		RenderingRegistry.registerEntityRenderingHandler(EntityVines.class, new RenderVines());
 		RenderingRegistry.registerEntityRenderingHandler(EntityCocoon.class, new RenderCocoon());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, new RenderWeb());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBoomBall.class, new RenderThrowable());
+		RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, new RenderWeb());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEx.class, new RenderSpiderEx());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEgg.class, new RenderSpiderEgg());
 	}
 
 	@Override

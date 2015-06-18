@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import sq.entity.EntityBoomBall;
+import sq.entity.EntityJackBall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -15,6 +17,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RenderThrowable extends Render
 {
 	private ResourceLocation jackBallLocation = new ResourceLocation("sq:textures/items/jackball.png");
+	private ResourceLocation boomBallLocation = new ResourceLocation("sq:textures/items/boomball.png");
+	private ResourceLocation octoBallLocation = new ResourceLocation("sq:textures/items/octoball.png");
 	
 	public RenderThrowable()
 	{
@@ -55,6 +59,24 @@ public class RenderThrowable extends Render
 
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return jackBallLocation;
+		if (entity instanceof EntityJackBall)
+		{
+			return jackBallLocation;
+		}
+		
+		else if (entity instanceof EntityBoomBall)
+		{
+			return boomBallLocation;
+		}
+		
+		else
+		{
+			return null;
+		}
+
+		//		else if (entity instanceof EntityOctoBall) //TODO
+//		{
+//			return octoBallLocation;
+//		}
 	}
 }

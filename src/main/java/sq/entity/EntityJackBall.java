@@ -8,22 +8,20 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import sq.enums.EnumAttackBallType;
 
-public class EntityAttackBall extends EntityThrowable
+public class EntityJackBall extends EntityThrowable
 {
-	private int attackBallType;
 	private EntityLivingBase shooter;
 	
-	public EntityAttackBall(World world) 
+	public EntityJackBall(World world) 
 	{
 		super(world);
 	}
 
-    public EntityAttackBall(World world, EntityLivingBase shooter, EntityLivingBase target, float speed, float unknown, EnumAttackBallType type)
+    public EntityJackBall(World world, EntityLivingBase shooter, EntityLivingBase target, float speed, float unknown)
     {
         this(world);
         this.shooter = shooter;
         this.renderDistanceWeight = 10.0D;
-        this.attackBallType = type.getId();
         
         this.posY = shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D;
         double d0 = target.posX - shooter.posX;
@@ -53,10 +51,5 @@ public class EntityAttackBall extends EntityThrowable
 			entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 6.0F);
 			setDead();
 		}
-	}
-	
-	public EnumAttackBallType getType()
-	{
-		return EnumAttackBallType.getById(attackBallType);
 	}
 }

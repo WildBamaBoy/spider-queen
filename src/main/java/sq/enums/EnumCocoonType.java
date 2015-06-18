@@ -38,11 +38,10 @@ public enum EnumCocoonType
 	WOLF 		(11, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NOVA, EntityWolf.class),
 	ZOMBIE 		(12, 40, EnumCocoonSize.NORMAL, EnumSpiderType.TANK, EntityZombie.class),
 	ENDERMAN 	(13, 30, EnumCocoonSize.TALL, EnumSpiderType.ENDER, EntityEnderman.class),
-	BLAZE 		(14, 30, EnumCocoonSize.NORMAL, EnumSpiderType.INFERNO, EntityBlaze.class),
-	CHICKEN 	(15, 80, EnumCocoonSize.SMALL, EnumSpiderType.NORMAL, EntityChicken.class),
-	VILLAGER 	(16, 80, EnumCocoonSize.TALL, EnumSpiderType.PACK, EntityVillager.class),
-	HORSE 		(17, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER, EntityHorse.class),
-	RED_ANT		(18, 40, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityAnt.class);
+	CHICKEN 	(14, 80, EnumCocoonSize.SMALL, EnumSpiderType.NORMAL, EntityChicken.class),
+	VILLAGER 	(15, 80, EnumCocoonSize.TALL, EnumSpiderType.PACK, EntityVillager.class),
+	HORSE 		(16, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER, EntityHorse.class),
+	RED_ANT		(17, 40, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityAnt.class);
 	
 	final int id;
 	final int catchChance;
@@ -117,6 +116,8 @@ public enum EnumCocoonType
 		case WASP: return "sq:bee.hurt";
 		case BLACK_ANT:
 		case RED_ANT: return "sq:ant.death";
+		default:
+			break;
 		}
 		
 		return deathSound;
