@@ -13,7 +13,7 @@ public class BlockStinger extends Block
 {
 	public BlockStinger() 
 	{
-		super(Material.ground);
+		super(Material.circuits);
 		
 		final String name = "stinger";
 		setBlockName(name);

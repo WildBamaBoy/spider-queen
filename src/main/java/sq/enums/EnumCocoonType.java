@@ -1,9 +1,10 @@
 package sq.enums;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySilverfish;
@@ -16,6 +17,7 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
+import radixcore.constant.Font.Color;
 import sq.core.minecraft.ModItems;
 import sq.entity.EntityAnt;
 import sq.entity.EntityBee;
@@ -102,6 +104,78 @@ public enum EnumCocoonType
 		return spiderTypeYield;
 	}
 	
+	public String getNameColor()
+	{
+		switch (getSpiderTypeYield())
+		{
+		case ENDER: return Color.PURPLE;
+		case RIDER: return Color.GOLD;
+		case BOOM: return Color.GREEN;
+		case SLINGER: return Color.WHITE;
+		case PACK: return Color.GOLD;
+		case NOVA: return Color.WHITE;
+		case TANK: return Color.DARKGREEN;
+		default: return Color.GRAY;
+		}
+	}
+	
+	public List<String> getAbilities()
+	{
+		List<String> list = new ArrayList<String>();
+		
+		switch (getSpiderTypeYield())
+		{
+		case ENDER: list.add("Tosses targets into the air."); break;
+		case RIDER: list.add("Can be ridden on ground."); list.add("Can be ridden up walls."); break;
+		case BOOM: list.add("Shoots explosives at enemies."); break;
+		case SLINGER: list.add("Shoots web at enemies."); break;
+		case PACK: list.add("Carries items."); break;
+		case NOVA: list.add("Heals injured spiders."); break;
+		case TANK: list.add("Poisons targets."); list.add("High health."); break;
+		default: break;
+		}
+		
+		return list;
+	}
+	
+	public List<String> getCaveats()
+	{
+		List<String> list = new ArrayList<String>();
+		
+		switch (getSpiderTypeYield())
+		{
+		case ENDER: list.add("Does not fight."); break;
+		case RIDER: list.add("Does not fight."); break;
+		case BOOM: list.add("Explodes on death."); break;
+		case SLINGER: list.add("None."); break;
+		case PACK: list.add("Does not fight."); break;
+		case NOVA: list.add("Low health."); break;
+		case TANK: list.add("Moves slowly."); break;
+		default: break;
+		}
+		
+		return list;
+	}
+	
+	public List<String> getLevelUpConditions() 
+	{
+		List<String> list = new ArrayList<String>();
+		
+		switch (getSpiderTypeYield())
+		{
+		case ENDER: list.add("From using ability."); break;
+		case RIDER: list.add("From being ridden."); break;
+		case BOOM: list.add("From combat."); break;
+		case SLINGER: list.add("From combat."); break;
+		case PACK: list.add("Over time."); break;
+		case NOVA: list.add("From healing."); break;
+		case TANK: list.add("From combat."); break;
+		default: break;
+		}
+		
+		return list;
+	}
+
 	public String getDeathSound()
 	{
 		//Apply some corrections here

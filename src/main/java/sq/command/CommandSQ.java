@@ -5,10 +5,13 @@ import java.util.Arrays;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import radixcore.constant.Font.Color;
 import radixcore.constant.Font.Format;
+import radixcore.util.RadixLogic;
+import sq.entity.EntitySpiderEx;
 
 public final class CommandSQ extends CommandBase
 {
@@ -36,6 +39,15 @@ public final class CommandSQ extends CommandBase
 			if (subcommand.equalsIgnoreCase("help"))
 			{
 				displayHelp(commandSender);
+			}
+			
+			else if (subcommand.equalsIgnoreCase("fsl"))
+			{
+				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEx.class, player, 15))
+				{
+					EntitySpiderEx spider = (EntitySpiderEx)entity;
+					spider.levelUp();
+				}
 			}
 		}
 		
@@ -72,7 +84,7 @@ public final class CommandSQ extends CommandBase
 	private void displayHelp(ICommandSender commandSender)
 	{
 		addChatMessage(commandSender, Color.DARKRED + "--- " + Color.GOLD + "DEBUG COMMANDS" + Color.DARKRED + " ---", true);
-		addChatMessage(commandSender, Color.WHITE + " /sq [cmd] " + Color.GOLD + " - [desc].", true);
+		addChatMessage(commandSender, Color.WHITE + " /sq fsl " + Color.GOLD + " - Forces all nearby spiders to level up.", true);
 
 		addChatMessage(commandSender, Color.DARKRED + "--- " + Color.GOLD + "OP COMMANDS" + Color.DARKRED + " ---", true);
 		addChatMessage(commandSender, Color.WHITE + " /sq [cmd] " + Color.GOLD + " - [desc].", true);

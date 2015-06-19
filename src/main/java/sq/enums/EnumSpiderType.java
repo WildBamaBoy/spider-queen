@@ -13,8 +13,7 @@ public enum EnumSpiderType
 	TANK (5),
 	ENDER (6),
 	PACK (7),
-	RIDER (8),
-	ENDERMINION (9);
+	RIDER (8);
 	
 	private int id;
 	

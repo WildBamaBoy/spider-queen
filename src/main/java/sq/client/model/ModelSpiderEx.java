@@ -142,10 +142,6 @@ public class ModelSpiderEx extends ModelBase
 				renderEnderSpider(partialTickTime);
 				break;
 			
-			case ENDERMINION:
-				renderEnderminionSpider(partialTickTime);
-				break;
-			
 			case RIDER:
 				renderRiderSpiders(entity, partialTickTime);
 				break;
@@ -356,7 +352,7 @@ public class ModelSpiderEx extends ModelBase
 			tankSpiderLeg8.rotateAngleZ += -f16;
 		}
 
-		else if (spider.getSpiderType() == EnumSpiderType.ENDER || spider.getSpiderType() == EnumSpiderType.ENDERMINION)
+		else if (spider.getSpiderType() == EnumSpiderType.ENDER)
 		{
 			final float quarterCircle = (float) Math.PI / 4F;
 			enderSpiderLeg1.rotateAngleZ = -quarterCircle;
@@ -952,18 +948,7 @@ public class ModelSpiderEx extends ModelBase
 		}
 		GL11.glPopMatrix();
 	}
-
-	private void renderEnderminionSpider(float partialTickTime)
-	{
-		GL11.glPushMatrix();
-		{
-			GL11.glScaled(0.5D, 0.5D, 0.5D);
-			GL11.glTranslated(0.0D, 1.2D, 0.0D);
-			renderEnderSpider(partialTickTime);
-		}
-		GL11.glPopMatrix();
-	}
-
+	
 	private void renderRiderSpiders(Entity entity, float partialTickTime)
 	{
 		final EntitySpiderEx spider = (EntitySpiderEx) entity;
