@@ -9,7 +9,6 @@ import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.core.minecraft.ModItems;
-import sq.enums.EnumAttackBallType;
 
 public class EntityJack extends AbstractFlyingMob
 {

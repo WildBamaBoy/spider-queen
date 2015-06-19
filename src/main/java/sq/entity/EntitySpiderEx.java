@@ -17,6 +17,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -45,6 +46,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 {
 	private int abilityCounter;
 	private int abilityThreshold;
+	private int killsUntilLevelUp = RadixMath.getNumberInRange(5, 15);
 	private EnumSpiderType spiderType = EnumSpiderType.NONE;
 	private UUID owner;
 	private EntityLivingBase target;
@@ -102,7 +104,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		updateEntityAttributes();
 		updateAbility();
 		setHitboxSize();
-
+		
 		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
@@ -119,6 +121,12 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					attackEntity(target, 3.5F);
 				}
 
+				else if (target != null && target.isDead)
+				{
+					registerKill();
+					target = null;
+				}
+				
 				else
 				{
 					target = findEntityToAttack();
@@ -250,6 +258,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		nbt.setInteger("spiderType", spiderType.getId());
 		nbt.setInteger("abilityCounter", abilityCounter);
 		nbt.setInteger("abilityThreshold", abilityThreshold);
+		nbt.setInteger("killsUntilLevelUp", killsUntilLevelUp);
 		nbt.setLong("ownerMSB", owner.getMostSignificantBits());
 		nbt.setLong("ownerLSB", owner.getLeastSignificantBits());
 		nbt.setTag("inventory", inventory.saveInventoryToNBT());
@@ -260,8 +269,10 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		super.readEntityFromNBT(nbt);
 		spiderType = EnumSpiderType.byId(nbt.getInteger("spiderType"));
+		abilityCounter = nbt.getInteger("abilityCounter");
+		abilityThreshold = nbt.getInteger("abilityThreshold");
+		killsUntilLevelUp = nbt.getInteger("killsUntilLevelUp");
 		owner = new UUID(nbt.getLong("ownerMSB"), nbt.getLong("ownerLSB"));
-
 		final NBTTagList tagList = nbt.getTagList("inventory", 10);
 		inventory.loadInventoryFromNBT(tagList);
 	}
@@ -279,6 +290,12 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		spiderType = EnumSpiderType.byId(buffer.readInt());
 		owner = new UUID(buffer.readLong(), buffer.readLong());
+	}
+
+	@Override
+	protected void updateEntityActionState()
+	{
+		return;
 	}
 
 	@Override
@@ -317,41 +334,49 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	}
 
 	@Override
+	public boolean attackEntityFrom(DamageSource source, float damage) 
+	{
+		super.attackEntityFrom(source, damage);
+		
+		if (source.getSourceOfDamage() instanceof EntityLivingBase)
+		{
+			setTarget(source.getSourceOfDamage());
+			
+			//Alert other spiders that this one is being attacked.
+			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
+			
+			for (Entity entity : entities)
+			{
+				if (entity instanceof EntitySpiderEx)
+				{
+					EntitySpiderEx spider = (EntitySpiderEx)entity;
+					
+					if (spider.owner.equals(owner))
+					{
+						spider.setTarget(source.getSourceOfDamage());
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+
+	@Override
 	protected void attackEntity(Entity entity, float damage) 
 	{
 		super.attackEntity(entity, damage);
 
 		double distance = RadixMath.getDistanceToEntity(this, entity);
 		
-		if (distance >= 12.0F)
-		{
-			target = null;
-			return;
-		}
-		
-		else if (distance > 3.0F)
+		if (distance > 3.0F)
 		{
 			setAttackPath(entity);
 		}
 		
 		else
 		{
-			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength());
-		}
-
-		if (onGround && distance < 3.0F)
-		{
-			final double d0 = entity.posX - posX;
-			final double d1 = entity.posZ - posZ;
-			final float f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
-			motionX = d0 / f2 * 0.5D * 0.8D + motionX * 0.2D;
-			motionZ = d1 / f2 * 0.5D * 0.8D + motionZ * 0.2D;
-			motionY = 0.4D;
-		}
-		
-		if (entity instanceof EntityLivingBase)
-		{
-			EntityLivingBase living = (EntityLivingBase)entity;
+			final EntityLivingBase living = (EntityLivingBase)entity;
 
 			if (spiderType == EnumSpiderType.TANK)
 			{
@@ -364,40 +389,20 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				}
 			}
 			
-			if (living.getHealth() <= 0.0F)
-			{
-				levelUp();
-				target = null;
-			}
+			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackDamage());
 		}
 
-		else
+		if (onGround && distance < 3.0F)
 		{
-			target = null;
+			final double dX = entity.posX - posX;
+			final double dY = entity.posZ - posZ;
+			final float f2 = MathHelper.sqrt_double(dX * dX + dY * dY);
+			motionX = dX / f2 * 0.5D * 0.8D + motionX * 0.2D;
+			motionZ = dY / f2 * 0.5D * 0.8D + motionZ * 0.2D;
+			motionY = 0.4D;
 		}
 	}
 
-	private float getAttackStrength() 
-	{
-		switch (spiderType)
-		{
-		case NOVA: return 1.0F;
-		case WIMPY: return 0.5F;
-		default: return 3.0F * getLevel() + 0.5F;
-		}
-	}
-
-	private void setAttackPath(Entity entityBeingAttacked)
-	{
-		if (spiderType == EnumSpiderType.SLINGER || spiderType == EnumSpiderType.BOOM)
-		{
-		}
-
-		else
-		{
-			getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
-		}
-	}
 	@Override
 	public boolean isOnLadder()
 	{
@@ -435,9 +440,85 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		return spiderType.getFriendlyName() + " Spider";
 	}
 
+	@Override
+	public void setTarget(Entity entity) 
+	{
+		if (entity instanceof EntityPlayer) //Check for player attacking their own spiders.
+		{
+			if (entity.getPersistentID().equals(owner))
+			{
+				return;
+			}
+		}
+		
+		if (entity instanceof EntitySpiderEx)
+		{
+			EntitySpiderEx spider = (EntitySpiderEx)entity;
+			
+			if (spider.owner.equals(this.owner))
+			{
+				return;
+			}
+		}
+		
+		else if (entity instanceof EntityCocoon)
+		{
+			return;
+		}
+		
+		if (entity instanceof EntityLivingBase)
+		{
+			target = (EntityLivingBase) entity;
+		}
+	}
+
 	public EnumSpiderType getSpiderType()
 	{
 		return spiderType;
+	}
+
+	public int getLevel()
+	{
+		return dataWatcher.getWatchableObjectInt(18);
+	}
+
+	public UUID getOwner()
+	{
+		return owner;
+	}
+	
+	public void registerKill()
+	{
+		killsUntilLevelUp--;
+		
+		if (killsUntilLevelUp <= 0)
+		{
+			levelUp();
+			killsUntilLevelUp = RadixMath.getNumberInRange(5, 15);
+		}
+	}
+	
+	public void levelUp()
+	{
+		if (getLevel() != 3)
+		{
+			worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
+			Utils.spawnParticlesAroundEntityS(Particle.REDSTONE, this, 16);
+			setLevel(getLevel() + 1);
+		}
+	}
+
+	private void setLevel(int value)
+	{
+		try
+		{
+			dataWatcher.updateObject(18, value);
+		}
+	
+		catch (Exception e)
+		{
+			dataWatcher.addObject(18, value);
+		}
 	}
 
 	private void setHitboxSize()
@@ -497,37 +578,35 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		dataWatcher.updateObject(16, Byte.valueOf(value));
 	}
 
-	@Override
-	protected void updateEntityActionState()
-	{
-		return;
-	}
-
 	private void updateEntityAttributes()
 	{
 		this.abilityThreshold = calculateAbilityThreshold();
 
-		if (spiderType == EnumSpiderType.SLINGER)
+		IAttributeInstance moveSpeed = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+		IAttributeInstance maxHealth = getEntityAttribute(SharedMonsterAttributes.maxHealth);
+		
+		if (moveSpeed.getBaseValue() != getMovementSpeed())
 		{
-			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D);
+			moveSpeed.setBaseValue(getMovementSpeed());
 		}
-
-		else if (spiderType == EnumSpiderType.NOVA)
+		
+		if (maxHealth.getBaseValue() != getMaximumHealth())
 		{
-			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.4D);
+			maxHealth.setBaseValue(getMaximumHealth());
+			setHealth(getMaximumHealth());
 		}
+	}
 
-		else if (spiderType == EnumSpiderType.WIMPY && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 3.0D)
+	private void setAttackPath(Entity entityBeingAttacked)
+	{
+		if (spiderType == EnumSpiderType.SLINGER || spiderType == EnumSpiderType.BOOM)
 		{
-			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D);
-			setHealth((float) getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+			
 		}
-
-		else if (spiderType == EnumSpiderType.TANK && getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue() != 30.0D + getLevel() * 10)
+	
+		else
 		{
-			getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D + getLevel() * 10);
-			getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);
-			setHealth((float) getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+			getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
 		}
 	}
 
@@ -543,6 +622,36 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			return 2.5F + getLevel() / 2;
 		}
 	}
+	
+	private float getMaximumHealth()
+	{
+		switch (spiderType)
+		{
+		case WIMPY:
+			return 3F;
+		case NOVA:
+			return 10F;
+		case TANK:
+			return 26F + getLevel() * 6;
+		default:
+			return 16F + getLevel() * 4;
+		}
+	}
+
+	private double getMovementSpeed() 
+	{
+		switch (spiderType)
+		{
+		case SLINGER:
+			return 1.0F;
+		case NOVA:
+			return 1.2F;
+		case TANK:
+			return 0.6F;
+		default:
+			return 0.8F;
+		}
+	}
 
 	private void updateAbility()
 	{
@@ -554,14 +663,16 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			{
 				if (spiderType == EnumSpiderType.BOOM && target != null)
 				{
-					EntityBoomBall boomBall = new EntityBoomBall(this, target, 5.0F);
+					EntityBoomBall boomBall = new EntityBoomBall(this, target, 2.5F);
 					worldObj.spawnEntityInWorld(boomBall);
 				}
 
 				else if (spiderType == EnumSpiderType.SLINGER && target != null)
 				{
-					EntityWebShot webShot = new EntityWebShot(this, target, 5.0F);
+					EntityWebShot webShot = new EntityWebShot(this, target, 2.5F);
 					worldObj.spawnEntityInWorld(webShot);
+					
+					worldObj.playSoundAtEntity(this, "random.bow", 0.75F, 1.0F);
 				}
 
 				else if (spiderType == EnumSpiderType.NOVA && RadixLogic.getBooleanWithProbability(20))
@@ -604,52 +715,15 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		}
 	}
 
-	private EntityLivingBase findEntityToAttack()
-	{
-		//Disable combat here.
-		switch (spiderType)
-		{
-		case PACK: return null;
-		case RIDER: return null;	
-		default:
-			break;			
-		}
-
-		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
-		EntityLivingBase closestValidTarget = null;
-		double distanceToTarget = 100D;
-
-		for (final Entity entity : entitiesAroundMe)
-		{
-			final double distanceToThisEntity = getDistanceToEntity(entity);
-
-			if (distanceToThisEntity < distanceToTarget) //TODO
-			{
-				closestValidTarget = (EntityLivingBase) entity;
-				distanceToTarget = distanceToThisEntity;
-			}
-		}
-
-		return closestValidTarget;
-	}
-
 	private int calculateAbilityThreshold() 
 	{
 		switch (spiderType)
 		{
-		case BOOM: return Time.SECOND * 7;
-		case SLINGER: return Time.SECOND * 4;
+		case BOOM: return (Time.SECOND * 7) - getLevel();
+		case SLINGER: return (Time.SECOND * 5) - getLevel();
 		case NOVA: return Time.SECOND * 3;
 		case ENDER: return Time.SECOND * 5;
 		default: return 0;
-		}
-	}
-
-	public void levelUp()
-	{
-		if (getLevel() != 3)
-		{
-			setLevel(getLevel() + 1);
 		}
 	}
 
@@ -686,6 +760,40 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		}
 	}
 
+	private EntityLivingBase findEntityToAttack()
+	{
+		//Disable combat here.
+		switch (spiderType)
+		{
+		case PACK: return null;
+		case RIDER: return null;	
+		default:
+			break;			
+		}
+	
+		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
+		EntityLivingBase closestValidTarget = null;
+		double distanceToTarget = 100D;
+	
+		for (final Entity entity : entitiesAroundMe)
+		{
+			if (entity == this)
+			{
+				continue;
+			}
+			
+			final double distanceToThisEntity = getDistanceToEntity(entity);
+	
+			if (entity instanceof EntitySheep && distanceToThisEntity < distanceToTarget) //TODO
+			{
+				closestValidTarget = (EntityLivingBase) entity;
+				distanceToTarget = distanceToThisEntity;
+			}
+		}
+	
+		return closestValidTarget;
+	}
+
 	private void moveToPlayer(EntityPlayer player)
 	{
 		if (player != null && player.onGround)
@@ -698,23 +806,5 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				getNavigator().onUpdateNavigation();
 			}
 		}
-	}
-
-	private void setLevel(int value)
-	{
-		try
-		{
-			dataWatcher.updateObject(18, value);
-		}
-
-		catch (Exception e)
-		{
-			dataWatcher.addObject(18, value);
-		}
-	}
-
-	public int getLevel()
-	{
-		return dataWatcher.getWatchableObjectInt(18);
 	}
 }

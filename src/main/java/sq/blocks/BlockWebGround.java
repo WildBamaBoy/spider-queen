@@ -1,15 +1,7 @@
 package sq.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import sq.enums.EnumWebType;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockWebGround extends BlockWebFull
 {

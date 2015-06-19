@@ -6,7 +6,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import sq.enums.EnumAttackBallType;
 
 public class EntityJackBall extends EntityThrowable
 {

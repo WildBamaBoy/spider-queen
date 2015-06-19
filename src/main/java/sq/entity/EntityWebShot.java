@@ -73,7 +73,8 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	{
 		this(shooter.worldObj);
 		this.shooter = shooter;
-
+		this.type = EnumWebType.NORMAL;
+		
 		renderDistanceWeight = 10.0D;
 
 		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;

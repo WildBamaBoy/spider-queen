@@ -1,15 +1,10 @@
 package sq.entity;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
-import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -17,14 +12,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import radixcore.util.RadixLogic;
-import sq.blocks.BlockWebGround;
-import sq.blocks.BlockWebSide;
-import sq.core.minecraft.ModBlocks;
-import sq.enums.EnumCocoonType;
-import sq.enums.EnumSide;
-import sq.enums.EnumWebType;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -275,7 +262,7 @@ public class EntityBoomBall extends Entity implements IProjectile
 	{
 		if (!worldObj.isRemote)
 		{
-			worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false);
+			worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, false);
 			setDead();
 		}
 	}

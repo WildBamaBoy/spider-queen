@@ -1,7 +1,6 @@
 package sq.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import sq.enums.EnumWebType;
 

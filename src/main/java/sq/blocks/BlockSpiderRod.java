@@ -19,7 +19,7 @@ public class BlockSpiderRod extends Block
 {
 	public BlockSpiderRod() 
 	{
-		super(Material.ground);
+		super(Material.plants);
 		
 		final String name = "spiderrod";
 		setBlockName(name);

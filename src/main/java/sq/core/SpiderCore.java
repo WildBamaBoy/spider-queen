@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -76,7 +75,7 @@ public final class SpiderCore
 {
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.0.0-triage";
 
 	@Instance(ID)
 	private static SpiderCore instance;
@@ -177,22 +176,22 @@ public final class SpiderCore
 
 		//Entity registry
 		int id = config.baseEntityId;
-		dualRegisterEntity(EntityAnt.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityBee.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityBeetle.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityFly.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityJack.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityMandragora.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityOctopus.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityWasp.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityYuki.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityJackBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityVines.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityCocoon.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityWebShot.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntitySpiderEx.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntityBoomBall.class, id, 0xFFFFFF, 0xFFFFFF); id++;
-		dualRegisterEntity(EntitySpiderEgg.class, id, 0xFFFFFF, 0xFFFFFF); id++;
+		EntityRegistry.registerModEntity(EntityAnt.class, EntityAnt.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityBee.class, EntityBee.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityBeetle.class, EntityBeetle.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityFly.class, EntityFly.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityJack.class, EntityJack.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityOctopus.class, EntityOctopus.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityWasp.class, EntityWasp.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityYuki.class, EntityYuki.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityJackBall.class, EntityJackBall.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityVines.class, EntityVines.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityWebShot.class, EntityWebShot.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntitySpiderEx.class, EntitySpiderEx.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityBoomBall.class, EntityBoomBall.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), id, this, 50, 2, true); id++;		
 		
 		//Tile registry
 
@@ -238,12 +237,6 @@ public final class SpiderCore
 		}
 
 		SpiderCore.playerDataMap.clear();
-	}
-
-	private void dualRegisterEntity(Class<? extends Entity> clazz, int id, int backgroundColor, int foregroundColor)
-	{
-		EntityRegistry.registerGlobalEntityID(clazz, clazz.getSimpleName(), id, backgroundColor, foregroundColor);
-		EntityRegistry.registerModEntity(clazz, clazz.getSimpleName(), id, this, 50, 2, true);
 	}
 	
 	public static SpiderCore getInstance()

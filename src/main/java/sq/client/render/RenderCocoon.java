@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import sq.client.model.ModelCocoon;
 import sq.entity.EntityCocoon;
-import sq.enums.EnumCocoonType;
 
 public class RenderCocoon extends Render
 {
