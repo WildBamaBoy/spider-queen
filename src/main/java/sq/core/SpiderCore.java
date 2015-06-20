@@ -228,8 +228,8 @@ public final class SpiderCore
 		
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
-		GameRegistry.registerWorldGenerator(new WorldGenJack(), 6);
-		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 7);
+		GameRegistry.registerWorldGenerator(new WorldGenJack(), 8);
+		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);
 	}
 
 	@EventHandler
