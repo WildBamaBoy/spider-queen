@@ -36,7 +36,7 @@ public final class EventHooksFML
 		{
 			int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
 			
-			if (SpiderCore.sleepingPlayers.size() >= totalPlayers)
+			if (SpiderCore.sleepingPlayers.size() >= totalPlayers && totalPlayers != 0)
 			{
 				for (String s : SpiderCore.sleepingPlayers)
 				{
