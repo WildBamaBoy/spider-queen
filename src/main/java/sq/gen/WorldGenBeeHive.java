@@ -44,8 +44,6 @@ public class WorldGenBeeHive implements IWorldGenerator
 		//Find a tree
 		if (block == Blocks.log)
 		{
-			System.out.println("LOG");
-			
 			//Find the top.
 			int yMov = 0;
 
@@ -92,8 +90,6 @@ public class WorldGenBeeHive implements IWorldGenerator
 					pass++;
 					leavesRadius--;
 				}
-				
-				System.out.println(x + "," + (topLogY + 1) + "," + z);
 			}
 		}
 
