@@ -3,6 +3,7 @@ package sq.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
@@ -79,7 +80,7 @@ public class EntityMandragora extends AbstractNewMob
 
 				double d = entityToAttack.posX - posX + entityToAttack.motionX * 15D;
 				double d1 = entityToAttack.posZ - posZ + entityToAttack.motionZ * 15D;
-				
+
 				if (attackTime == 0)
 				{
 					EntityVines vines = new EntityVines(worldObj, this);
@@ -98,6 +99,24 @@ public class EntityMandragora extends AbstractNewMob
 		}
 
 		vineTimer--;
+	}
+
+	@Override
+	protected boolean isValidLightLevel() 
+	{
+		int i = MathHelper.floor_double(this.posX);
+		int j = MathHelper.floor_double(this.boundingBox.minY);
+		int k = MathHelper.floor_double(this.posZ);
+
+		if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32))
+		{
+			return false;
+		}
+		
+		else
+		{
+			return this.worldObj.getBlockLightValue(i, j, k) >= 7;
+		}
 	}
 
 	@Override

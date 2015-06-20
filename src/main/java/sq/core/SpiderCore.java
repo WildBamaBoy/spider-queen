@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.Logger;
@@ -53,6 +55,9 @@ import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
 import sq.entity.EntityYuki;
 import sq.enums.EnumCocoonType;
+import sq.gen.WorldGenAntHill;
+import sq.gen.WorldGenBeeHive;
+import sq.gen.WorldGenJack;
 import sq.items.ItemCocoon;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -185,7 +190,9 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityBeetle.class, EntityBeetle.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFly.class, EntityFly.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityJack.class, EntityJack.class.getSimpleName(), id, this, 50, 2, true); id++;
-		EntityRegistry.registerModEntity(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerGlobalEntityID(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id); 
+		EntityRegistry.registerModEntity(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id, this, 50, 2, true);
+		id++;
 		EntityRegistry.registerModEntity(EntityOctopus.class, EntityOctopus.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityWasp.class, EntityWasp.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityYuki.class, EntityYuki.class.getSimpleName(), id, this, 50, 2, true); id++;
@@ -207,6 +214,22 @@ public final class SpiderCore
 		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
 		
 		//Smeltings
+		
+		//Spawns
+		EntityRegistry.addSpawn(EntityBeetle.class, 10, 1, 3, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		EntityRegistry.addSpawn(EntityFly.class, 12, 1, 3, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		EntityRegistry.addSpawn(EntityMandragora.class, 12, 1, 2, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
+		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		
+		//World Gen
+		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
+		GameRegistry.registerWorldGenerator(new WorldGenJack(), 6);
+		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 7);
 	}
 
 	@EventHandler

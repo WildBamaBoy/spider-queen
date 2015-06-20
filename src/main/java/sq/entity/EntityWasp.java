@@ -32,5 +32,11 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		return false;
 	}
+	
+	@Override
+	public boolean getCanSpawnHere() 
+	{
+		return true;
+	}
 }
 

@@ -42,4 +42,10 @@ public class EntityBeetle extends AbstractNewMob
 	{
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, 0, true));
 	}
+	
+	@Override
+	public boolean getCanSpawnHere() 
+	{
+		return true;
+	}
 }

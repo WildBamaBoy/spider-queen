@@ -65,4 +65,10 @@ public class EntityFly extends AbstractFlyingMob
 	{
 		return true;
 	}
+
+	@Override
+	public boolean getCanSpawnHere() 
+	{
+		return true;
+	}
 }
