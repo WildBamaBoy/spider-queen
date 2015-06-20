@@ -25,6 +25,7 @@ public final class Config
 	public boolean enableFly;
 	public boolean enableBeetle;
 	public boolean enableAnt;
+	public boolean enableFactories;
 	
 	public int antSpawnCap;
 	public int beeSpawnCap;
@@ -47,6 +48,7 @@ public final class Config
 		enableFly = config.get("Init", "Enable Flies?", true, "Enables/disables flies.").getBoolean();
 		enableBeetle = config.get("Init", "Enable Beetles?", true, "Enables/disables beetles.").getBoolean();
 		enableAnt = config.get("Init", "Enable Ants?", true, "Enables/disables ants.").getBoolean();
+		enableFactories = config.get("Init", "Enable Factories?", true, "Enables/disables NPC factories.").getBoolean();
 		
 		config.setCategoryComment("Performance", "Settings that can affect your game performance.");
 		antSpawnCap = config.get("Performance", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();

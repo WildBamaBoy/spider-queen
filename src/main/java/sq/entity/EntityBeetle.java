@@ -1,5 +1,6 @@
 package sq.entity;
 
+import sq.core.SpiderCore;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.world.World;
 
@@ -17,6 +18,17 @@ public class EntityBeetle extends AbstractNewMob
 	public float getMobMaxHealth() 
 	{
 		return 20.0F;
+	}
+
+	@Override
+	public void onUpdate() 
+	{
+		super.onUpdate();
+		
+		if (!SpiderCore.getConfig().enableBeetle)
+		{
+			setDead();
+		}
 	}
 
 	@Override

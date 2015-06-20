@@ -5,6 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixMath;
+import sq.core.SpiderCore;
 
 public class EntityYuki extends AbstractFlyingMob
 {
@@ -52,6 +53,11 @@ public class EntityYuki extends AbstractFlyingMob
 
 		if (!worldObj.isRemote)
 		{
+			if (!SpiderCore.getConfig().enableYuki)
+			{
+				setDead();
+			}
+			
 			lightningTimer--;
 
 			if (lightningTimer <= 0)

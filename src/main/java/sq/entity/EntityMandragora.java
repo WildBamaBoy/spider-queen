@@ -7,6 +7,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 
 //TODO Make friendly version.
@@ -70,6 +71,11 @@ public class EntityMandragora extends AbstractNewMob
 	{
 		super.onUpdate();
 
+		if (!SpiderCore.getConfig().enableMandragora)
+		{
+			setDead();
+		}
+		
 		if (vineTimer <= 0)
 		{
 			Entity entityToAttack = this.getAttackTarget();
