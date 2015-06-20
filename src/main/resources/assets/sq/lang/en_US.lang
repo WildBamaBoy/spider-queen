@@ -32,6 +32,17 @@ item.nectar.name=Nectar
 item.stinger.name=Stinger
 item.buglight.name=Bug Light
 item.mandragora-seeds.name=Mandragora Seeds
+item.egg-yuki.name=Spawn Yuki
+item.egg-mandragora.name=Spawn Mandragora
+item.egg-spider-queen.name=Spawn Spider Queen
+item.egg-jack.name=Spawn Jack
+item.egg-beetle.name=Spawn Beetle
+item.egg-octopus.name=Spawn Octopus
+item.egg-fly.name=Spawn Fly
+item.egg-wasp.name=Spawn Wasp
+item.egg-ant.name=Spawn Ant
+item.egg-bee.name=Spawn Bee
+
 tile.anthill.name=Ant Hill
 tile.beehive.name=Beehive
 tile.jack.name=Jack o'Lantern

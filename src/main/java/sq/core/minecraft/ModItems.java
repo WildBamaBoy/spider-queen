@@ -2,10 +2,21 @@ package sq.core.minecraft;
 
 import net.minecraft.item.Item;
 import sq.core.SpiderCore;
+import sq.entity.EntityAnt;
+import sq.entity.EntityBee;
+import sq.entity.EntityBeetle;
+import sq.entity.EntityFly;
+import sq.entity.EntityJack;
+import sq.entity.EntityMandragora;
+import sq.entity.EntityOctopus;
+import sq.entity.EntitySpiderQueen;
+import sq.entity.EntityWasp;
+import sq.entity.EntityYuki;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumOfferingType;
 import sq.enums.EnumWebType;
 import sq.items.ItemCocoon;
+import sq.items.ItemEggSpawner;
 import sq.items.ItemGhastEgg;
 import sq.items.ItemMandSeeds;
 import sq.items.ItemNectar;
@@ -37,6 +48,17 @@ public final class ModItems
 	public static ItemCocoon cocoonChicken;
 	public static ItemCocoon cocoonVillager;
 	public static ItemCocoon cocoonHorse;
+	
+	public static ItemEggSpawner eggAntBlack;
+	public static ItemEggSpawner eggBee;
+	public static ItemEggSpawner eggBeetle;
+	public static ItemEggSpawner eggFly;
+	public static ItemEggSpawner eggJack;
+	public static ItemEggSpawner eggMandragora;
+	public static ItemEggSpawner eggOctopus;
+	public static ItemEggSpawner eggSpiderQueen;
+	public static ItemEggSpawner eggWasp;
+	public static ItemEggSpawner eggYuki;
 	
 	public static ItemGhastEgg ghastEgg;
 	public static ItemSpiderEgg spiderEgg;
@@ -71,6 +93,17 @@ public final class ModItems
 		cocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN);
 		cocoonVillager = new ItemCocoon(EnumCocoonType.VILLAGER);
 		cocoonHorse = new ItemCocoon(EnumCocoonType.HORSE);
+		
+		eggAntBlack = new ItemEggSpawner(EntityAnt.class, "egg-ant");
+		eggBee = new ItemEggSpawner(EntityBee.class, "egg-bee");
+		eggBeetle = new ItemEggSpawner(EntityBeetle.class, "egg-beetle");
+		eggFly = new ItemEggSpawner(EntityFly.class, "egg-fly");
+		eggJack = new ItemEggSpawner(EntityJack.class, "egg-jack");
+		eggMandragora = new ItemEggSpawner(EntityMandragora.class, "egg-mandragora");
+		eggOctopus = new ItemEggSpawner(EntityOctopus.class, "egg-octopus");
+		eggSpiderQueen = new ItemEggSpawner(EntitySpiderQueen.class, "egg-spider-queen");
+		eggWasp = new ItemEggSpawner(EntityWasp.class, "egg-wasp");
+		eggYuki = new ItemEggSpawner(EntityYuki.class, "egg-yuki");
 		
 		ghastEgg = new ItemGhastEgg();
 		spiderEgg = new ItemSpiderEgg();
