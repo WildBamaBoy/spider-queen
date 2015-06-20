@@ -7,6 +7,7 @@ import sq.blocks.BlockJack;
 import sq.blocks.BlockMandCrop;
 import sq.blocks.BlockSpiderRod;
 import sq.blocks.BlockStinger;
+import sq.blocks.BlockWebBed;
 import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
 import sq.blocks.BlockWebSide;
@@ -22,6 +23,7 @@ public final class ModBlocks
 	public static BlockWebGround poisonWebGround;
 	public static BlockSpiderRod spiderRod;
 	public static BlockStinger stinger;
+	public static BlockWebBed webBed;
 	public static BlockWebFull webFull;
 	public static BlockWebSide webSide;
 	public static BlockWebGround webGround;
@@ -35,6 +37,7 @@ public final class ModBlocks
 		poisonWebFull = new BlockWebFull(EnumWebType.POISON);
 		poisonWebSide = new BlockWebSide(EnumWebType.POISON);
 		poisonWebGround = new BlockWebGround(EnumWebType.POISON);
+		webBed = new BlockWebBed();
 		spiderRod = new BlockSpiderRod();
 		stinger = new BlockStinger();
 		webFull = new BlockWebFull(EnumWebType.NORMAL);

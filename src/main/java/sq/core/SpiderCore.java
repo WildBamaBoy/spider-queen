@@ -3,7 +3,9 @@ package sq.core;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -95,7 +97,8 @@ public final class SpiderCore
 	public static ServerProxy proxy;
 
 	public static Map<String, AbstractPlayerData> playerDataMap;
-
+	public static List<String> sleepingPlayers;
+	
 	@SideOnly(Side.CLIENT)
 	public static DataContainer playerDataContainer;
 
@@ -112,7 +115,8 @@ public final class SpiderCore
 		proxy.registerRenderers();
 		proxy.registerEventHandlers();
 		playerDataMap = new HashMap<String, AbstractPlayerData>();
-
+		sleepingPlayers = new ArrayList<String>();
+		
 		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
 		exData.classContainingClientDataContainer = SpiderCore.class;

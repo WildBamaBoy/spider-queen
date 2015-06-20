@@ -2,5 +2,5 @@ package sq.core;
 
 public class Constants 
 {
-	public static final int ID_GUI_INVENTORY = 1;
+	public static final byte ID_GUI_SLEEP = 1;
 }

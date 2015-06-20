@@ -3,6 +3,7 @@ package sq.entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import radixcore.data.WatchedInt;
+import radixcore.util.RadixMath;
 import sq.core.radix.PlayerData;
 import sq.enums.EnumBeeType;
 
@@ -12,6 +13,9 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		super(world, "bee");
 		setSize(1.2F, 1.0F);
+		
+		int beeType = RadixMath.getNumberInRange(0, 2);
+		dataWatcher.updateObject(12, beeType);
 	}
 
 	public EntityBee(World world, EnumBeeType type)
