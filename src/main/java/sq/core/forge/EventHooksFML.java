@@ -1,11 +1,13 @@
 package sq.core.forge;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
+import sq.client.gui.GuiScreenWarning;
 import sq.core.SpiderCore;
 import sq.core.radix.PlayerData;
 import sq.packet.PacketSleepC;
@@ -13,11 +15,15 @@ import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public final class EventHooksFML
 {
 	private int counter;
+	private boolean displayedASMWarning;
 	
 	@SubscribeEvent
 	public void onConfigChanges(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
@@ -29,6 +35,17 @@ public final class EventHooksFML
 		}
 	}
 
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void clientTickEventHandler(ClientTickEvent event)
+	{
+		if (!displayedASMWarning && !SpiderCore.asmCompleted)
+		{
+			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenWarning());
+			displayedASMWarning = true;
+		}
+	}
+	
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{

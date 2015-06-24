@@ -11,6 +11,10 @@ import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -54,7 +58,9 @@ import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
 import sq.entity.EntityYuki;
+import sq.entity.ai.ReputationContainer;
 import sq.enums.EnumCocoonType;
+import sq.enums.EnumWatchedDataIDs;
 import sq.gen.WorldGenAntHill;
 import sq.gen.WorldGenBeeHive;
 import sq.gen.WorldGenJack;
@@ -84,6 +90,10 @@ public final class SpiderCore
 	public static final String NAME = "Spider Queen";
 	public static final String VERSION = "1.0.0-triage";
 
+	public static boolean asmRan = false;
+	public static boolean asmCompleted = true;
+	public static List<String> asmErrors = new ArrayList<String>();
+
 	@Instance(ID)
 	private static SpiderCore instance;
 	private static ModMetadata metadata;
@@ -109,7 +119,13 @@ public final class SpiderCore
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{	
+	{
+		if (!asmRan)
+		{
+			asmCompleted = false;
+			asmErrors.add("ASM did not run.");
+		}
+		
 		instance = this;
 		rand = new Random();
 		metadata = event.getModMetadata();
@@ -230,6 +246,11 @@ public final class SpiderCore
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
 		GameRegistry.registerWorldGenerator(new WorldGenJack(), 8);
 		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);
+		
+		ReputationContainer.createNew(EntitySkeleton.class, EnumWatchedDataIDs.SKELETON_LIKE.getId());
+		ReputationContainer.createNew(EntityCreeper.class, EnumWatchedDataIDs.CREEPER_LIKE.getId());
+		ReputationContainer.createNew(EntityZombie.class, EnumWatchedDataIDs.ZOMBIE_LIKE.getId());
+		ReputationContainer.createNew(EntitySpider.class, EnumWatchedDataIDs.SPIDER_LIKE.getId());
 	}
 
 	@EventHandler

@@ -6,7 +6,7 @@ import radixcore.data.AbstractPlayerData;
 import radixcore.data.WatchedBoolean;
 import radixcore.data.WatchedInt;
 import sq.core.SpiderCore;
-import sq.data.WatcherIDsPlayerData;
+import sq.enums.EnumWatchedDataIDs;
 import cpw.mods.fml.common.ModMetadata;
 
 public final class PlayerData extends AbstractPlayerData
@@ -41,14 +41,14 @@ public final class PlayerData extends AbstractPlayerData
 	@Override
 	public void instantiateData()
 	{
-		isMale = new WatchedBoolean(false, WatcherIDsPlayerData.IS_MALE, dataWatcher);
-		antLike = new WatchedInt(0, WatcherIDsPlayerData.ANT_LIKE, dataWatcher);
-		beeLike = new WatchedInt(0, WatcherIDsPlayerData.BEE_LIKE, dataWatcher);
-		creeperLike = new WatchedInt(0, WatcherIDsPlayerData.CREEPER_LIKE, dataWatcher);
-		skeletonLike = new WatchedInt(0, WatcherIDsPlayerData.SKELETON_LIKE, dataWatcher);
-		zombieLike = new WatchedInt(0, WatcherIDsPlayerData.ZOMBIE_LIKE, dataWatcher);
-		humanLike = new WatchedInt(0, WatcherIDsPlayerData.HUMAN_LIKE, dataWatcher);
-		spiderLike = new WatchedInt(0, WatcherIDsPlayerData.SPIDER_LIKE, dataWatcher);
+		isMale = new WatchedBoolean(false, EnumWatchedDataIDs.IS_MALE.getId(), dataWatcher);
+		antLike = new WatchedInt(0, EnumWatchedDataIDs.ANT_LIKE.getId(), dataWatcher);
+		beeLike = new WatchedInt(0, EnumWatchedDataIDs.BEE_LIKE.getId(), dataWatcher);
+		creeperLike = new WatchedInt(0, EnumWatchedDataIDs.CREEPER_LIKE.getId(), dataWatcher);
+		skeletonLike = new WatchedInt(0, EnumWatchedDataIDs.SKELETON_LIKE.getId(), dataWatcher);
+		zombieLike = new WatchedInt(0, EnumWatchedDataIDs.ZOMBIE_LIKE.getId(), dataWatcher);
+		humanLike = new WatchedInt(0, EnumWatchedDataIDs.HUMAN_LIKE.getId(), dataWatcher);
+		spiderLike = new WatchedInt(0, EnumWatchedDataIDs.SPIDER_LIKE.getId(), dataWatcher);
 	}
 	
 	@Override
@@ -61,5 +61,21 @@ public final class PlayerData extends AbstractPlayerData
 		SpiderCore.getLog().info("--------PLAYER DATA DUMP--------");
 		SpiderCore.getLog().info("Owner: " + owner);
 		SpiderCore.getLog().info("Owner's Identity: " + ownerIdentifier);
+	}
+	
+	public WatchedInt getLikeValueById(int i)
+	{
+		switch (EnumWatchedDataIDs.byId(i))
+		{
+		case ANT_LIKE: return antLike;
+		case BEE_LIKE: return beeLike;
+		case CREEPER_LIKE: return creeperLike;
+		case HUMAN_LIKE: return humanLike;
+		case SKELETON_LIKE: return skeletonLike;
+		case SPIDER_LIKE: return spiderLike;
+		case ZOMBIE_LIKE: return zombieLike;
+		default:
+			return null;
+		}
 	}
 }
