@@ -79,10 +79,16 @@ public final class ItemOffering extends Item
 			return false;
 		}
 		
-		entities = RadixLogic.getAllEntitiesOfTypeWithinDistance(acceptorClass, entityItem, 5);
+		entities = RadixLogic.getAllEntitiesOfTypeWithinDistance(acceptorClass, entityItem, 8);
+		
+		for (Entity entity : entities)
+		{
+			EntityLiving living = (EntityLiving)entity;
+			living.getNavigator().tryMoveToXYZ(entityItem.posX, entityItem.posY, entityItem.posZ, 0.8D);
+		}
 		
 		if (entities.size() > 0 && entityItem.ticksExisted >= Time.SECOND * 5)
-		{
+		{	
 			Entity exampleEntity = entities.get(0);
 			String player = entityItem.getEntityItem().stackTagCompound.getString("player");
 			entityItem.setDead();
@@ -123,6 +129,7 @@ public final class ItemOffering extends Item
 						Utils.spawnParticlesAroundEntityS("heart", entity, 16);
 						EntityLiving living = (EntityLiving)entity;
 						living.setAttackTarget(null);
+						living.getNavigator().clearPathEntity();
 					}
 				}
 			}
