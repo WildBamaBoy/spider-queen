@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -271,7 +272,16 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 		if (collisionPosition != null)
 		{
-			onImpact(collisionPosition);
+			//Ignore tall grass.
+			if (!worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ).getMaterial().blocksMovement())
+			{
+				return;
+			}
+			
+			else
+			{
+				onImpact(collisionPosition);
+			}
 		}
 	}
 

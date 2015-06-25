@@ -1,5 +1,7 @@
 package sq.blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -7,6 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
@@ -65,6 +69,12 @@ public class BlockWebFull extends Block
 	public int getRenderType()
 	{
 		return 1;
+	}
+
+	@Override
+	public Item getItemDropped(int fortune, Random rand, int meta) 
+	{
+		return Items.string;
 	}
 
 	private void checkForBed(World world, int x, int y, int z, int itr)
