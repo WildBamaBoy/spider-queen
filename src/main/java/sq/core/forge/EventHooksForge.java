@@ -26,6 +26,7 @@ import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IRep;
+import sq.entity.ai.PlayerExtension;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.ai.ReputationContainer;
 import sq.enums.EnumWatchedDataIDs;
@@ -169,11 +170,19 @@ public final class EventHooksForge
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event)
 	{
-		boolean injectExtension = EnumWatchedDataIDs.doesEntityHaveLikeStatus(event.entity);
+		boolean injectExtension = EnumWatchedDataIDs.doesEntityHaveLikeStatus(event.entity) || event.entity instanceof EntityPlayer;
 
 		if (injectExtension)
 		{
-			RepEntityExtension.register(event.entity);
+			if (event.entity instanceof EntityPlayer)
+			{
+				PlayerExtension.register((EntityPlayer) event.entity);
+			}
+			
+			else
+			{
+				RepEntityExtension.register(event.entity);
+			}
 		}
 	}
 

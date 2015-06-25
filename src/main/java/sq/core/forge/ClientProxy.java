@@ -16,6 +16,7 @@ import sq.client.render.RenderThrowable;
 import sq.client.render.RenderVines;
 import sq.client.render.RenderWasp;
 import sq.client.render.RenderWeb;
+import sq.client.render.RenderWebslinger;
 import sq.client.render.RenderYuki;
 import sq.entity.EntityAnt;
 import sq.entity.EntityBee;
@@ -32,6 +33,7 @@ import sq.entity.EntitySpiderEx;
 import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
+import sq.entity.EntityWebslinger;
 import sq.entity.EntityYuki;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -58,6 +60,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, new RenderWeb());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEx.class, new RenderSpiderEx());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEgg.class, new RenderSpiderEgg());
+		RenderingRegistry.registerEntityRenderingHandler(EntityWebslinger.class, new RenderWebslinger());
 	}
 
 	@Override
