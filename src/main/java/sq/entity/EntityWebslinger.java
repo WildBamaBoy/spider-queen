@@ -58,10 +58,10 @@ public class EntityWebslinger extends Entity
 		//ignoreFrustumCheck = true;
 		angler = entityplayer;
 		player = entityplayer;
-		
+
 		PlayerExtension playerExtension = PlayerExtension.get(entityplayer);
 		playerExtension.webEntity = this;
-		
+
 		setSize(0.25F, 0.25F);
 		setLocationAndAngles(entityplayer.posX, (entityplayer.posY + 1.6200000000000001D) - (double)entityplayer.yOffset, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch);
 		posX -= MathHelper.cos((rotationYaw / 180F) * 3.141593F) * 0.16F;
@@ -152,7 +152,7 @@ public class EntityWebslinger extends Entity
 			if(entityHit != null) { entityHit.motionZ = entityHit.motionZ - amt2; }
 		}
 	}
-	
+
 	public void onUpdate()
 	{
 		super.onUpdate();
@@ -161,7 +161,7 @@ public class EntityWebslinger extends Entity
 		{
 			return;
 		}
-		
+
 		else
 		{
 			updateSlinger();
@@ -175,16 +175,16 @@ public class EntityWebslinger extends Entity
 		{
 			Vec3 slingerVector = Vec3.createVectorHelper(posX,posY,posZ);
 			Vec3 playerVector = Vec3.createVectorHelper(player.posX,player.posY,player.posZ);
-			
+
 			//Prevent the player from experiencing fall damage.
 			player.fallDistance = 0.0F;
-			
+
 			//Initialize the target distance.
 			if (targetDistance == 0)
 			{
 				targetDistance = slingerVector.squareDistanceTo(playerVector); 
 			}
-			
+
 			//Limit how far away we can get from the slinger ball.
 			else if (targetDistance != 0)
 			{
@@ -192,34 +192,37 @@ public class EntityWebslinger extends Entity
 				{ 
 					targetDistance = 2; 
 				}
-				
+
 				if(targetDistance > 1000) 
 				{ 
 					targetDistance = 1000; 
 				}
 			}
-			
+
 			//Allow the player to reel down by sneaking.
 			if (player.isSneaking()) 
 			{ 
 				//ddist++
 				targetDistance += 2; 
 			}
-			
+
 			//Don't allow Y motion to bounce when the player is hanging from the slinger.
 			boolean isHanging = player.posY - this.posY < 0; //This is negative if the player is hanging from the slinger.
 			if (isHanging && player.motionY < 0 && !player.isSneaking())
 			{
 				player.motionY = 0.0D;
 			}
-			
+
 			//If the player is jumping, bring the target distance up to directly behind them.
 			if (Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed())
 			{
 				targetDistance = Math.abs(slingerVector.squareDistanceTo(playerVector)) - 1;
 			}
+
+			double distance = slingerVector.squareDistanceTo(playerVector);
 			
-			if (slingerVector.squareDistanceTo(playerVector) > targetDistance / 1.33D) //1.33D starts the slinger off with a 'pull' on the player. // / 4 * 3
+			//Limit to only increasing motion if player is more than 2 square blocks away. Prevents flying around the hook point.
+			if (distance > targetDistance / 1.33D && distance > 2.0D) //1.33D starts the slinger off with a 'pull' on the player.
 			{
 				//Accelerate the player towards the midpoint between their position and the slinger's.
 				Vec3 moveVector = Vec3.createVectorHelper(
@@ -227,7 +230,7 @@ public class EntityWebslinger extends Entity
 						player.motionY * 1.2D + (posY - player.posY) / 2, 
 						player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
 				double acceleration = 0.3D;
-				
+
 				if(entityHit != null) 
 				{ 
 					acceleration = acceleration / 2; 
@@ -241,13 +244,22 @@ public class EntityWebslinger extends Entity
 				if(player.posY > posY) { if(tmotionY < player.motionY) { matchMotion(1, tmotionY); } } else { if(tmotionY > player.motionY) { matchMotion(1, tmotionY); } }
 				if(player.posZ > posZ) { if(tmotionZ < player.motionZ) { matchMotion(2, tmotionZ); } } else { if(tmotionZ > player.motionZ) { matchMotion(2, tmotionZ); } }
 			}
-			
+
 			else
 			{
 				if(angler != null)
 				{
 					boolean isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
-					if(isJumping) { targetDistance = targetDistance - 6; }
+					
+					if (isJumping && slingerVector.squareDistanceTo(playerVector) > 1.5D)
+					{
+						targetDistance = targetDistance - 6;
+						
+						if (targetDistance < 1.0D)
+						{
+							targetDistance = 1.0D;
+						}
+					}
 				}
 			}
 		}
@@ -277,7 +289,7 @@ public class EntityWebslinger extends Entity
 					PlayerExtension playerExtension = PlayerExtension.get(angler);
 					playerExtension.webEntity = null;
 				}
-				
+
 				return;
 			}
 			if(entityHit != null)
@@ -451,7 +463,7 @@ public class EntityWebslinger extends Entity
         motionZ *= f1;*/
 		setPosition(posX, posY, posZ);
 	}
-	
+
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
 		nbttagcompound.setShort("xTile", (short)tileX);

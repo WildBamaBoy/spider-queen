@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -31,6 +32,12 @@ public class ItemWebslinger extends Item
 		setMaxStackSize(1);
 
 		GameRegistry.registerItem(this, name);
+	}
+
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack)
+	{
+		return EnumAction.none;
 	}
 
 	@Override
@@ -88,6 +95,7 @@ public class ItemWebslinger extends Item
 			world.spawnEntityInWorld(new EntityWebslinger(world, entityPlayer));
 		}
 
+		entityPlayer.swingItem();
 		return itemstack;
 	}
 
