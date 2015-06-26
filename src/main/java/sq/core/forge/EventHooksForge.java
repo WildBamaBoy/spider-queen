@@ -151,6 +151,7 @@ public final class EventHooksForge
 		
 		else if (event.entityLiving.getClass().equals(EntitySpider.class) && event.source.getSourceOfDamage() instanceof EntityPlayer)
 		{
+			EntityPlayer player = (EntityPlayer)event.source.getSourceOfDamage();
 			PlayerData data = SpiderCore.getPlayerData((EntityPlayer)event.source.getSourceOfDamage());
 			RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
 			
@@ -159,8 +160,14 @@ public final class EventHooksForge
 			
 			if (doCancel)
 			{
-				EntitySpider spider = (EntitySpider)event.entityLiving;
-				spider.setTarget(null);
+				EntityLivingBase living = new EntitySpider(event.entityLiving.worldObj);
+				living.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+
+				//Redirect the attack as an attack from a fake entity so that the spider doesn't hit the player back.
+				event.entityLiving.attackEntityFrom(DamageSource.causeMobDamage(living), event.ammount);
+				
+				event.setCanceled(true);
+				living.setDead(); //Set the entity as dead so that the spider will not try to attack it.
 			}
 		}
 	}
