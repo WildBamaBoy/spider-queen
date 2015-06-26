@@ -48,6 +48,9 @@ import sq.entity.EntityBeetle;
 import sq.entity.EntityBoomBall;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
+import sq.entity.EntityFriendlyCreeper;
+import sq.entity.EntityFriendlySkeleton;
+import sq.entity.EntityFriendlyZombie;
 import sq.entity.EntityJack;
 import sq.entity.EntityJackBall;
 import sq.entity.EntityMandragora;
@@ -219,6 +222,9 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntitySpiderEx.class, EntitySpiderEx.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityBoomBall.class, EntityBoomBall.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntitySpiderEgg.class, EntitySpiderEgg.class.getSimpleName(), id, this, 50, 2, true); id++;		
+		EntityRegistry.registerModEntity(EntityFriendlyCreeper.class, EntityFriendlyCreeper.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityFriendlySkeleton.class, EntityFriendlySkeleton.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityFriendlyZombie.class, EntityFriendlyZombie.class.getSimpleName(), id, this, 50, 2, true); id++;
 		
 		//Tile registry
 

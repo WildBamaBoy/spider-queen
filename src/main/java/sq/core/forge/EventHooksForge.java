@@ -21,10 +21,12 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
+import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.EntitySpiderEx;
+import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
 import sq.entity.ai.PlayerExtension;
 import sq.entity.ai.RepEntityExtension;
@@ -39,30 +41,6 @@ public final class EventHooksForge
 	{
 		event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
 		event.entityPlayer.addChatMessage(new ChatComponentText("Spiders can't sleep in normal beds."));
-	}
-
-	@SubscribeEvent
-	public void onLivingUpdate(LivingUpdateEvent event)
-	{
-//		if (!event.entityLiving.worldObj.isRemote)
-//		{
-//			RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
-//
-//			if (extension != null)
-//			{
-//				List<Entity> entities = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityItem.class, event.entityLiving, 6);
-//
-//				for (Entity entity : entities)
-//				{
-//					EntityItem item = (EntityItem)entity;
-//					
-//					if (item.getEntityItem().getItem() == ModItems.skull)
-//					{
-////						ItemOffering.
-//					}
-//				}
-//			}
-//		}
 	}
 
 	@SubscribeEvent
@@ -88,6 +66,28 @@ public final class EventHooksForge
 					{
 						spider.setTarget(event.target);
 					}
+				}
+			}
+
+			//Also alert the friendly entities.
+			for (Entity entity : entities)
+			{
+				try
+				{
+					if (entity instanceof IFriendlyEntity)
+					{
+						IFriendlyEntity friendly = (IFriendlyEntity)entity;
+
+						if (!entity.worldObj.isRemote && friendly.getFriendPlayerUUID().equals(player.getPersistentID()) && event.target instanceof EntityLivingBase)
+						{
+							friendly.setTarget((EntityLivingBase) event.target);
+						}
+					}
+				}
+
+				catch (Exception e)
+				{
+					continue;
 				}
 			}
 
@@ -150,18 +150,13 @@ public final class EventHooksForge
 			final RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
 
 			if (extension != null) //If they have an extension, they are a vanilla mob with a reputation entry.
-			{				
+			{
 				WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
 				int chanceToAffectRep = 25;
 
 				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep))
 				{
-					likeData.setValue(likeData.getInt() - 1);
-
-					if (likeData.getInt() == -1)
-					{
-						player.addChatComponentMessage(new ChatComponentText(Color.RED + "You have broken your truce with the " + event.entityLiving.getCommandSenderName() + "s!"));
-					}
+					ReputationHandler.onReputationChange(player, event.entityLiving, -1);
 				}
 			}
 		}
@@ -178,7 +173,7 @@ public final class EventHooksForge
 			{
 				PlayerExtension.register((EntityPlayer) event.entity);
 			}
-			
+
 			else
 			{
 				RepEntityExtension.register(event.entity);

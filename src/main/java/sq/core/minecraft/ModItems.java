@@ -6,6 +6,9 @@ import sq.entity.EntityAnt;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
 import sq.entity.EntityFly;
+import sq.entity.EntityFriendlyCreeper;
+import sq.entity.EntityFriendlySkeleton;
+import sq.entity.EntityFriendlyZombie;
 import sq.entity.EntityJack;
 import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
@@ -59,6 +62,9 @@ public final class ModItems
 	public static ItemEggSpawner eggSpiderQueen;
 	public static ItemEggSpawner eggWasp;
 	public static ItemEggSpawner eggYuki;
+	public static ItemEggSpawner eggFriendlyCreeper;
+	public static ItemEggSpawner eggFriendlySkeleton;
+	public static ItemEggSpawner eggFriendlyZombie;
 	
 	public static ItemGhastEgg ghastEgg;
 	public static ItemSpiderEgg spiderEgg;
@@ -104,6 +110,9 @@ public final class ModItems
 		eggSpiderQueen = new ItemEggSpawner(EntitySpiderQueen.class, "egg-spider-queen");
 		eggWasp = new ItemEggSpawner(EntityWasp.class, "egg-wasp");
 		eggYuki = new ItemEggSpawner(EntityYuki.class, "egg-yuki");
+		eggFriendlyCreeper = new ItemEggSpawner(EntityFriendlyCreeper.class, "egg-f-creeper");
+		eggFriendlySkeleton = new ItemEggSpawner(EntityFriendlySkeleton.class, "egg-f-skeleton");
+		eggFriendlyZombie = new ItemEggSpawner(EntityFriendlyZombie.class, "egg-f-zombie");
 		
 		ghastEgg = new ItemGhastEgg();
 		spiderEgg = new ItemSpiderEgg();

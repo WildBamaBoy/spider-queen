@@ -42,6 +42,9 @@ item.egg-fly.name=Spawn Fly
 item.egg-wasp.name=Spawn Wasp
 item.egg-ant.name=Spawn Ant
 item.egg-bee.name=Spawn Bee
+item.egg-f-creeper.name=Spawn Friendly Creeper
+item.egg-f-skeleton.name=Spawn Friendly Skeleton
+item.egg-f-zombie.name=Spawn Friendly Zombie
 
 tile.anthill.name=Ant Hill
 tile.beehive.name=Beehive

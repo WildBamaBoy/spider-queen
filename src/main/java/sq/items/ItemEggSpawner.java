@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
+import sq.entity.IFriendlyEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemEggSpawner extends Item
@@ -43,7 +44,7 @@ public class ItemEggSpawner extends Item
 				verticalOffset = 0.5D;
 			}
 
-			spawnEntity(world, posX + 0.5D, posY + verticalOffset, posZ + 0.5D);
+			spawnEntity(world, player, posX + 0.5D, posY + verticalOffset, posZ + 0.5D);
 
 			if (!player.capabilities.isCreativeMode)
 			{
@@ -56,12 +57,19 @@ public class ItemEggSpawner extends Item
 		return false;
 	}
 
-	public void spawnEntity(World world, double posX, double posY, double posZ)
+	public void spawnEntity(World world, EntityPlayer player, double posX, double posY, double posZ)
 	{
 		try
 		{
 			Entity entity = (Entity)spawnClass.getConstructor(World.class).newInstance(world);
 			entity.setPosition(posX, posY, posZ);
+			
+			if (entity instanceof IFriendlyEntity)
+			{
+				IFriendlyEntity friendly = (IFriendlyEntity)entity;
+				friendly.setFriendPlayerUUID(player.getPersistentID());
+			}
+			
 			world.spawnEntityInWorld(entity);
 		}
 

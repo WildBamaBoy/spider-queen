@@ -43,7 +43,7 @@ public final class EventHooksFML
 	@SideOnly(Side.CLIENT)
 	public void clientTickEventHandler(ClientTickEvent event)
 	{
-		if (!displayedASMWarning && !SpiderCore.asmCompleted)
+		if (!displayedASMWarning && SpiderCore.asmErrors.size() > 0)
 		{
 			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenWarning());
 			displayedASMWarning = true;
