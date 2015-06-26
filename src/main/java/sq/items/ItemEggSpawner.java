@@ -62,14 +62,15 @@ public class ItemEggSpawner extends Item
 		try
 		{
 			Entity entity = (Entity)spawnClass.getConstructor(World.class).newInstance(world);
-			entity.setPosition(posX, posY, posZ);
 			
 			if (entity instanceof IFriendlyEntity)
 			{
+				entity = (Entity) spawnClass.getConstructor(World.class, EntityPlayer.class).newInstance(world, player);
 				IFriendlyEntity friendly = (IFriendlyEntity)entity;
 				friendly.setFriendPlayerUUID(player.getPersistentID());
 			}
 			
+			entity.setPosition(posX, posY, posZ);
 			world.spawnEntityInWorld(entity);
 		}
 

@@ -197,6 +197,18 @@ public final class EventHooksForge
 				reputation = ((IRep)entityLiving).getLikeData(data).getInt();
 			}
 
+			else if (event.entityLiving instanceof IFriendlyEntity)
+			{
+				IFriendlyEntity entity = (IFriendlyEntity)event.entityLiving;
+
+				if (entity.getFriendPlayerUUID().equals(event.target.getPersistentID()))
+				{
+					//Never attack the friend player.
+					entityLiving.setAttackTarget(null);
+					return;
+				}
+			}
+
 			else if (watchedLikeInstance != null)
 			{
 				reputation = watchedLikeInstance.getInt();
