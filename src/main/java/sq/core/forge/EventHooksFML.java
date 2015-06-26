@@ -3,10 +3,13 @@ package sq.core.forge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
+import radixcore.util.RadixMath;
 import sq.client.gui.GuiScreenWarning;
 import sq.core.SpiderCore;
 import sq.core.radix.PlayerData;
@@ -23,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public final class EventHooksFML
 {
 	private int counter;
+	private int timeUntilSpawnWeb;
 	private boolean displayedASMWarning;
 	
 	@SubscribeEvent
@@ -49,6 +53,22 @@ public final class EventHooksFML
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{
+		timeUntilSpawnWeb--;
+
+		if (timeUntilSpawnWeb <= 0)
+		{
+			for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+			{
+				for (final Object obj : worldServer.playerEntities)
+				{
+					final EntityPlayer player = (EntityPlayer) obj;
+					player.inventory.addItemStackToInventory(new ItemStack(Items.string, RadixMath.getNumberInRange(1, 3)));
+				}
+			}
+
+			timeUntilSpawnWeb = Time.MINUTE * 3;
+		}
+		
 		if (counter <= 0)
 		{
 			int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
