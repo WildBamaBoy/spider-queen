@@ -5,16 +5,16 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
@@ -23,7 +23,6 @@ import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IFriendlyEntity;
@@ -140,6 +139,15 @@ public final class EventHooksForge
 		}
 	}
 
+	@SubscribeEvent
+	public void onLivingAttack(LivingAttackEvent event)
+	{
+		if (event.entityLiving instanceof EntityPlayer && event.source == DamageSource.fall)
+		{
+			PlayerExtension extension = PlayerExtension.get((EntityPlayer)event.entityLiving);
+			event.setCanceled(extension.webEntity != null);
+		}
+	}
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
