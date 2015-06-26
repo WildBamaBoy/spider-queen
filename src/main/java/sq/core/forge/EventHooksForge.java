@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -146,6 +147,21 @@ public final class EventHooksForge
 		{
 			PlayerExtension extension = PlayerExtension.get((EntityPlayer)event.entityLiving);
 			event.setCanceled(extension.webEntity != null);
+		}
+		
+		else if (event.entityLiving.getClass().equals(EntitySpider.class) && event.source.getSourceOfDamage() instanceof EntityPlayer)
+		{
+			PlayerData data = SpiderCore.getPlayerData((EntityPlayer)event.source.getSourceOfDamage());
+			RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
+			
+			//Cancel the target if...
+			boolean doCancel = data.spiderLike.getInt() >= 0 && extension.getTimesHitByPlayer() < 3;
+			
+			if (doCancel)
+			{
+				EntitySpider spider = (EntitySpider)event.entityLiving;
+				spider.setTarget(null);
+			}
 		}
 	}
 	@SubscribeEvent

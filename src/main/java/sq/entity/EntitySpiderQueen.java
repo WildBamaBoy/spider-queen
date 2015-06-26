@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 import sq.client.render.RenderSpiderQueen;
 import sq.core.minecraft.ModItems;
 
+//TODO
+//Refactor this.
 public class EntitySpiderQueen extends EntityCreature implements IWebClimber
 {
 	private int backoff;

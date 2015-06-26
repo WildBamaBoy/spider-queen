@@ -127,7 +127,7 @@ public final class SpiderCore
 		if (!asmRan)
 		{
 			asmCompleted = false;
-			asmErrors.add("ASM did not run.");
+			asmErrors.add("ASM did not run. If you have modified the mod's JAR, reinstall the mod.");
 		}
 		
 		instance = this;
@@ -249,8 +249,9 @@ public final class SpiderCore
 		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
 		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-		EntityRegistry.addSpawn(EntitySpiderQueen.class, 16, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+//TODO
+//		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+//				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);

@@ -69,18 +69,4 @@ public final class ASMEventHooks
 			return null;
 		}
 	}
-
-	public static boolean onMobAttackedByPlayer(EntityMob mob, EntityPlayer player) 
-	{
-		if (mob.getClass().equals(EntitySpider.class))
-		{
-			PlayerData data = SpiderCore.getPlayerData(player);
-			RepEntityExtension extension = (RepEntityExtension) mob.getExtendedProperties(RepEntityExtension.ID);
-			
-			//Cancel the target if...
-			return data.spiderLike.getInt() >= 0 && extension.getTimesHitByPlayer() < 2;
-		}
-		
-		return true;
-	}
 }

@@ -12,6 +12,7 @@ import sq.client.render.RenderFriendlyZombie;
 import sq.client.render.RenderJack;
 import sq.client.render.RenderMandragora;
 import sq.client.render.RenderOctopus;
+import sq.client.render.RenderOtherQueen;
 import sq.client.render.RenderSpiderEgg;
 import sq.client.render.RenderSpiderEx;
 import sq.client.render.RenderSpiderQueen;
@@ -66,7 +67,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityBoomBall.class, new RenderThrowable());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, new RenderWeb());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEx.class, new RenderSpiderEx());
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderQueen.class, new RenderSpiderQueen());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderQueen.class, new RenderOtherQueen());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEgg.class, new RenderSpiderEgg());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebslinger.class, new RenderWebslinger());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCreeper.class, new RenderFriendlyCreeper());
