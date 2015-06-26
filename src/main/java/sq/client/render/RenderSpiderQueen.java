@@ -38,8 +38,8 @@ import com.mojang.authlib.GameProfile;
 
 public class RenderSpiderQueen extends RenderPlayer
 {
-	private final ResourceLocation[] spiderQueenTextures; 
-	private final ResourceLocation[] armTextures;
+	public static ResourceLocation[] spiderQueenTextures; 
+	public static ResourceLocation[] armTextures;
 	
 	private final ModelSpiderQueen	modelBipedMain;
 	private final ModelBiped		modelFirstPerson;
@@ -55,7 +55,14 @@ public class RenderSpiderQueen extends RenderPlayer
 		armTextures = new ResourceLocation[4];
 		
 		spiderQueenTextures[0] = new ResourceLocation("sq:textures/entities/spider-queen-1.png");
+		spiderQueenTextures[1] = new ResourceLocation("sq:textures/entities/spider-queen-2.png");
+		spiderQueenTextures[2] = new ResourceLocation("sq:textures/entities/spider-queen-3.png");
+		spiderQueenTextures[3] = new ResourceLocation("sq:textures/entities/spider-queen-4.png");
+		
 		armTextures[0] = new ResourceLocation("sq:textures/entities/spider-queen-arms-1.png");
+		armTextures[1] = new ResourceLocation("sq:textures/entities/spider-queen-arms-2.png");
+		armTextures[2] = new ResourceLocation("sq:textures/entities/spider-queen-arms-3.png");
+		armTextures[3] = new ResourceLocation("sq:textures/entities/spider-queen-arms-4.png");
 	}
 
 	@Override

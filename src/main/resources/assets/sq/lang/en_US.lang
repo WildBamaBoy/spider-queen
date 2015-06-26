@@ -45,6 +45,7 @@ item.egg-bee.name=Spawn Bee
 item.egg-f-creeper.name=Spawn Friendly Creeper
 item.egg-f-skeleton.name=Spawn Friendly Skeleton
 item.egg-f-zombie.name=Spawn Friendly Zombie
+item.royalblood.name=Royal Blood
 
 tile.anthill.name=Ant Hill
 tile.beehive.name=Beehive

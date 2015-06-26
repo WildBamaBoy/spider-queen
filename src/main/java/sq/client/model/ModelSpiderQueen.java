@@ -8,12 +8,12 @@ import net.minecraft.util.MathHelper;
 
 public class ModelSpiderQueen extends ModelBase
 {
-	private final ModelRenderer head;
+	public final ModelRenderer head;
 	private final ModelRenderer body;
 	private final ModelRenderer rear;
 	private final ModelRenderer torso;
 	private final ModelRenderer armLeft;
-	private final ModelRenderer armRight;
+	public final ModelRenderer armRight;
 	private final ModelRenderer breasts;
 	private final ModelRenderer spinner1;
 	private final ModelRenderer spinner2;
@@ -26,6 +26,14 @@ public class ModelSpiderQueen extends ModelBase
 	private final ModelRenderer leg7;
 	private final ModelRenderer leg8;
 
+    /** Records whether the model should be rendered holding an item in the left hand, and if that item is a block. */
+    public int heldItemLeft;
+    /** Records whether the model should be rendered holding an item in the right hand, and if that item is a block. */
+    public int heldItemRight;
+    public boolean isSneak;
+    /** Records whether the model should be rendered aiming a bow. */
+    public boolean aimedBow;
+    
 	public ModelSpiderQueen()
 	{
 		textureWidth = 64;
@@ -192,7 +200,7 @@ public class ModelSpiderQueen extends ModelBase
 		head.rotateAngleY = f3 / (180F / (float) Math.PI);
 		head.rotateAngleX = f4 / (180F / (float) Math.PI);
 
-		final float f6 = 0.7853982F;
+		float f6 = 0.7853982F;
 		leg1.rotateAngleZ = -f6;
 		leg2.rotateAngleZ = f6;
 		leg3.rotateAngleZ = -f6 * 0.74F;
@@ -201,7 +209,7 @@ public class ModelSpiderQueen extends ModelBase
 		leg6.rotateAngleZ = f6 * 0.74F;
 		leg7.rotateAngleZ = -f6;
 		leg8.rotateAngleZ = f6;
-		final float f7 = -0F;
+		float f7 = -0F;
 		final float f8 = 0.3926991F;
 		leg1.rotateAngleY = f8 * 2.0F + f7;
 		leg2.rotateAngleY = -f8 * 2.0F - f7;
@@ -263,6 +271,23 @@ public class ModelSpiderQueen extends ModelBase
 		armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
 		armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
 
+        if (this.aimedBow)
+        {
+            f6 = 0.0F;
+            f7 = 0.0F;
+            this.armRight.rotateAngleZ = 0.0F;
+            this.armLeft.rotateAngleZ = 0.0F;
+            this.armRight.rotateAngleY = -(0.1F - f6 * 0.6F) + this.head.rotateAngleY;
+            this.armLeft.rotateAngleY = 0.1F - f6 * 0.6F + this.head.rotateAngleY + 0.4F;
+            this.armRight.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
+            this.armLeft.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
+            this.armRight.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+            this.armLeft.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+            this.armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+            this.armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+            this.armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
+            this.armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
+        }
 		leg1.rotateAngleY += f9;
 		leg2.rotateAngleY += -f9;
 		leg3.rotateAngleY += f10;

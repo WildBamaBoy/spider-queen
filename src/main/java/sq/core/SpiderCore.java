@@ -57,6 +57,7 @@ import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
 import sq.entity.EntitySpiderEgg;
 import sq.entity.EntitySpiderEx;
+import sq.entity.EntitySpiderQueen;
 import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
@@ -225,6 +226,7 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityFriendlyCreeper.class, EntityFriendlyCreeper.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFriendlySkeleton.class, EntityFriendlySkeleton.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFriendlyZombie.class, EntityFriendlyZombie.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntitySpiderQueen.class, EntitySpiderQueen.class.getSimpleName(), id, this, 50, 2, true);
 		
 		//Tile registry
 
@@ -247,7 +249,9 @@ public final class SpiderCore
 		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
 		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-		
+		EntityRegistry.addSpawn(EntitySpiderQueen.class, 16, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
 		GameRegistry.registerWorldGenerator(new WorldGenJack(), 8);

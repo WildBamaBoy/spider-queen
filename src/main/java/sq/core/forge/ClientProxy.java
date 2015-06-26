@@ -36,6 +36,7 @@ import sq.entity.EntityMandragora;
 import sq.entity.EntityOctopus;
 import sq.entity.EntitySpiderEgg;
 import sq.entity.EntitySpiderEx;
+import sq.entity.EntitySpiderQueen;
 import sq.entity.EntityVines;
 import sq.entity.EntityWasp;
 import sq.entity.EntityWebShot;
@@ -65,6 +66,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityBoomBall.class, new RenderThrowable());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, new RenderWeb());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEx.class, new RenderSpiderEx());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderQueen.class, new RenderSpiderQueen());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpiderEgg.class, new RenderSpiderEgg());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWebslinger.class, new RenderWebslinger());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyCreeper.class, new RenderFriendlyCreeper());
