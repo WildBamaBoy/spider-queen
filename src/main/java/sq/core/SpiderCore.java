@@ -51,6 +51,7 @@ import sq.entity.EntityFly;
 import sq.entity.EntityFriendlyCreeper;
 import sq.entity.EntityFriendlySkeleton;
 import sq.entity.EntityFriendlyZombie;
+import sq.entity.EntityHuman;
 import sq.entity.EntityJack;
 import sq.entity.EntityJackBall;
 import sq.entity.EntityMandragora;
@@ -210,9 +211,7 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityBeetle.class, EntityBeetle.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFly.class, EntityFly.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityJack.class, EntityJack.class.getSimpleName(), id, this, 50, 2, true); id++;
-		EntityRegistry.registerGlobalEntityID(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id); 
-		EntityRegistry.registerModEntity(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id, this, 50, 2, true);
-		id++;
+		EntityRegistry.registerModEntity(EntityMandragora.class, EntityMandragora.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityOctopus.class, EntityOctopus.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityWasp.class, EntityWasp.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityYuki.class, EntityYuki.class.getSimpleName(), id, this, 50, 2, true); id++;
@@ -226,7 +225,8 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityFriendlyCreeper.class, EntityFriendlyCreeper.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFriendlySkeleton.class, EntityFriendlySkeleton.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFriendlyZombie.class, EntityFriendlyZombie.class.getSimpleName(), id, this, 50, 2, true); id++;
-		EntityRegistry.registerModEntity(EntitySpiderQueen.class, EntitySpiderQueen.class.getSimpleName(), id, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntitySpiderQueen.class, EntitySpiderQueen.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityHuman.class, EntityHuman.class.getSimpleName(), id, this, 50, 2, true); id++;
 		
 		//Tile registry
 
