@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -18,6 +19,7 @@ import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
+import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.EntityBee;
@@ -67,6 +69,29 @@ public class BlockBeeHive extends Block
 	}
 
 	@Override
+	public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int meta) 
+	{
+		EntityPlayer player = world.getClosestPlayer(posX, posY, posZ, 16.0D);
+		
+		if (player != null)
+		{
+			boolean hasChangedReputation = false;
+			
+			for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityBee.class, player, 16))
+			{
+				if (!hasChangedReputation && !world.isRemote)
+				{
+					ReputationHandler.onReputationChange(player, (EntityBee) entity, -1);
+					hasChangedReputation = true;
+				}
+				
+				EntityBee bee = (EntityBee)entity;
+				bee.setTarget(player);
+			}
+		}
+	}
+
+	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) 
 	{
 		super.updateTick(world, x, y, z, random);
@@ -86,9 +111,8 @@ public class BlockBeeHive extends Block
 				}
 			}
 
-			if (nearbyBees < SpiderCore.getConfig().antSpawnCap)
+			if (nearbyBees < SpiderCore.getConfig().beeSpawnCap)
 			{
-				//getSafeSpawnArea()
 				List<Point3D> safeSpawnAreas = new ArrayList<Point3D>();
 
 				for (int xMov = -5; xMov < 5; xMov++)
@@ -106,11 +130,16 @@ public class BlockBeeHive extends Block
 						}
 					}
 				}
-				////
 				
 				if (!safeSpawnAreas.isEmpty())
 				{
 					EnumBeeType type = world.rand.nextBoolean() ? EnumBeeType.GATHERER : EnumBeeType.WARRIOR;
+					
+					if (RadixLogic.getBooleanWithProbability(5))
+					{
+						type = EnumBeeType.QUEEN;
+					}
+					
 					EntityBee bee = new EntityBee(world, type);
 					
 					Point3D spawnMovement = safeSpawnAreas.get(RadixMath.getNumberInRange(0, safeSpawnAreas.size() - 1));
