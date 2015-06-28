@@ -215,12 +215,12 @@ public enum EnumHumanType
 		if(r.nextInt(100) < 17) { list.add(new ItemStack(ModItems.heart)); }
 		if(r.nextInt(100) < 17) { list.add(new ItemStack(ModItems.brain)); }
 
-		//Remove empty stacks, not sure if trying to drop them would cause issue.
 		for (int i = list.size() - 1; i > 0; i--)
 		{
 			ItemStack stack = list.get(i);
 			
-			if (stack.stackSize == 0)
+			//Clear empty stacks, and randomly remove other items if the fortune level is not rich.
+			if (stack.stackSize == 0 || (r.nextBoolean() && fortuneLevel != 2))
 			{
 				list.remove(i);
 			}

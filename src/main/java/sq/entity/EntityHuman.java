@@ -1,6 +1,8 @@
 package sq.entity;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -12,7 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import radixcore.data.DataWatcherEx;
+import radixcore.data.WatchedBoolean;
+import radixcore.data.WatchedInt;
+import radixcore.network.ByteBufIO;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixString;
 import sq.core.SpiderCore;
@@ -20,7 +27,7 @@ import sq.core.radix.PlayerData;
 import sq.enums.EnumHumanType;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData
+public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData, IRep
 {
 	private static final ItemStack swordStone;
 	private static final ItemStack bow;
@@ -29,20 +36,31 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	private static final ItemStack stick;
 	private static final ItemStack torchWood;
 	private static final ItemStack cake;
+	
+	private DataWatcherEx dataWatcherEx;
+	private final WatchedBoolean isSwinging;
+	private int swingProgressTicks;
+	private String username;
 	private EnumHumanType type;
 	private ItemStack heldItem;
 	private int fortuneLevel;
+	private ResourceLocation skinResourceLocation;
+	private ThreadDownloadImageData	imageDownloadThread;
 	
 	public EntityHuman(World world)
 	{
 		super(world);
-		type = EnumHumanType.getAtRandom();
+		dataWatcherEx = new DataWatcherEx(this, SpiderCore.ID);
+		isSwinging = new WatchedBoolean(false, 1, dataWatcherEx);
+		username = SpiderCore.getRandomPlayerName();
 		
+		type = EnumHumanType.getAtRandom();
+
 		if (RadixLogic.getBooleanWithProbability(30))
 		{
 			fortuneLevel = 1;
 		}
-		
+
 		else if (RadixLogic.getBooleanWithProbability(7))
 		{
 			fortuneLevel = 2;
@@ -65,6 +83,60 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		}
 	}
 
+	@Override
+	public boolean isAIEnabled()
+	{
+		return true;
+	}
+	
+	@Override
+	public void swingItem()
+	{
+		if (!isSwinging.getBoolean() || swingProgressTicks >= 8 / 2 || swingProgressTicks < 0)
+		{
+			swingProgressTicks = -1;
+			isSwinging.setValue(true);
+		}
+	}
+	
+	private void updateSwinging()
+	{
+		if (isSwinging.getBoolean())
+		{
+			swingProgressTicks++;
+	
+			if (swingProgressTicks >= 8)
+			{
+				swingProgressTicks = 0;
+	
+				if (!DataWatcherEx.allowClientSideModification)
+				{
+					DataWatcherEx.allowClientSideModification = true;
+					isSwinging.setValue(false);
+					DataWatcherEx.allowClientSideModification = false;
+				}
+	
+				else
+				{
+					isSwinging.setValue(false);					
+				}
+			}
+		}
+	
+		else
+		{
+			swingProgressTicks = 0;
+		}
+	
+		swingProgress = (float) swingProgressTicks / (float) 8;
+	}
+
+	@Override //armorItemInSlot
+	public ItemStack func_130225_q(int armorId)
+	{
+		return null;
+	}
+	
 	protected boolean canDespawn()
 	{
 		return true;
@@ -78,18 +150,18 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		if (entityPlayer != null && canEntityBeSeen(entityPlayer))
 		{
 			PlayerData data = SpiderCore.getPlayerData(entityPlayer);
-			
+
 			if (data.humanLike.getInt() < 0)
 			{
 				return entityPlayer;
 			}
-			
+
 			else
 			{
 				return null;
 			}
 		} 
-		
+
 		else
 		{
 			return null;
@@ -165,55 +237,85 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	@Override
 	public String getCommandSenderName() 
 	{
+		return "Human";
+	}
+
+	private void setupCustomSkin()
+	{
+		if (!username.isEmpty())
+		{
+			skinResourceLocation = AbstractClientPlayer.getLocationSkin(username);
+			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, username);
+		}
+	}
+
+	public String getFortuneString()
+	{
 		String typeName = RadixString.upperFirstLetter(type.toString().toLowerCase());
+		StringBuilder sb = new StringBuilder();
+		sb.append("(");
 		
 		if (type != EnumHumanType.NOOB)
 		{
 			String fortuneString = fortuneLevel == 2 ? "Rich" : fortuneLevel == 1 ? "Experienced" : "Poor"; 
-			return fortuneString + " " + typeName;
+			sb.append(fortuneString);
+			sb.append(" ");
+			sb.append(typeName);
 		}
-		
+
 		else
 		{
-			return RadixString.upperFirstLetter(EnumHumanType.NOOB.toString().toLowerCase());
+			sb.append(RadixString.upperFirstLetter(EnumHumanType.NOOB.toString().toLowerCase()));
 		}
+		
+		sb.append(")");
+		return sb.toString();
 	}
 
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
+		nbt.setString("username", username);
 		nbt.setInteger("type", type.getId());
 	}
 
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
+		username = nbt.getString("username");
 		type = EnumHumanType.byId(nbt.getInteger("type"));
 	}
 
 	public boolean attackEntityFrom(DamageSource damagesource, int i)
-		{
-	//		Entity entity = damagesource.getEntity();
-	//		
-	//		if(entity instanceof EntityPlayer & entityToAttack == null)
-	//		{
-	//			mod_SpiderQueen.likeChange("human",-1);
-	//		}
-	//		
-	//		entityToAttack = entity;
-	//		if(entity != null) { mod_SpiderQueen.pissOffHumans(worldObj, entity, posX, posY, posZ, 64F); }
-	
-			return super.attackEntityFrom(damagesource, i);
-		}
+	{
+		//		Entity entity = damagesource.getEntity();
+		//		
+		//		if(entity instanceof EntityPlayer & entityToAttack == null)
+		//		{
+		//			mod_SpiderQueen.likeChange("human",-1);
+		//		}
+		//		
+		//		entityToAttack = entity;
+		//		if(entity != null) { mod_SpiderQueen.pissOffHumans(worldObj, entity, posX, posY, posZ, 64F); }
+
+		return super.attackEntityFrom(damagesource, i);
+	}
 
 	public int getFortuneLevel()
 	{
 		return fortuneLevel;
 	}
-	
+
+	@Override
+	public WatchedInt getLikeData(PlayerData data) 
+	{
+		return data.humanLike;
+	}
+
 	@Override
 	public void writeSpawnData(ByteBuf buffer) 
 	{
 		buffer.writeInt(type.getId());
 		buffer.writeInt(fortuneLevel);
+		ByteBufIO.writeObject(buffer, username);
 	}
 
 	@Override
@@ -221,6 +323,18 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	{
 		type = EnumHumanType.byId(buffer.readInt());
 		fortuneLevel = buffer.readInt();
+		username = (String) ByteBufIO.readObject(buffer);
+		setupCustomSkin();
+	}
+
+	public ResourceLocation getSkinResourceLocation()
+	{
+		return skinResourceLocation;
+	}
+	
+	public String getUsername()
+	{
+		return username;
 	}
 	
 	static

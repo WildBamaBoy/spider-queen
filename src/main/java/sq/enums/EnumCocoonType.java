@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
@@ -21,6 +20,7 @@ import radixcore.constant.Font.Color;
 import sq.core.minecraft.ModItems;
 import sq.entity.EntityAnt;
 import sq.entity.EntityBee;
+import sq.entity.EntityHuman;
 import sq.entity.EntityWasp;
 import sq.items.ItemCocoon;
 
@@ -30,7 +30,7 @@ public enum EnumCocoonType
 	COW 		(1, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntityCow.class),
 	CREEPER 	(2, 40, EnumCocoonSize.NORMAL, EnumSpiderType.BOOM, EntityCreeper.class),
 	GATHERER_BEE (3, 50, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, EntityBee.class),
-	HUMAN 		(4, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntitySilverfish.class), //TODO
+	HUMAN 		(4, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntityHuman.class),
 	PIG 		(5, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntityPig.class),
 	QUEEN_BEE 	(6, 20, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, EntityBee.class),
 	SHEEP 		(7, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntitySheep.class),

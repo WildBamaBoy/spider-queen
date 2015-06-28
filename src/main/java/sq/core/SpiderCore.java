@@ -1,13 +1,16 @@
 package sq.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -31,6 +34,9 @@ import radixcore.core.RadixCore;
 import radixcore.data.AbstractPlayerData;
 import radixcore.data.DataContainer;
 import radixcore.update.RDXUpdateProtocol;
+import radixcore.util.RadixExcept;
+import radixcore.util.RadixLogic;
+import radixcore.util.RadixMath;
 import sq.command.CommandSQ;
 import sq.core.forge.EventHooksFML;
 import sq.core.forge.EventHooksForge;
@@ -94,11 +100,13 @@ public final class SpiderCore
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
 	public static final String VERSION = "1.0.0-triage";
-
+	public static final String PERM_SKINS_URL = "http://pastebin.com/raw.php?i=MNWrUxwa";
+	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
+	
 	public static boolean asmRan = false;
 	public static boolean asmCompleted = true;
 	public static List<String> asmErrors = new ArrayList<String>();
-
+	
 	@Instance(ID)
 	private static SpiderCore instance;
 	private static ModMetadata metadata;
@@ -117,6 +125,7 @@ public final class SpiderCore
 	public static ServerProxy proxy;
 
 	public static Map<String, AbstractPlayerData> playerDataMap;
+	public static List<String> fakePlayerNames;
 	public static List<String> sleepingPlayers;
 	
 	@SideOnly(Side.CLIENT)
@@ -141,6 +150,7 @@ public final class SpiderCore
 		proxy.registerRenderers();
 		proxy.registerEventHandlers();
 		playerDataMap = new HashMap<String, AbstractPlayerData>();
+		fakePlayerNames = downloadFakePlayerNames();
 		sleepingPlayers = new ArrayList<String>();
 		
 		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
@@ -262,6 +272,7 @@ public final class SpiderCore
 		ReputationContainer.createNew(EntityCreeper.class, EnumWatchedDataIDs.CREEPER_LIKE.getId());
 		ReputationContainer.createNew(EntityZombie.class, EnumWatchedDataIDs.ZOMBIE_LIKE.getId());
 		ReputationContainer.createNew(EntitySpider.class, EnumWatchedDataIDs.SPIDER_LIKE.getId());
+		ReputationContainer.createNew(EntityHuman.class, EnumWatchedDataIDs.HUMAN_LIKE.getId());
 	}
 
 	@EventHandler
@@ -349,5 +360,45 @@ public final class SpiderCore
 	public static CrashWatcher getCrashWatcher() 
 	{
 		return crashWatcher;
+	}
+	
+	public List<String> downloadFakePlayerNames()
+	{
+		logger.info("Downloading contributor/volunteered player names...");
+		final List<String> returnList = new ArrayList<String>();
+
+		try
+		{
+			readSkinsFromURL(PERM_SKINS_URL, returnList);
+			readSkinsFromURL(SKINS_URL, returnList);
+			
+			logger.info("Contributor/volunteer player names downloaded successfully!");
+		}
+
+		catch (final Throwable e)
+		{
+			RadixExcept.logErrorCatch(e, "Unable to download player names.");
+		}
+
+		return returnList;
+	}
+
+	public static String getRandomPlayerName()
+	{
+		final int index = RadixMath.getNumberInRange(0, fakePlayerNames.size() - 1);
+		return fakePlayerNames.get(index);
+	}
+
+	private void readSkinsFromURL(String stringUrl, List<String> returnList) throws IOException
+	{
+		URL url = new URL(stringUrl);
+		Scanner scanner = new Scanner(url.openStream());
+
+		while (scanner.hasNext())
+		{
+			returnList.add(scanner.next());
+		}
+
+		scanner.close();
 	}
 }

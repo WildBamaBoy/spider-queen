@@ -25,7 +25,12 @@ public final class Config
 	public boolean enableFly;
 	public boolean enableBeetle;
 	public boolean enableAnt;
+	public boolean enableHumans;
 	public boolean enableFactories;
+	
+	public boolean showHumanName;
+	public boolean showHumanSkin;
+	public boolean showHumanType;
 	
 	public int antSpawnCap;
 	public int beeSpawnCap;
@@ -48,7 +53,13 @@ public final class Config
 		enableFly = config.get("Init", "Enable Flies?", true, "Enables/disables flies.").getBoolean();
 		enableBeetle = config.get("Init", "Enable Beetles?", true, "Enables/disables beetles.").getBoolean();
 		enableAnt = config.get("Init", "Enable Ants?", true, "Enables/disables ants.").getBoolean();
+		enableHumans = config.get("Init", "Enable Humans?", true, "Enables/disables humans.").getBoolean();
 		enableFactories = config.get("Init", "Enable Factories?", true, "Enables/disables NPC factories.").getBoolean();
+		
+		config.setCategoryComment("Graphics", "Settings that affect graphics-related portions of the mod.");
+		showHumanName = config.get("Graphics", "Show human names?", false, "True if you want the humans in the game to have the names of real players.").getBoolean();
+		showHumanSkin = config.get("Graphics", "Show human skins?", true, "True if you want the humans in the game to have the skins of real players.").getBoolean();
+		showHumanType = config.get("Graphics", "Show human type?", true, "True if you want to see the human's type (ex. Poor Miner) when you are near them.").getBoolean();
 		
 		config.setCategoryComment("Performance", "Settings that can affect your game performance.");
 		antSpawnCap = config.get("Performance", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();

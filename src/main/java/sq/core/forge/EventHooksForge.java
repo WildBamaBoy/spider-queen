@@ -25,6 +25,7 @@ import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.radix.PlayerData;
+import sq.entity.EntityHuman;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
@@ -131,7 +132,7 @@ public final class EventHooksForge
 
 				//Check for anger.
 				extension.setTimesHitByPlayer(extension.getTimesHitByPlayer() + 1);
-
+				
 				if (!player.worldObj.isRemote && extension.getTimesHitByPlayer() == 3 && calculatedHealth > 0.0F && reputation >= 0)
 				{
 					player.addChatComponentMessage(new ChatComponentText(Color.RED + "You have angered this " + event.target.getCommandSenderName() + "!"));
@@ -184,7 +185,7 @@ public final class EventHooksForge
 			{
 				WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
 				int chanceToAffectRep = 25;
-
+				
 				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep))
 				{
 					ReputationHandler.onReputationChange(player, event.entityLiving, -1);

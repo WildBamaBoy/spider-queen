@@ -1,6 +1,7 @@
 package sq.client.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -16,11 +17,11 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import radixcore.util.RadixMath;
+import sq.core.SpiderCore;
 import sq.entity.EntityHuman;
 
 public class RenderHuman extends RenderBiped
 {
-	private ResourceLocation stevePng = new ResourceLocation("textures/entity/steve.png");
 	private final ModelBiped modelArmorPlate;
 	private final ModelBiped modelArmor;
 	
@@ -34,10 +35,20 @@ public class RenderHuman extends RenderBiped
 	}
 
 	@Override
-    protected ResourceLocation getEntityTexture(EntityLiving entity)
-    {
-		return stevePng;
-    }
+	protected ResourceLocation getEntityTexture(Entity entity)
+	{
+		final EntityHuman player = (EntityHuman) entity;
+
+		if (SpiderCore.getConfig().showHumanSkin)
+		{
+			return player.getSkinResourceLocation();
+		}
+
+		else
+		{
+			return AbstractClientPlayer.locationStevePng;
+		}
+	}
 
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
@@ -68,7 +79,15 @@ public class RenderHuman extends RenderBiped
 			
 			if (distance < 6.0D)
 			{
-				renderLabel(entity, posX, posY, posZ, entity.getCommandSenderName());
+				if (SpiderCore.getConfig().showHumanName)
+				{
+					renderLabel(entity, posX, posY + 0.05F, posZ, entity.getUsername());
+				}
+				
+				if (SpiderCore.getConfig().showHumanType)
+				{
+					renderLabel(entity, posX, posY - 0.20F, posZ, entity.getFortuneString());
+				}
 			}
 		}
 	}

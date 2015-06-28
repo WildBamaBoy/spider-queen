@@ -7,6 +7,7 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import sq.entity.EntityAnt;
 import sq.entity.EntityBee;
+import sq.entity.EntityHuman;
 
 
 public enum EnumWatchedDataIDs
@@ -48,6 +49,6 @@ public enum EnumWatchedDataIDs
 	public static boolean doesEntityHaveLikeStatus(Entity entity)
 	{
 		return entity instanceof EntityAnt || entity instanceof EntityCreeper || entity instanceof EntitySkeleton || entity instanceof EntityZombie ||
-				entity instanceof EntitySpider || entity instanceof EntityBee;
+				entity instanceof EntitySpider || entity instanceof EntityBee || entity instanceof EntityHuman;
 	}
 }
