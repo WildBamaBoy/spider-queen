@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,8 +25,8 @@ import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
-import sq.entity.EntityHuman;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
@@ -33,6 +34,7 @@ import sq.entity.ai.PlayerExtension;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.ai.ReputationContainer;
 import sq.enums.EnumWatchedDataIDs;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class EventHooksForge
@@ -136,6 +138,23 @@ public final class EventHooksForge
 				if (!player.worldObj.isRemote && extension.getTimesHitByPlayer() == 3 && calculatedHealth > 0.0F && reputation >= 0)
 				{
 					player.addChatComponentMessage(new ChatComponentText(Color.RED + "You have angered this " + event.target.getCommandSenderName() + "!"));
+				}
+			}
+			
+			if (event.target instanceof EntityGhast)
+			{
+				EntityGhast ghast = (EntityGhast) event.target;
+				
+				//isInWeb
+				if (ObfuscationReflectionHelper.getPrivateValue(Entity.class, ghast, 27))
+				{
+					if (!ghast.worldObj.isRemote && RadixLogic.getBooleanWithProbability(50))
+					{
+						ghast.dropItem(ModItems.ghastEgg, 1);
+					}
+					
+					//Half the ghast's health to prevent farming eggs.
+					ghast.setHealth(ghast.getHealth() / 2);
 				}
 			}
 		}

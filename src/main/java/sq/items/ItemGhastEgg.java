@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
+import sq.entity.EntityGhastEgg;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemGhastEgg extends Item
@@ -37,10 +38,11 @@ public class ItemGhastEgg extends Item
 			posY += Facing.offsetsYForSide[meta];
 			posZ += Facing.offsetsZForSide[meta];
 
-			//TODO
-//			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-//			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
-//			world.spawnEntityInWorld(entityCocoon);
+			final EntityGhastEgg entityGhastEgg = new EntityGhastEgg(world, player.getUniqueID());
+			entityGhastEgg.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360F, 0.0F);
+			world.spawnEntityInWorld(entityGhastEgg);
+
+			return true;
 		}
 		
 		return true;

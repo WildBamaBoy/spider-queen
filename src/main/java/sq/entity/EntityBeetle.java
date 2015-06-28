@@ -1,17 +1,39 @@
 package sq.entity;
 
+import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
+import sq.enums.EnumBeeType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.world.World;
 
-//TODO
-// Can fly to attack targets.
-// Changes texture if flying.
 public class EntityBeetle extends AbstractNewMob
 {
+	private EntityLivingBase target;
+
 	public EntityBeetle(World world) 
 	{
 		super(world, "beetle");
+	}
+
+	@Override
+	protected void entityInit()
+	{
+		super.entityInit();
+		dataWatcher.addObject(13, 0);
+	}
+
+	public void setIsFlying(boolean value)
+	{
+		if (!worldObj.isRemote)
+		{
+			this.dataWatcher.updateObject(13, value == true ? 1 : 0);
+		}
+	}
+
+	public boolean getIsFlying()
+	{
+		return this.dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
 	}
 
 	@Override
@@ -24,10 +46,78 @@ public class EntityBeetle extends AbstractNewMob
 	public void onUpdate() 
 	{
 		super.onUpdate();
-		
+
 		if (!SpiderCore.getConfig().enableBeetle)
 		{
 			setDead();
+		}
+
+		if (this.getAttackTarget() != null && target == null)
+		{
+			target = this.getAttackTarget();
+		}
+
+		if (target != null)
+		{
+			if (!getIsFlying())
+			{
+				setIsFlying(true);
+			}
+
+			double sqDistanceTo = Math.sqrt(Math.pow(target.posX - posX, 2) + Math.pow(target.posZ - posZ, 2));
+			float moveAmount = 0.0F;
+
+			if(sqDistanceTo < 8F) 
+			{ 
+				moveAmount = ((8F - (float)sqDistanceTo) / 8F)*4F; 
+			}
+
+			if (target.posY < posY)
+			{
+				motionY = motionY - 0.15F * moveAmount;
+			}
+
+			if(target.posY > posY)
+			{
+				motionY = motionY + 0.11F * moveAmount;
+			}
+
+			double distanceTo = RadixMath.getDistanceToEntity(this, target);
+			
+			if (distanceTo >= 4 && distanceTo <= 9)
+			{
+				motionX = motionX * 1.1F;
+				motionZ = motionZ * 1.1F;
+			}
+		}
+
+		else
+		{
+			if (getIsFlying())
+			{
+				setIsFlying(false);
+			}
+		}
+
+		if (target != null && (target.isDead || RadixMath.getDistanceToEntity(this, target) >= 16.0D))
+		{
+			target = null;
+		}
+
+		if (getIsFlying())
+		{
+			if (motionY > 0)
+			{
+				motionY = motionY * 1.03F;
+			}
+
+			else
+			{
+				double yMod = Math.sqrt((motionX * motionX) + (motionZ * motionZ));
+				motionY = motionY * 0.3F + yMod * 0.3F;
+			}
+
+			fallDistance = 0.0F;
 		}
 	}
 
@@ -48,13 +138,13 @@ public class EntityBeetle extends AbstractNewMob
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void appendAI()
 	{
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, 0, true));
 	}
-	
+
 	@Override
 	public boolean getCanSpawnHere() 
 	{

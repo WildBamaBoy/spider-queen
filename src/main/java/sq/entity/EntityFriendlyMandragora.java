@@ -21,17 +21,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntity
+public class EntityFriendlyMandragora extends EntityMandragora implements IFriendlyEntity
 {
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
 	
-	public EntityFriendlyZombie(World world)
+	public EntityFriendlyMandragora(World world)
 	{
 		super(world);
 	}
 	
-	public EntityFriendlyZombie(World world, EntityPlayer friendPlayer)
+	public EntityFriendlyMandragora(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
 		this.friendPlayerUUID = friendPlayer.getPersistentID();
@@ -42,16 +42,11 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 		
 		//Add custom tasks.
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
-		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityHuman.class, 1.0D, false));
         this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(4, new EntityAIMoveThroughVillage(this, 1.0D, false));
         this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 16, false));
 	}
 
 	@Override
@@ -59,6 +54,12 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		super.onUpdate();
 		FriendlyEntityHelper.onUpdate(this);
+	}
+	
+	@Override
+	public double getMoveSpeed() 
+	{
+		return 0.75F;
 	}
 	
 	@Override

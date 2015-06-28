@@ -249,8 +249,8 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	{
 		if (!username.isEmpty())
 		{
-			skinResourceLocation = AbstractClientPlayer.getLocationSkin(username);
-			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, username);
+			skinResourceLocation = AbstractClientPlayer.getLocationSkin(getUsername());
+			imageDownloadThread = AbstractClientPlayer.getDownloadImageSkin(skinResourceLocation, getUsername());
 		}
 	}
 
@@ -324,7 +324,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 	public String getUsername()
 	{
-		return username;
+		return username.replace("*", "");
 	}
 
 	static
@@ -342,5 +342,10 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	public DataWatcherEx getDataWatcherEx() 
 	{
 		return dataWatcherEx;
+	}
+
+	public boolean getIsUsernameContributor() 
+	{
+		return username.contains("*");
 	}
 }

@@ -4,10 +4,14 @@ import java.util.Random;
 
 import net.minecraft.block.BlockCrops;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import sq.core.minecraft.ModItems;
+import sq.entity.EntityFriendlyMandragora;
+import sq.entity.EntityMandragora;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,7 +54,23 @@ public class BlockMandCrop extends BlockCrops
 		if (world.getBlockMetadata(x, y, z) >= 7)
 		{
 			world.setBlockToAir(x, y, z);
-			//TODO Spawn mandragora.
+			
+			//Find the nearest player.
+			Entity entityToSpawn = null;
+			EntityPlayer player = world.getClosestPlayer(x, y, z, 16.0D);
+			
+			if (player != null)
+			{
+				entityToSpawn = new EntityFriendlyMandragora(world, player);
+			}
+			
+			else
+			{
+				entityToSpawn = new EntityMandragora(world);
+			}
+			
+			entityToSpawn.setPosition(x, y, z);
+			world.spawnEntityInWorld(entityToSpawn);
 		}
 	}
 

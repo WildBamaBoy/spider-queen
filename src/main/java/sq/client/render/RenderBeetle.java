@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelBeetle;
+import sq.entity.EntityBeetle;
 
 public class RenderBeetle extends RenderLiving
 {
@@ -20,19 +21,16 @@ public class RenderBeetle extends RenderLiving
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return textures[0];
+		final EntityBeetle beetle = (EntityBeetle)entity;
 		
-		//TODO
-		//final EntityBeetle beetle = (EntityBeetle)entity;
-		//
-		//if (!beetle.getIsFlying())
-		//{
-		//	return textures[0];
-		//}
-		//
-		//else
-		//{
-		//	return textures[1];
-		//}
+		if (!beetle.getIsFlying())
+		{
+			return textures[0];
+		}
+		
+		else
+		{
+			return textures[1];
+		}
 	}
 }

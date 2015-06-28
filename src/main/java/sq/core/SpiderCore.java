@@ -35,7 +35,6 @@ import radixcore.data.AbstractPlayerData;
 import radixcore.data.DataContainer;
 import radixcore.update.RDXUpdateProtocol;
 import radixcore.util.RadixExcept;
-import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.command.CommandSQ;
 import sq.core.forge.EventHooksFML;
@@ -55,12 +54,15 @@ import sq.entity.EntityBoomBall;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
 import sq.entity.EntityFriendlyCreeper;
+import sq.entity.EntityFriendlyMandragora;
 import sq.entity.EntityFriendlySkeleton;
 import sq.entity.EntityFriendlyZombie;
+import sq.entity.EntityGhastEgg;
 import sq.entity.EntityHuman;
 import sq.entity.EntityJack;
 import sq.entity.EntityJackBall;
 import sq.entity.EntityMandragora;
+import sq.entity.EntityMiniGhast;
 import sq.entity.EntityOctopus;
 import sq.entity.EntitySpiderEgg;
 import sq.entity.EntitySpiderEx;
@@ -237,6 +239,10 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityFriendlyZombie.class, EntityFriendlyZombie.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntitySpiderQueen.class, EntitySpiderQueen.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityHuman.class, EntityHuman.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityFriendlyMandragora.class, EntityFriendlyMandragora.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityGhastEgg.class, EntityGhastEgg.class.getSimpleName(), id, this, 50, 2, true); id++;
+		EntityRegistry.registerModEntity(EntityMiniGhast.class, EntityMiniGhast.class.getSimpleName(), id, this, 50, 2, true); id++;
+		
 		
 		//Tile registry
 
@@ -259,9 +265,10 @@ public final class SpiderCore
 		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
 		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-//TODO
-//		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-//				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);

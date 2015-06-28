@@ -10,7 +10,6 @@ import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 
-//TODO Make friendly version.
 public class EntityMandragora extends AbstractNewMob
 {
 	private int vineTimer;

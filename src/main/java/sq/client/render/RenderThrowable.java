@@ -73,10 +73,5 @@ public class RenderThrowable extends Render
 		{
 			return null;
 		}
-
-		//		else if (entity instanceof EntityOctoBall) //TODO
-//		{
-//			return octoBallLocation;
-//		}
 	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,8 +21,6 @@ import net.minecraft.world.World;
 import sq.client.render.RenderSpiderQueen;
 import sq.core.minecraft.ModItems;
 
-//TODO
-//Refactor this.
 public class EntitySpiderQueen extends EntityCreature implements IWebClimber
 {
 	private int backoff;
@@ -244,6 +243,16 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber
 //		}
 
 //		return nn;
+	}
+
+	@Override
+	public boolean getCanSpawnHere() 
+	{
+		int i = MathHelper.floor_double(posX);
+		int j = MathHelper.floor_double(boundingBox.minY);
+		int k = MathHelper.floor_double(posZ);
+		
+		return worldObj.getBlock(i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
 	}
 
 	public double getMountedYOffset()

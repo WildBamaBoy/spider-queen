@@ -92,8 +92,6 @@ public class EntitySpiderEgg extends EntityCreature
 
 		if (!worldObj.isRemote)
 		{
-			timeUntilEggHatch = 0;
-			
 			if (timeUntilEggHatch <= 0)
 			{
 				final EntityCocoon cocoonToConsume = getConsumableCocoon();
@@ -189,7 +187,7 @@ public class EntitySpiderEgg extends EntityCreature
 		return spider;
 	}
 
-	private void doHatch(EntitySpiderEx spider)
+	protected void doHatch(EntitySpiderEx spider)
 	{
 		try
 		{

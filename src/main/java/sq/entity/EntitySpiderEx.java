@@ -771,27 +771,30 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			break;			
 		}
 	
-		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
-		EntityLivingBase closestValidTarget = null;
-		double distanceToTarget = 100D;
-	
-		for (final Entity entity : entitiesAroundMe)
-		{
-			if (entity == this)
-			{
-				continue;
-			}
-			
-			final double distanceToThisEntity = getDistanceToEntity(entity);
-	
-			if (entity instanceof EntitySheep && distanceToThisEntity < distanceToTarget) //TODO
-			{
-				closestValidTarget = (EntityLivingBase) entity;
-				distanceToTarget = distanceToThisEntity;
-			}
-		}
-	
-		return closestValidTarget;
+		//Attack on their own?
+		return null;
+		
+//		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
+//		EntityLivingBase closestValidTarget = null;
+//		double distanceToTarget = 100D;
+//	
+//		for (final Entity entity : entitiesAroundMe)
+//		{
+//			if (entity == this)
+//			{
+//				continue;
+//			}
+//			
+//			final double distanceToThisEntity = getDistanceToEntity(entity);
+//	
+//			if (entity instanceof EntitySheep && distanceToThisEntity < distanceToTarget)
+//			{
+//				closestValidTarget = (EntityLivingBase) entity;
+//				distanceToTarget = distanceToThisEntity;
+//			}
+//		}
+//	
+//		return closestValidTarget;
 	}
 
 	private void moveToPlayer(EntityPlayer player)

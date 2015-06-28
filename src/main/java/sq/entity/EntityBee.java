@@ -34,8 +34,19 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		super.entityInit();
 		this.dataWatcher.addObject(12, EnumBeeType.GATHERER.getId());
+		this.dataWatcher.addObject(13, 0);
 	}
 
+	public void setAttacking(boolean value)
+	{
+		this.dataWatcher.updateObject(13, value == true ? 1 : 0);
+	}
+	
+	public boolean getAttacking()
+	{
+		return this.dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
+	}
+	
 	@Override
 	public boolean isAIEnabled() 
 	{
@@ -69,12 +80,30 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		super.attackEntity(entity, getHitDamage());
 		
-		if (RadixMath.getDistanceToEntity(this, entity) <= 1.0D)
+		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 1.2D)
 		{
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getHitDamage());
 		}
+		
+		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 3.0D)
+		{
+			setAttacking(true);
+		}
+		
+		else
+		{
+			if (getAttacking())
+			{
+				setAttacking(false);
+			}
+		}
 	}
 
+	public boolean hasEntitytoAttack()
+	{
+		return entityToAttack != null;
+	}
+	
 	@Override
 	protected Entity findPlayerToAttack() 
 	{
@@ -126,6 +155,13 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			if(entityToAttack.posY - 0.5F > posY)
 			{
 				motionY = motionY + 0.01F * moveAmount;
+			}
+			
+			
+			if (getBeeType() == EnumBeeType.WARRIOR && getAttacking())
+			{
+				motionX = motionX * 1.2F;
+				motionZ = motionZ * 1.2F;
 			}
 		}
 

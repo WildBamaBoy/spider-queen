@@ -28,7 +28,7 @@ public class RenderBee extends RenderLiving
 		switch (bee.getBeeType())
 		{
 		case GATHERER: return textures[0];
-		case WARRIOR: return textures[1]; //return bee.getIsAttacking() ? textures[2] : textures[1];
+		case WARRIOR: return bee.getAttacking() ? textures[2] : textures[1];
 		case QUEEN: return textures[3];
 		}
 		

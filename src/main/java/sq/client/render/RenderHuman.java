@@ -16,6 +16,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import radixcore.constant.Font.Color;
+import radixcore.constant.Font.Format;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.entity.EntityHuman;
@@ -190,16 +192,15 @@ public class RenderHuman extends RenderBiped
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				GL11.glDepthMask(true);
 
-				//TODO
-//				if (fakePlayer.isContributor)
-//				{
-//					fontRenderer.drawString(Color.YELLOW + Format.ITALIC + text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
-//				}
-//
-//				else
-//				{
+				if (fakePlayer.getIsUsernameContributor())
+				{
+					fontRenderer.drawString(Color.YELLOW + Format.ITALIC + text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
+				}
+
+				else
+				{
 					fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
-//				}
+				}
 
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_BLEND);

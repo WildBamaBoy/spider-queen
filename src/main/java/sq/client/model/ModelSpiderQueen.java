@@ -5,6 +5,11 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+
+import sq.entity.EntitySpiderEx;
 
 public class ModelSpiderQueen extends ModelBase
 {
@@ -150,30 +155,29 @@ public class ModelSpiderQueen extends ModelBase
 
 		if (entity instanceof EntityPlayer)
 		{
-			//TODO Render code for rider spiders.
-//			final EntityPlayer player = (EntityPlayer) entity;
-//
-//			if (player.ridingEntity instanceof EntityHatchedSpider)
-//			{
-//				final EntityHatchedSpider spider = (EntityHatchedSpider) player.ridingEntity;
-//
-//				if (spider.isOnLadder())
-//				{
-//					final Vec3 lookVector = spider.getLookVec();
-//
-//					if (lookVector.xCoord <= -0.90 || lookVector.zCoord <= -0.90)
-//					{
-//						GL11.glRotatef(270, 1, 0, 0);
-//						GL11.glTranslated(0, 1.8, 0);
-//					}
-//
-//					else if (lookVector.xCoord >= 0.90 || lookVector.zCoord >= 0.90)
-//					{
-//						GL11.glRotatef(-90, 1, 0, 0);
-//						GL11.glTranslated(0, 1.8, 0);
-//					}
-//				}
-//			}
+			final EntityPlayer player = (EntityPlayer) entity;
+
+			if (player.ridingEntity instanceof EntitySpiderEx)
+			{
+				final EntitySpiderEx spider = (EntitySpiderEx) player.ridingEntity;
+
+				if (spider.isOnLadder())
+				{
+					final Vec3 lookVector = spider.getLookVec();
+
+					if (lookVector.xCoord <= -0.90 || lookVector.zCoord <= -0.90)
+					{
+						GL11.glRotatef(270, 1, 0, 0);
+						GL11.glTranslated(0, 1.8, 0);
+					}
+
+					else if (lookVector.xCoord >= 0.90 || lookVector.zCoord >= 0.90)
+					{
+						GL11.glRotatef(-90, 1, 0, 0);
+						GL11.glTranslated(0, 1.8, 0);
+					}
+				}
+			}
 		}
 
 		head.render(f5);

@@ -1,5 +1,6 @@
 package sq.client.model;
 
+import sq.core.SpiderCore;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -180,5 +181,8 @@ public class ModelBeetle extends ModelBase
 		leg4.rotateAngleZ += -f14;
 		leg5.rotateAngleZ += f15;
 		leg6.rotateAngleZ += -f15;
+		
+		shell1.rotateAngleX = 0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
+		shell2.rotateAngleX = 0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
 	}
 }

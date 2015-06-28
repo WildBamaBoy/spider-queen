@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -19,6 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import radixcore.util.RadixLogic;
+import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
 import sq.blocks.BlockWebSide;
 import sq.core.minecraft.ModBlocks;
@@ -272,15 +273,24 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 		if (collisionPosition != null)
 		{
-			//Ignore tall grass.
-			if (!worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ).getMaterial().blocksMovement())
+			Block block = worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
+
+			if (block.getMaterial() == Material.plants)
 			{
 				return;
 			}
 			
 			else
 			{
-				onImpact(collisionPosition);
+				if (collisionPosition.entityHit instanceof EntityMiniGhast)
+				{
+					return;
+				}
+				
+				else
+				{
+					onImpact(collisionPosition);
+				}
 			}
 		}
 	}
