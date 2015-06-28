@@ -17,6 +17,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import radixcore.data.DataWatcherEx;
+import radixcore.data.IWatchable;
 import radixcore.data.WatchedBoolean;
 import radixcore.data.WatchedInt;
 import radixcore.network.ByteBufIO;
@@ -24,10 +25,11 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixString;
 import sq.core.SpiderCore;
 import sq.core.radix.PlayerData;
+import sq.entity.ai.RepEntityExtension;
 import sq.enums.EnumHumanType;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData, IRep
+public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData, IRep, IWatchable
 {
 	private static final ItemStack swordStone;
 	private static final ItemStack bow;
@@ -36,7 +38,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	private static final ItemStack stick;
 	private static final ItemStack torchWood;
 	private static final ItemStack cake;
-	
+
 	private DataWatcherEx dataWatcherEx;
 	private final WatchedBoolean isSwinging;
 	private int swingProgressTicks;
@@ -46,14 +48,14 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	private int fortuneLevel;
 	private ResourceLocation skinResourceLocation;
 	private ThreadDownloadImageData	imageDownloadThread;
-	
+
 	public EntityHuman(World world)
 	{
 		super(world);
 		dataWatcherEx = new DataWatcherEx(this, SpiderCore.ID);
 		isSwinging = new WatchedBoolean(false, 1, dataWatcherEx);
 		username = SpiderCore.getRandomPlayerName();
-		
+
 		type = EnumHumanType.getAtRandom();
 
 		if (RadixLogic.getBooleanWithProbability(30))
@@ -84,12 +86,6 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	}
 
 	@Override
-	public boolean isAIEnabled()
-	{
-		return true;
-	}
-	
-	@Override
 	public void swingItem()
 	{
 		if (!isSwinging.getBoolean() || swingProgressTicks >= 8 / 2 || swingProgressTicks < 0)
@@ -98,36 +94,43 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 			isSwinging.setValue(true);
 		}
 	}
-	
+
+	@Override
+	public void onUpdate() 
+	{
+		super.onUpdate();
+		updateSwinging();
+	}
+
 	private void updateSwinging()
 	{
 		if (isSwinging.getBoolean())
 		{
 			swingProgressTicks++;
-	
+
 			if (swingProgressTicks >= 8)
 			{
 				swingProgressTicks = 0;
-	
+
 				if (!DataWatcherEx.allowClientSideModification)
 				{
 					DataWatcherEx.allowClientSideModification = true;
 					isSwinging.setValue(false);
 					DataWatcherEx.allowClientSideModification = false;
 				}
-	
+
 				else
 				{
 					isSwinging.setValue(false);					
 				}
 			}
 		}
-	
+
 		else
 		{
 			swingProgressTicks = 0;
 		}
-	
+
 		swingProgress = (float) swingProgressTicks / (float) 8;
 	}
 
@@ -136,7 +139,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	{
 		return null;
 	}
-	
+
 	protected boolean canDespawn()
 	{
 		return true;
@@ -150,8 +153,9 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		if (entityPlayer != null && canEntityBeSeen(entityPlayer))
 		{
 			PlayerData data = SpiderCore.getPlayerData(entityPlayer);
-
-			if (data.humanLike.getInt() < 0)
+			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
+			
+			if (data.humanLike.getInt() < 0 || extension.getTimesHitByPlayer() >= 2)
 			{
 				return entityPlayer;
 			}
@@ -171,33 +175,39 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	@Override
 	protected void attackEntity(Entity entity, float f)
 	{
-		if(type == EnumHumanType.ARCHER)
+		attackTime--;
+
+		if (type == EnumHumanType.ARCHER)
 		{
-			if(f < 10F)
+			if (f < 10F)
 			{
-				double d = entity.posX - posX;
-				double d1 = entity.posZ - posZ;
+				double dX = entity.posX - posX;
+				double dZ = entity.posZ - posZ;
 				if(attackTime == 0)
 				{
 					EntityArrow entityarrow = new EntityArrow(worldObj, this, 1);
 					entityarrow.posY += 1.3999999761581421D;
 					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityarrow.posY;
-					float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
+					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
 					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 					worldObj.spawnEntityInWorld(entityarrow);
-					entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, 0.6F, 12F);
+					entityarrow.setThrowableHeading(dX, d2 + (double)f1, dZ, 0.6F, 12F);
 					attackTime = 30;
 				}
-				rotationYaw = (float)((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
+				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
 				hasAttacked = true;
 			}
+
 			return;
 		}
 
 		if (attackTime <= 0 && f < 2.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
 		{
-			attackTime = 20;
-			entity.attackEntityFrom(DamageSource.causeMobDamage(this), 2.0F);
+			attackTime = 40;
+			swingItem();
+			
+			EntityPlayer p = (EntityPlayer)entity;
+			System.out.println(p.attackEntityFrom(DamageSource.causeMobDamage(this), (fortuneLevel * 2.5F) + 1.5F));
 		}
 	}
 
@@ -207,11 +217,6 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		int j = MathHelper.floor_double(boundingBox.minY);
 		int k = MathHelper.floor_double(posZ);
 		return worldObj.getBlock(i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
-	}
-
-	public void onLivingUpdate()
-	{
-		super.onLivingUpdate();
 	}
 
 	protected String getLivingSound()
@@ -254,7 +259,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		String typeName = RadixString.upperFirstLetter(type.toString().toLowerCase());
 		StringBuilder sb = new StringBuilder();
 		sb.append("(");
-		
+
 		if (type != EnumHumanType.NOOB)
 		{
 			String fortuneString = fortuneLevel == 2 ? "Rich" : fortuneLevel == 1 ? "Experienced" : "Poor"; 
@@ -267,7 +272,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		{
 			sb.append(RadixString.upperFirstLetter(EnumHumanType.NOOB.toString().toLowerCase()));
 		}
-		
+
 		sb.append(")");
 		return sb.toString();
 	}
@@ -282,21 +287,6 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	{
 		username = nbt.getString("username");
 		type = EnumHumanType.byId(nbt.getInteger("type"));
-	}
-
-	public boolean attackEntityFrom(DamageSource damagesource, int i)
-	{
-		//		Entity entity = damagesource.getEntity();
-		//		
-		//		if(entity instanceof EntityPlayer & entityToAttack == null)
-		//		{
-		//			mod_SpiderQueen.likeChange("human",-1);
-		//		}
-		//		
-		//		entityToAttack = entity;
-		//		if(entity != null) { mod_SpiderQueen.pissOffHumans(worldObj, entity, posX, posY, posZ, 64F); }
-
-		return super.attackEntityFrom(damagesource, i);
 	}
 
 	public int getFortuneLevel()
@@ -331,12 +321,12 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	{
 		return skinResourceLocation;
 	}
-	
+
 	public String getUsername()
 	{
 		return username;
 	}
-	
+
 	static
 	{
 		swordStone = new ItemStack(Items.stone_sword, 1);
@@ -346,5 +336,11 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		stick = new ItemStack(Items.stick, 1);
 		torchWood = new ItemStack(Blocks.torch, 1);
 		cake = new ItemStack(Items.cake, 1);
+	}
+
+	@Override
+	public DataWatcherEx getDataWatcherEx() 
+	{
+		return dataWatcherEx;
 	}
 }
