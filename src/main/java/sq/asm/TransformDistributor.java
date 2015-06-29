@@ -2,10 +2,9 @@ package sq.asm;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ARETURN;
-import static org.objectweb.asm.Opcodes.CHECKCAST;
-import static org.objectweb.asm.Opcodes.INSTANCEOF;
+import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.IRETURN;
+import static org.objectweb.asm.Opcodes.POP;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,25 +12,23 @@ import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FrameNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 import sq.core.SpiderCore;
 
 public class TransformDistributor implements IClassTransformer
 {
+	public static final int ASM_CHANGES_TO_MAKE = 3;
+	public static int asmChangesMade;
 	public static final Logger logger = LogManager.getLogger("SQ");
-
+	
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass)
 	{
@@ -45,9 +42,20 @@ public class TransformDistributor implements IClassTransformer
 			return transformSpider(basicClass);
 		}
 		
+		else if (transformedName.equals("net.minecraft.world.gen.feature.WorldGenPumpkin"))
+		{
+			return transformPumpkin(basicClass);
+		}
+		
 		return basicClass;
 	}
 
+	private void incrementChangesMade()
+	{
+		asmChangesMade++;
+		logger.info("Performed patch " + asmChangesMade + "/" + ASM_CHANGES_TO_MAKE + ".");
+	}
+	
 	private byte[] transformSpider(byte[] basicClass)
 	{
 		boolean found = false;
@@ -59,8 +67,8 @@ public class TransformDistributor implements IClassTransformer
 		{
 			if (method.name.equals("findPlayerToAttack") || method.name.equals("func_70782_k"))
 			{
-				found = true;
-				logger.info("Rewriting EntitySpider.findPlayerToAttack()...");
+				logger.info("Patching findPlayerToAttack()...");
+				
 				method.instructions.clear();
 				
 				InsnList inject = new InsnList();
@@ -71,15 +79,9 @@ public class TransformDistributor implements IClassTransformer
 				inject.add(new InsnNode(ARETURN));
 				
 				method.instructions.insert(inject);
-				logger.info("Successfully rewrote findPlayerToAttack().");
+				incrementChangesMade();
 				break;
 			}
-		}
-
-		if (!found)
-		{
-			SpiderCore.asmCompleted = false;
-			SpiderCore.asmErrors.add("Failed to rewrite EntitySpider.findPlayerToAttack()");
 		}
 		
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
@@ -90,6 +92,7 @@ public class TransformDistributor implements IClassTransformer
 
 	private byte[] transformOnEaten(byte[] basicClass)
 	{
+		boolean found = false;
 		ClassNode node = new ClassNode();
 		ClassReader reader = new ClassReader(basicClass);
 		reader.accept(node, 0);
@@ -99,7 +102,7 @@ public class TransformDistributor implements IClassTransformer
 			if (method.name.equals("onEaten") || method.name.equals("func_77654_b"))
 			{
 				logger.info("Patching onEaten()...");
-
+				
 				//Target instruction node is the return statement.
 				AbstractInsnNode target = null;
 				for (int i = 0; i < method.instructions.size(); i++)
@@ -116,9 +119,6 @@ public class TransformDistributor implements IClassTransformer
 				//Make sure we found the target.
 				if (target == null)
 				{
-					logger.fatal("Patching onEaten() failed! Things aren't going to work well!");
-					SpiderCore.asmCompleted = false;
-					SpiderCore.asmErrors.add("Failed to patch ItemFood.onEaten().");
 					return basicClass;
 				}
 
@@ -133,13 +133,72 @@ public class TransformDistributor implements IClassTransformer
 					inject.add(new MethodInsnNode(INVOKESTATIC, "sq/asm/ASMEventHooks", "onEaten", "(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/player/EntityPlayer;)V", false));
 
 					method.instructions.insertBefore(target, inject);
-					logger.info("Successfully patched onEaten().");
+					incrementChangesMade();
 				}
 
 				break;
 			}
 		}
+		
+		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+		node.accept(writer);
 
+		return writer.toByteArray();
+	}
+
+	private byte[] transformPumpkin(byte[] basicClass) 
+	{
+		boolean found = false;
+		ClassNode node = new ClassNode();
+		ClassReader reader = new ClassReader(basicClass);
+		reader.accept(node, 0);
+
+		for (MethodNode method : node.methods)
+		{
+			if (method.name.equals("generate") || method.name.equals("func_76484_a"))
+			{
+				found = true;
+				logger.info("Patching WorldGenPumpkin.generate()...");
+				
+				//Target instruction node is just after the POP statement.
+				AbstractInsnNode target = null;
+				for (int i = 0; i < method.instructions.size(); i++)
+				{
+					AbstractInsnNode currentNode = method.instructions.get(i);
+
+					if (currentNode.getOpcode() == POP)
+					{
+						target = currentNode.getNext(); //After the pop statement.
+						break;
+					}
+				}
+
+				//Make sure we found the target.
+				if (target == null)
+				{
+					return basicClass;
+				}
+
+				else
+				{
+					InsnList inject = new InsnList();
+
+					inject.add(new VarInsnNode(ALOAD, 1));
+					inject.add(new VarInsnNode(ALOAD, 2));
+					inject.add(new VarInsnNode(ILOAD, 7));
+					inject.add(new VarInsnNode(ILOAD, 8));
+					inject.add(new VarInsnNode(ILOAD, 9));
+					
+					inject.add(new MethodInsnNode(INVOKESTATIC, "sq/asm/ASMEventHooks", "onPumpkinGenerate", "(Lnet/minecraft/world/World;Ljava/util/Random;III)V", false));
+
+					method.instructions.insertBefore(target, inject);
+					incrementChangesMade();
+				}
+
+				break;
+			}
+		}
+		
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 		node.accept(writer);
 
