@@ -2,6 +2,7 @@ package sq.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -9,6 +10,7 @@ import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModBlocks;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.RepEntityExtension;
 import sq.enums.EnumBeeType;
@@ -28,6 +30,15 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		this(world);
 		dataWatcher.updateObject(12, type.getId());
+	}
+
+	@Override
+	protected void dropFewItems(boolean hitByPlayer, int lootingLvl) 
+	{
+		if (SpiderCore.rand.nextBoolean())
+		{
+			dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1.0F);
+		}
 	}
 
 	protected void entityInit()
