@@ -59,6 +59,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		super.onUpdate();
 		FriendlyEntityHelper.onUpdate(this);
+		extinguish();
 	}
 	
 	@Override
