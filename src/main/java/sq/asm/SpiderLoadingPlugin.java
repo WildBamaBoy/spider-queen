@@ -2,7 +2,6 @@ package sq.asm;
 
 import java.util.Map;
 
-import sq.core.SpiderCore;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.DependsOn;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
@@ -18,7 +17,6 @@ public class SpiderLoadingPlugin implements IFMLLoadingPlugin
 	@Override
 	public String[] getASMTransformerClass()
 	{
-		SpiderCore.asmRan = true;
 		return new String[]{ TransformDistributor.class.getName() };
 	}
 

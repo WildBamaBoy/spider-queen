@@ -36,6 +36,7 @@ import radixcore.data.DataContainer;
 import radixcore.update.RDXUpdateProtocol;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixMath;
+import sq.asm.TransformDistributor;
 import sq.command.CommandSQ;
 import sq.core.forge.EventHooksFML;
 import sq.core.forge.EventHooksForge;
@@ -101,13 +102,9 @@ public final class SpiderCore
 {
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
-	public static final String VERSION = "1.0.0-triage";
+	public static final String VERSION = "triage";
 	public static final String PERM_SKINS_URL = "http://pastebin.com/raw.php?i=MNWrUxwa";
 	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
-	
-	public static boolean asmRan = false;
-	public static boolean asmCompleted = true;
-	public static List<String> asmErrors = new ArrayList<String>();
 	
 	@Instance(ID)
 	private static SpiderCore instance;
@@ -136,12 +133,6 @@ public final class SpiderCore
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		if (!asmRan)
-		{
-			asmCompleted = false;
-			asmErrors.add("ASM did not run. If you have modified the mod's JAR, reinstall the mod.");
-		}
-		
 		instance = this;
 		rand = new Random();
 		metadata = event.getModMetadata();
@@ -272,7 +263,6 @@ public final class SpiderCore
 
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
-		GameRegistry.registerWorldGenerator(new WorldGenJack(), 8);
 		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);
 		
 		ReputationContainer.createNew(EntitySkeleton.class, EnumWatchedDataIDs.SKELETON_LIKE.getId());
