@@ -26,9 +26,10 @@ apply plugin: 'forge'
 
 fileTree('gradle').include('*.gradle').collect().sort().each { apply from: it }
 
-version = "1.0.0"
+version = "0.9"
 group= "com.radixshock"
 archivesBaseName = "SpiderQueen"
+def buildNumber = 1
 
 minecraft 
 {
@@ -36,9 +37,20 @@ minecraft
     runDir =  "eclipse/"
     replaceIn "sqr/core/Constants.java"
     replace   "@VERSION@", project.version
+    
+    def Properties versionProps = new Properties()
+    def versionPropsFile = file('version.properties')
+    
+    versionProps.load(new FileInputStream(versionPropsFile))
+
+    def code = versionProps['BUILD_NUMBER'].toInteger() + 1
+    buildNumber = code
+    
+    versionProps['BUILD_NUMBER']=code.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
 }
 
-version = "${project.minecraft.version}-${project.version}"
+version = "${project.minecraft.version}-${project.version}" + "." + buildNumber
 
 dependencies 
 {

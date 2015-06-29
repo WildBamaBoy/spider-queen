@@ -1,5 +1,6 @@
 /*
 !/.gitignore
+!/version.properties
 !/gradle/
 !/gradle/*
 !/gradle*
