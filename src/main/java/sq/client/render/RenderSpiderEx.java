@@ -1,5 +1,6 @@
 package sq.client.render;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,7 +15,8 @@ import sq.enums.EnumSpiderType;
 public class RenderSpiderEx extends RenderLiving
 {
 	private static ResourceLocation[][] textures;
-
+	private static ResourceLocation eyes;
+	
 	public RenderSpiderEx()
 	{
 		super(new ModelSpiderEx(), 1.0F);
@@ -42,7 +44,34 @@ public class RenderSpiderEx extends RenderLiving
 	@Override
 	protected int shouldRenderPass(EntityLivingBase entitySpider, int passNumber, float partialTickTime)
 	{
-		return -1;
+        if (passNumber != 0)
+        {
+            return -1;
+        }
+        else
+        {
+            this.bindTexture(eyes);
+            GL11.glTranslatef(0.0F, 0.0F, -0.0001F); //Prevent Z clipping.
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+
+            if (entitySpider.isInvisible())
+            {
+                GL11.glDepthMask(false);
+            }
+            else
+            {
+                GL11.glDepthMask(true);
+            }
+
+            char c0 = 61680;
+            int j = c0 % 65536;
+            int k = c0 / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            return 1;
+        }
 	}
 
 	@Override
@@ -93,7 +122,8 @@ public class RenderSpiderEx extends RenderLiving
 	static
 	{
 		textures = new ResourceLocation[EnumSpiderType.values().length][3];
-
+		eyes = new ResourceLocation("sq:textures/entities/spider-eyes.png");
+		
 		for (EnumSpiderType type : EnumSpiderType.values())
 		{
 			if (type != EnumSpiderType.NONE)
