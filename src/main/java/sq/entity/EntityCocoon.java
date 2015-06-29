@@ -218,7 +218,16 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				final boolean doDropEgg = RadixLogic.getBooleanWithProbability(25);
 				final int dropAmount = RadixMath.getNumberInRange(1, 2);
 
-				entityDropItem(new ItemStack(Items.string, RadixMath.getNumberInRange(0, 5), 0), 0);
+				int maxString = 5;
+				
+				switch (cocoonType)
+				{
+				case ENDERMAN:
+				case QUEEN_BEE:
+				case HUMAN: maxString = 20;
+				}
+				
+				entityDropItem(new ItemStack(Items.string, RadixMath.getNumberInRange(2, 20), 0), 0);
 
 				if (doDropEgg)
 				{

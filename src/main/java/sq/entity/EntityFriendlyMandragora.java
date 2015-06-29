@@ -99,6 +99,12 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	}
 
 	@Override
+	protected boolean canDespawn() 
+	{
+		return false;
+	}
+	
+	@Override
 	public EntityLivingBase getTarget() 
 	{
 		return target;

@@ -27,6 +27,7 @@ import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
+import sq.entity.EntityCocoon;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
@@ -52,7 +53,7 @@ public final class EventHooksForge
 		final EntityPlayer player = event.entityPlayer;
 		final PlayerData data = SpiderCore.getPlayerData(player);
 
-		if (event.target instanceof EntityLivingBase)
+		if (event.target instanceof EntityLivingBase && !(event.target instanceof EntityCocoon))
 		{
 			EntityLivingBase livingBase = (EntityLivingBase)event.target;
 			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX, player.posY, player.posZ, 20);

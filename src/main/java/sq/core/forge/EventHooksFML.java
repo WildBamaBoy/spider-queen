@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import radixcore.constant.Time;
@@ -12,6 +14,7 @@ import radixcore.packets.PacketDataContainer;
 import radixcore.util.RadixMath;
 import sq.client.gui.GuiScreenWarning;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.packet.PacketSleepC;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -28,7 +31,7 @@ public final class EventHooksFML
 	private int counter;
 	private int timeUntilSpawnWeb;
 	private boolean displayedASMWarning;
-	
+
 	@SubscribeEvent
 	public void onConfigChanges(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
 	{
@@ -49,7 +52,7 @@ public final class EventHooksFML
 			displayedASMWarning = true;
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{
@@ -68,11 +71,11 @@ public final class EventHooksFML
 
 			timeUntilSpawnWeb = Time.MINUTE * 3;
 		}
-		
+
 		if (counter <= 0)
 		{
 			int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
-			
+
 			if (SpiderCore.sleepingPlayers.size() >= totalPlayers && totalPlayers != 0)
 			{
 				for (String s : SpiderCore.sleepingPlayers)
@@ -80,24 +83,70 @@ public final class EventHooksFML
 					for (WorldServer world : MinecraftServer.getServer().worldServers)
 					{
 						EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(s);
-						
+
 						if (player != null)
 						{
 							SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(true), player);
 						}
 					}
 				}
-				
+
 				MinecraftServer.getServer().worldServers[0].provider.setWorldTime(13000);
 				SpiderCore.sleepingPlayers.clear();
 			}
-			
+
 			counter = Time.SECOND * 1;
 		}
-		
+
 		counter--;
+
+		//update night vision
+		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
+		{
+			for (final Object obj : worldServer.playerEntities)
+			{
+				final EntityPlayer player = (EntityPlayer) obj;
+				boolean hasBugLight = false;
+
+				for (final ItemStack stack : player.inventory.mainInventory)
+				{
+					if (stack != null && stack.getItem() == ModItems.bugLight)
+					{
+						hasBugLight = true;
+						break;
+					}
+				}
+
+				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
+				{
+					if (hasBugLight)
+					{
+						if (player.getActivePotionEffect(Potion.nightVision) == null)
+						{
+							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
+						}
+					}
+
+					else if (!hasBugLight && player.getActivePotionEffect(Potion.nightVision) != null)
+					{
+						player.removePotionEffect(Potion.nightVision.id);
+					}
+				}
+
+				else
+				{
+					if (player.worldObj.canBlockSeeTheSky((int) player.posX, (int) player.posY, (int) player.posZ))
+					{
+						if (player.getActivePotionEffect(Potion.nightVision) != null)
+						{
+							player.removePotionEffect(Potion.nightVision.id);
+						}
+					}
+				}
+			}
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void playerLoggedInEventHandler(PlayerLoggedInEvent event)
 	{

@@ -98,6 +98,12 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	}
 
 	@Override
+	protected boolean canDespawn() 
+	{
+		return false;
+	}
+	
+	@Override
 	public EntityLivingBase getTarget() 
 	{
 		return target;

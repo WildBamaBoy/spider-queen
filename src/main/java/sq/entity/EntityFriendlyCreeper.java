@@ -79,7 +79,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 				if (getExplosionTicks() >= 40)
 				{
-					worldObj.createExplosion(this, posX, posY, posZ, 2, worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+					worldObj.createExplosion(this, posX, posY, posZ, 2, false);
 					setDead();
 				}
 			}
@@ -149,6 +149,12 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 	@Override
 	public boolean doManualAttack(Entity entityBeingAttacked, float damageAmount) 
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean canDespawn() 
 	{
 		return false;
 	}

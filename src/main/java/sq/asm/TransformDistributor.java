@@ -44,7 +44,7 @@ public class TransformDistributor implements IClassTransformer
 		{
 			return transformSpider(basicClass);
 		}
-
+		
 		return basicClass;
 	}
 
@@ -96,7 +96,7 @@ public class TransformDistributor implements IClassTransformer
 
 		for (MethodNode method : node.methods)
 		{
-			if (method.name.equals("onEaten"))
+			if (method.name.equals("onEaten") || method.name.equals("func_77654_b"))
 			{
 				logger.info("Patching onEaten()...");
 

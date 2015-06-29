@@ -109,6 +109,12 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	}
 
 	@Override
+	protected boolean canDespawn() 
+	{
+		return false;
+	}
+	
+	@Override
 	public void setTarget(EntityLivingBase target) 
 	{
 		this.target = target;
