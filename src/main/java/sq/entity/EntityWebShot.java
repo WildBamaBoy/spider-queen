@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -446,7 +447,13 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 					blockPlaced = ModBlocks.getPoisonWebVariant(blockPlaced);
 				}
 
-				worldObj.setBlock(impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta, 2);
+				Block blockToSet = worldObj.getBlock(impactX + xMov, impactY + yMov, impactZ + zMov);
+				
+				if (blockToSet == Blocks.air || blockToSet instanceof BlockWebFull) //Prevent overwriting terrain.
+				{
+					worldObj.setBlock(impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta, 2);
+				}
+				
 				setDead();
 			}
 		}
