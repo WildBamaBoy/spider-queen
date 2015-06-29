@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntitySpiderEgg extends EntityCreature
 {
-	private UUID	owner;
+	private UUID	owner = new UUID(0, 0);
 	private int		timeUntilEggHatch;
 
 	public EntitySpiderEgg(World world)
@@ -131,6 +131,8 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		super.writeEntityToNBT(nbt);
 		nbt.setInteger("timeUntilEggHatch", timeUntilEggHatch);
+		nbt.setLong("ownerMSB", owner.getMostSignificantBits());
+		nbt.setLong("ownerLSB", owner.getLeastSignificantBits());
 	}
 
 	@Override
@@ -138,6 +140,7 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		super.readEntityFromNBT(nbt);
 		timeUntilEggHatch = nbt.getInteger("timeUntilEggHatch");
+		owner = new UUID(nbt.getLong("ownerMSB"), nbt.getLong("ownerLSB"));
 	}
 
 	@SideOnly(Side.CLIENT)

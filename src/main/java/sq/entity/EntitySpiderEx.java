@@ -258,6 +258,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		nbt.setInteger("abilityCounter", abilityCounter);
 		nbt.setInteger("abilityThreshold", abilityThreshold);
 		nbt.setInteger("killsUntilLevelUp", killsUntilLevelUp);
+		nbt.setLong("ownerMSB", owner.getMostSignificantBits());
+		nbt.setLong("ownerLSB", owner.getLeastSignificantBits());
 		nbt.setTag("inventory", inventory.saveInventoryToNBT());
 	}
 
