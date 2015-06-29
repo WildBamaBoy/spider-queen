@@ -472,6 +472,12 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		}
 	}
 
+	@Override
+	protected boolean canDespawn() 
+	{
+		return false;
+	}
+
 	public EnumSpiderType getSpiderType()
 	{
 		return spiderType;
