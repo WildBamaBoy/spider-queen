@@ -1,8 +1,10 @@
 package sq.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
+import sq.util.Utils;
 
 public class EntityFly extends AbstractFlyingMob
 {
@@ -59,6 +61,24 @@ public class EntityFly extends AbstractFlyingMob
     {
     	return null;
     }
+
+	@Override
+	protected boolean interact(EntityPlayer player) 
+	{
+		if (!worldObj.isRemote)
+		{
+			Utils.spawnParticlesAroundEntityS("smoke", this, 16);
+			worldObj.playSoundAtEntity(player, "random.eat", 0.85F, 1.0F);
+			worldObj.playSoundAtEntity(player, "random.burp", 0.85F, 1.0F);
+			
+			player.heal(3);
+			player.getFoodStats().addStats(4, 0.4f);
+			
+			setDead();
+		}
+		
+		return true;
+	}
 
 	@Override
 	public boolean isPassive() 
