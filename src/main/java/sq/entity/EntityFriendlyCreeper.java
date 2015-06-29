@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAICreeperSwell;
@@ -92,6 +93,13 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		}
 	}
 
+	@Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+    }
+	
 	@Override
 	public UUID getFriendPlayerUUID()
 	{

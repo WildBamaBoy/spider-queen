@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -99,7 +100,8 @@ public final class FriendlyEntityHelper
 
 		if (nearestRod != null && RadixMath.getDistanceToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, me.posX, me.posY, me.posZ) >= 5.0D)
 		{
-			me.getNavigator().tryMoveToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, 1.0D);
+			double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+			me.getNavigator().tryMoveToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, moveSpeed);
 		}
 	}
 	
@@ -113,7 +115,8 @@ public final class FriendlyEntityHelper
 
 			if (me.getHealth() > 0.0F && me.riddenByEntity == null)
 			{
-				navigator.setPath(navigator.getPathToEntityLiving(entityBeingAttacked), 1.0D);
+				double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+				navigator.setPath(navigator.getPathToEntityLiving(entityBeingAttacked), moveSpeed);
 
 				if (RadixMath.getDistanceToEntity(me, entityBeingAttacked) < 2.0D && !(friendlyEntity instanceof EntityFriendlyCreeper))
 				{
@@ -162,7 +165,8 @@ public final class FriendlyEntityHelper
 
 			if (me.getDistanceToEntity(friendPlayer) > 3.5D)
 			{
-				final boolean pathSet = me.getNavigator().tryMoveToEntityLiving(friendPlayer, 1.4D);
+				double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+				final boolean pathSet = me.getNavigator().tryMoveToEntityLiving(friendPlayer, moveSpeed);
 				me.getNavigator().onUpdateNavigation();
 
 				if (me.getDistanceToEntity(friendPlayer) >= 10.0D && me.getDistanceToEntity(friendPlayer) <= 30.0D)

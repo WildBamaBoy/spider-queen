@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -43,7 +44,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 		//Add custom tasks.
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
@@ -59,7 +60,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	@Override
 	public double getMoveSpeed() 
 	{
-		return 0.75F;
+		return 0.55F;
 	}
 	
 	@Override
