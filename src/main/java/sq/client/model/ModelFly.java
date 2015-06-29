@@ -76,8 +76,8 @@ public class ModelFly extends ModelBase
 		leg4.mirror = true;
 		setRotation(leg4, 0F, 0F, 0F);
 		leg5 = new ModelRenderer(this, 16, -1);
-		leg5.addBox(2F, 18F, -1F, 0, 5, 1);
-		leg5.setRotationPoint(0F, 0F, 0F);
+		leg5.addBox(0F, 0F, 0F, 0, 5, 1);
+		leg5.setRotationPoint(2F, 18F, -1F);
 		leg5.setTextureSize(64, 32);
 		leg5.mirror = true;
 		setRotation(leg5, 0F, 0F, 0F);
