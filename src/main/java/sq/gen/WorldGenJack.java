@@ -42,7 +42,7 @@ public class WorldGenJack implements IWorldGenerator
 
 			if (world.isAirBlock(x, y, z) && world.getBlock(x, y - 1, z) == Blocks.grass && Blocks.pumpkin.canPlaceBlockAt(world, x, y, z))
 			{
-				if (random.nextInt(1200) == 0)
+				if (random.nextInt(12000) == 0)
 				{
 					world.setBlock(x, y, z, ModBlocks.jack, random.nextInt(4), 2);
 					return true;
