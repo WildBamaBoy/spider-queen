@@ -31,6 +31,12 @@ public class EntityBeetle extends AbstractNewMob
 		}
 	}
 
+	@Override
+	public boolean isOnLadder() 
+	{
+		return isCollidedHorizontally;
+	}
+
 	public boolean getIsFlying()
 	{
 		return this.dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
