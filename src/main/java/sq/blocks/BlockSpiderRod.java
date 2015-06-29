@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import sq.core.minecraft.ModItems;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,10 +26,16 @@ public class BlockSpiderRod extends Block
 		setBlockName(name);
 		setBlockTextureName("sq:" + name);
 		setHardness(0.5F);
-		
+
 		GameRegistry.registerBlock(this, name);
 	}
 	
+	@Override
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
+    {
+		 this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+    }
+    
 	@Override
 	public Item getItemDropped(int unknown, Random random, int unknown2) 
 	{
