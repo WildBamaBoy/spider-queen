@@ -100,7 +100,7 @@ public final class EventHooksFML
 
 		counter--;
 
-		//update night vision
+		//Update night vision
 		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 		{
 			for (final Object obj : worldServer.playerEntities)
@@ -131,15 +131,25 @@ public final class EventHooksFML
 					{
 						player.removePotionEffect(Potion.nightVision.id);
 					}
+					
+					if (player.getActivePotionEffect(Potion.hunger) != null)
+					{
+						player.removePotionEffect(Potion.hunger.id);
+					}
 				}
 
-				else
+				else //Light level below 8
 				{
 					if (player.worldObj.canBlockSeeTheSky((int) player.posX, (int) player.posY, (int) player.posZ))
 					{
 						if (player.getActivePotionEffect(Potion.nightVision) != null)
 						{
 							player.removePotionEffect(Potion.nightVision.id);
+						}
+						
+						if (player.getActivePotionEffect(Potion.hunger) == null)
+						{
+							player.addPotionEffect(new PotionEffect(Potion.hunger.id, 12000, 0, true));
 						}
 					}
 				}
