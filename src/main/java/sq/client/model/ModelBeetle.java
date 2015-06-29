@@ -142,10 +142,10 @@ public class ModelBeetle extends ModelBase
 		horn1.rotateAngleX = head.rotateAngleX; 
 		horn1.rotateAngleZ = head.rotateAngleZ;
 		horn2.rotateAngleY = head.rotateAngleY; 
-		horn2.rotateAngleX = head.rotateAngleX; 
+		horn2.rotateAngleX = 0.4363323F + head.rotateAngleX; 
 		horn2.rotateAngleZ = head.rotateAngleZ;
 		horn3.rotateAngleY = head.rotateAngleY; 
-		horn3.rotateAngleX = head.rotateAngleX; 
+		horn3.rotateAngleX = 0.4363323F + head.rotateAngleX; 
 		horn3.rotateAngleZ = head.rotateAngleZ;
 
 		float f6 = 0.7853982F;
