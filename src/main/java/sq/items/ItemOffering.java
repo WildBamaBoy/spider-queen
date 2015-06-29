@@ -86,8 +86,8 @@ public final class ItemOffering extends Item
 			living.getNavigator().tryMoveToXYZ(entityItem.posX, entityItem.posY, entityItem.posZ, 0.8D);
 		}
 		
-		if (entities.size() > 0 && entityItem.ticksExisted >= Time.SECOND * 5)
-		{	
+		if (entities.size() > 0 && entityItem.ticksExisted >= Time.SECOND * 5 && entityItem.getEntityItem().hasTagCompound())
+		{
 			Entity exampleEntity = entities.get(0);
 			String player = entityItem.getEntityItem().stackTagCompound.getString("player");
 			entityItem.setDead();
