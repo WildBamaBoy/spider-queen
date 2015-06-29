@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -48,7 +47,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	private int abilityThreshold;
 	private int killsUntilLevelUp = RadixMath.getNumberInRange(5, 15);
 	private EnumSpiderType spiderType = EnumSpiderType.NONE;
-	private UUID owner;
+	private UUID owner = new UUID(0, 0);
 	private EntityLivingBase target;
 	private Inventory inventory;
 
@@ -104,7 +103,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		updateEntityAttributes();
 		updateAbility();
 		setHitboxSize();
-		
+
 		if (!worldObj.isRemote)
 		{
 			setBesideClimbableBlock(isCollidedHorizontally);
@@ -126,7 +125,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					registerKill();
 					target = null;
 				}
-				
+
 				else
 				{
 					target = findEntityToAttack();
@@ -259,8 +258,6 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		nbt.setInteger("abilityCounter", abilityCounter);
 		nbt.setInteger("abilityThreshold", abilityThreshold);
 		nbt.setInteger("killsUntilLevelUp", killsUntilLevelUp);
-		nbt.setLong("ownerMSB", owner.getMostSignificantBits());
-		nbt.setLong("ownerLSB", owner.getLeastSignificantBits());
 		nbt.setTag("inventory", inventory.saveInventoryToNBT());
 	}
 
@@ -281,15 +278,28 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	public void writeSpawnData(ByteBuf buffer) 
 	{
 		buffer.writeInt(spiderType.getId());
-		buffer.writeLong(owner.getMostSignificantBits());
-		buffer.writeLong(owner.getLeastSignificantBits());
+
+		if (owner != null)
+		{
+			buffer.writeLong(owner.getMostSignificantBits());
+			buffer.writeLong(owner.getLeastSignificantBits());
+		}
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf buffer)
 	{
 		spiderType = EnumSpiderType.byId(buffer.readInt());
-		owner = new UUID(buffer.readLong(), buffer.readLong());
+		
+		try
+		{
+			owner = new UUID(buffer.readLong(), buffer.readLong());
+		}
+		
+		catch (IndexOutOfBoundsException e)
+		{
+			//Ignore.
+		}
 	}
 
 	@Override
@@ -337,20 +347,20 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	public boolean attackEntityFrom(DamageSource source, float damage) 
 	{
 		super.attackEntityFrom(source, damage);
-		
+
 		if (source.getSourceOfDamage() instanceof EntityLivingBase)
 		{
 			setTarget(source.getSourceOfDamage());
-			
+
 			//Alert other spiders that this one is being attacked.
 			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
-			
+
 			for (Entity entity : entities)
 			{
 				if (entity instanceof EntitySpiderEx)
 				{
 					EntitySpiderEx spider = (EntitySpiderEx)entity;
-					
+
 					if (spider.owner.equals(owner))
 					{
 						spider.setTarget(source.getSourceOfDamage());
@@ -358,7 +368,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -368,12 +378,12 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		super.attackEntity(entity, damage);
 
 		double distance = RadixMath.getDistanceToEntity(this, entity);
-		
+
 		if (distance > 3.0F)
 		{
 			setAttackPath(entity);
 		}
-		
+
 		else
 		{
 			final EntityLivingBase living = (EntityLivingBase)entity;
@@ -388,7 +398,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					entityLiving.addPotionEffect(poison);
 				}
 			}
-			
+
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackDamage());
 		}
 
@@ -450,22 +460,22 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				return;
 			}
 		}
-		
+
 		if (entity instanceof EntitySpiderEx)
 		{
 			EntitySpiderEx spider = (EntitySpiderEx)entity;
-			
+
 			if (spider.owner.equals(this.owner))
 			{
 				return;
 			}
 		}
-		
+
 		else if (entity instanceof EntityCocoon)
 		{
 			return;
 		}
-		
+
 		if (entity instanceof EntityLivingBase)
 		{
 			target = (EntityLivingBase) entity;
@@ -492,18 +502,18 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		return owner;
 	}
-	
+
 	public void registerKill()
 	{
 		killsUntilLevelUp--;
-		
+
 		if (killsUntilLevelUp <= 0)
 		{
 			levelUp();
 			killsUntilLevelUp = RadixMath.getNumberInRange(5, 15);
 		}
 	}
-	
+
 	public void levelUp()
 	{
 		if (getLevel() != 3)
@@ -520,7 +530,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		{
 			dataWatcher.updateObject(18, value);
 		}
-	
+
 		catch (Exception e)
 		{
 			dataWatcher.addObject(18, value);
@@ -590,12 +600,12 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 		IAttributeInstance moveSpeed = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 		IAttributeInstance maxHealth = getEntityAttribute(SharedMonsterAttributes.maxHealth);
-		
+
 		if (moveSpeed.getBaseValue() != getMovementSpeed())
 		{
 			moveSpeed.setBaseValue(getMovementSpeed());
 		}
-		
+
 		if (maxHealth.getBaseValue() != getMaximumHealth())
 		{
 			maxHealth.setBaseValue(getMaximumHealth());
@@ -607,9 +617,9 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		if (spiderType == EnumSpiderType.SLINGER || spiderType == EnumSpiderType.BOOM)
 		{
-			
+
 		}
-	
+
 		else
 		{
 			getNavigator().setPath(getNavigator().getPathToEntityLiving(entityBeingAttacked), 0.4D);
@@ -628,7 +638,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			return 2.5F + getLevel() / 2;
 		}
 	}
-	
+
 	private float getMaximumHealth()
 	{
 		switch (spiderType)
@@ -677,7 +687,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				{
 					EntityWebShot webShot = new EntityWebShot(this, target, 2.5F);
 					worldObj.spawnEntityInWorld(webShot);
-					
+
 					worldObj.playSoundAtEntity(this, "random.bow", 0.75F, 1.0F);
 				}
 
@@ -709,9 +719,9 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 							target.motionX = target.motionX > 0 ? target.motionX + 2.0F : target.motionX - 2.0F;
 							target.motionZ = target.motionZ > 0 ? target.motionZ + 2.0F : target.motionZ - 2.0F;
 						}
-						
+
 						worldObj.playSoundAtEntity(target, "mob.endermen.portal", 1.0F, 1.0F);
-						
+
 						Utils.spawnParticlesAroundEntityS(Particle.PORTAL, target, 6);
 					}
 				}
@@ -776,31 +786,31 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		default:
 			break;			
 		}
-	
+
 		//Attack on their own?
 		return null;
-		
-//		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
-//		EntityLivingBase closestValidTarget = null;
-//		double distanceToTarget = 100D;
-//	
-//		for (final Entity entity : entitiesAroundMe)
-//		{
-//			if (entity == this)
-//			{
-//				continue;
-//			}
-//			
-//			final double distanceToThisEntity = getDistanceToEntity(entity);
-//	
-//			if (entity instanceof EntitySheep && distanceToThisEntity < distanceToTarget)
-//			{
-//				closestValidTarget = (EntityLivingBase) entity;
-//				distanceToTarget = distanceToThisEntity;
-//			}
-//		}
-//	
-//		return closestValidTarget;
+
+		//		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
+		//		EntityLivingBase closestValidTarget = null;
+		//		double distanceToTarget = 100D;
+		//	
+		//		for (final Entity entity : entitiesAroundMe)
+		//		{
+		//			if (entity == this)
+		//			{
+		//				continue;
+		//			}
+		//			
+		//			final double distanceToThisEntity = getDistanceToEntity(entity);
+		//	
+		//			if (entity instanceof EntitySheep && distanceToThisEntity < distanceToTarget)
+		//			{
+		//				closestValidTarget = (EntityLivingBase) entity;
+		//				distanceToTarget = distanceToThisEntity;
+		//			}
+		//		}
+		//	
+		//		return closestValidTarget;
 	}
 
 	private void moveToPlayer(EntityPlayer player)
