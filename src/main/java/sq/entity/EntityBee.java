@@ -37,7 +37,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		if (SpiderCore.rand.nextBoolean())
 		{
-			dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1.0F);
+			dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1);
 		}
 	}
 
