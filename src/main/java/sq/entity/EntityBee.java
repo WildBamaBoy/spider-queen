@@ -1,7 +1,9 @@
 package sq.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -68,6 +70,17 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) 
 	{
+		//Check whether the bee is in a log or leaves, ignore if so.
+		if (source == DamageSource.inWall)
+		{
+			Block block = worldObj.getBlock((int)posX, (int)posY, (int)posZ);
+			
+			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass)
+			{
+				return false;
+			}
+		}
+		
 		super.attackEntityFrom(source, damage);
 		
 		//Cancel setting the target if the player hasn't hit them enough, or if reputation is too high.
@@ -81,7 +94,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 				this.setTarget(null);
 			}
 		}
-		
+
 		return true;
 	}
 
