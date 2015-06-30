@@ -245,16 +245,16 @@ public final class SpiderCore
 		//Smeltings
 		
 		//Spawns
-		EntityRegistry.addSpawn(EntityBeetle.class, 10, 1, 3, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		EntityRegistry.addSpawn(EntityBeetle.class, 10, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-		EntityRegistry.addSpawn(EntityFly.class, 12, 1, 3, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		EntityRegistry.addSpawn(EntityFly.class, 12, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-		EntityRegistry.addSpawn(EntityMandragora.class, 12, 1, 2, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		EntityRegistry.addSpawn(EntityMandragora.class, 12, 1, 2, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
-		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.creature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);

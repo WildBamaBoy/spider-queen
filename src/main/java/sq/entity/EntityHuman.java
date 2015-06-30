@@ -230,7 +230,6 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 			swingItem();
 			
 			EntityPlayer p = (EntityPlayer)entity;
-			System.out.println(p.attackEntityFrom(DamageSource.causeMobDamage(this), (fortuneLevel * 2.5F) + 1.5F));
 		}
 	}
 

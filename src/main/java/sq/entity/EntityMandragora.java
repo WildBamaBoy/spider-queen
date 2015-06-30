@@ -1,6 +1,7 @@
 package sq.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -65,6 +66,15 @@ public class EntityMandragora extends AbstractNewMob
 		vineTimer = nbt.getInteger("vineTimer");
 	}
 
+	public boolean getCanSpawnHere()
+	{
+		int i = MathHelper.floor_double(posX);
+		int j = MathHelper.floor_double(boundingBox.minY);
+		int k = MathHelper.floor_double(posZ);
+		
+		return worldObj.getBlock(i, j - 1, k) == Blocks.grass;
+	}
+	
 	@Override
 	public void onUpdate()
 	{
@@ -113,15 +123,7 @@ public class EntityMandragora extends AbstractNewMob
 		int j = MathHelper.floor_double(this.boundingBox.minY);
 		int k = MathHelper.floor_double(this.posZ);
 
-		if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32))
-		{
-			return false;
-		}
-		
-		else
-		{
-			return this.worldObj.getBlockLightValue(i, j, k) >= 7;
-		}
+		return this.worldObj.getBlockLightValue(i, j, k) >= 7;
 	}
 
 	@Override
