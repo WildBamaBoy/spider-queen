@@ -173,6 +173,29 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	}
 
 	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) 
+	{
+		//Cancel setting the target if the player hasn't hit them enough, or if reputation is too high.
+		if (source.getEntity() instanceof EntityPlayer)
+		{
+			PlayerData data = SpiderCore.getPlayerData(((EntityPlayer)source.getEntity()));
+			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
+			
+			if (data.humanLike.getInt() >= 0 && extension.getTimesHitByPlayer() <= 2)
+			{
+				//Do nothing.
+			}
+		}
+		
+		if (source.getEntity() != null)
+		{
+			entityToAttack = source.getEntity();
+		}
+		
+		return super.attackEntityFrom(source, amount);
+	}
+
+	@Override
 	protected void attackEntity(Entity entity, float f)
 	{
 		attackTime--;
