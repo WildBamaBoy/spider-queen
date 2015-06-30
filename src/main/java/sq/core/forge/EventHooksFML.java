@@ -14,6 +14,7 @@ import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
+import sq.entity.ai.PlayerExtension;
 import sq.packet.PacketSleepC;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -39,6 +40,7 @@ public final class EventHooksFML
 	@SubscribeEvent
 	public void serverTickEventHandler(ServerTickEvent event)
 	{
+		//Update web spawning
 		timeUntilSpawnWeb--;
 
 		if (timeUntilSpawnWeb <= 0)
@@ -55,6 +57,7 @@ public final class EventHooksFML
 			timeUntilSpawnWeb = Time.MINUTE * 3;
 		}
 
+		//Update sleeping
 		if (counter <= 0)
 		{
 			int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
@@ -83,14 +86,19 @@ public final class EventHooksFML
 
 		counter--;
 
-		//Update night vision
+		//Update day/night buffs and tick extensions.
 		for (final WorldServer worldServer : MinecraftServer.getServer().worldServers)
 		{
 			for (final Object obj : worldServer.playerEntities)
 			{
 				final EntityPlayer player = (EntityPlayer) obj;
+				final PlayerExtension extension = PlayerExtension.get(player);
 				boolean hasBugLight = false;
 
+				//Tick extensions.
+				extension.tick();
+				
+				//Check for buffs.
 				for (final ItemStack stack : player.inventory.mainInventory)
 				{
 					if (stack != null && stack.getItem() == ModItems.bugLight)
@@ -115,9 +123,9 @@ public final class EventHooksFML
 						player.removePotionEffect(Potion.nightVision.id);
 					}
 					
-					if (player.getActivePotionEffect(Potion.hunger) != null)
+					if (player.getActivePotionEffect(Potion.weakness) != null)
 					{
-						player.removePotionEffect(Potion.hunger.id);
+						player.removePotionEffect(Potion.weakness.id);
 					}
 				}
 
@@ -130,9 +138,9 @@ public final class EventHooksFML
 							player.removePotionEffect(Potion.nightVision.id);
 						}
 						
-						if (player.getActivePotionEffect(Potion.hunger) == null)
+						if (player.getActivePotionEffect(Potion.weakness) == null)
 						{
-							player.addPotionEffect(new PotionEffect(Potion.hunger.id, 12000, 0, true));
+							player.addPotionEffect(new PotionEffect(Potion.weakness.id, 12000, 0, true));
 						}
 					}
 				}
