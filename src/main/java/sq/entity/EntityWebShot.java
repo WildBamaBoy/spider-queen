@@ -45,6 +45,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	public EntityWebShot(World worldObj)
 	{
 		super(worldObj);
+		type = EnumWebType.NORMAL;
 	}
 
 	public EntityWebShot(EntityPlayer player)
@@ -134,13 +135,13 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
-		// No data to write.
+		nbt.setInteger("type", type.getId());
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
-		// No data to read.
+		type = EnumWebType.byId(nbt.getInteger("type"));
 	}
 
 	@Override
