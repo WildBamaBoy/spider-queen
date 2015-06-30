@@ -372,8 +372,9 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 						worldObj.spawnEntityInWorld(entityCocoon);
 
 						entityHit.setDead();
-						setDead();
 					}
+					
+					setDead();
 				}
 			}
 
