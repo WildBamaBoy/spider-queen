@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMandCrop extends BlockCrops
 {
-	private IIcon icon;
+	private IIcon[] icons = new IIcon[4];
 	
 	public BlockMandCrop()
 	{
@@ -33,7 +33,19 @@ public class BlockMandCrop extends BlockCrops
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-    	return icon;
+    	switch (meta)
+    	{
+    	case 0:
+    	case 1: return icons[0];
+    	case 2:
+    	case 3: return icons[1];
+    	case 4:  
+    	case 5: return icons[2];
+    	case 6:
+    	case 7: return icons[3];
+    	}
+    	
+    	return icons[0];
     }
 
     protected Item func_149866_i()
@@ -77,6 +89,9 @@ public class BlockMandCrop extends BlockCrops
 	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister)
     {
-    	icon = iconRegister.registerIcon("sq:mand_crop");
+    	icons[0] = iconRegister.registerIcon("sq:mand_crop_1");
+    	icons[1] = iconRegister.registerIcon("sq:mand_crop_2");
+    	icons[2] = iconRegister.registerIcon("sq:mand_crop_3");
+    	icons[3] = iconRegister.registerIcon("sq:mand_crop_4");
     }
 }
