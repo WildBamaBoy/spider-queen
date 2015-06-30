@@ -93,36 +93,18 @@ public final class EventHooksFML
 			{
 				final EntityPlayer player = (EntityPlayer) obj;
 				final PlayerExtension extension = PlayerExtension.get(player);
-				boolean hasBugLight = false;
 
 				//Tick extensions.
 				extension.tick();
-				
-				//Check for buffs.
-				for (final ItemStack stack : player.inventory.mainInventory)
-				{
-					if (stack != null && stack.getItem() == ModItems.bugLight)
-					{
-						hasBugLight = true;
-						break;
-					}
-				}
 
+				//Check for buffs.
 				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
-					if (hasBugLight)
+					if (player.getActivePotionEffect(Potion.nightVision) == null)
 					{
-						if (player.getActivePotionEffect(Potion.nightVision) == null)
-						{
-							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
-						}
+						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
 					}
 
-					else if (!hasBugLight && player.getActivePotionEffect(Potion.nightVision) != null)
-					{
-						player.removePotionEffect(Potion.nightVision.id);
-					}
-					
 					if (player.getActivePotionEffect(Potion.weakness) != null)
 					{
 						player.removePotionEffect(Potion.weakness.id);
@@ -137,7 +119,7 @@ public final class EventHooksFML
 						{
 							player.removePotionEffect(Potion.nightVision.id);
 						}
-						
+
 						if (player.getActivePotionEffect(Potion.weakness) == null)
 						{
 							player.addPotionEffect(new PotionEffect(Potion.weakness.id, 12000, 0, true));
