@@ -1,21 +1,26 @@
 package sq.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
+import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.RepEntityExtension;
 import sq.enums.EnumBeeType;
+import sq.util.Utils;
 
 public class EntityBee extends AbstractFlyingMob implements IRep
 {
@@ -189,6 +194,23 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			}
 		}
 
+	}
+
+	@Override
+	protected boolean interact(EntityPlayer entityPlayer) 
+	{
+		if (entityPlayer != null 
+				&& entityPlayer.getHeldItem() != null 
+				&& Block.getBlockFromItem(entityPlayer.getHeldItem().getItem()) instanceof BlockFlower 
+				&& !entityPlayer.worldObj.isRemote)
+		{
+			entityPlayer.getHeldItem().stackSize--;
+			entityPlayer.addChatComponentMessage(new ChatComponentText(Color.GREEN + "The Bees have accepted your offering."));
+			ReputationHandler.onReputationChange(entityPlayer, this, 1);
+			Utils.spawnParticlesAroundEntityS("heart", this, 16);
+		}
+		
+		return super.interact(entityPlayer);
 	}
 
 	@Override
