@@ -29,6 +29,7 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.EntityCocoon;
+import sq.entity.EntityFriendlyMandragora;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
@@ -79,7 +80,7 @@ public final class EventHooksForge
 			{
 				try
 				{
-					if (entity instanceof IFriendlyEntity)
+					if (entity instanceof IFriendlyEntity && !(entity instanceof EntityFriendlyMandragora))
 					{
 						IFriendlyEntity friendly = (IFriendlyEntity)entity;
 
@@ -207,6 +208,7 @@ public final class EventHooksForge
 			}
 		}
 	}
+	
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
