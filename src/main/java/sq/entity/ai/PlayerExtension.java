@@ -14,6 +14,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public static final String					ID	= "SQPlayerExtension";
 	public EntityWebslinger						webEntity;
 	private final EntityPlayer					player;
+	public int slingerCooldown;
 
 	public PlayerExtension(EntityPlayer player)
 	{
@@ -43,6 +44,14 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public EntityPlayer getPlayer()
 	{
 		return player;
+	}
+	
+	public void tick()
+	{
+		if (slingerCooldown > 0)
+		{
+			slingerCooldown--;
+		}
 	}
 	
 	public static PlayerExtension get(EntityPlayer player)

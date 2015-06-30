@@ -167,7 +167,9 @@ public final class EventHooksForge
 		if (event.entityLiving instanceof EntityPlayer && event.source == DamageSource.fall)
 		{
 			PlayerExtension extension = PlayerExtension.get((EntityPlayer)event.entityLiving);
-			event.setCanceled(extension.webEntity != null);
+			
+			boolean cancel = extension.webEntity != null || extension.slingerCooldown > 0;
+			event.setCanceled(cancel);
 		}
 		
 		else if (event.entityLiving.getClass().equals(EntitySpider.class) && event.source.getSourceOfDamage() instanceof EntityPlayer)

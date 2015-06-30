@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import radixcore.constant.Time;
 import sq.core.SpiderCore;
 import sq.entity.EntityWebslinger;
 import sq.entity.ai.PlayerExtension;
@@ -82,6 +83,7 @@ public class ItemWebslinger extends Item
 			playerExtension.webEntity.player = null;
 			playerExtension.webEntity.setDead();
 			playerExtension.webEntity = null;
+			playerExtension.slingerCooldown = Time.SECOND * 3;
 			
 			if (entityPlayer.isCollidedHorizontally)
 			{
