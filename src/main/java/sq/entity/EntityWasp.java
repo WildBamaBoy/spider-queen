@@ -8,13 +8,14 @@ public class EntityWasp extends AbstractFlyingMob
 	public EntityWasp(World world) 
 	{
 		super(world, "wasp");
+		setSize(1.2F, 1.5F);
 	}
 
 	@Override
 	public void onUpdate() 
 	{
 		super.onUpdate();
-		
+
 		if (entityToAttack != null)
 		{
 			double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
