@@ -377,8 +377,14 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	@Override
 	protected void attackEntity(Entity entity, float damage) 
 	{
+		//Prevent attacks during death.
+		if (this.getHealth() <= 0.0F)
+		{
+			return;
+		}
+		
 		super.attackEntity(entity, damage);
-
+		
 		double distance = RadixMath.getDistanceToEntity(this, entity);
 
 		if (distance > 3.0F)
