@@ -19,6 +19,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import radixcore.util.RadixLogic;
 import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
@@ -27,6 +29,7 @@ import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSide;
 import sq.enums.EnumWebType;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -78,7 +81,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		this(shooter.worldObj);
 		this.shooter = shooter;
 		this.type = EnumWebType.NORMAL;
-		
+
 		renderDistanceWeight = 10.0D;
 
 		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
@@ -281,14 +284,14 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 			{
 				return;
 			}
-			
+
 			else
 			{
 				if (collisionPosition.entityHit instanceof EntityMiniGhast)
 				{
 					return;
 				}
-				
+
 				else
 				{
 					onImpact(collisionPosition);
@@ -355,7 +358,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
 			{
 				doBlockSpawn = false;
-				
+
 				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(impactPoint.entityHit);
 				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
 				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 0.0F);
@@ -370,10 +373,14 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 						EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
 						entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
 						worldObj.spawnEntityInWorld(entityCocoon);
-
 						entityHit.setDead();
+
+						if (shooter instanceof EntityPlayer)
+						{
+							MinecraftForge.EVENT_BUS.post(new LivingDeathEvent(entityHit, DamageSource.causePlayerDamage((EntityPlayer)shooter)));
+						}
 					}
-					
+
 					setDead();
 				}
 			}
@@ -450,12 +457,12 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 				}
 
 				Block blockToSet = worldObj.getBlock(impactX + xMov, impactY + yMov, impactZ + zMov);
-				
+
 				if (blockToSet == Blocks.air || blockToSet instanceof BlockWebFull) //Prevent overwriting terrain.
 				{
 					worldObj.setBlock(impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta, 2);
 				}
-				
+
 				setDead();
 			}
 		}
