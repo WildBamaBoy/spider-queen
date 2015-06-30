@@ -17,6 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
@@ -161,6 +162,18 @@ public final class EventHooksForge
 		}
 	}
 
+	@SubscribeEvent
+	public void onLivingUpdate(LivingUpdateEvent event)
+	{
+		if (event.entityLiving instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			
+			//isInWeb
+			ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);
+		}
+	}
+	
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event)
 	{
