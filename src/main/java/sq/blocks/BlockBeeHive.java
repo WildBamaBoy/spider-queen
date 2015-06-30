@@ -51,12 +51,6 @@ public class BlockBeeHive extends Block
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
-	{
-		return null;
-	}
-
-	@Override
 	public Item getItemDropped(int unknown, Random random, int unknown2) 
 	{
 		return ModItems.nectar;
