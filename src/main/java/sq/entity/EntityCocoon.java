@@ -253,6 +253,11 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		switch (cocoonType)
 		{
+		case GATHERER_BEE:
+		case WARRIOR_BEE: 
+		case QUEEN_BEE:
+		case BLACK_ANT:
+		case RED_ANT: setSize(0.75F, 0.75F); break;
 		default:
 			setSize(1.0F, 1.0F);
 			break;
