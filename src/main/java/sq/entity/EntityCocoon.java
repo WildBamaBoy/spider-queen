@@ -132,19 +132,23 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			setBeenAttacked();
 
-			if (currentDamage > 80)
+			if (currentDamage > 8)
 			{
 				if (isEaten())
 				{
 					worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2 + 1, posZ - motionZ * 2, motionX, motionY, motionZ);
 				}
 
-				if (!worldObj.isRemote && !isEaten())
+				if (!worldObj.isRemote)
 				{
-					dropItem(cocoonType.getCocoonItem(), 1);
+					if (!isEaten())
+					{
+						dropItem(cocoonType.getCocoonItem(), 1);	
+					}
+					
+					setDead();
 				}
-
-				setDead();
+				
 			}
 		}
 
