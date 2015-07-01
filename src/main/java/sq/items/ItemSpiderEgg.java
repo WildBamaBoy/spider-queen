@@ -19,7 +19,7 @@ public class ItemSpiderEgg extends Item
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
-		setMaxStackSize(1);
+		setMaxStackSize(8);
 		
 		GameRegistry.registerItem(this, name);
 	}
