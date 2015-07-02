@@ -142,7 +142,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 	protected boolean canDespawn()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
