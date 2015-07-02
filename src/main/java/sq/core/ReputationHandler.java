@@ -101,6 +101,12 @@ public class ReputationHandler
 				RadixExcept.logErrorCatch(e, "Spawning friendly entity.");
 			}
 		}
+		
+		//There's an increase, but they are still hostile to the player.
+		if (newReputation < 0)
+		{
+			player.addChatComponentMessage(new ChatComponentText(Color.RED + "They are still hostile."));
+		}
 	}
 	
 	private static void handleNegativeRepChange(EntityPlayer player, EntityLivingBase living, int oldReputation, int newReputation)
