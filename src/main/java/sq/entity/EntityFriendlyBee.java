@@ -37,18 +37,6 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	{
 		super(world);
 		this.friendPlayerUUID = friendPlayer.getPersistentID();
-
-		//Clear old task entries.
-		this.tasks.taskEntries.clear();
-		this.targetTasks.taskEntries.clear();
-		
-		//Add custom tasks.
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 	}
 
 	@Override
@@ -56,6 +44,24 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	{
 		super.onUpdate();
 		FriendlyEntityHelper.onUpdate(this);
+		
+		final EntityPlayer nearestPlayer = worldObj.getClosestPlayerToEntity(this, 16.0D);
+		
+		if (nearestPlayer != null && nearestPlayer.getUniqueID().equals(friendPlayerUUID))
+		{
+			if (nearestPlayer.getHeldItem() != null && nearestPlayer.getHeldItem().getItem() == ModItems.spiderRod)
+			{
+				entityToAttack = nearestPlayer;
+			}
+			
+			else
+			{
+				if (entityToAttack == nearestPlayer)
+				{
+					entityToAttack = null;
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -101,10 +107,15 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 		
 		if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) instanceof BlockFlower)
 		{
-			dropItem(ModItems.nectar, 1);
+			heldItem.stackSize--;
+			
+			if (!entity.worldObj.isRemote)
+			{
+				dropItem(ModItems.nectar, 1);
+			}
 		}
 		
-		return super.interact(entity);
+		return false;
 	}
 	
 	@Override

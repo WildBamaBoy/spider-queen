@@ -31,12 +31,12 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
-	
+
 	public EntityFriendlyZombie(World world)
 	{
 		super(world);
 	}
-	
+
 	public EntityFriendlyZombie(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
@@ -45,17 +45,17 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 		//Clear old task entries.
 		this.tasks.taskEntries.clear();
 		this.targetTasks.taskEntries.clear();
-		
+
 		//Add custom tasks.
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityVillager.class, 0.55D, true));
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityVillager.class, 0.55D, true));
 		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityHuman.class, 0.55, false));
-        this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 0.55D));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
+		this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 0.55D));
+		this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 16, false));
 	}
 
@@ -66,27 +66,32 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 		FriendlyEntityHelper.onUpdate(this);
 		extinguish();
 	}
-	
+
 	@Override
 	public boolean interact(EntityPlayer entity) 
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
-		
+
 		if (heldItem != null && heldItem.getItem() == ModItems.brain)
 		{
-			dropItem(Item.getItemFromBlock(Blocks.log), 10);
+			heldItem.stackSize--;
+			
+			if (!entity.worldObj.isRemote)
+			{
+				dropItem(Item.getItemFromBlock(Blocks.log), 10);
+			}
 		}
-		
+
 		return super.interact(entity);
 	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
-    }
-	
+	protected void applyEntityAttributes()
+	{
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+	}
+
 	@Override
 	public UUID getFriendPlayerUUID()
 	{
@@ -97,7 +102,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	public void writeEntityToNBT(NBTTagCompound nbt) 
 	{
 		super.writeEntityToNBT(nbt);
-		
+
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
 	}
@@ -106,10 +111,10 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
-		
+
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
@@ -128,7 +133,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		return false;
 	}
-	
+
 	@Override
 	public EntityLivingBase getTarget() 
 	{
@@ -146,13 +151,13 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void setFriendPlayerUUID(UUID value) 
 	{
 		friendPlayerUUID = value;
 	}
-	
+
 	@Override
 	public int getTimeUntilSpeak() 
 	{
@@ -164,7 +169,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		timeUntilSpeak = value;
 	}
-	
+
 	@Override
 	public String getSpeakId() 
 	{

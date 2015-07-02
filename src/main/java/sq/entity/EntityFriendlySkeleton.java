@@ -31,14 +31,14 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID;
 	private int rangedAttackProgress;
-	
+
 	public EntityLivingBase target;
-	
+
 	public EntityFriendlySkeleton(World world)
 	{
 		super(world);
 	}
-	
+
 	public EntityFriendlySkeleton(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
@@ -47,18 +47,18 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 		//Clear old task entries.
 		this.tasks.taskEntries.clear();
 		this.targetTasks.taskEntries.clear();
-		
+
 		//Add custom tasks.
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIRestrictSun(this));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-        
-        //Add bow.
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
+		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(2, new EntityAIRestrictSun(this));
+		this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(6, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+
+		//Add bow.
+		this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
 	}
 
 	@Override
@@ -68,27 +68,32 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 		FriendlyEntityHelper.onUpdate(this);
 		extinguish();
 	}
-	
+
 	@Override
 	public boolean interact(EntityPlayer entity) 
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
-		
+
 		if (heldItem != null && heldItem.getItem() == ModItems.skull)
 		{
-			dropItem(Items.bone, 10);
+			heldItem.stackSize--;
+
+			if (!entity.worldObj.isRemote)
+			{
+				dropItem(Items.bone, 10);
+			}
 		}
-		
+
 		return super.interact(entity);
 	}
-	
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
-    }
-    
+	protected void applyEntityAttributes()
+	{
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+	}
+
 	@Override
 	public UUID getFriendPlayerUUID()
 	{
@@ -99,7 +104,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	public void writeEntityToNBT(NBTTagCompound nbt) 
 	{
 		super.writeEntityToNBT(nbt);
-		
+
 		nbt.setInteger("rangedAttackProgress", rangedAttackProgress);
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
@@ -109,11 +114,11 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
-		
+
 		rangedAttackProgress = nbt.getInteger("rangedAttackProgress");
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
@@ -138,7 +143,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void setTarget(EntityLivingBase target) 
 	{
@@ -153,21 +158,21 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 			attackEntityWithRangedAttack((EntityLivingBase) entityBeingAttacked, damageAmount);
 			rangedAttackProgress = Time.SECOND * 2;
 		}
-		
+
 		else
 		{
 			rangedAttackProgress--;
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void setFriendPlayerUUID(UUID value) 
 	{
 		friendPlayerUUID = value;
 	}
-	
+
 	@Override
 	public int getTimeUntilSpeak() 
 	{
@@ -179,7 +184,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	{
 		timeUntilSpeak = value;
 	}
-	
+
 	@Override
 	public String getSpeakId() 
 	{

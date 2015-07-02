@@ -99,12 +99,12 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
-    }
-	
+	protected void applyEntityAttributes()
+	{
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+	}
+
 	@Override
 	public UUID getFriendPlayerUUID()
 	{
@@ -146,15 +146,20 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	public boolean interact(EntityPlayer entity) 
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
-		
+
 		if (heldItem != null && heldItem.getItem() == ModItems.heart)
 		{
-			dropItem(Items.gunpowder, 10);
+			heldItem.stackSize--;
+
+			if (!entity.worldObj.isRemote)
+			{
+				dropItem(Items.gunpowder, 10);
+			}
 		}
-		
+
 		return super.interact(entity);
 	}
-	
+
 	@Override
 	public EntityCreature getInstance() 
 	{
@@ -200,7 +205,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	{
 		friendPlayerUUID = value;
 	}
-	
+
 	@Override
 	public int getTimeUntilSpeak() 
 	{
@@ -212,7 +217,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	{
 		timeUntilSpeak = value;
 	}
-	
+
 	@Override
 	public String getSpeakId() 
 	{
