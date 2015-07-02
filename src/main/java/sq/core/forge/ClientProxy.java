@@ -27,6 +27,7 @@ import sq.client.render.RenderWasp;
 import sq.client.render.RenderWeb;
 import sq.client.render.RenderWebslinger;
 import sq.client.render.RenderYuki;
+import sq.core.SpiderCore;
 import sq.entity.EntityAnt;
 import sq.entity.EntityBee;
 import sq.entity.EntityBeetle;
@@ -60,7 +61,11 @@ public final class ClientProxy extends ServerProxy
 	@Override
 	public void registerRenderers() 
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
+		if (SpiderCore.getConfig().useSpiderQueenModel)
+		{
+			RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
+		}
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityAnt.class, new RenderAnt());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBee.class, new RenderBee());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBeetle.class, new RenderBeetle());
