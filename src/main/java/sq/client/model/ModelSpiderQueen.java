@@ -1,5 +1,7 @@
 package sq.client.model;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -9,16 +11,18 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import sq.client.render.RenderSpiderQueen;
+import sq.core.SpiderCore;
 import sq.entity.EntitySpiderEx;
 
 public class ModelSpiderQueen extends ModelBase
 {
-	public final ModelRenderer head;
+	private final ModelRenderer head;
 	private final ModelRenderer body;
 	private final ModelRenderer rear;
 	private final ModelRenderer torso;
 	private final ModelRenderer armLeft;
-	public final ModelRenderer armRight;
+	private final ModelRenderer armRight;
 	private final ModelRenderer breasts;
 	private final ModelRenderer spinner1;
 	private final ModelRenderer spinner2;
@@ -30,15 +34,19 @@ public class ModelSpiderQueen extends ModelBase
 	private final ModelRenderer leg6;
 	private final ModelRenderer leg7;
 	private final ModelRenderer leg8;
+	private final ModelRenderer playerHead;
+	private final ModelRenderer playerBody;
+	private final ModelRenderer playerArmLeft;
+	private final ModelRenderer playerArmRight;
 
-    /** Records whether the model should be rendered holding an item in the left hand, and if that item is a block. */
-    public int heldItemLeft;
-    /** Records whether the model should be rendered holding an item in the right hand, and if that item is a block. */
-    public int heldItemRight;
-    public boolean isSneak;
-    /** Records whether the model should be rendered aiming a bow. */
-    public boolean aimedBow;
-    
+	/** Records whether the model should be rendered holding an item in the left hand, and if that item is a block. */
+	public int heldItemLeft;
+	/** Records whether the model should be rendered holding an item in the right hand, and if that item is a block. */
+	public int heldItemRight;
+	public boolean isSneak;
+	/** Records whether the model should be rendered aiming a bow. */
+	public boolean aimedBow;
+
 	public ModelSpiderQueen()
 	{
 		textureWidth = 64;
@@ -146,6 +154,30 @@ public class ModelSpiderQueen extends ModelBase
 		leg8.setTextureSize(64, 32);
 		leg8.mirror = true;
 		setRotation(leg8, -0.5759587F, -0.1919862F, 0F);
+		playerHead = new ModelRenderer(this, 0, 0);
+		playerHead.addBox(-4F, -8F, -4F, 8, 8, 8);
+		playerHead.setRotationPoint(0F, 3F, -3F);
+		playerHead.setTextureSize(64, 32);
+		playerHead.mirror = true;
+		setRotation(playerHead, 0F, 0F, 0F);
+		playerBody = new ModelRenderer(this, 16, 16);
+		playerBody.addBox(-4F, 0F, -2F, 8, 10, 4);
+		playerBody.setRotationPoint(0F, 3F, -3F);
+		playerBody.setTextureSize(64, 32);
+		playerBody.mirror = true;
+		setRotation(playerBody, 0F, 0F, 0F);
+		playerArmLeft = new ModelRenderer(this, 40, 16);
+		playerArmLeft.addBox(-3F, -2F, -2F, 4, 12, 4);
+		playerArmLeft.setRotationPoint(-5F, 5F, -3F);
+		playerArmLeft.setTextureSize(64, 32);
+		playerArmLeft.mirror = true;
+		setRotation(playerArmLeft, 0F, 0F, 0F);
+		playerArmRight = new ModelRenderer(this, 40, 16);
+		playerArmRight.addBox(-1F, -2F, -2F, 4, 12, 4);
+		playerArmRight.setRotationPoint(5F, 5F, -3F);
+		playerArmRight.setTextureSize(64, 32);
+		playerArmRight.mirror = true;
+		setRotation(playerArmRight, 0F, 0F, 0F);
 	}
 
 	@Override
@@ -180,7 +212,47 @@ public class ModelSpiderQueen extends ModelBase
 			}
 		}
 
-		head.render(f5);
+		if (SpiderCore.getConfig().usePlayerSkin)
+		{
+			EntityClientPlayerMP mp = (EntityClientPlayerMP)entity;
+			Minecraft.getMinecraft().renderEngine.bindTexture(mp.getLocationSkin());
+			GL11.glPushMatrix();
+			{
+				GL11.glScaled(0.90D, 0.90D, 0.90D);
+				playerHead.render(f5);
+				playerBody.render(f5);
+
+				GL11.glPushMatrix();
+				{
+					GL11.glTranslated(-0.25D, 0.0D, 0.0D);
+					{
+						playerArmLeft.render(f5);
+					}
+				}
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				{
+					GL11.glTranslated(0.25D, 0.0D, 0.0D);
+					{
+						playerArmRight.render(f5);
+					}
+				}
+				GL11.glPopMatrix();
+			}
+			GL11.glPopMatrix();
+		}
+
+		else
+		{
+			head.render(f5);
+			torso.render(f5);
+			breasts.render(f5);
+			armLeft.render(f5);
+			armRight.render(f5);
+		}
+
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderSpiderQueen.spiderQueenTextures[0]);
 		body.render(f5);
 		rear.render(f5);
 		leg1.render(f5);
@@ -191,18 +263,14 @@ public class ModelSpiderQueen extends ModelBase
 		leg6.render(f5);
 		leg7.render(f5);
 		leg8.render(f5);
-		torso.render(f5);
-		armLeft.render(f5);
-		armRight.render(f5);
 		spinner1.render(f5);
 		spinner2.render(f5);
-		breasts.render(f5);
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		head.rotateAngleY = f3 / (180F / (float) Math.PI);
-		head.rotateAngleX = f4 / (180F / (float) Math.PI);
+		head.rotateAngleY = playerHead.rotateAngleY = f3 / (180F / (float) Math.PI);
+		head.rotateAngleX = playerHead.rotateAngleX = f4 / (180F / (float) Math.PI);
 
 		float f6 = 0.7853982F;
 		leg1.rotateAngleZ = -f6;
@@ -232,66 +300,67 @@ public class ModelSpiderQueen extends ModelBase
 		final float f15 = Math.abs(MathHelper.sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
 		final float f16 = Math.abs(MathHelper.sin(f * 0.6662F + 4.712389F) * 0.4F) * f1;
 
-		armRight.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 2.0F * f1 * 0.5F;
-		armLeft.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.5F;
-		armRight.rotateAngleZ = 0.0F;
-		armLeft.rotateAngleZ = 0.0F;
+		armRight.rotateAngleX = playerArmRight.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 2.0F * f1 * 0.5F;
+		armLeft.rotateAngleX = playerArmLeft.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.5F;
+		armRight.rotateAngleZ = playerArmRight.rotateAngleZ = 0.0F;
+		armLeft.rotateAngleZ = playerArmLeft.rotateAngleZ = 0.0F;
+
 		if (isRiding)
 		{
-			armRight.rotateAngleX += -0.6283185F;
-			armLeft.rotateAngleX += -0.6283185F;
+			playerArmRight.rotateAngleX = armRight.rotateAngleX += -0.6283185F;
+			playerArmLeft.rotateAngleX = armLeft.rotateAngleX += -0.6283185F;
 		}
 
-		armRight.rotateAngleY = 0.0F;
-		armLeft.rotateAngleY = 0.0F;
-		
+		armRight.rotateAngleY = playerArmRight.rotateAngleY = 0.0F;
+		armLeft.rotateAngleY = playerArmLeft.rotateAngleY = 0.0F;
+
 		if (onGround > -9990F)
 		{
 			float ff6 = onGround;
-			body.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(ff6) * 3.141593F * 2.0F) * 0.2F;
-			armRight.rotationPointZ = MathHelper.sin(body.rotateAngleY) * 4F - 3F;
-			armRight.rotationPointX = -MathHelper.cos(body.rotateAngleY) * 4F;
-			armLeft.rotationPointZ = -MathHelper.sin(body.rotateAngleY) * 4F - 3F;
-			armLeft.rotationPointX = MathHelper.cos(body.rotateAngleY) * 4F;
-			armRight.rotateAngleY += body.rotateAngleY;
-			armLeft.rotateAngleY += body.rotateAngleY;
-			armLeft.rotateAngleX += body.rotateAngleY;
+			body.rotateAngleY = playerBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(ff6) * 3.141593F * 2.0F) * 0.2F;
+			armRight.rotationPointZ = playerArmRight.rotationPointZ = MathHelper.sin(getBody().rotateAngleY) * 4F - 3F;
+			armRight.rotationPointX = playerArmRight.rotationPointX = -MathHelper.cos(getBody().rotateAngleY) * 4F;
+			armLeft.rotationPointZ = playerArmLeft.rotationPointZ = -MathHelper.sin(getBody().rotateAngleY) * 4F - 3F;
+			armLeft.rotationPointX = playerArmLeft.rotationPointX = MathHelper.cos(getBody().rotateAngleY) * 4F;
+			playerArmRight.rotateAngleY = armRight.rotateAngleY += getBody().rotateAngleY;
+			playerArmLeft.rotateAngleY = armLeft.rotateAngleY += getBody().rotateAngleY;
+			playerArmLeft.rotateAngleX = armLeft.rotateAngleX += getBody().rotateAngleY;
 			ff6 = 1.0F - onGround;
 			ff6 *= ff6;
 			ff6 *= ff6;
 			ff6 = 1.0F - ff6;
 			final float ff7 = MathHelper.sin(ff6 * 3.141593F);
 			final float ff8 = MathHelper.sin(onGround * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
-			armRight.rotateAngleX -= ff7 * 1.2D + ff8;
-			armRight.rotateAngleY += body.rotateAngleY * 2.0F;
-			armRight.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
+			playerArmRight.rotateAngleX = armRight.rotateAngleX -= ff7 * 1.2D + ff8;
+			playerArmRight.rotateAngleY = armRight.rotateAngleY += getBody().rotateAngleY * 2.0F;
+			playerArmRight.rotateAngleZ = armRight.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
 		}
 
 		body.rotateAngleX = 0.0F;
-		head.rotationPointY = 3F;
+		head.rotationPointY = playerHead.rotationPointY = 3F;
 
-		armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
-		armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
-		armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
-		armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
+		playerArmRight.rotateAngleZ = armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+		playerArmLeft.rotateAngleZ = armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+		playerArmRight.rotateAngleX = armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
+		playerArmLeft.rotateAngleX = armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
 
-        if (this.aimedBow)
-        {
-            f6 = 0.0F;
-            f7 = 0.0F;
-            this.armRight.rotateAngleZ = 0.0F;
-            this.armLeft.rotateAngleZ = 0.0F;
-            this.armRight.rotateAngleY = -(0.1F - f6 * 0.6F) + this.head.rotateAngleY;
-            this.armLeft.rotateAngleY = 0.1F - f6 * 0.6F + this.head.rotateAngleY + 0.4F;
-            this.armRight.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
-            this.armLeft.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
-            this.armRight.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-            this.armLeft.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-            this.armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
-            this.armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
-            this.armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
-            this.armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
-        }
+		if (this.aimedBow)
+		{
+			f6 = 0.0F;
+			f7 = 0.0F;
+			this.armRight.rotateAngleZ = this.playerArmRight.rotateAngleZ = 0.0F;
+			this.armLeft.rotateAngleZ = this.playerArmLeft.rotateAngleZ = 0.0F;
+			this.armRight.rotateAngleY = this.playerArmRight.rotateAngleY = -(0.1F - f6 * 0.6F) + this.head.rotateAngleY;
+			this.armLeft.rotateAngleY = this.playerArmLeft.rotateAngleY = 0.1F - f6 * 0.6F + this.head.rotateAngleY + 0.4F;
+			this.armRight.rotateAngleX = this.playerArmRight.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
+			this.armLeft.rotateAngleX = this.playerArmLeft.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
+			this.playerArmRight.rotateAngleX = this.armRight.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+			this.playerArmLeft.rotateAngleX = this.armLeft.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+			this.playerArmRight.rotateAngleZ = this.armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+			this.playerArmLeft.rotateAngleZ = this.armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+			this.playerArmRight.rotateAngleX = this.armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
+			this.playerArmLeft.rotateAngleX = this.armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
+		}
 		leg1.rotateAngleY += f9;
 		leg2.rotateAngleY += -f9;
 		leg3.rotateAngleY += f10;
@@ -316,14 +385,19 @@ public class ModelSpiderQueen extends ModelBase
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
-	
+
 	public ModelRenderer getHead()
 	{
-		return head;
+		return SpiderCore.getConfig().usePlayerSkin ? playerHead : head;
 	}
-	
+
 	public ModelRenderer getRightArm()
 	{
-		return armRight;
+		return SpiderCore.getConfig().usePlayerSkin ? playerArmRight : armRight;
+	}
+
+	public ModelRenderer getBody()
+	{
+		return SpiderCore.getConfig().usePlayerSkin ? playerBody : torso;
 	}
 }

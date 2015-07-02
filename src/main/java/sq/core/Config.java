@@ -18,7 +18,8 @@ public final class Config
 	
 	public boolean allowCrashReporting;
 	public boolean allowUpdateChecking;
-	
+
+	public boolean usePlayerSkin;
 	public boolean enableYuki;
 	public boolean enableJack;
 	public boolean enableMandragora;
@@ -57,6 +58,7 @@ public final class Config
 		enableFactories = config.get("Init", "Enable Factories?", true, "Enables/disables NPC factories.").getBoolean();
 		
 		config.setCategoryComment("Graphics", "Settings that affect graphics-related portions of the mod.");
+		usePlayerSkin = config.get("Graphics", "Use player skin?", false, "True if you want your Minecraft skin to be used instead of the spider queen skin.").getBoolean();
 		showHumanName = config.get("Graphics", "Show human names?", false, "True if you want the humans in the game to have the names of real players.").getBoolean();
 		showHumanSkin = config.get("Graphics", "Show human skins?", true, "True if you want the humans in the game to have the skins of real players.").getBoolean();
 		showHumanType = config.get("Graphics", "Show human type?", true, "True if you want to see the human's type (ex. Poor Miner) when you are near them.").getBoolean();
