@@ -183,13 +183,14 @@ public enum EnumCocoonType
 		{
 		case ENDERMAN: return "mob.endermen.death";
 		case COW: return "mob.cow.hurt";
-		case SHEEP: return "mob.sheep.hurt";
+		case SHEEP: return "mob.sheep.say";
 		case WARRIOR_BEE:
 		case GATHERER_BEE:
 		case QUEEN_BEE:
 		case WASP: return "sq:bee.hurt";
 		case BLACK_ANT:
 		case RED_ANT: return "sq:ant.death";
+		case CHICKEN: return "mob.chicken.hurt";
 		default:
 			break;
 		}
