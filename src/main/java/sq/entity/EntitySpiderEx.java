@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -94,6 +95,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		super.entityInit();
 		dataWatcher.addObject(16, new Byte((byte) 0));
+		dataWatcher.addObject(20, Byte.valueOf((byte)0));
 	}
 
 	@Override
@@ -143,7 +145,15 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 		if (spiderType == EnumSpiderType.BOOM)
 		{
-			worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
+			if (getPowered())
+			{
+				worldObj.createExplosion(this, posX, posY, posZ, 10.0F, false);				
+			}
+			
+			else
+			{
+				worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
+			}
 		}
 
 		if (spiderType == EnumSpiderType.RIDER && riddenByEntity != null)
@@ -496,7 +506,22 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		return false;
 	}
 
-	public EnumSpiderType getSpiderType()
+    public void onStruckByLightning(EntityLightningBolt lightning)
+	{
+	    super.onStruckByLightning(lightning);
+	    
+	    if (this.getSpiderType() == EnumSpiderType.BOOM)
+	    {
+	    	this.dataWatcher.updateObject(20, Byte.valueOf((byte)1));
+	    }
+	}
+
+	public boolean getPowered()
+    {
+        return this.dataWatcher.getWatchableObjectByte(20) == 1;
+    }
+    
+    public EnumSpiderType getSpiderType()
 	{
 		return spiderType;
 	}

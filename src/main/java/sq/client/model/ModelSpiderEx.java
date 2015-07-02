@@ -1,9 +1,11 @@
 package sq.client.model;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
@@ -31,6 +33,7 @@ public class ModelSpiderEx extends ModelBase
 	public ModelRenderer	defaultSpiderLeg7;
 	public ModelRenderer	defaultSpiderLeg8;
 
+	public ModelRenderer	boomSpiderCharge;
 	public ModelRenderer	boomSpiderHead;
 	public ModelRenderer	boomSpiderBody;
 	public ModelRenderer	boomSpiderRearEnd;
@@ -112,40 +115,40 @@ public class ModelSpiderEx extends ModelBase
 
 		switch (spider.getSpiderType())
 		{
-			case TANK:
-				renderTankSpider(partialTickTime);
-				break;
+		case TANK:
+			renderTankSpider(partialTickTime);
+			break;
 
-			case WIMPY:
-			case NORMAL:
-				renderNormalSpider(partialTickTime);
-				break;
-				
-			case PACK:
-				renderNormalSpider(partialTickTime);
-				renderVillagerSpiderChest(partialTickTime);
-				break;
-				
-			case BOOM:
-				renderBoomSpider(partialTickTime);
-				break;
-			
-			case SLINGER:
-				renderSlingerSpider(partialTickTime);
-				break;
-			
-			case NOVA:
-				renderNovaSpider(partialTickTime);
-				break;
-			
-			case ENDER:
-				renderEnderSpider(partialTickTime);
-				break;
-			
-			case RIDER:
-				renderRiderSpiders(entity, partialTickTime);
-				break;
-				
+		case WIMPY:
+		case NORMAL:
+			renderNormalSpider(partialTickTime);
+			break;
+
+		case PACK:
+			renderNormalSpider(partialTickTime);
+			renderVillagerSpiderChest(partialTickTime);
+			break;
+
+		case BOOM:
+			renderBoomSpider(partialTickTime);
+			break;
+
+		case SLINGER:
+			renderSlingerSpider(partialTickTime);
+			break;
+
+		case NOVA:
+			renderNovaSpider(partialTickTime);
+			break;
+
+		case ENDER:
+			renderEnderSpider(partialTickTime);
+			break;
+
+		case RIDER:
+			renderRiderSpiders(entity, partialTickTime);
+			break;
+
 		default:
 			break;
 		}
@@ -400,7 +403,7 @@ public class ModelSpiderEx extends ModelBase
 			enderSpiderLeg7.rotateAngleZ += backRotateZ;
 			enderSpiderLeg8.rotateAngleZ += -backRotateZ;
 		}
-		
+
 		else
 		{
 			defaultSpiderHead.rotateAngleY = rotationYaw / (180F / (float) Math.PI);
@@ -537,6 +540,10 @@ public class ModelSpiderEx extends ModelBase
 
 	private void initBoomSpider()
 	{
+		boomSpiderCharge = new ModelRenderer(this, 32, 0);
+		boomSpiderCharge.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F);
+		boomSpiderCharge.setRotationPoint(0.0F, 4.0F, 0.0F);
+
 		boomSpiderHead = new ModelRenderer(this, 32, 4);
 		boomSpiderHead.addBox(-4F, -4F, -8F, 8, 8, 8, 0.0F);
 		boomSpiderHead.setRotationPoint(0F, 15F, -3F);
@@ -948,12 +955,12 @@ public class ModelSpiderEx extends ModelBase
 		}
 		GL11.glPopMatrix();
 	}
-	
+
 	private void renderRiderSpiders(Entity entity, float partialTickTime)
 	{
 		final EntitySpiderEx spider = (EntitySpiderEx) entity;
 		final int level = spider.getLevel();
-		
+
 		if (spider.isOnLadder())
 		{
 			final Vec3 lookVector = spider.getLookVec();
@@ -982,32 +989,32 @@ public class ModelSpiderEx extends ModelBase
 
 					switch (pass)
 					{
-						case 0:
-							GL11.glTranslated(0D, 0.0D, -2.0D);
-							break;
-						case 1:
-							GL11.glTranslated(0D, 0, 2.0D);
-							break;
-						case 2:
-							GL11.glTranslated(1.8D, 0, 0D);
-							break;
-						case 3:
-							GL11.glTranslated(-1.8D, 0, 0D);
-							break;
-						case 4:
-							GL11.glTranslated(1.8D, 0, -2.0D);
-							break;
-						case 5:
-							GL11.glTranslated(-1.8D, 0, -2.0D);
-							break;
-						case 6:
-							GL11.glTranslated(1.8D, 0, 2.0D);
-							break;
-						case 7:
-							GL11.glTranslated(-1.8D, 0, 2.0D);
-							break;
-						default:
-							break;
+					case 0:
+						GL11.glTranslated(0D, 0.0D, -2.0D);
+						break;
+					case 1:
+						GL11.glTranslated(0D, 0, 2.0D);
+						break;
+					case 2:
+						GL11.glTranslated(1.8D, 0, 0D);
+						break;
+					case 3:
+						GL11.glTranslated(-1.8D, 0, 0D);
+						break;
+					case 4:
+						GL11.glTranslated(1.8D, 0, -2.0D);
+						break;
+					case 5:
+						GL11.glTranslated(-1.8D, 0, -2.0D);
+						break;
+					case 6:
+						GL11.glTranslated(1.8D, 0, 2.0D);
+						break;
+					case 7:
+						GL11.glTranslated(-1.8D, 0, 2.0D);
+						break;
+					default:
+						break;
 					}
 					renderNormalSpider(partialTickTime);
 				}
@@ -1026,47 +1033,47 @@ public class ModelSpiderEx extends ModelBase
 
 					switch (pass)
 					{
-						case 0:
-							GL11.glTranslated(0D, 0.0D, -2.0D);
-							break;
-						case 1:
-							GL11.glTranslated(0D, 0, 2.0D);
-							break;
-						case 2:
-							GL11.glTranslated(1.8D, 0, 0D);
-							break;
-						case 3:
-							GL11.glTranslated(-1.8D, 0, 0D);
-							break;
-						case 4:
-							GL11.glTranslated(1.8D, 0, -2.0D);
-							break;
-						case 5:
-							GL11.glTranslated(-1.8D, 0, -2.0D);
-							break;
-						case 6:
-							GL11.glTranslated(1.8D, 0, 2.0D);
-							break;
-						case 7:
-							GL11.glTranslated(3.5D, 0, 0.0D);
-							break;
-						case 8:
-							GL11.glTranslated(-3.5D, 0, 0.0D);
-							break;
-						case 9:
-							GL11.glTranslated(0D, 0, 0D);
-							break;
-						case 10:
-							GL11.glTranslated(0D, 0, 4D);
-							break;
-						case 11:
-							GL11.glTranslated(-1.8D, 0, 2.0D);
-							break;
-						case 12:
-							GL11.glTranslated(0D, 0, -4D);
-							break;
-						default:
-							break;
+					case 0:
+						GL11.glTranslated(0D, 0.0D, -2.0D);
+						break;
+					case 1:
+						GL11.glTranslated(0D, 0, 2.0D);
+						break;
+					case 2:
+						GL11.glTranslated(1.8D, 0, 0D);
+						break;
+					case 3:
+						GL11.glTranslated(-1.8D, 0, 0D);
+						break;
+					case 4:
+						GL11.glTranslated(1.8D, 0, -2.0D);
+						break;
+					case 5:
+						GL11.glTranslated(-1.8D, 0, -2.0D);
+						break;
+					case 6:
+						GL11.glTranslated(1.8D, 0, 2.0D);
+						break;
+					case 7:
+						GL11.glTranslated(3.5D, 0, 0.0D);
+						break;
+					case 8:
+						GL11.glTranslated(-3.5D, 0, 0.0D);
+						break;
+					case 9:
+						GL11.glTranslated(0D, 0, 0D);
+						break;
+					case 10:
+						GL11.glTranslated(0D, 0, 4D);
+						break;
+					case 11:
+						GL11.glTranslated(-1.8D, 0, 2.0D);
+						break;
+					case 12:
+						GL11.glTranslated(0D, 0, -4D);
+						break;
+					default:
+						break;
 					}
 					renderNormalSpider(partialTickTime);
 				}
@@ -1085,83 +1092,83 @@ public class ModelSpiderEx extends ModelBase
 
 					switch (pass)
 					{
-						case 0:
-							GL11.glTranslated(0D, 0.0D, -2.0D);
-							break;
-						case 1:
-							GL11.glTranslated(0D, 0, 2.0D);
-							break;
-						case 2:
-							GL11.glTranslated(1.8D, 0, 0D);
-							break;
-						case 3:
-							GL11.glTranslated(-1.8D, 0, 0D);
-							break;
-						case 4:
-							GL11.glTranslated(1.8D, 0, -2.0D);
-							break;
-						case 5:
-							GL11.glTranslated(-1.8D, 0, -2.0D);
-							break;
-						case 6:
-							GL11.glTranslated(1.8D, 0, 2.0D);
-							break;
-						case 7:
-							GL11.glTranslated(3.5D, 0, 0.0D);
-							break;
-						case 8:
-							GL11.glTranslated(-3.5D, 0, 0.0D);
-							break;
-						case 9:
-							GL11.glTranslated(0D, 0, 0D);
-							break;
-						case 10:
-							GL11.glTranslated(0D, 0, 4D);
-							break;
-						case 11:
-							GL11.glTranslated(-1.8D, 0, 2.0D);
-							break;
-						case 12:
-							GL11.glTranslated(0D, 0, -4D);
-							break;
-						case 13:
-							GL11.glTranslated(1.8D, 0, -4D);
-							break;
-						case 14:
-							GL11.glTranslated(-1.8D, 0, -4D);
-							break;
-						case 15:
-							GL11.glTranslated(3.5D, 0, -4D);
-							break;
-						case 16:
-							GL11.glTranslated(-3.5D, 0, -4D);
-							break;
-						case 17:
-							GL11.glTranslated(-3.5D, 0, -2D);
-							break;
-						case 18:
-							GL11.glTranslated(-3.5D, 0, 4D);
-							break;
-						case 19:
-							GL11.glTranslated(-3.5D, 0, 2D);
-							break;
-						case 20:
-							GL11.glTranslated(1.8D, 0, 4D);
-							break;
-						case 21:
-							GL11.glTranslated(3.5D, 0, 4D);
-							break;
-						case 22:
-							GL11.glTranslated(3.5D, 0, 2D);
-							break;
-						case 23:
-							GL11.glTranslated(3.5D, 0, -2D);
-							break;
-						case 24:
-							GL11.glTranslated(-1.8D, 0, 4D);
-							break;
-						default:
-							break;
+					case 0:
+						GL11.glTranslated(0D, 0.0D, -2.0D);
+						break;
+					case 1:
+						GL11.glTranslated(0D, 0, 2.0D);
+						break;
+					case 2:
+						GL11.glTranslated(1.8D, 0, 0D);
+						break;
+					case 3:
+						GL11.glTranslated(-1.8D, 0, 0D);
+						break;
+					case 4:
+						GL11.glTranslated(1.8D, 0, -2.0D);
+						break;
+					case 5:
+						GL11.glTranslated(-1.8D, 0, -2.0D);
+						break;
+					case 6:
+						GL11.glTranslated(1.8D, 0, 2.0D);
+						break;
+					case 7:
+						GL11.glTranslated(3.5D, 0, 0.0D);
+						break;
+					case 8:
+						GL11.glTranslated(-3.5D, 0, 0.0D);
+						break;
+					case 9:
+						GL11.glTranslated(0D, 0, 0D);
+						break;
+					case 10:
+						GL11.glTranslated(0D, 0, 4D);
+						break;
+					case 11:
+						GL11.glTranslated(-1.8D, 0, 2.0D);
+						break;
+					case 12:
+						GL11.glTranslated(0D, 0, -4D);
+						break;
+					case 13:
+						GL11.glTranslated(1.8D, 0, -4D);
+						break;
+					case 14:
+						GL11.glTranslated(-1.8D, 0, -4D);
+						break;
+					case 15:
+						GL11.glTranslated(3.5D, 0, -4D);
+						break;
+					case 16:
+						GL11.glTranslated(-3.5D, 0, -4D);
+						break;
+					case 17:
+						GL11.glTranslated(-3.5D, 0, -2D);
+						break;
+					case 18:
+						GL11.glTranslated(-3.5D, 0, 4D);
+						break;
+					case 19:
+						GL11.glTranslated(-3.5D, 0, 2D);
+						break;
+					case 20:
+						GL11.glTranslated(1.8D, 0, 4D);
+						break;
+					case 21:
+						GL11.glTranslated(3.5D, 0, 4D);
+						break;
+					case 22:
+						GL11.glTranslated(3.5D, 0, 2D);
+						break;
+					case 23:
+						GL11.glTranslated(3.5D, 0, -2D);
+						break;
+					case 24:
+						GL11.glTranslated(-1.8D, 0, 4D);
+						break;
+					default:
+						break;
 					}
 					renderNormalSpider(partialTickTime);
 				}

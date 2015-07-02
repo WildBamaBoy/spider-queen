@@ -262,7 +262,18 @@ public class EntityBoomBall extends Entity implements IProjectile
 	{
 		if (!worldObj.isRemote)
 		{
-			worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, false);
+			EntitySpiderEx spider = (EntitySpiderEx)shooter;
+			
+			if (spider.getPowered())
+			{
+				worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false);
+			}
+			
+			else
+			{
+				worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, false);				
+			}
+			
 			setDead();
 		}
 	}
