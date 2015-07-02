@@ -13,8 +13,10 @@ import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
+import radixcore.util.RadixString;
 import sq.core.radix.PlayerData;
 import sq.entity.FriendlyEntityHelper;
+import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.ai.ReputationContainer;
@@ -82,9 +84,16 @@ public class ReputationHandler
 			try
 			{
 				EntityCreature entity = (EntityCreature) friendClass.getConstructor(World.class, EntityPlayer.class).newInstance(player.worldObj, player);
+				IFriendlyEntity friendly = (IFriendlyEntity)entity;
+				
 				Vec3 target = RandomPositionGenerator.findRandomTarget(entity, 5, 1);
 				entity.setPosition(player.posX + target.xCoord, player.posY, player.posZ + target.zCoord);
 				player.worldObj.spawnEntityInWorld(entity);
+				
+				String messageId = "message." + friendly.getSpeakId() + ".announce";
+				player.addChatComponentMessage(new ChatComponentText(
+						RadixString.upperFirstLetter(friendly.getSpeakId() + ": " + 
+						SpiderCore.getLanguageManager().getString(messageId))));
 			}
 			
 			catch (Exception e)

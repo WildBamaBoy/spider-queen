@@ -14,4 +14,7 @@ public interface IFriendlyEntity
 	EntityLivingBase getTarget();
 	void setTarget(EntityLivingBase target);
 	boolean doManualAttack(Entity entityBeingAttacked, float damageAmount);
+	int getTimeUntilSpeak();
+	void setTimeUntilSpeak(int value);
+	String getSpeakId();
 }

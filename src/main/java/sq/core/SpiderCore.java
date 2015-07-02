@@ -35,6 +35,7 @@ import radixcore.core.RadixCore;
 import radixcore.data.AbstractPlayerData;
 import radixcore.data.BlockObj;
 import radixcore.data.DataContainer;
+import radixcore.lang.LanguageManager;
 import radixcore.math.Point3D;
 import radixcore.update.RDXUpdateProtocol;
 import radixcore.util.RadixExcept;
@@ -119,6 +120,7 @@ public final class SpiderCore
 	private static CreativeTabs creativeTab;
 	private static Config config;
 	private static SpiderPacketHandler packetHandler;
+	private static LanguageManager languageManager;
 	private static CrashWatcher crashWatcher;
 
 	private static Logger logger;
@@ -151,6 +153,7 @@ public final class SpiderCore
 		fakePlayerNames = downloadFakePlayerNames();
 		sleepingPlayers = new ArrayList<String>();
 		structureSchematics = new HashMap<Integer, Map<Point3D, BlockObj>>();
+		languageManager = new LanguageManager(ID);
 		
 		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
@@ -377,6 +380,11 @@ public final class SpiderCore
 	public static CrashWatcher getCrashWatcher() 
 	{
 		return crashWatcher;
+	}
+	
+	public static LanguageManager getLanguageManager()
+	{
+		return languageManager;
 	}
 	
 	public List<String> downloadFakePlayerNames()

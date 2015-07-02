@@ -18,9 +18,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -32,6 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEntity
 {
+	private int timeUntilSpeak;
 	private UUID friendPlayerUUID;
 	private boolean hasPlayedSound;
 
@@ -199,5 +198,23 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	public void setFriendPlayerUUID(UUID value) 
 	{
 		friendPlayerUUID = value;
+	}
+	
+	@Override
+	public int getTimeUntilSpeak() 
+	{
+		return timeUntilSpeak;
+	}
+
+	@Override
+	public void setTimeUntilSpeak(int value) 
+	{
+		timeUntilSpeak = value;
+	}
+	
+	@Override
+	public String getSpeakId() 
+	{
+		return "creeper";
 	}
 }

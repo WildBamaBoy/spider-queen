@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 
 public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntity
 {
+	private int timeUntilSpeak;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
 	
@@ -149,5 +150,23 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	public void setFriendPlayerUUID(UUID value) 
 	{
 		friendPlayerUUID = value;
+	}
+	
+	@Override
+	public int getTimeUntilSpeak() 
+	{
+		return timeUntilSpeak;
+	}
+
+	@Override
+	public void setTimeUntilSpeak(int value) 
+	{
+		timeUntilSpeak = value;
+	}
+	
+	@Override
+	public String getSpeakId() 
+	{
+		return "zombie";
 	}
 }

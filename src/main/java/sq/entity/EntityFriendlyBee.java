@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 
 public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 {
+	private int timeUntilSpeak;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
 	
@@ -139,5 +140,23 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	public void setFriendPlayerUUID(UUID value) 
 	{
 		friendPlayerUUID = value;
+	}
+
+	@Override
+	public int getTimeUntilSpeak() 
+	{
+		return timeUntilSpeak;
+	}
+
+	@Override
+	public void setTimeUntilSpeak(int value) 
+	{
+		timeUntilSpeak = value;
+	}
+
+	@Override
+	public String getSpeakId() 
+	{
+		return "bee";
 	}
 }

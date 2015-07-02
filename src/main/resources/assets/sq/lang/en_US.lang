@@ -52,3 +52,24 @@ tile.anthill.name=Ant Hill
 tile.beehive.name=Beehive
 tile.jack.name=Jack o'Lantern
 tile.stinger.name=Stinger
+
+message.creeper.appearance=You're nicer than the others.
+message.creeper.periodic1=Hearts are the symbol of love. I wish I had one.
+message.creeper.periodic2=I feel a little unstable today.
+message.creeper.periodic3=Have you seen any humans today?
+
+message.skeleton.appearance=Are you my new commander?
+message.skeleton.periodic1=I need to work on my archery today.
+message.skeleton.periodic2=Do you have any skulls? I need to try them on.
+message.skeleton.periodic3=We monsters need to work together.
+
+message.zombie.appearance=Does anyone have any syrup?
+message.zombie.periodic1=I could go for some brains.
+message.zombie.periodic2=I used to be a lumberjack, you know.
+message.zombie.periodic3=Nothing like a hard day's work.
+
+message.bee.appearance=Do you have a garden?
+message.bee.periodic1=Roses are my favorite.
+message.bee.periodic2=I need to stay busy!
+message.bee.periodic3=The garden needs some work.
+

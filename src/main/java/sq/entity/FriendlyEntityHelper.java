@@ -14,12 +14,16 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
+import radixcore.util.RadixString;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.core.minecraft.ModItems;
 
@@ -33,26 +37,54 @@ public final class FriendlyEntityHelper
 		{
 			return EntityFriendlyCreeper.class;
 		}
-		
+
 		else if (living instanceof EntityZombie)
 		{
 			return EntityFriendlyZombie.class;
 		}
-		
+
 		else if (living instanceof EntitySkeleton)
 		{
 			return EntityFriendlySkeleton.class;
 		}
-		
+
 		else if (living instanceof EntityBee)
 		{
 			return EntityFriendlyBee.class;
 		}
-		
+
 		return null;
 	}
+
 	public static void onUpdate(IFriendlyEntity friendlyEntity)
 	{
+		if (!friendlyEntity.getInstance().worldObj.isRemote && friendlyEntity.getTimeUntilSpeak() <= 0)
+		{
+			EntityCreature friendlyCreature = friendlyEntity.getInstance();
+			EntityPlayer player = friendlyCreature.worldObj.getClosestPlayerToEntity(friendlyCreature, 8.0D);
+
+			//Make sure there's a player to talk to, and it's our friend.
+			if (player != null && player.getUniqueID().equals(friendlyEntity.getFriendPlayerUUID()))
+			{
+				String messageId = "message." + friendlyEntity.getSpeakId() + ".periodic";
+				player.addChatComponentMessage(new ChatComponentText(
+						RadixString.upperFirstLetter(friendlyEntity.getSpeakId() + ": " + 
+						SpiderCore.getLanguageManager().getString(messageId))));
+				
+				friendlyEntity.setTimeUntilSpeak(Time.MINUTE * RadixMath.getNumberInRange(10, 20));
+
+				//Announce to all nearby friendlies that this one has spoken, reset all of them to prevent annoying the player.
+				for (Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(friendlyCreature.worldObj, friendlyCreature.posX, friendlyCreature.posY, friendlyCreature.posZ, 20))
+				{
+					if (entity instanceof IFriendlyEntity)
+					{
+						IFriendlyEntity otherFriendly = (IFriendlyEntity)entity;
+						otherFriendly.setTimeUntilSpeak(Time.MINUTE * RadixMath.getNumberInRange(10, 20));
+					}
+				}
+			}
+		}
+
 		if (!tryFollowFriend(friendlyEntity))
 		{
 			final Entity target = friendlyEntity.getTarget();
@@ -68,7 +100,7 @@ public final class FriendlyEntityHelper
 				{
 					friendlyEntity.setTarget(null);
 				}
-				
+
 				else
 				{
 					tryMoveToStationaryRod(friendlyEntity);
@@ -109,7 +141,7 @@ public final class FriendlyEntityHelper
 			me.getNavigator().tryMoveToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, moveSpeed);
 		}
 	}
-	
+
 	public static void attackEntity(IFriendlyEntity friendlyEntity, Entity entityBeingAttacked, float damageAmount)
 	{
 		if (!friendlyEntity.doManualAttack(entityBeingAttacked, damageAmount))
