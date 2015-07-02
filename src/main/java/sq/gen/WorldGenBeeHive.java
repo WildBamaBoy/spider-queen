@@ -3,12 +3,11 @@ package sq.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import radixcore.util.RadixMath;
 import sq.core.minecraft.ModBlocks;
 import cpw.mods.fml.common.IWorldGenerator;
 
@@ -61,7 +60,7 @@ public class WorldGenBeeHive implements IWorldGenerator
 			int topLogY = y + yMov;
 
 			//At this point we've found the top of the tree. Test for leaves above the top log to verify it's a tree.
-			if (world.getBlock(x, topLogY + 1, z) == Blocks.leaves)
+			if (world.getBlock(x, topLogY + 1, z) instanceof BlockLeaves)
 			{
 				int midLogY = topLogY - 2; //Move down towards the middle of the tree.
 				int leavesRadius = 2;
