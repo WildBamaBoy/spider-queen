@@ -18,10 +18,15 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.util.RadixMath;
+import sq.core.minecraft.ModItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -137,6 +142,19 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		return FriendlyEntityHelper.attackEntityFrom(this, damageSource, damageAmount);
 	}
 
+	@Override
+	public boolean interact(EntityPlayer entity) 
+	{
+		final ItemStack heldItem = entity.inventory.getCurrentItem();
+		
+		if (heldItem != null && heldItem.getItem() == ModItems.heart)
+		{
+			dropItem(Items.gunpowder, 10);
+		}
+		
+		return super.interact(entity);
+	}
+	
 	@Override
 	public EntityCreature getInstance() 
 	{

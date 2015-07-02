@@ -2,6 +2,7 @@ package sq.entity;
 
 import java.util.UUID;
 
+import sq.core.minecraft.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,7 +10,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -18,6 +18,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -62,6 +65,19 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 		extinguish();
 	}
 	
+	@Override
+	public boolean interact(EntityPlayer entity) 
+	{
+		final ItemStack heldItem = entity.inventory.getCurrentItem();
+		
+		if (heldItem != null && heldItem.getItem() == ModItems.brain)
+		{
+			dropItem(Item.getItemFromBlock(Blocks.log), 10);
+		}
+		
+		return super.interact(entity);
+	}
+
 	@Override
     protected void applyEntityAttributes()
     {

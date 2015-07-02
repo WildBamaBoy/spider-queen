@@ -16,12 +16,15 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import sq.core.minecraft.ModItems;
 
 public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyEntity
 {
@@ -63,6 +66,19 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 		super.onUpdate();
 		FriendlyEntityHelper.onUpdate(this);
 		extinguish();
+	}
+	
+	@Override
+	public boolean interact(EntityPlayer entity) 
+	{
+		final ItemStack heldItem = entity.inventory.getCurrentItem();
+		
+		if (heldItem != null && heldItem.getItem() == ModItems.skull)
+		{
+			dropItem(Items.bone, 10);
+		}
+		
+		return super.interact(entity);
 	}
 	
 	@Override
