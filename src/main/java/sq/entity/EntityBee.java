@@ -109,6 +109,11 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		super.attackEntity(entity, getHitDamage());
 		
+		if (this.getBeeType() == EnumBeeType.GATHERER || this instanceof EntityFriendlyBee)
+		{
+			return;
+		}
+		
 		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 1.2D)
 		{
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getHitDamage());

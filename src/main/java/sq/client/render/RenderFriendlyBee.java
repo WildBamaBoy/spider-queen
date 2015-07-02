@@ -7,7 +7,7 @@ import sq.client.model.ModelBee;
 
 public class RenderFriendlyBee extends RenderLiving
 {
-	private final ResourceLocation texture = new ResourceLocation("sq:textures/entitites/friendly-bee.png");
+	private final ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-bee.png");
 	
     public RenderFriendlyBee()
     {
