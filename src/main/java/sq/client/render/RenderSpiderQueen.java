@@ -241,7 +241,7 @@ public class RenderSpiderQueen extends RenderPlayer
 
 			double distance = RadixMath.getDistanceToEntity(entity, Minecraft.getMinecraft().thePlayer);
 
-			if (distance < 15.0D)
+			if (distance < 15.0D && Minecraft.getMinecraft().thePlayer != entity)
 			{
 				renderLabel(entity, posX, posY + 0.05F, posZ, entity.getCommandSenderName());
 			}
