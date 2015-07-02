@@ -80,7 +80,6 @@ public final class ModItems
 	public static ItemWebslinger webslinger;
 	public static ItemNectar nectar;
 	public static ItemMandSeeds mandragoraSeeds;
-	public static Item bugLight;
 	public static Item royalBlood;
 	
 	public ModItems()
@@ -131,9 +130,7 @@ public final class ModItems
 		nectar = new ItemNectar();
 		mandragoraSeeds = new ItemMandSeeds();
 
-		bugLight = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("buglight").setTextureName("sq:buglight").setMaxStackSize(1);
 		royalBlood = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("royalblood").setTextureName("sq:royal-blood").setMaxStackSize(1);
-		GameRegistry.registerItem(bugLight, "buglight");
 		GameRegistry.registerItem(royalBlood, "royalblood");
 	}
 }
