@@ -217,7 +217,7 @@ public final class EventHooksForge
 		{
 			final EntityPlayer player = (EntityPlayer) event.source.getEntity();
 			final PlayerData data = SpiderCore.getPlayerData(player);
-			final PlayerExtension playerExtension = (PlayerExtension) event.entityLiving.getExtendedProperties(PlayerExtension.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 			final RepEntityExtension repExtension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
 
 			if (repExtension != null) //If they have an extension, they are a vanilla mob with a reputation entry.
@@ -228,17 +228,19 @@ public final class EventHooksForge
 				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep))
 				{
 					ReputationHandler.onReputationChange(player, event.entityLiving, -1);
+				}
+				
+				//Increase number of monsters killed if not human.
+				if (likeData != data.humanLike)
+				{
+					playerExtension.setMonstersKilled(playerExtension.getMonstersKilled() + 1);
 					
-					//Increase number of monsters killed if not human.
-					if (likeData != data.humanLike)
+					if (playerExtension.getMonstersKilled() >= 5)
 					{
-						playerExtension.setMonstersKilled(playerExtension.getMonstersKilled() + 1);
+						player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "Your attack on enemy mobs has earned the humans' trust."));
+						playerExtension.setMonstersKilled(0); //Reset
 						
-						if (playerExtension.getMonstersKilled() >= 5)
-						{
-							player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "Your attack on enemy mobs has earned the humans' trust."));
-							ReputationHandler.onReputationChange(player, new EntityHuman(player.worldObj), 1);
-						}
+						ReputationHandler.onReputationChange(player, new EntityHuman(player.worldObj), 1);
 					}
 				}
 			}
