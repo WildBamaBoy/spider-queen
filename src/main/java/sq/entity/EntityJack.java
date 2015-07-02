@@ -109,7 +109,7 @@ public class EntityJack extends AbstractFlyingMob
 	{
 		if (hitByPlayer)
 		{
-			//TODOthis.dropItem(ModItems.bugLight, 1);
+			this.dropItem(ModItems.lantern, 1);
 		}
 	}
 }

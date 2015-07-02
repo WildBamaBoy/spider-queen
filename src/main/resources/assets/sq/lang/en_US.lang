@@ -47,6 +47,7 @@ item.egg-f-skeleton.name=Spawn Friendly Skeleton
 item.egg-f-zombie.name=Spawn Friendly Zombie
 item.egg-human.name=Spawn Human
 item.royalblood.name=Royal Blood
+item.lantern.name=Jack's Lantern
 
 tile.anthill.name=Ant Hill
 tile.beehive.name=Beehive

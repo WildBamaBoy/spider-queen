@@ -22,6 +22,7 @@ import sq.enums.EnumWebType;
 import sq.items.ItemCocoon;
 import sq.items.ItemEggSpawner;
 import sq.items.ItemGhastEgg;
+import sq.items.ItemLantern;
 import sq.items.ItemMandSeeds;
 import sq.items.ItemNectar;
 import sq.items.ItemOffering;
@@ -81,6 +82,7 @@ public final class ModItems
 	public static ItemNectar nectar;
 	public static ItemMandSeeds mandragoraSeeds;
 	public static Item royalBlood;
+	public static ItemLantern lantern;
 	
 	public ModItems()
 	{
@@ -129,6 +131,7 @@ public final class ModItems
 		webslinger = new ItemWebslinger();
 		nectar = new ItemNectar();
 		mandragoraSeeds = new ItemMandSeeds();
+		lantern = new ItemLantern();
 
 		royalBlood = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("royalblood").setTextureName("sq:royal-blood").setMaxStackSize(1);
 		GameRegistry.registerItem(royalBlood, "royalblood");

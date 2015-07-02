@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import sq.blocks.BlockAntHill;
 import sq.blocks.BlockBeeHive;
 import sq.blocks.BlockJack;
+import sq.blocks.BlockLantern;
 import sq.blocks.BlockMandCrop;
 import sq.blocks.BlockSpiderRod;
 import sq.blocks.BlockStinger;
@@ -28,6 +29,7 @@ public final class ModBlocks
 	public static BlockWebSide webSide;
 	public static BlockWebGround webGround;
 	public static BlockMandCrop cropMand;
+	public static BlockLantern lantern;
 	
 	public ModBlocks()
 	{
@@ -44,6 +46,7 @@ public final class ModBlocks
 		webSide = new BlockWebSide(EnumWebType.NORMAL);
 		webGround = new BlockWebGround(EnumWebType.NORMAL);
 		cropMand = new BlockMandCrop();
+		lantern = new BlockLantern();
 	}
 	
 	public static Block getPoisonWebVariant(Block web)
