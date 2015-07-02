@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -32,10 +33,13 @@ import org.apache.logging.log4j.Logger;
 import radixcore.core.ModMetadataEx;
 import radixcore.core.RadixCore;
 import radixcore.data.AbstractPlayerData;
+import radixcore.data.BlockObj;
 import radixcore.data.DataContainer;
+import radixcore.math.Point3D;
 import radixcore.update.RDXUpdateProtocol;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixMath;
+import radixcore.util.SchematicHandler;
 import sq.command.CommandSQ;
 import sq.core.forge.EventHooksFML;
 import sq.core.forge.EventHooksForge;
@@ -76,6 +80,7 @@ import sq.enums.EnumCocoonType;
 import sq.enums.EnumWatchedDataIDs;
 import sq.gen.WorldGenAntHill;
 import sq.gen.WorldGenBeeHive;
+import sq.gen.WorldGenFactory;
 import sq.items.ItemCocoon;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -124,6 +129,7 @@ public final class SpiderCore
 	public static Map<String, AbstractPlayerData> playerDataMap;
 	public static List<String> fakePlayerNames;
 	public static List<String> sleepingPlayers;
+	public static Map<Integer, Map<Point3D, BlockObj>> structureSchematics;
 	
 	@SideOnly(Side.CLIENT)
 	public static DataContainer playerDataContainer;
@@ -143,6 +149,7 @@ public final class SpiderCore
 		playerDataMap = new HashMap<String, AbstractPlayerData>();
 		fakePlayerNames = downloadFakePlayerNames();
 		sleepingPlayers = new ArrayList<String>();
+		structureSchematics = new HashMap<Integer, Map<Point3D, BlockObj>>();
 		
 		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
@@ -254,14 +261,15 @@ public final class SpiderCore
 		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
 		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+//		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+//				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
 		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);
+		GameRegistry.registerWorldGenerator(new WorldGenFactory(), 4096);
 		
 		ReputationContainer.createNew(EntitySkeleton.class, EnumWatchedDataIDs.SKELETON_LIKE.getId());
 		ReputationContainer.createNew(EntityCreeper.class, EnumWatchedDataIDs.CREEPER_LIKE.getId());
@@ -269,6 +277,18 @@ public final class SpiderCore
 		ReputationContainer.createNew(EntitySpider.class, EnumWatchedDataIDs.SPIDER_LIKE.getId());
 		ReputationContainer.createNew(EntityHuman.class, EnumWatchedDataIDs.HUMAN_LIKE.getId());
 		ReputationContainer.createNew(EntityBee.class, EnumWatchedDataIDs.BEE_LIKE.getId());
+		
+		//Load factories.
+		long t1 = System.nanoTime();
+		logger.info("Preloading schematics...");
+		structureSchematics.put(0, SchematicHandler.readSchematic("/assets/sq/schematics/factorySawtooth44.schematic"));
+		structureSchematics.put(1, SchematicHandler.readSchematic("/assets/sq/schematics/factoryEndergirl0.schematic"));
+		structureSchematics.put(2, SchematicHandler.readSchematic("/assets/sq/schematics/factoryAllenWL.schematic"));
+		structureSchematics.put(3, SchematicHandler.readSchematic("/assets/sq/schematics/lairFangdam1.schematic"));
+		long t2 = System.nanoTime();
+		
+		long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
+		logger.info("Schematic loading completed in " + elapsedTime + "ms.");
 	}
 
 	@EventHandler
