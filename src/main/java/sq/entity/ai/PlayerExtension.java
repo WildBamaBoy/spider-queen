@@ -15,7 +15,8 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public EntityWebslinger						webEntity;
 	private final EntityPlayer					player;
 	public int slingerCooldown;
-
+	private int monstersKilled;
+	
 	public PlayerExtension(EntityPlayer player)
 	{
 		this.player = player;
@@ -24,11 +25,13 @@ public class PlayerExtension implements IExtendedEntityProperties
 	@Override
 	public void saveNBTData(NBTTagCompound nbt)
 	{
+		nbt.setInteger("monstersKilled", monstersKilled);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound nbt)
 	{
+		nbt.getInteger("monstersKilled");
 	}
 
 	@Override
@@ -57,5 +60,15 @@ public class PlayerExtension implements IExtendedEntityProperties
 	public static PlayerExtension get(EntityPlayer player)
 	{
 		return (PlayerExtension) player.getExtendedProperties(ID);
+	}
+
+	public int getMonstersKilled() 
+	{
+		return monstersKilled;
+	}
+	
+	public void setMonstersKilled(int value)
+	{
+		monstersKilled = value;
 	}
 }

@@ -30,6 +30,7 @@ import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFriendlyMandragora;
+import sq.entity.EntityHuman;
 import sq.entity.EntitySpiderEx;
 import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
@@ -216,9 +217,10 @@ public final class EventHooksForge
 		{
 			final EntityPlayer player = (EntityPlayer) event.source.getEntity();
 			final PlayerData data = SpiderCore.getPlayerData(player);
-			final RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
+			final PlayerExtension playerExtension = (PlayerExtension) event.entityLiving.getExtendedProperties(PlayerExtension.ID);
+			final RepEntityExtension repExtension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
 
-			if (extension != null) //If they have an extension, they are a vanilla mob with a reputation entry.
+			if (repExtension != null) //If they have an extension, they are a vanilla mob with a reputation entry.
 			{
 				WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
 				int chanceToAffectRep = 25;
@@ -226,6 +228,18 @@ public final class EventHooksForge
 				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep))
 				{
 					ReputationHandler.onReputationChange(player, event.entityLiving, -1);
+					
+					//Increase number of monsters killed if not human.
+					if (likeData != data.humanLike)
+					{
+						playerExtension.setMonstersKilled(playerExtension.getMonstersKilled() + 1);
+						
+						if (playerExtension.getMonstersKilled() >= 5)
+						{
+							player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "Your attack on enemy mobs has earned the humans' trust."));
+							ReputationHandler.onReputationChange(player, new EntityHuman(player.worldObj), 1);
+						}
+					}
 				}
 			}
 		}
