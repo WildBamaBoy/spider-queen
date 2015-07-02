@@ -28,7 +28,7 @@ import sq.core.minecraft.ModItems;
 
 public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyEntity
 {
-	private int timeUntilSpeak;
+	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID;
 	private int rangedAttackProgress;
 	

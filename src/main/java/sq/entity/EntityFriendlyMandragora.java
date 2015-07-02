@@ -25,7 +25,6 @@ import sq.util.Utils;
 
 public class EntityFriendlyMandragora extends EntityMandragora implements IFriendlyEntity
 {
-	private int timeUntilSpeak;
 	private int timeUntilAbility;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
@@ -158,13 +157,13 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	@Override
 	public int getTimeUntilSpeak() 
 	{
-		return timeUntilSpeak;
+		return 100; //TODO this is temporary.
 	}
 
 	@Override
 	public void setTimeUntilSpeak(int value) 
 	{
-		timeUntilSpeak = value;
+		return;
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.constant.Time;
 import radixcore.util.RadixMath;
 import sq.core.minecraft.ModItems;
 import cpw.mods.fml.relauncher.Side;
@@ -30,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEntity
 {
-	private int timeUntilSpeak;
+	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID;
 	private boolean hasPlayedSound;
 

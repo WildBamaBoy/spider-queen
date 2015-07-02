@@ -2,6 +2,7 @@ package sq.entity;
 
 import java.util.UUID;
 
+import radixcore.constant.Time;
 import sq.core.minecraft.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 
 public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 {
-	private int timeUntilSpeak;
+	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
 	

@@ -2,6 +2,7 @@ package sq.entity;
 
 import java.util.UUID;
 
+import radixcore.constant.Time;
 import sq.core.minecraft.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -27,7 +28,7 @@ import net.minecraft.world.World;
 
 public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntity
 {
-	private int timeUntilSpeak;
+	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
 	
