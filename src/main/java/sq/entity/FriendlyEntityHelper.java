@@ -44,6 +44,11 @@ public final class FriendlyEntityHelper
 			return EntityFriendlySkeleton.class;
 		}
 		
+		else if (living instanceof EntityBee)
+		{
+			return EntityFriendlyBee.class;
+		}
+		
 		return null;
 	}
 	public static void onUpdate(IFriendlyEntity friendlyEntity)

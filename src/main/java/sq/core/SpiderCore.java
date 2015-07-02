@@ -57,6 +57,7 @@ import sq.entity.EntityBeetle;
 import sq.entity.EntityBoomBall;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
+import sq.entity.EntityFriendlyBee;
 import sq.entity.EntityFriendlyCreeper;
 import sq.entity.EntityFriendlyMandragora;
 import sq.entity.EntityFriendlySkeleton;
@@ -238,7 +239,7 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityFriendlyMandragora.class, EntityFriendlyMandragora.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityGhastEgg.class, EntityGhastEgg.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityMiniGhast.class, EntityMiniGhast.class.getSimpleName(), id, this, 50, 2, true); id++;
-		
+		EntityRegistry.registerModEntity(EntityFriendlyBee.class, EntityFriendlyBee.class.getSimpleName(), id, this, 50,  2, true); id++;
 		
 		//Tile registry
 

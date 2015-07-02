@@ -6,6 +6,7 @@ import sq.client.render.RenderBee;
 import sq.client.render.RenderBeetle;
 import sq.client.render.RenderCocoon;
 import sq.client.render.RenderFly;
+import sq.client.render.RenderFriendlyBee;
 import sq.client.render.RenderFriendlyCreeper;
 import sq.client.render.RenderFriendlyMandragora;
 import sq.client.render.RenderFriendlySkeleton;
@@ -32,6 +33,7 @@ import sq.entity.EntityBeetle;
 import sq.entity.EntityBoomBall;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFly;
+import sq.entity.EntityFriendlyBee;
 import sq.entity.EntityFriendlyCreeper;
 import sq.entity.EntityFriendlyMandragora;
 import sq.entity.EntityFriendlySkeleton;
@@ -85,6 +87,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityHuman.class, new RenderHuman());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGhastEgg.class, new RenderGhastEgg());
 		RenderingRegistry.registerEntityRenderingHandler(EntityMiniGhast.class, new RenderMiniGhast());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyBee.class, new RenderFriendlyBee());
 	}
 
 	@Override
