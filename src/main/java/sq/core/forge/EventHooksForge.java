@@ -225,7 +225,8 @@ public final class EventHooksForge
 				WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
 				int chanceToAffectRep = 25;
 				
-				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep))
+				//Check if the player is invisible. If so, no potential for reputation penalty.
+				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep) && !player.isInvisible())
 				{
 					ReputationHandler.onReputationChange(player, event.entityLiving, -1);
 				}
