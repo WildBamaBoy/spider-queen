@@ -11,12 +11,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
+import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumSpiderType;
 import cpw.mods.fml.relauncher.Side;
@@ -207,6 +209,47 @@ public class EntitySpiderEgg extends EntityCreature
 			spider.setLocationAndAngles(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ, rotationYaw, rotationPitch);
 			worldObj.spawnEntityInWorld(spider);
 			setDead();
+
+			if (player != null)
+			{
+				if (spider.getSpiderType() == EnumSpiderType.WIMPY)
+				{
+					player.triggerAchievement(ModAchievements.hatchSpider);
+				}
+
+				else
+				{
+					player.triggerAchievement(ModAchievements.hatchSpiderByCocoon);
+					
+					Achievement specialAchievement = null;
+					
+					switch (spider.getSpiderType())
+					{
+					case BOOM: specialAchievement = ModAchievements.hatchBoomSpider;
+						break;
+					case ENDER: specialAchievement = ModAchievements.hatchEnderSpider;
+						break;
+					case NOVA: specialAchievement = ModAchievements.hatchNovaSpider;
+						break;
+					case PACK: specialAchievement = ModAchievements.hatchPackSpider;
+						break;
+					case RIDER: specialAchievement = ModAchievements.hatchRiderSpider;
+						break;
+					case SLINGER: specialAchievement = ModAchievements.hatchSlingerSpider;
+						break;
+					case TANK: specialAchievement = ModAchievements.hatchTankSpider;
+						break;
+					default:
+						break;
+					
+					}
+					
+					if (specialAchievement != null)
+					{
+						player.triggerAchievement(specialAchievement);
+					}
+				}
+			}
 		}
 
 		catch (NullPointerException e)

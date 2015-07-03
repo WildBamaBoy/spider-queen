@@ -299,6 +299,9 @@ public final class SpiderCore
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		//Register the player's replacement model after all mods have loaded to try and guarantee
+		//that it remains set to the spider queen model.
+		proxy.registerSpiderQueenRenderer();
 	}
 
 	@EventHandler

@@ -7,6 +7,11 @@ public class ServerProxy
 		
 	}
 	
+	public void registerSpiderQueenRenderer()
+	{
+		
+	}
+	
 	public void registerEventHandlers()
 	{
 		

@@ -25,6 +25,7 @@ import radixcore.util.RadixLogic;
 import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
 import sq.blocks.BlockWebSide;
+import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSide;
@@ -377,7 +378,9 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 						if (shooter instanceof EntityPlayer)
 						{
-							MinecraftForge.EVENT_BUS.post(new LivingDeathEvent(entityHit, DamageSource.causePlayerDamage((EntityPlayer)shooter)));
+							EntityPlayer player = (EntityPlayer)shooter;
+							MinecraftForge.EVENT_BUS.post(new LivingDeathEvent(entityHit, DamageSource.causePlayerDamage(player)));
+							player.triggerAchievement(ModAchievements.catchMob);
 						}
 					}
 

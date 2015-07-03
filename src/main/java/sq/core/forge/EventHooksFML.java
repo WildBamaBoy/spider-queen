@@ -8,16 +8,19 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.PlayerExtension;
 import sq.packet.PacketSleepC;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
@@ -100,7 +103,9 @@ public final class EventHooksFML
 				//Check for buffs.
 				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
-					if (player.getActivePotionEffect(Potion.nightVision) == null)
+					player.triggerAchievement(ModAchievements.goInTheDark);
+					
+					if (SpiderCore.getConfig().enableNightVision && player.getActivePotionEffect(Potion.nightVision) == null)
 					{
 						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
 					}
@@ -171,6 +176,37 @@ public final class EventHooksFML
 		if (data != null)
 		{
 			data.saveDataToFile();
+		}
+	}
+
+	@SubscribeEvent
+	public void itemCraftedEventHandler(ItemCraftedEvent event)
+	{
+		final EntityPlayer player = event.player;
+
+		if (event.crafting.getItem() == ModItems.webNormal)
+		{
+			player.triggerAchievement(ModAchievements.craftWeb);
+		}
+
+		else if (event.crafting.getItem() == ModItems.spiderRod)
+		{
+			player.triggerAchievement(ModAchievements.craftSpiderRod);
+		}
+
+		else if (event.crafting.getItem() == ModItems.recallRod)
+		{
+			player.triggerAchievement(ModAchievements.craftRecallRod);
+		}
+
+		else if (event.crafting.getItem() == ModItems.webslinger)
+		{
+			player.triggerAchievement(ModAchievements.craftWebslinger);
+		}
+		
+		else if (event.crafting.getItem() == ModItems.webPoison)
+		{
+			player.triggerAchievement(ModAchievements.craftPoisonWeb);
 		}
 	}
 }

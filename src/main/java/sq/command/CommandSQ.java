@@ -11,7 +11,9 @@ import net.minecraft.util.ChatComponentText;
 import radixcore.constant.Font.Color;
 import radixcore.constant.Font.Format;
 import radixcore.util.RadixLogic;
+import sq.entity.EntitySpiderEgg;
 import sq.entity.EntitySpiderEx;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 public final class CommandSQ extends CommandBase
 {
@@ -47,6 +49,15 @@ public final class CommandSQ extends CommandBase
 				{
 					EntitySpiderEx spider = (EntitySpiderEx)entity;
 					spider.levelUp();
+				}
+			}
+			
+			else if (subcommand.equalsIgnoreCase("feg"))
+			{
+				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEgg.class, player, 15))
+				{
+					EntitySpiderEgg egg = (EntitySpiderEgg)entity;
+					ObfuscationReflectionHelper.setPrivateValue(EntitySpiderEgg.class, egg, 0, 1);
 				}
 			}
 		}

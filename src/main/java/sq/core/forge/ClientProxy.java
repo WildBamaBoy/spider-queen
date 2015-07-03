@@ -61,11 +61,6 @@ public final class ClientProxy extends ServerProxy
 	@Override
 	public void registerRenderers() 
 	{
-		if (SpiderCore.getConfig().useSpiderQueenModel)
-		{
-			RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
-		}
-
 		RenderingRegistry.registerEntityRenderingHandler(EntityAnt.class, new RenderAnt());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBee.class, new RenderBee());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBeetle.class, new RenderBeetle());
@@ -95,6 +90,15 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyBee.class, new RenderFriendlyBee());
 	}
 
+	@Override
+	public void registerSpiderQueenRenderer()
+	{
+		if (SpiderCore.getConfig().useSpiderQueenModel)
+		{
+			RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
+		}	
+	}
+	
 	@Override
 	public void registerEventHandlers() 
 	{

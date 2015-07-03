@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -14,7 +15,13 @@ import radixcore.data.WatchedInt;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixString;
+import sq.core.minecraft.ModAchievements;
 import sq.core.radix.PlayerData;
+import sq.entity.EntityFriendlyBee;
+import sq.entity.EntityFriendlyCreeper;
+import sq.entity.EntityFriendlyMandragora;
+import sq.entity.EntityFriendlySkeleton;
+import sq.entity.EntityFriendlyZombie;
 import sq.entity.FriendlyEntityHelper;
 import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
@@ -64,6 +71,7 @@ public class ReputationHandler
 		if (newReputation == 0 && oldReputation == -1)
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They are calling for a truce."));
+			player.triggerAchievement(ModAchievements.makeFriend);
 			
 			for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
 			{
@@ -94,6 +102,38 @@ public class ReputationHandler
 				player.addChatComponentMessage(new ChatComponentText(
 						RadixString.upperFirstLetter(friendly.getSpeakId() + ": " + 
 						SpiderCore.getLanguageManager().getString(messageId))));
+				
+				Achievement achievement = null;
+				
+				if (entity instanceof EntityFriendlyBee)
+				{
+					achievement = ModAchievements.getFriendlyBee;
+				}
+				
+				else if (entity instanceof EntityFriendlyMandragora)
+				{
+					achievement = ModAchievements.getFriendlyMandragora;					
+				}
+				
+				else if (entity instanceof EntityFriendlyCreeper)
+				{
+					achievement = ModAchievements.getFriendlyCreeper;
+				}
+				
+				else if (entity instanceof EntityFriendlySkeleton)
+				{
+					achievement = ModAchievements.getFriendlySkeleton;
+				}
+				
+				else if (entity instanceof EntityFriendlyZombie)
+				{
+					achievement = ModAchievements.getFriendlyZombie;
+				}
+				
+				if (achievement != null)
+				{
+					player.triggerAchievement(achievement);
+				}
 			}
 			
 			catch (Exception e)
@@ -114,6 +154,7 @@ public class ReputationHandler
 		//Broken truce.
 		if (newReputation == -1 && oldReputation == 0)
 		{
+			player.triggerAchievement(ModAchievements.makeEnemy);
 			player.addChatComponentMessage(new ChatComponentText(
 					Color.RED + "You have broken your truce with the " + living.getCommandSenderName() + "s!"));
 		}

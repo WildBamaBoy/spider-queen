@@ -20,12 +20,14 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.EntityCocoon;
@@ -309,6 +311,18 @@ public final class EventHooksForge
 				}
 
 				entityLiving.setAttackTarget(null);
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onEntityItemPickup(EntityItemPickupEvent event)
+	{
+		if (event.entityPlayer != null)
+		{
+			if (event.item.getEntityItem().getItem() == ModItems.spiderEgg)
+			{
+				event.entityPlayer.triggerAchievement(ModAchievements.acquireEgg);
 			}
 		}
 	}

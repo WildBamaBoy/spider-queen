@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import radixcore.data.WatchedInt;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModBlocks;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.RepEntityExtension;
@@ -21,6 +22,7 @@ public final class ASMEventHooks
 	{
 		if (!world.isRemote)
 		{
+			player.triggerAchievement(ModAchievements.eatToGetString);
 			player.entityDropItem(new ItemStack(Items.string, world.rand.nextInt(3) + 1), 1.0F);
 		}
 	}

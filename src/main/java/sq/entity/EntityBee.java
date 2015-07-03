@@ -213,6 +213,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			entityPlayer.addChatComponentMessage(new ChatComponentText(Color.GREEN + "The Bees have accepted your offering."));
 			ReputationHandler.onReputationChange(entityPlayer, this, 1);
 			Utils.spawnParticlesAroundEntityS("heart", this, 16);
+			this.entityToAttack = null;
 		}
 		
 		return super.interact(entityPlayer);
