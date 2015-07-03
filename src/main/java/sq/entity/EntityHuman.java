@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -148,7 +150,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	@Override
 	protected Entity findPlayerToAttack()
 	{
-		EntityPlayer entityPlayer = worldObj.getClosestPlayerToEntity(this, 16D);
+		EntityPlayer entityPlayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
 
 		if (entityPlayer != null && canEntityBeSeen(entityPlayer))
 		{
@@ -168,6 +170,35 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 		else
 		{
+			for (Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 16))
+			{
+				if (entity instanceof EntityMob || entity instanceof AbstractNewMob)
+				{
+					if (entity instanceof EntityCreeper)
+					{
+						continue;
+					}
+					
+					else if (entity instanceof IFriendlyEntity)
+					{
+						continue;
+					}
+					
+					else
+					{
+						if (this.canEntityBeSeen(entity))
+						{
+							return entity;
+						}
+						
+						else
+						{
+							continue;
+						}
+					}
+				}
+			}
+			
 			return null;
 		}
 	}
@@ -229,7 +260,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 			attackTime = 40;
 			swingItem();
 			
-			EntityPlayer p = (EntityPlayer)entity;
+			entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
 		}
 	}
 
