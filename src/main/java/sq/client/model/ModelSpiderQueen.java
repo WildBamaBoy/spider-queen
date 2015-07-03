@@ -212,7 +212,7 @@ public class ModelSpiderQueen extends ModelBase
 			}
 		}
 
-		if (SpiderCore.getConfig().usePlayerSkin)
+		if (SpiderCore.getConfig().usePlayerSkin && entity instanceof EntityPlayer)
 		{
 			EntityClientPlayerMP mp = (EntityClientPlayerMP)entity;
 			Minecraft.getMinecraft().renderEngine.bindTexture(mp.getLocationSkin());
