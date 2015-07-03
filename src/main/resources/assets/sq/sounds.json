@@ -113,5 +113,13 @@
         [
             "mand-hurt"
         ]
+    },
+    "recall.rod":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "recall-rod"
+        ]
     }
 }

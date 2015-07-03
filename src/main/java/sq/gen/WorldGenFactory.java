@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderGenerate;
 import radixcore.data.BlockObj;
 import radixcore.math.Point3D;
 import radixcore.util.RadixMath;
@@ -30,19 +31,19 @@ public class WorldGenFactory implements IWorldGenerator
 	{
 		if (SpiderCore.getConfig().enableFactories)
 		{
-			//		if (chunkGenerator instanceof ChunkProviderGenerate)
-			//		{
-			int x = chunkX * 16 + random.nextInt(16);
-			int z = chunkZ * 16 + random.nextInt(16);
-
-			for (int maxY = 256; maxY > 0; maxY--)
+			if (chunkGenerator instanceof ChunkProviderGenerate)
 			{
-				if (generate(world, random, x, maxY, z))
+				int x = chunkX * 16 + random.nextInt(16);
+				int z = chunkZ * 16 + random.nextInt(16);
+
+				for (int maxY = 256; maxY > 0; maxY--)
 				{
-					break;
+					if (generate(world, random, x, maxY, z))
+					{
+						break;
+					}
 				}
 			}
-			//		}
 		}
 	}
 
@@ -50,7 +51,7 @@ public class WorldGenFactory implements IWorldGenerator
 	{
 		Block block = world.getBlock(x, y, z);
 
-		if (block == Blocks.grass && random.nextInt(300) == 0)
+		if (block == Blocks.grass && random.nextInt(2400) == 0)
 		{
 			y += 2; //Account for the test block and player standing location in schematic.
 			SpiderCore.getLog().info("Generating factory at " + x + ", " + y + ", " + z );
@@ -163,7 +164,7 @@ public class WorldGenFactory implements IWorldGenerator
 				humansToSpawn--;
 			}
 		}
-		
+
 		else if (enumPlaceHolder == EnumPlaceholderBlock.NETHER_QUARTZ)
 		{
 			EntitySpiderQueen spiderQueen = new EntitySpiderQueen(world);

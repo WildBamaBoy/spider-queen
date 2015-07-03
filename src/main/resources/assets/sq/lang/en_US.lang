@@ -1,4 +1,5 @@
-itemGroup.tabSQR=Spider Queen - Reborn
+itemGroup.tabSQ=Spider Queen
+
 item.cocoon-redant.name=Cocooned Red Ant
 item.cocoon-blackant.name=Cocooned Black Ant
 item.cocoon-cow.name=Cocooned Cow
@@ -48,6 +49,7 @@ item.egg-f-zombie.name=Spawn Friendly Zombie
 item.egg-human.name=Spawn Human
 item.royalblood.name=Royal Blood
 item.lantern.name=Jack's Lantern
+item.recall-rod.name=Recall Rod
 
 tile.anthill.name=Ant Hill
 tile.beehive.name=Beehive

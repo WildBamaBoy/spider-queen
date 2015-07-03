@@ -27,6 +27,7 @@ import sq.items.ItemMandSeeds;
 import sq.items.ItemNectar;
 import sq.items.ItemOffering;
 import sq.items.ItemRareFruit;
+import sq.items.ItemRecallRod;
 import sq.items.ItemSpiderEgg;
 import sq.items.ItemSpiderRod;
 import sq.items.ItemWeb;
@@ -78,6 +79,7 @@ public final class ModItems
 	public static ItemOffering heart;
 	public static ItemOffering brain;
 	public static ItemSpiderRod spiderRod;
+	public static ItemRecallRod recallRod;
 	public static ItemWebslinger webslinger;
 	public static ItemNectar nectar;
 	public static ItemMandSeeds mandragoraSeeds;
@@ -128,6 +130,7 @@ public final class ModItems
 		heart = new ItemOffering(EnumOfferingType.HEART);
 		brain = new ItemOffering(EnumOfferingType.BRAIN);
 		spiderRod = new ItemSpiderRod();
+		recallRod = new ItemRecallRod();
 		webslinger = new ItemWebslinger();
 		nectar = new ItemNectar();
 		mandragoraSeeds = new ItemMandSeeds();

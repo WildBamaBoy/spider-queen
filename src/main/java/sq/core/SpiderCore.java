@@ -251,6 +251,7 @@ public final class SpiderCore
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webPoison), Items.string, Items.string, Items.string, ModBlocks.stinger);
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webPoison), ModItems.webNormal, ModBlocks.stinger);
 		GameRegistry.addRecipe(new ItemStack(ModItems.spiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'T', Blocks.torch, 'S', Items.stick);
+		GameRegistry.addRecipe(new ItemStack(ModItems.recallRod), "GDG", " S ", " S ", 'G', Blocks.glass, 'D', Items.glowstone_dust, 'S', Items.stick);
 		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
 		
 		//Smeltings
@@ -265,8 +266,8 @@ public final class SpiderCore
 		EntityRegistry.addSpawn(EntityOctopus.class, 8, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.ocean);
 		EntityRegistry.addSpawn(EntityWasp.class, 10, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-//		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-//				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
+		EntityRegistry.addSpawn(EntityHuman.class, 7, 1, 4, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 
