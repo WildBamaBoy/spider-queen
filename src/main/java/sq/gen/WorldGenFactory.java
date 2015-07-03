@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import radixcore.data.BlockObj;
@@ -35,12 +36,16 @@ public class WorldGenFactory implements IWorldGenerator
 			{
 				int x = chunkX * 16 + random.nextInt(16);
 				int z = chunkZ * 16 + random.nextInt(16);
+				BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
 
-				for (int maxY = 256; maxY > 0; maxY--)
+				if (biome == BiomeGenBase.plains)
 				{
-					if (generate(world, random, x, maxY, z))
+					for (int maxY = 256; maxY > 0; maxY--)
 					{
-						break;
+						if (generate(world, random, x, maxY, z))
+						{
+							break;
+						}
 					}
 				}
 			}
