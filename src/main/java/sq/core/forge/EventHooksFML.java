@@ -8,7 +8,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
 import radixcore.util.RadixMath;

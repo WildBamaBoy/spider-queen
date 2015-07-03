@@ -21,8 +21,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import sq.core.SpiderCore;
-
 public class TransformDistributor implements IClassTransformer
 {
 	public static final int ASM_CHANGES_TO_MAKE = 3;

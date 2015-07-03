@@ -1,11 +1,10 @@
 package sq.entity;
 
-import radixcore.util.RadixMath;
-import sq.core.SpiderCore;
-import sq.enums.EnumBeeType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.world.World;
+import radixcore.util.RadixMath;
+import sq.core.SpiderCore;
 
 public class EntityBeetle extends AbstractNewMob
 {

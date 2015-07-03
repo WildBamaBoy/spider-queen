@@ -2,8 +2,6 @@ package sq.entity;
 
 import java.util.UUID;
 
-import radixcore.constant.Time;
-import sq.core.minecraft.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.constant.Time;
+import sq.core.minecraft.ModItems;
 
 public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntity
 {

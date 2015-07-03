@@ -1,6 +1,5 @@
 package sq.entity;
 
-import sq.enums.EnumBeeType;
 import net.minecraft.world.World;
 
 public class EntityWasp extends AbstractFlyingMob

@@ -30,7 +30,6 @@ import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSide;
 import sq.enums.EnumWebType;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

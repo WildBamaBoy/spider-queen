@@ -6,8 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.data.WatchedInt;
-import radixcore.math.Point3D;
-import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.core.radix.PlayerData;

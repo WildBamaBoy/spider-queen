@@ -1,10 +1,8 @@
 package sq.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import radixcore.network.ByteBufIO;
 import radixcore.packets.AbstractPacket;
-import sq.core.Constants;
 import sq.core.SpiderCore;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

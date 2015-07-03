@@ -35,12 +35,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.opengl.GL11;
 
-import radixcore.constant.Font.Color;
-import radixcore.constant.Font.Format;
 import radixcore.util.RadixMath;
 import sq.client.model.ModelSpiderQueen;
-import sq.core.SpiderCore;
-import sq.entity.EntityHuman;
 
 import com.mojang.authlib.GameProfile;
 

@@ -2,7 +2,6 @@ package sq.entity;
 
 import java.util.UUID;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

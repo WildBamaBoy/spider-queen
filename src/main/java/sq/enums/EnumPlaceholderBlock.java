@@ -1,7 +1,6 @@
 package sq.enums;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.init.Blocks;
 import sq.core.minecraft.ModBlocks;
 
