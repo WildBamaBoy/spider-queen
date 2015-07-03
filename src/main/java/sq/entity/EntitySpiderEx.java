@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -135,6 +136,17 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 				tryMoveToSpiderRod();
 			}
+
+			if (this.getSpiderType() == EnumSpiderType.PACK)
+			{
+				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityItem.class, this, 3))
+				{
+					EntityItem item = (EntityItem)entity;
+					item.setDead();
+					
+					inventory.addItemStackToInventory(item.getEntityItem());
+				}
+			}
 		}
 	}
 
@@ -149,7 +161,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			{
 				worldObj.createExplosion(this, posX, posY, posZ, 10.0F, false);				
 			}
-			
+
 			else
 			{
 				worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
@@ -302,12 +314,12 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	public void readSpawnData(ByteBuf buffer)
 	{
 		spiderType = EnumSpiderType.byId(buffer.readInt());
-		
+
 		try
 		{
 			owner = new UUID(buffer.readLong(), buffer.readLong());
 		}
-		
+
 		catch (IndexOutOfBoundsException e)
 		{
 			//Ignore.
@@ -392,9 +404,9 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		{
 			return;
 		}
-		
+
 		super.attackEntity(entity, damage);
-		
+
 		double distance = RadixMath.getDistanceToEntity(this, entity);
 
 		if (distance > 3.0F)
@@ -506,22 +518,22 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		return false;
 	}
 
-    public void onStruckByLightning(EntityLightningBolt lightning)
+	public void onStruckByLightning(EntityLightningBolt lightning)
 	{
-	    super.onStruckByLightning(lightning);
-	    
-	    if (this.getSpiderType() == EnumSpiderType.BOOM)
-	    {
-	    	this.dataWatcher.updateObject(20, Byte.valueOf((byte)1));
-	    }
+		super.onStruckByLightning(lightning);
+
+		if (this.getSpiderType() == EnumSpiderType.BOOM)
+		{
+			this.dataWatcher.updateObject(20, Byte.valueOf((byte)1));
+		}
 	}
 
 	public boolean getPowered()
-    {
-        return this.dataWatcher.getWatchableObjectByte(20) == 1;
-    }
-    
-    public EnumSpiderType getSpiderType()
+	{
+		return this.dataWatcher.getWatchableObjectByte(20) == 1;
+	}
+
+	public EnumSpiderType getSpiderType()
 	{
 		return spiderType;
 	}
