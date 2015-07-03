@@ -6,14 +6,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.data.WatchedInt;
+import radixcore.math.Point3D;
+import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModBlocks;
 import sq.core.radix.PlayerData;
 import sq.enums.EnumAntType;
 
 public class EntityAnt extends AbstractNewMob implements IRep
 {
 	private int eatTime;
-
+	
 	public EntityAnt(World world) 
 	{
 		super(world, "ant");
@@ -32,7 +35,7 @@ public class EntityAnt extends AbstractNewMob implements IRep
 		super.entityInit();
 		this.dataWatcher.addObject(12, EnumAntType.BLACK.getId());
 	}
-    
+
 	@Override
 	public void onUpdate() 
 	{
@@ -48,31 +51,33 @@ public class EntityAnt extends AbstractNewMob implements IRep
 			attackEntityFrom(DamageSource.drown, 100.0F);
 		}
 
-		if (isCollidedHorizontally || getAttackTarget() != null)
+		if (!worldObj.isRemote)
 		{
 			eatTime++;
-
+			
 			if (eatTime > 20)
 			{
-				eatTime = 0;
-
-				for (int xMov = -1; xMov <= 1; xMov++){ for(int yMov = -1; yMov <= 1; yMov++) { for(int zMov = -1; zMov <= 1; zMov++)
+				//Check for the block to eat.
+				for (int i = -1; i < 2; i++) for (int j = 0; j < 2; j++) for (int k = -1; k < 2; k++)
 				{
-					if (yMov < 1 || SpiderCore.rand.nextInt(5) == 0)
-					{
-						if (SpiderCore.rand.nextInt(10) == 0 && (SpiderCore.rand.nextInt(4) == 0 || xMov != 0 || zMov != 0 || yMov < 1)) 
-						{ 
-							Block block = worldObj.getBlock((int)posX + xMov, (int)posY + yMov, (int)posZ + zMov);
+					Block block = worldObj.getBlock((int)posX + i, (int)posY + j, (int)posZ + k);
 
-							if (block == Blocks.dirt || block == Blocks.grass || block == Blocks.stone)
-							{
-								worldObj.setBlockToAir((int)posX + xMov, (int)posY + yMov, (int)posZ + zMov); 
-							}
-						}
+					if (block != Blocks.bedrock && block != ModBlocks.antHill && worldObj.rand.nextBoolean())
+					{
+						worldObj.setBlock((int)posX + i, (int)posY + j, (int)posZ + k, Blocks.air);
+						break;
 					}
-				}}}
+				}
+
+				eatTime = 0;
 			}
 		}
+	}
+
+	@Override
+	public boolean isAIEnabled() 
+	{
+		return true;
 	}
 
 	@Override
