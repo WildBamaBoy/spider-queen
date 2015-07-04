@@ -13,6 +13,9 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -21,6 +24,8 @@ import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
+import sq.core.ReputationHandler;
+import sq.core.minecraft.ModItems;
 import sq.util.Utils;
 
 public class EntityFriendlyMandragora extends EntityMandragora implements IFriendlyEntity
@@ -28,6 +33,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	private int timeUntilAbility;
 	private UUID friendPlayerUUID;
 	public EntityLivingBase target;
+	private boolean isImprisoned;
 
 	public EntityFriendlyMandragora(World world)
 	{
@@ -68,18 +74,38 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 
 				for (Point3D point : RadixLogic.getNearbyBlocks(this, BlockCrops.class, 10))
 				{
-					BlockCrops crop = (BlockCrops)worldObj.getBlock(point.iPosX, point.iPosY, point.iPosZ);
-					int metadata = worldObj.getBlockMetadata(point.iPosX, point.iPosY, point.iPosZ);
-
-					if (metadata < 7)
+					try
 					{
-						int max = 7 - metadata;
-						worldObj.setBlockMetadataWithNotify(point.iPosX, point.iPosY, point.iPosZ, metadata + RadixMath.getNumberInRange(1, max), 2);
-						Utils.spawnParticlesAroundEntityS(Particle.HAPPY, this, 16);
+						BlockCrops crop = (BlockCrops)worldObj.getBlock(point.iPosX, point.iPosY, point.iPosZ);
+						int metadata = worldObj.getBlockMetadata(point.iPosX, point.iPosY, point.iPosZ);
+
+						if (metadata < 7)
+						{
+							int max = 7 - metadata;
+							worldObj.setBlockMetadataWithNotify(point.iPosX, point.iPosY, point.iPosZ, metadata + RadixMath.getNumberInRange(1, max), 2);
+							Utils.spawnParticlesAroundEntityS(Particle.HAPPY, this, 16);
+						}
+					}
+
+					catch (ClassCastException e)
+					{
+						//Seems to happen during world generation.
+						continue;
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean interact(EntityPlayer entity) 
+	{
+		if (isImprisoned)
+		{
+			ReputationHandler.handleInteractWithImprisoned(entity, this);
+		}
+
+		return super.interact(entity);
 	}
 
 	@Override
@@ -101,6 +127,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
+		nbt.setBoolean("isImprisoned", isImprisoned);
 	}
 
 	@Override
@@ -109,6 +136,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 		super.readEntityFromNBT(nbt);
 
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
+		isImprisoned = nbt.getBoolean("isImprisoned");
 	}
 
 	@Override
@@ -170,5 +198,29 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	public String getSpeakId() 
 	{
 		return "mandragora";
+	}
+
+	@Override
+	public boolean isImprisoned() 
+	{
+		return isImprisoned;
+	}
+
+	@Override
+	public void setImprisoned(boolean value) 
+	{
+		this.isImprisoned = value;
+	}
+	
+	@Override
+	public Class getNonFriendlyClass() 
+	{
+		return EntityMandragora.class;
+	}
+	
+	@Override
+	public String getCommandSenderName() 
+	{
+		return "Mandragora";
 	}
 }

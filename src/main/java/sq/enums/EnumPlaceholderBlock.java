@@ -10,7 +10,7 @@ import sq.core.minecraft.ModBlocks;
 public enum EnumPlaceholderBlock
 {
 	SPONGE (Blocks.sponge, Blocks.mob_spawner, true),
-	BEACON (Blocks.beacon, ModBlocks.spiderRod, true), //TODO
+	BEACON (Blocks.beacon, Blocks.air, true),
 	BEDROCK (Blocks.bedrock, Blocks.air, true),
 	NETHER_QUARTZ (Blocks.quartz_ore, Blocks.air, true);
 	

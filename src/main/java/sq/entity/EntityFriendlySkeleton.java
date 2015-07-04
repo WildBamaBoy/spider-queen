@@ -21,14 +21,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 
 public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;
-	private UUID friendPlayerUUID;
+	private UUID friendPlayerUUID = new UUID(0, 0);
 	private int rangedAttackProgress;
-
+	private boolean isImprisoned;
+	
 	public EntityLivingBase target;
 
 	public EntityFriendlySkeleton(World world)
@@ -71,6 +73,11 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
 
+		if (isImprisoned)
+		{
+			ReputationHandler.handleInteractWithImprisoned(entity, this);
+		}
+		
 		if (heldItem != null && heldItem.getItem() == ModItems.skull)
 		{
 			heldItem.stackSize--;
@@ -105,6 +112,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 		nbt.setInteger("rangedAttackProgress", rangedAttackProgress);
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
+		nbt.setBoolean("isImprisoned", isImprisoned);
 	}
 
 	@Override
@@ -114,6 +122,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 
 		rangedAttackProgress = nbt.getInteger("rangedAttackProgress");
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
+		isImprisoned = nbt.getBoolean("isImprisoned");
 	}
 
 	@Override
@@ -186,5 +195,29 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	public String getSpeakId() 
 	{
 		return "skeleton";
+	}
+
+	@Override
+	public boolean isImprisoned() 
+	{
+		return isImprisoned;
+	}
+
+	@Override
+	public void setImprisoned(boolean value) 
+	{
+		this.isImprisoned = value;
+	}
+	
+	@Override
+	public Class getNonFriendlyClass() 
+	{
+		return EntitySkeleton.class;
+	}
+	
+	@Override
+	public String getCommandSenderName() 
+	{
+		return "Skeleton";
 	}
 }

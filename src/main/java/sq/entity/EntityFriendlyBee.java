@@ -10,15 +10,21 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.constant.Font.Color;
+import radixcore.constant.Particle;
 import radixcore.constant.Time;
+import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
+import sq.util.Utils;
 
 public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;
-	private UUID friendPlayerUUID;
+	private UUID friendPlayerUUID = new UUID(0, 0);;
+	private boolean isImprisoned;
 	public EntityLivingBase target;
 	
 	public EntityFriendlyBee(World world)
@@ -76,6 +82,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 		
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
+		nbt.setBoolean("isImprisoned", isImprisoned);
 	}
 
 	@Override
@@ -84,6 +91,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 		super.readEntityFromNBT(nbt);
 		
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
+		isImprisoned = nbt.getBoolean("isImprisoned");
 	}
 	
 	@Override
@@ -98,7 +106,12 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
 		
-		if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) instanceof BlockFlower)
+		if (isImprisoned)
+		{
+			ReputationHandler.handleInteractWithImprisoned(entity, this);
+		}
+		
+		else if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) instanceof BlockFlower)
 		{
 			heldItem.stackSize--;
 			
@@ -163,5 +176,29 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	public String getSpeakId() 
 	{
 		return "bee";
+	}
+
+	@Override
+	public boolean isImprisoned() 
+	{
+		return isImprisoned;
+	}
+
+	@Override
+	public void setImprisoned(boolean value) 
+	{
+		this.isImprisoned = value;
+	}
+
+	@Override
+	public Class getNonFriendlyClass() 
+	{
+		return EntityBee.class;
+	}
+
+	@Override
+	public String getCommandSenderName() 
+	{
+		return super.getCommandSenderName();
 	}
 }

@@ -25,6 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixMath;
+import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,9 +33,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;
-	private UUID friendPlayerUUID;
+	private UUID friendPlayerUUID = new UUID(0, 0);;
 	private boolean hasPlayedSound;
-
+	private boolean isImprisoned;
+	
 	public EntityLivingBase target;
 
 	public EntityFriendlyCreeper(World world)
@@ -125,6 +127,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
+		nbt.setBoolean("isImprisoned", isImprisoned);
 	}
 
 	@Override
@@ -133,6 +136,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		super.readEntityFromNBT(nbt);
 
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
+		isImprisoned = nbt.getBoolean("isImprisoned");
 	}
 
 	@Override
@@ -147,6 +151,11 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
 
+		if (isImprisoned)
+		{
+			ReputationHandler.handleInteractWithImprisoned(entity, this);
+		}
+		
 		if (heldItem != null && heldItem.getItem() == ModItems.heart)
 		{
 			heldItem.stackSize--;
@@ -222,5 +231,29 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	public String getSpeakId() 
 	{
 		return "creeper";
+	}
+
+	@Override
+	public boolean isImprisoned() 
+	{
+		return isImprisoned;
+	}
+
+	@Override
+	public void setImprisoned(boolean value) 
+	{
+		this.isImprisoned = value;
+	}
+	
+	@Override
+	public Class getNonFriendlyClass() 
+	{
+		return EntityCreeper.class;
+	}
+	
+	@Override
+	public String getCommandSenderName() 
+	{
+		return "Creeper";
 	}
 }

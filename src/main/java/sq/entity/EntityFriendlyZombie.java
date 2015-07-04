@@ -24,14 +24,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 
 public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;
-	private UUID friendPlayerUUID;
+	private UUID friendPlayerUUID = new UUID(0, 0);
 	public EntityLivingBase target;
-
+	private boolean isImprisoned;
+	
 	public EntityFriendlyZombie(World world)
 	{
 		super(world);
@@ -72,6 +74,11 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
 
+		if (isImprisoned)
+		{
+			ReputationHandler.handleInteractWithImprisoned(entity, this);
+		}
+		
 		if (heldItem != null && heldItem.getItem() == ModItems.brain)
 		{
 			heldItem.stackSize--;
@@ -105,6 +112,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
+		nbt.setBoolean("isImprisoned", isImprisoned);
 	}
 
 	@Override
@@ -113,6 +121,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 		super.readEntityFromNBT(nbt);
 
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
+		isImprisoned = nbt.getBoolean("isImprisoned");
 	}
 
 	@Override
@@ -174,5 +183,29 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	public String getSpeakId() 
 	{
 		return "zombie";
+	}
+
+	@Override
+	public boolean isImprisoned() 
+	{
+		return isImprisoned;
+	}
+
+	@Override
+	public void setImprisoned(boolean value) 
+	{
+		this.isImprisoned = value;
+	}
+
+	@Override
+	public Class getNonFriendlyClass() 
+	{
+		return EntityZombie.class;
+	}
+	
+	@Override
+	public String getCommandSenderName() 
+	{
+		return "Zombie";
 	}
 }

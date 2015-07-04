@@ -17,4 +17,7 @@ public interface IFriendlyEntity
 	int getTimeUntilSpeak();
 	void setTimeUntilSpeak(int value);
 	String getSpeakId();
+	boolean isImprisoned();
+	void setImprisoned(boolean value);
+	Class getNonFriendlyClass();
 }
