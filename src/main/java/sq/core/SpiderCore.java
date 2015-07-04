@@ -107,7 +107,7 @@ public final class SpiderCore
 {
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
-	public static final String VERSION = "triage";
+	public static final String VERSION = "@VERSION@";
 	public static final String PERM_SKINS_URL = "http://pastebin.com/raw.php?i=MNWrUxwa";
 	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
 	

@@ -30,12 +30,13 @@ version = "0.9"
 group= "com.radixshock"
 archivesBaseName = "SpiderQueen"
 def buildNumber = 1
+def rcNumber = 1
 
 minecraft 
 {
     version = "1.7.10-10.13.4.1448-1.7.10"
     runDir =  "eclipse/"
-    replaceIn "sqr/core/Constants.java"
+    replaceIn "sq/core/SpiderCore.java"
     replace   "@VERSION@", project.version
     
     def Properties versionProps = new Properties()
@@ -44,13 +45,18 @@ minecraft
     versionProps.load(new FileInputStream(versionPropsFile))
 
     def code = versionProps['BUILD_NUMBER'].toInteger() + 1
+    def rc = versionProps['RC_NUMBER'].toInteger() + 1
     buildNumber = code
+    rcNumber = rc
     
     versionProps['BUILD_NUMBER']=code.toString()
     versionProps.store(versionPropsFile.newWriter(), null)
+    
+    versionProps['RC_NUMBER']=rc.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
 }
 
-version = "${project.minecraft.version}-${project.version}" + "." + buildNumber
+version = "${project.minecraft.version}-${project.version}" + "." + buildNumber + "-RC" + rcNumber
 
 dependencies 
 {
