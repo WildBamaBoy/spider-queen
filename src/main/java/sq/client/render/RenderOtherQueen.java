@@ -75,6 +75,6 @@ public class RenderOtherQueen extends RenderLiving
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		EntitySpiderQueen spiderQueen = (EntitySpiderQueen)entity;
-		return RenderSpiderQueen.spiderQueenTextures[spiderQueen.getTextureIndex()];
+		return RenderSpiderQueen.spiderQueenTextures[spiderQueen.getTextureId()];
 	}
 }
