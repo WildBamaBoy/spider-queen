@@ -51,7 +51,7 @@ public class WorldGenFactory implements IWorldGenerator
 				int z = chunkZ * 16 + random.nextInt(16);
 				BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
 
-				if (biome == BiomeGenBase.plains)
+				if (biome == BiomeGenBase.plains || biome == BiomeGenBase.desert || biome == BiomeGenBase.savanna)
 				{
 					for (int maxY = 256; maxY > 0; maxY--)
 					{
@@ -69,7 +69,7 @@ public class WorldGenFactory implements IWorldGenerator
 	{
 		Block block = world.getBlock(x, y, z);
 
-		if (block == Blocks.grass && random.nextInt(1400) == 0)
+		if (block == Blocks.grass && random.nextInt(450) == 0)
 		{
 			y += 2; //Account for the test block and player standing location in schematic.
 			SpiderCore.getLog().info("Generating factory at " + x + ", " + y + ", " + z );
