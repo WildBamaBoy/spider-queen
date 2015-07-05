@@ -1,5 +1,8 @@
 package sq.entity;
 
+import sq.core.SpiderCore;
+import sq.core.minecraft.ModBlocks;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class EntityWasp extends AbstractFlyingMob
@@ -89,6 +92,15 @@ public class EntityWasp extends AbstractFlyingMob
 	protected final String getLivingSound()
 	{
 		return "sq:bee.idle";
+	}
+	
+	@Override
+	protected void dropFewItems(boolean hitByPlayer, int lootingLvl) 
+	{
+		if (SpiderCore.rand.nextBoolean())
+		{
+			dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1);
+		}
 	}
 }
 
