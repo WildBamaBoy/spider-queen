@@ -274,7 +274,11 @@ public final class EventHooksForge
 		if (event.entity instanceof EntityMob && !(event.entity instanceof AbstractNewMob))
 		{
 			EntityMob mob = (EntityMob)event.entity;
-			mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityHuman.class, 0, true));
+			
+			if (mob.targetTasks != null)
+			{
+				mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityHuman.class, 0, true));
+			}
 		}
 	}
 
