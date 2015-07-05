@@ -269,7 +269,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		int i = MathHelper.floor_double(posX);
 		int j = MathHelper.floor_double(boundingBox.minY);
 		int k = MathHelper.floor_double(posZ);
-		return worldObj.getBlock(i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
+		return (worldObj.getBlock(i, j - 1, k) == Blocks.grass || worldObj.getBlock(i, j - 1, k) == Blocks.snow_layer) && super.getCanSpawnHere();
 	}
 
 	protected String getLivingSound()
