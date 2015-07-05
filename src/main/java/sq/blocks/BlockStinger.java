@@ -25,7 +25,7 @@ public class BlockStinger extends Block
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) 
+	public void onEntityWalking(World world, int x, int y, int z, Entity entity) 
 	{
 		entity.attackEntityFrom(DamageSource.cactus, 3);
 	}

@@ -48,12 +48,6 @@ public class RenderSpiderEx extends RenderLiving
 	@Override
 	protected int shouldRenderPass(EntityLivingBase entitySpider, int passNumber, float partialTickTime)
 	{
-		this.bindTexture(eyes);
-		GL11.glTranslatef(0.0F, 0.0F, -0.0001F); //Prevent Z clipping.
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-
 		EntitySpiderEx spider = (EntitySpiderEx)entitySpider;
 
 		if (spider.getPowered())
@@ -101,6 +95,17 @@ public class RenderSpiderEx extends RenderLiving
 		int k = c0 / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		if (passNumber > 0)
+		{
+			this.bindTexture(eyes);
+			GL11.glTranslatef(0.0F, 0.0F, -0.0001F); //Prevent Z clipping.
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glDisable(GL11.GL_ALPHA_TEST);
+			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+			return 1;
+		}
+		
 		return -1;
 	}
 
