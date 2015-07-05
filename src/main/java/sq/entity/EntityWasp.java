@@ -72,5 +72,23 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		return true;
 	}
+	
+	@Override
+	protected final String getHurtSound() 
+	{
+		return "sq:bee.hurt";
+	}
+
+	@Override
+	protected final String getDeathSound() 
+	{
+		return "sq:bee.death";
+	}
+
+	@Override
+	protected final String getLivingSound()
+	{
+		return "sq:bee.idle";
+	}
 }
 

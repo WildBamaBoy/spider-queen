@@ -69,19 +69,19 @@ public abstract class AbstractNewMob extends EntityMob
     }
 	
 	@Override
-	protected final String getHurtSound() 
+	protected String getHurtSound() 
 	{
 		return "sq:" + codeName + ".hurt";
 	}
 
 	@Override
-	protected final String getDeathSound() 
+	protected String getDeathSound() 
 	{
 		return "sq:" + codeName + ".death";
 	}
 
 	@Override
-	protected final String getLivingSound()
+	protected String getLivingSound()
 	{
 		return "sq:" + codeName + ".idle";
 	}
