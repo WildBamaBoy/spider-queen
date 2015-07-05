@@ -279,7 +279,6 @@ public final class SpiderCore
 		ReputationContainer.createNew(EntitySkeleton.class, EnumWatchedDataIDs.SKELETON_LIKE.getId());
 		ReputationContainer.createNew(EntityCreeper.class, EnumWatchedDataIDs.CREEPER_LIKE.getId());
 		ReputationContainer.createNew(EntityZombie.class, EnumWatchedDataIDs.ZOMBIE_LIKE.getId());
-		ReputationContainer.createNew(EntitySpider.class, EnumWatchedDataIDs.SPIDER_LIKE.getId());
 		ReputationContainer.createNew(EntityHuman.class, EnumWatchedDataIDs.HUMAN_LIKE.getId());
 		ReputationContainer.createNew(EntityBee.class, EnumWatchedDataIDs.BEE_LIKE.getId());
 		
