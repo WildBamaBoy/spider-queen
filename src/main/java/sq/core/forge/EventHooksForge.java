@@ -5,7 +5,9 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -30,6 +32,7 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
+import sq.entity.AbstractNewMob;
 import sq.entity.EntityCocoon;
 import sq.entity.EntityFriendlyMandragora;
 import sq.entity.EntityHuman;
@@ -266,6 +269,12 @@ public final class EventHooksForge
 			{
 				RepEntityExtension.register(event.entity);
 			}
+		}
+		
+		if (event.entity instanceof EntityMob && !(event.entity instanceof AbstractNewMob))
+		{
+			EntityMob mob = (EntityMob)event.entity;
+			mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityHuman.class, 0, true));
 		}
 	}
 
