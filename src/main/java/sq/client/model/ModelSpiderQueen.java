@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import sq.client.render.RenderSpiderQueen;
 import sq.core.SpiderCore;
-import sq.entity.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderEx;
 
 public class ModelSpiderQueen extends ModelBase
 {

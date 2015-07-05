@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import radixcore.util.RadixString;
 import sq.entity.ai.AIAttackPlayerOnUnlike;
+import sq.entity.creature.EntityHuman;
 
 public abstract class AbstractNewMob extends EntityMob 
 {

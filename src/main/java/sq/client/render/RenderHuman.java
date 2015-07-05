@@ -20,7 +20,7 @@ import radixcore.constant.Font.Color;
 import radixcore.constant.Font.Format;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
-import sq.entity.EntityHuman;
+import sq.entity.creature.EntityHuman;
 
 public class RenderHuman extends RenderBiped
 {

@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import sq.entity.EntityWebShot;
+import sq.entity.creature.EntityWebShot;
 import sq.enums.EnumWebType;
 import cpw.mods.fml.common.registry.GameRegistry;
 

@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import sq.client.model.ModelVines;
-import sq.entity.EntityVines;
+import sq.entity.creature.EntityVines;
 
 public class RenderVines extends Render
 {

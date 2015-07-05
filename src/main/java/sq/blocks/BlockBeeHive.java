@@ -20,7 +20,7 @@ import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
-import sq.entity.EntityBee;
+import sq.entity.creature.EntityBee;
 import sq.enums.EnumBeeType;
 import cpw.mods.fml.common.registry.GameRegistry;
 

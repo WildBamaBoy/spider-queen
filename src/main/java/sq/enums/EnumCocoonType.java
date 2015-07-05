@@ -18,10 +18,10 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import radixcore.constant.Font.Color;
 import sq.core.minecraft.ModItems;
-import sq.entity.EntityAnt;
-import sq.entity.EntityBee;
-import sq.entity.EntityHuman;
-import sq.entity.EntityWasp;
+import sq.entity.creature.EntityAnt;
+import sq.entity.creature.EntityBee;
+import sq.entity.creature.EntityHuman;
+import sq.entity.creature.EntityWasp;
 import sq.items.ItemCocoon;
 
 public enum EnumCocoonType

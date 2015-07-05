@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
-import sq.entity.EntityAnt;
+import sq.entity.creature.EntityAnt;
 import sq.enums.EnumAntType;
 import cpw.mods.fml.common.registry.GameRegistry;
 

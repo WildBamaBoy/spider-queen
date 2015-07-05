@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelAnt;
-import sq.entity.EntityAnt;
+import sq.entity.creature.EntityAnt;
 import sq.enums.EnumAntType;
 
 public class RenderAnt extends RenderLiving

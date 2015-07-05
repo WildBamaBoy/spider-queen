@@ -5,9 +5,9 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
-import sq.entity.EntityAnt;
-import sq.entity.EntityBee;
-import sq.entity.EntityHuman;
+import sq.entity.creature.EntityAnt;
+import sq.entity.creature.EntityBee;
+import sq.entity.creature.EntityHuman;
 
 
 public enum EnumWatchedDataIDs

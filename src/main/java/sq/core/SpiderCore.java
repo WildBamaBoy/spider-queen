@@ -17,7 +17,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -52,32 +51,33 @@ import sq.core.minecraft.ModItems;
 import sq.core.radix.CrashWatcher;
 import sq.core.radix.PlayerData;
 import sq.core.radix.SpiderPacketHandler;
-import sq.entity.EntityAnt;
-import sq.entity.EntityBee;
-import sq.entity.EntityBeetle;
-import sq.entity.EntityBoomBall;
-import sq.entity.EntityCocoon;
-import sq.entity.EntityFly;
-import sq.entity.EntityFriendlyBee;
-import sq.entity.EntityFriendlyCreeper;
-import sq.entity.EntityFriendlyMandragora;
-import sq.entity.EntityFriendlySkeleton;
-import sq.entity.EntityFriendlyZombie;
-import sq.entity.EntityGhastEgg;
-import sq.entity.EntityHuman;
-import sq.entity.EntityJack;
-import sq.entity.EntityJackBall;
-import sq.entity.EntityMandragora;
-import sq.entity.EntityMiniGhast;
-import sq.entity.EntityOctopus;
-import sq.entity.EntitySpiderEgg;
-import sq.entity.EntitySpiderEx;
-import sq.entity.EntitySpiderQueen;
-import sq.entity.EntityVines;
-import sq.entity.EntityWasp;
-import sq.entity.EntityWebShot;
-import sq.entity.EntityYuki;
 import sq.entity.ai.ReputationContainer;
+import sq.entity.creature.EntityAnt;
+import sq.entity.creature.EntityBee;
+import sq.entity.creature.EntityBeetle;
+import sq.entity.creature.EntityCocoon;
+import sq.entity.creature.EntityFly;
+import sq.entity.creature.EntityGhastEgg;
+import sq.entity.creature.EntityHuman;
+import sq.entity.creature.EntityJack;
+import sq.entity.creature.EntityMandragora;
+import sq.entity.creature.EntityMiniGhast;
+import sq.entity.creature.EntityOctopus;
+import sq.entity.creature.EntitySpiderEgg;
+import sq.entity.creature.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderQueen;
+import sq.entity.creature.EntityVines;
+import sq.entity.creature.EntityWasp;
+import sq.entity.creature.EntityWebShot;
+import sq.entity.creature.EntityYuki;
+import sq.entity.friendly.EntityFriendlyBee;
+import sq.entity.friendly.EntityFriendlyCreeper;
+import sq.entity.friendly.EntityFriendlyMandragora;
+import sq.entity.friendly.EntityFriendlySkeleton;
+import sq.entity.friendly.EntityFriendlyZombie;
+import sq.entity.throwable.EntityBoomBall;
+import sq.entity.throwable.EntityFreezeBall;
+import sq.entity.throwable.EntityJackBall;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumWatchedDataIDs;
 import sq.gen.WorldGenAntHill;
@@ -243,6 +243,7 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityGhastEgg.class, EntityGhastEgg.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityMiniGhast.class, EntityMiniGhast.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFriendlyBee.class, EntityFriendlyBee.class.getSimpleName(), id, this, 50,  2, true); id++;
+		EntityRegistry.registerModEntity(EntityFreezeBall.class, EntityFreezeBall.class.getSimpleName(), id, this, 50,  2, true); id++;
 		
 		//Tile registry
 
@@ -270,7 +271,9 @@ public final class SpiderCore
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntitySpiderQueen.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
-
+		EntityRegistry.addSpawn(EntityYuki.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
+				BiomeGenBase.iceMountains, BiomeGenBase.icePlains);
+		
 		//World Gen
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
 		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);

@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
-import sq.entity.EntityHuman;
+import sq.entity.creature.EntityHuman;
 
 public enum EnumHumanType 
 {

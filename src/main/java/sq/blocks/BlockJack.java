@@ -11,7 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import sq.entity.EntityJack;
+import sq.entity.creature.EntityJack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockJack extends Block

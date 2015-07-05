@@ -28,32 +28,33 @@ import sq.client.render.RenderWeb;
 import sq.client.render.RenderWebslinger;
 import sq.client.render.RenderYuki;
 import sq.core.SpiderCore;
-import sq.entity.EntityAnt;
-import sq.entity.EntityBee;
-import sq.entity.EntityBeetle;
-import sq.entity.EntityBoomBall;
-import sq.entity.EntityCocoon;
-import sq.entity.EntityFly;
-import sq.entity.EntityFriendlyBee;
-import sq.entity.EntityFriendlyCreeper;
-import sq.entity.EntityFriendlyMandragora;
-import sq.entity.EntityFriendlySkeleton;
-import sq.entity.EntityFriendlyZombie;
-import sq.entity.EntityGhastEgg;
-import sq.entity.EntityHuman;
-import sq.entity.EntityJack;
-import sq.entity.EntityJackBall;
-import sq.entity.EntityMandragora;
-import sq.entity.EntityMiniGhast;
-import sq.entity.EntityOctopus;
-import sq.entity.EntitySpiderEgg;
-import sq.entity.EntitySpiderEx;
-import sq.entity.EntitySpiderQueen;
-import sq.entity.EntityVines;
-import sq.entity.EntityWasp;
-import sq.entity.EntityWebShot;
-import sq.entity.EntityWebslinger;
-import sq.entity.EntityYuki;
+import sq.entity.creature.EntityAnt;
+import sq.entity.creature.EntityBee;
+import sq.entity.creature.EntityBeetle;
+import sq.entity.creature.EntityCocoon;
+import sq.entity.creature.EntityFly;
+import sq.entity.creature.EntityGhastEgg;
+import sq.entity.creature.EntityHuman;
+import sq.entity.creature.EntityJack;
+import sq.entity.creature.EntityMandragora;
+import sq.entity.creature.EntityMiniGhast;
+import sq.entity.creature.EntityOctopus;
+import sq.entity.creature.EntitySpiderEgg;
+import sq.entity.creature.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderQueen;
+import sq.entity.creature.EntityVines;
+import sq.entity.creature.EntityWasp;
+import sq.entity.creature.EntityWebShot;
+import sq.entity.creature.EntityWebslinger;
+import sq.entity.creature.EntityYuki;
+import sq.entity.friendly.EntityFriendlyBee;
+import sq.entity.friendly.EntityFriendlyCreeper;
+import sq.entity.friendly.EntityFriendlyMandragora;
+import sq.entity.friendly.EntityFriendlySkeleton;
+import sq.entity.friendly.EntityFriendlyZombie;
+import sq.entity.throwable.EntityBoomBall;
+import sq.entity.throwable.EntityFreezeBall;
+import sq.entity.throwable.EntityJackBall;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public final class ClientProxy extends ServerProxy
@@ -88,6 +89,7 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityGhastEgg.class, new RenderGhastEgg());
 		RenderingRegistry.registerEntityRenderingHandler(EntityMiniGhast.class, new RenderMiniGhast());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyBee.class, new RenderFriendlyBee());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFreezeBall.class, new RenderThrowable());
 	}
 
 	@Override

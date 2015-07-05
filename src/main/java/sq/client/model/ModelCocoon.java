@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
 
-import sq.entity.EntityCocoon;
+import sq.entity.creature.EntityCocoon;
 import sq.enums.EnumCocoonSize;
 import sq.enums.EnumCocoonType;
 

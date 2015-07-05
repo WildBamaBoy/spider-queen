@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
 
 import radixcore.constant.Font.Color;
 import sq.core.SpiderCore;
-import sq.entity.EntityCocoon;
+import sq.entity.creature.EntityCocoon;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSpiderType;
 import cpw.mods.fml.common.registry.GameRegistry;

@@ -10,7 +10,7 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import sq.entity.EntityWebslinger;
+import sq.entity.creature.EntityWebslinger;
 
 public class RenderWebslinger extends Render
 {

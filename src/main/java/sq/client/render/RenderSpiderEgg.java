@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import sq.client.model.ModelSpiderEgg;
-import sq.entity.EntitySpiderEgg;
+import sq.entity.creature.EntitySpiderEgg;
 
 public class RenderSpiderEgg extends Render
 {

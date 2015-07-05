@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import sq.entity.EntitySpiderEgg;
+import sq.entity.creature.EntitySpiderEgg;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemSpiderEgg extends Item

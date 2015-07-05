@@ -18,16 +18,16 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixString;
 import sq.core.minecraft.ModAchievements;
 import sq.core.radix.PlayerData;
-import sq.entity.EntityFriendlyBee;
-import sq.entity.EntityFriendlyCreeper;
-import sq.entity.EntityFriendlyMandragora;
-import sq.entity.EntityFriendlySkeleton;
-import sq.entity.EntityFriendlyZombie;
-import sq.entity.FriendlyEntityHelper;
-import sq.entity.IFriendlyEntity;
 import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.ai.ReputationContainer;
+import sq.entity.friendly.EntityFriendlyBee;
+import sq.entity.friendly.EntityFriendlyCreeper;
+import sq.entity.friendly.EntityFriendlyMandragora;
+import sq.entity.friendly.EntityFriendlySkeleton;
+import sq.entity.friendly.EntityFriendlyZombie;
+import sq.entity.friendly.FriendlyEntityHelper;
+import sq.entity.friendly.IFriendlyEntity;
 import sq.util.Utils;
 
 public class ReputationHandler 

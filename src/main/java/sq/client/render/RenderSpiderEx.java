@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import sq.client.model.ModelSpiderEx;
-import sq.entity.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderEx;
 import sq.enums.EnumSpiderType;
 
 public class RenderSpiderEx extends RenderLiving

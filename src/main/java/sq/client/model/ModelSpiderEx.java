@@ -8,7 +8,7 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
-import sq.entity.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderEx;
 import sq.enums.EnumSpiderType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

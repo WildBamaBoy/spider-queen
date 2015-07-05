@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelSpiderQueen;
-import sq.entity.EntitySpiderQueen;
+import sq.entity.creature.EntitySpiderQueen;
 
 public class RenderOtherQueen extends RenderLiving
 {

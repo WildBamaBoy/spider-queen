@@ -11,8 +11,8 @@ import net.minecraft.util.ChatComponentText;
 import radixcore.constant.Font.Color;
 import radixcore.constant.Font.Format;
 import radixcore.util.RadixLogic;
-import sq.entity.EntitySpiderEgg;
-import sq.entity.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderEgg;
+import sq.entity.creature.EntitySpiderEx;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 public final class CommandSQ extends CommandBase

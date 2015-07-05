@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 import radixcore.constant.Particle;
 import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
-import sq.entity.EntitySpiderEx;
-import sq.entity.IFriendlyEntity;
+import sq.entity.creature.EntitySpiderEx;
+import sq.entity.friendly.IFriendlyEntity;
 import sq.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
 

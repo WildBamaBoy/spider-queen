@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import sq.entity.IFriendlyEntity;
+import sq.entity.friendly.IFriendlyEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemEggSpawner extends Item

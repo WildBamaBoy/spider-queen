@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import sq.entity.EntityMiniGhast;
+import sq.entity.creature.EntityMiniGhast;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

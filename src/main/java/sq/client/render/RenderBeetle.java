@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelBeetle;
-import sq.entity.EntityBeetle;
+import sq.entity.creature.EntityBeetle;
 
 public class RenderBeetle extends RenderLiving
 {

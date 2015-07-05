@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelBee;
-import sq.entity.EntityBee;
+import sq.entity.creature.EntityBee;
 
 public class RenderBee extends RenderLiving
 {

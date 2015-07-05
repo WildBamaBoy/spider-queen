@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import sq.client.model.ModelCocoon;
-import sq.entity.EntityCocoon;
+import sq.entity.creature.EntityCocoon;
 
 public class RenderCocoon extends Render
 {

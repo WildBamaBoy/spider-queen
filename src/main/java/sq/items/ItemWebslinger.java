@@ -12,8 +12,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import sq.core.SpiderCore;
-import sq.entity.EntityWebslinger;
 import sq.entity.ai.PlayerExtension;
+import sq.entity.creature.EntityWebslinger;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemWebslinger extends Item

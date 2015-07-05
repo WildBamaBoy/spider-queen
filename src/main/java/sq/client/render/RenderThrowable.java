@@ -8,8 +8,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import sq.entity.EntityBoomBall;
-import sq.entity.EntityJackBall;
+import sq.entity.throwable.EntityBoomBall;
+import sq.entity.throwable.EntityFreezeBall;
+import sq.entity.throwable.EntityJackBall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,7 +20,8 @@ public class RenderThrowable extends Render
 	private ResourceLocation jackBallLocation = new ResourceLocation("sq:textures/items/jackball.png");
 	private ResourceLocation boomBallLocation = new ResourceLocation("sq:textures/items/boomball.png");
 	private ResourceLocation octoBallLocation = new ResourceLocation("sq:textures/items/octoball.png");
-	
+	private ResourceLocation freezeBallLocation = new ResourceLocation("sq:textures/items/freezeball.png");
+
 	public RenderThrowable()
 	{
 
@@ -43,7 +45,7 @@ public class RenderThrowable extends Render
 		float f6 = 0.25F;
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-		
+
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		tess.setNormal(0.0F, 1.0F, 0.0F);
@@ -52,7 +54,7 @@ public class RenderThrowable extends Render
 		tess.addVertexWithUV((double)(f4 - f5), (double)(f4 - f6), 0.0D, (double)f1, (double)f2);
 		tess.addVertexWithUV((double)(0.0F - f5), (double)(f4 - f6), 0.0D, (double)f, (double)f2);
 		tess.draw();
-		
+
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
@@ -63,12 +65,17 @@ public class RenderThrowable extends Render
 		{
 			return jackBallLocation;
 		}
-		
+
 		else if (entity instanceof EntityBoomBall)
 		{
 			return boomBallLocation;
 		}
-		
+
+		else if (entity instanceof EntityFreezeBall)
+		{
+			return freezeBallLocation;
+		}
+
 		else
 		{
 			return null;

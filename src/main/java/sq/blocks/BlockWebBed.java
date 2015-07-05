@@ -15,8 +15,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import sq.entity.EntitySpiderEx;
-import sq.entity.EntitySpiderQueen;
+import sq.entity.creature.EntitySpiderEx;
+import sq.entity.creature.EntitySpiderQueen;
 import sq.packet.PacketSleepC;
 import cpw.mods.fml.common.registry.GameRegistry;
 

@@ -121,5 +121,13 @@
         [
             "recall-rod"
         ]
+    },
+    "freeze.rod":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "freeze-rod"
+        ]
     }
 }
