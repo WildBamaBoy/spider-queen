@@ -211,9 +211,9 @@ public enum EnumHumanType
 		
 		//Standard drop rate from the original mod.
 		Random r = new Random();
-		if(r.nextInt(100) < 17) { list.add(new ItemStack(ModItems.skull)); }
-		if(r.nextInt(100) < 17) { list.add(new ItemStack(ModItems.heart)); }
-		if(r.nextInt(100) < 17) { list.add(new ItemStack(ModItems.brain)); }
+		if(r.nextInt(100) < 30) { list.add(new ItemStack(ModItems.skull)); }
+		if(r.nextInt(100) < 30) { list.add(new ItemStack(ModItems.heart)); }
+		if(r.nextInt(100) < 30) { list.add(new ItemStack(ModItems.brain)); }
 
 		for (int i = list.size() - 1; i > 0; i--)
 		{
