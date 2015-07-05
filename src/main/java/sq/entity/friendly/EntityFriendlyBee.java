@@ -10,16 +10,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import radixcore.constant.Font.Color;
-import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityBee;
-import sq.util.Utils;
 
 public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 {
@@ -49,7 +45,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 		
 		if (nearestPlayer != null && nearestPlayer.getUniqueID().equals(friendPlayerUUID))
 		{
-			if (nearestPlayer.getHeldItem() != null && nearestPlayer.getHeldItem().getItem() == ModItems.spiderRod)
+			if (nearestPlayer.getHeldItem() != null && Block.getBlockFromItem(nearestPlayer.getHeldItem().getItem()) instanceof BlockFlower)
 			{
 				entityToAttack = nearestPlayer;
 			}

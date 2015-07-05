@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import sq.entity.creature.EntityBee;
+import sq.entity.friendly.EntityFriendlyBee;
 import sq.enums.EnumBeeType;
 
 public class ModelBee extends ModelBase
@@ -289,6 +290,28 @@ public class ModelBee extends ModelBase
 		final EntityBee bee = (EntityBee)entity;
 		final EnumBeeType type = bee.getBeeType();
 
+		if (bee instanceof EntityFriendlyBee)
+		{
+			head.render(f5);
+			body.render(f5);
+			rightArm.render(f5);
+			leftArm.render(f5);
+			rightLeg.render(f5);
+			leftLeg.render(f5);
+			thorax.render(f5);
+			antenna1.render(f5);
+			antenna2.render(f5);
+			lash1.render(f5);
+			lash2.render(f5);
+			stinger2.render(f5);
+			stinger1.render(f5);
+			handle1.render(f5);
+			handle2.render(f5);
+			bucket1.render(f5);
+			bucket2.render(f5);
+			return;
+		}
+		
 		if (type == EnumBeeType.WARRIOR && bee.getAttacking())
 		{
 			headAttack.render(f5);

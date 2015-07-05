@@ -9,6 +9,7 @@ import radixcore.constant.Particle;
 import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEx;
+import sq.entity.friendly.EntityFriendlyBee;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -48,7 +49,7 @@ public class ItemRecallRod extends Item
 			{
 				IFriendlyEntity friendly = (IFriendlyEntity)entity;
 				
-				if (friendly.getFriendPlayerUUID() == player.getUniqueID())
+				if (friendly.getFriendPlayerUUID() == player.getUniqueID() && !(friendly instanceof EntityFriendlyBee))
 				{
 					entity.setPosition(player.posX, player.posY, player.posZ);
 				}
