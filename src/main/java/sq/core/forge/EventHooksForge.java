@@ -6,9 +6,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -143,17 +146,17 @@ public final class EventHooksForge
 
 				//Check for anger.
 				extension.setTimesHitByPlayer(extension.getTimesHitByPlayer() + 1);
-				
+
 				if (!player.worldObj.isRemote && extension.getTimesHitByPlayer() == 3 && calculatedHealth > 0.0F && reputation >= 0)
 				{
 					player.addChatComponentMessage(new ChatComponentText(Color.RED + "You have angered this " + event.target.getCommandSenderName() + "!"));
 				}
 			}
-			
+
 			if (event.target instanceof EntityGhast)
 			{
 				EntityGhast ghast = (EntityGhast) event.target;
-				
+
 				//isInWeb
 				if (ObfuscationReflectionHelper.getPrivateValue(Entity.class, ghast, 27))
 				{
@@ -161,7 +164,7 @@ public final class EventHooksForge
 					{
 						ghast.dropItem(ModItems.ghastEgg, 1);
 					}
-					
+
 					//Half the ghast's health to prevent farming eggs.
 					ghast.setHealth(ghast.getHealth() / 2);
 				}
@@ -175,32 +178,32 @@ public final class EventHooksForge
 		if (event.entityLiving instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
-			
+
 			//isInWeb
 			ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event)
 	{
 		if (event.entityLiving instanceof EntityPlayer && event.source == DamageSource.fall)
 		{
 			PlayerExtension extension = PlayerExtension.get((EntityPlayer)event.entityLiving);
-			
+
 			boolean cancel = extension.webEntity != null || extension.slingerCooldown > 0;
 			event.setCanceled(cancel);
 		}
-		
+
 		else if (event.entityLiving.getClass().equals(EntitySpider.class) && event.source.getSourceOfDamage() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)event.source.getSourceOfDamage();
 			PlayerData data = SpiderCore.getPlayerData((EntityPlayer)event.source.getSourceOfDamage());
 			RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
-			
+
 			//Cancel the target if...
 			boolean doCancel = data.spiderLike.getInt() >= 0 && extension.getTimesHitByPlayer() < 3;
-			
+
 			if (doCancel)
 			{
 				EntityLivingBase living = new EntitySpider(event.entityLiving.worldObj);
@@ -208,13 +211,13 @@ public final class EventHooksForge
 
 				//Redirect the attack as an attack from a fake entity so that the spider doesn't hit the player back.
 				event.entityLiving.attackEntityFrom(DamageSource.causeMobDamage(living), event.ammount);
-				
+
 				event.setCanceled(true);
 				living.setDead(); //Set the entity as dead so that the spider will not try to attack it.
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
@@ -229,24 +232,27 @@ public final class EventHooksForge
 			{
 				WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
 				int chanceToAffectRep = 25;
-				
+
 				//Check if the player is invisible. If so, no potential for reputation penalty.
 				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep) && !player.isInvisible())
 				{
 					ReputationHandler.onReputationChange(player, event.entityLiving, -1);
 				}
-				
+
 				//Increase number of monsters killed if not human.
 				if (likeData != data.humanLike)
 				{
-					playerExtension.setMonstersKilled(playerExtension.getMonstersKilled() + 1);
-					
-					if (playerExtension.getMonstersKilled() >= 5)
+					if (event.entityLiving instanceof EntityCreeper || event.entityLiving instanceof EntityZombie || event.entityLiving instanceof EntitySkeleton)
 					{
-						player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "Your attack on enemy mobs has earned the humans' trust."));
-						playerExtension.setMonstersKilled(0); //Reset
-						
-						ReputationHandler.onReputationChange(player, new EntityHuman(player.worldObj), 1);
+						playerExtension.setMonstersKilled(playerExtension.getMonstersKilled() + 1);
+
+						if (playerExtension.getMonstersKilled() >= 5)
+						{
+							player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "Your attack on enemy mobs has earned the humans' trust."));
+							playerExtension.setMonstersKilled(0); //Reset
+
+							ReputationHandler.onReputationChange(player, new EntityHuman(player.worldObj), 1);
+						}
 					}
 				}
 			}
@@ -270,11 +276,11 @@ public final class EventHooksForge
 				RepEntityExtension.register(event.entity);
 			}
 		}
-		
+
 		if (event.entity instanceof EntityMob && !(event.entity instanceof AbstractNewMob))
 		{
 			EntityMob mob = (EntityMob)event.entity;
-			
+
 			if (mob.targetTasks != null)
 			{
 				mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityHuman.class, 0, true));
@@ -327,7 +333,7 @@ public final class EventHooksForge
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onEntityItemPickup(EntityItemPickupEvent event)
 	{
