@@ -41,7 +41,7 @@ public class ItemFreezeRod extends Item
 		
 		stack.setItemDamage(stack.getItemDamage() + 1);
 		
-		if (stack.getItemDamage() >= 16)
+		if (stack.getItemDamage() >= 32)
 		{
 			stack.stackSize = 0;
 		}
