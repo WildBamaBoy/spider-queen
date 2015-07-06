@@ -289,10 +289,11 @@ public final class SpiderCore
 		//Load factories.
 		long t1 = System.nanoTime();
 		logger.info("Preloading schematics...");
-		structureSchematics.put(0, SchematicHandler.readSchematic("/assets/sq/schematics/factorySawtooth44.schematic"));
-		structureSchematics.put(1, SchematicHandler.readSchematic("/assets/sq/schematics/factoryEndergirl0.schematic"));
-		structureSchematics.put(2, SchematicHandler.readSchematic("/assets/sq/schematics/factoryAllenWL.schematic"));
-		structureSchematics.put(3, SchematicHandler.readSchematic("/assets/sq/schematics/lairFangdam1.schematic"));
+		structureSchematics.put(0, SchematicHandler.readSchematic("/assets/sq/schematics/factorySawtooth44-fixed.schematic"));
+		structureSchematics.put(1, SchematicHandler.readSchematic("/assets/sq/schematics/factoryEndergirl0-fixed.schematic"));
+		structureSchematics.put(2, SchematicHandler.readSchematic("/assets/sq/schematics/factoryAllenWL-fixed.schematic"));
+		structureSchematics.put(3, SchematicHandler.readSchematic("/assets/sq/schematics/factoryMario384-fixed.schematic"));
+		structureSchematics.put(4, SchematicHandler.readSchematic("/assets/sq/schematics/lairFangdam1.schematic"));
 		long t2 = System.nanoTime();
 		
 		long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
