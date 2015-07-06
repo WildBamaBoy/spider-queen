@@ -116,7 +116,7 @@ public class ReputationHandler
 				IFriendlyEntity friendly = (IFriendlyEntity)entity;
 
 				Vec3 target = RandomPositionGenerator.findRandomTarget(entity, 5, 1);
-				entity.setPosition(player.posX + target.xCoord, player.posY, player.posZ + target.zCoord);
+				entity.setPosition(player.posX + target.xCoord, player.posY + target.yCoord, player.posZ + target.zCoord);
 				player.worldObj.spawnEntityInWorld(entity);
 
 				String messageId = "message." + friendly.getSpeakId() + ".appearance";
