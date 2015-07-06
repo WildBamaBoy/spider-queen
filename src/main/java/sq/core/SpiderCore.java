@@ -159,6 +159,7 @@ public final class SpiderCore
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
 		exData.classContainingClientDataContainer = SpiderCore.class;
 		exData.classContainingGetPlayerDataMethod = SpiderCore.class;
+		exData.url = "http://www.radix-shock.com/sq--download.html";
 		exData.playerDataMap = playerDataMap;
 
 		RadixCore.registerMod(exData);
