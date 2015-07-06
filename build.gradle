@@ -34,11 +34,6 @@ def rcNumber = 1
 
 minecraft 
 {
-    version = "1.7.10-10.13.4.1448-1.7.10"
-    runDir =  "eclipse/"
-    replaceIn "sq/core/SpiderCore.java"
-    replace   "@VERSION@", project.version
-    
     def Properties versionProps = new Properties()
     def versionPropsFile = file('version.properties')
     
@@ -54,10 +49,15 @@ minecraft
     
     versionProps['RC_NUMBER']=rc.toString()
     versionProps.store(versionPropsFile.newWriter(), null)
+
+    version = "1.7.10-10.13.4.1448-1.7.10"
+    runDir =  "eclipse/"
+    replaceIn "sq/core/SpiderCore.java"
+    replace   "@VERSION@", "${project.minecraft.version}-${project.version}" + "." + buildNumber + "-RC" + rcNumber
 }
 
 version = "${project.minecraft.version}-${project.version}" + "." + buildNumber + "-RC" + rcNumber
-
+ 
 dependencies 
 {
 	compile fileTree(dir: 'lib', includes: ['*.jar'])
