@@ -1,10 +1,10 @@
 package sq.entity.creature;
 
+import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.entity.AbstractFlyingMob;
-import net.minecraft.item.Item;
-import net.minecraft.world.World;
 
 public class EntityWasp extends AbstractFlyingMob
 {

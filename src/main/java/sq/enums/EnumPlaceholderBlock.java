@@ -2,7 +2,6 @@ package sq.enums;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import sq.core.minecraft.ModBlocks;
 
 /**
  * A enum set that maps a placeholder block to a different one.

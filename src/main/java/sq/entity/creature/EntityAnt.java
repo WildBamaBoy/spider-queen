@@ -5,10 +5,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import radixcore.data.WatchedInt;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
-import sq.core.radix.PlayerData;
 import sq.entity.AbstractNewMob;
 import sq.enums.EnumAntType;
 
