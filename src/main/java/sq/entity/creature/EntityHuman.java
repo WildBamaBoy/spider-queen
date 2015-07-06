@@ -240,16 +240,16 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 			{
 				double dX = entity.posX - posX;
 				double dZ = entity.posZ - posZ;
-				if(attackTime == 0)
+				
+				if(attackTime <= 0)
 				{
-					EntityArrow entityarrow = new EntityArrow(worldObj, this, 1);
-					entityarrow.posY += 1.3999999761581421D;
-					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityarrow.posY;
+					EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
+					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityArrow.posY;
 					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
 					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-					worldObj.spawnEntityInWorld(entityarrow);
-					entityarrow.setThrowableHeading(dX, d2 + (double)f1, dZ, 0.6F, 12F);
-					attackTime = 30;
+					worldObj.spawnEntityInWorld(entityArrow);
+					entityArrow.setThrowableHeading(dX, d2 + (double)f1, dZ, 0.6F, 12F);
+					attackTime = 50;
 				}
 				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
 				hasAttacked = true;
