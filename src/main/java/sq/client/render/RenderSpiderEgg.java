@@ -10,6 +10,9 @@ import org.lwjgl.opengl.GL11;
 import sq.client.model.ModelSpiderEgg;
 import sq.entity.creature.EntitySpiderEgg;
 
+/**
+ * Sets the texture on the spider egg model pre-render.
+ */
 public class RenderSpiderEgg extends Render
 {
 	private static final ResourceLocation	TEXTURE	= new ResourceLocation("sq:textures/entities/spider-egg.png");

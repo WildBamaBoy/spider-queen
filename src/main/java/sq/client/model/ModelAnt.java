@@ -5,6 +5,9 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
+/**
+ * Defines the Ant's in-game model.
+ */
 public class ModelAnt extends ModelBase
 {
 	private final ModelRenderer head;

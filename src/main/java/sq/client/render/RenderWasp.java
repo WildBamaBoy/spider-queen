@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelWasp;
 
+/**
+ * Sets the texture on the wasp model pre-render.
+ */
 public class RenderWasp extends RenderLiving
 {
 	private final ResourceLocation texture;

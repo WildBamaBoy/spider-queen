@@ -22,6 +22,9 @@ import sq.entity.IWebClimber;
 import sq.enums.EnumWebType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The full web is the base block for the other types of web.
+ */
 public class BlockWebFull extends Block
 {
 	private EnumWebType webType;
@@ -36,6 +39,7 @@ public class BlockWebFull extends Block
 		setBlockTextureName("sq:" + name);
 		setHardness(1.0F);
 
+		//Change registry name based on which web we are working with.
 		if (this instanceof BlockWebGround)
 		{
 			name += "-ground";
@@ -68,15 +72,20 @@ public class BlockWebFull extends Block
 	@Override
 	public int getRenderType()
 	{
+		//1 block high, crossed squares.
 		return 1;
 	}
 
 	@Override
 	public Item getItemDropped(int fortune, Random rand, int meta) 
 	{
+		//Do not drop the block, it is not obtainable.
 		return Items.string;
 	}
 
+	/**
+	 * Checks the provided area for the requirements of the web bed and spawns it if needed.
+	 */
 	private void checkForBed(World world, int x, int y, int z, int itr)
 	{
 		if (webType == EnumWebType.NORMAL)
@@ -153,6 +162,7 @@ public class BlockWebFull extends Block
 	@Override
 	public void onBlockAdded(World world, int posX, int posY, int posZ)
 	{
+		//Each time we're placed in the world, notify other blocks and check for the bed.
 		checkForBed(world, posX, posY, posZ, 0);
 		onNeighborBlockChange(world, posX, posY, posZ, 0);
 	}
@@ -172,6 +182,7 @@ public class BlockWebFull extends Block
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{
+		//No collision.
 		return null;
 	}
 
@@ -184,6 +195,7 @@ public class BlockWebFull extends Block
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) 
 	{
+		//Hinder the motion of entities that aren't spiders.
 		if (entity instanceof EntitySpider || entity instanceof EntityPlayer || entity instanceof IWebClimber)
 		{
 			return;
@@ -197,6 +209,7 @@ public class BlockWebFull extends Block
 			entity.motionZ = entity.motionZ * -0.1D;
 			entity.motionY = entity.motionY * 0.1D;
 
+			//If this web is poison, add a poison effect to the creature caught inside.
 			if (webType == EnumWebType.POISON && entity instanceof EntityLivingBase)
 			{
 				final EntityLivingBase entityLiving = (EntityLivingBase)entity;
@@ -212,6 +225,7 @@ public class BlockWebFull extends Block
 	@Override
 	public boolean isLadder(IBlockAccess world, int posX, int posY, int posZ, EntityLivingBase entity)
 	{
+		//Allow web climbers and players to climb this web like a ladder.
 		if (entity instanceof EntityPlayer || entity instanceof EntitySpider || entity instanceof IWebClimber)
 		{
 			return true;

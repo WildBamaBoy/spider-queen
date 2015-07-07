@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelOctopus;
 
+/**
+ * Sets the texture on the octopus model pre-render.
+ */
 public class RenderOctopus extends RenderLiving
 {
 	private final ResourceLocation texture;

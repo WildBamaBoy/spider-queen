@@ -22,6 +22,9 @@ import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityHuman;
 
+/**
+ * Sets the texture on the human model pre-render and renders armor/weapons.
+ */
 public class RenderHuman extends RenderBiped
 {
 	private final ModelBiped modelArmorPlate;
@@ -41,12 +44,13 @@ public class RenderHuman extends RenderBiped
 	{
 		final EntityHuman player = (EntityHuman) entity;
 
+		//If the player enabled contributor skins, show it.
 		if (SpiderCore.getConfig().showHumanSkin)
 		{
 			return player.getSkinResourceLocation();
 		}
 
-		else
+		else //Otherwise, show Steve.
 		{
 			return AbstractClientPlayer.locationStevePng;
 		}
@@ -67,6 +71,7 @@ public class RenderHuman extends RenderBiped
 	@Override
 	protected void preRenderCallback(EntityLivingBase entityLivingBase, float partialTickTime)
 	{
+		//Scale down to the size of the player.
 		GL11.glScalef(0.9375F, 0.9375F, 0.9375F);
 	}
 
@@ -79,6 +84,7 @@ public class RenderHuman extends RenderBiped
 			
 			double distance = RadixMath.getDistanceToEntity(entity, Minecraft.getMinecraft().thePlayer);
 			
+			//Show the human's name and type if enabled and the closest player is within 6 blocks.
 			if (distance < 6.0D)
 			{
 				if (SpiderCore.getConfig().showHumanName)

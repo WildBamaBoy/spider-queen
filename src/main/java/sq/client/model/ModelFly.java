@@ -6,6 +6,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import sq.core.SpiderCore;
 
+/**
+ * Defines the Fly's in-game model.
+ */
 public class ModelFly extends ModelBase
 {
 	private final ModelRenderer head;

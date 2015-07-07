@@ -11,6 +11,9 @@ import org.lwjgl.opengl.GL11;
 import sq.client.model.ModelVines;
 import sq.entity.creature.EntityVines;
 
+/**
+ * Sets the texture on the vine model pre-render.
+ */
 public class RenderVines extends Render
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("sq:textures/entities/vines.png");

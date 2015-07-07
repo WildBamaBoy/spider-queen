@@ -7,6 +7,9 @@ import sq.core.SpiderCore;
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;
 
+/**
+ * Provides Spider Queen's configuration page.
+ */
 public final class GuiConfigPage extends GuiConfig
 {
 	public GuiConfigPage(GuiScreen parent) 

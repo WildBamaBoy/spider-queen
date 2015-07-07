@@ -5,6 +5,9 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
+/**
+ * Defines the wasp's model in-game.
+ */
 public class ModelWasp extends ModelBase
 {
 	private final ModelRenderer head;

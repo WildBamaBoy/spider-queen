@@ -6,6 +6,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import sq.core.SpiderCore;
 
+/**
+ * Defines the Beetle's in-game model.
+ */
 public class ModelBeetle extends ModelBase
 {
 	private final ModelRenderer head;
@@ -182,6 +185,7 @@ public class ModelBeetle extends ModelBase
 		leg5.rotateAngleZ += f15;
 		leg6.rotateAngleZ += -f15;
 		
+		//Raise the shell up off of the beetle's back to prevent clipping.
 		shell1.rotateAngleX = 0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
 		shell2.rotateAngleX = 0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
 	}

@@ -30,18 +30,32 @@ import sq.entity.friendly.FriendlyEntityHelper;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.util.Utils;
 
+/**
+ * Handles increasing or decreasing a player's reputation with a certain reputation group.
+ */
 public class ReputationHandler 
 {
+	/**
+	 * When a player interacts with an imprisoned friendly creature (locked in a factory), this
+	 * method will run.
+	 */
 	public static void handleInteractWithImprisoned(EntityPlayer player, EntityLivingBase friendlyInstance)
 	{
+		//Get an instance of the friendly as its interface.
 		IFriendlyEntity friendly = (IFriendlyEntity)friendlyInstance;
+
+		//Tell the player what they've done.
 		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "You have freed this " + friendlyInstance.getCommandSenderName() + " from captivity."));
 		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "This greatly boosted your favor with the " + friendlyInstance.getCommandSenderName() + "s."));
 
 		try
 		{
+			//Make a new instance of the creature's non-friendly class, and pass that to onReputationChange so
+			//that the appropriate group is modified.
 			EntityLivingBase repEntity = (EntityLivingBase) friendly.getNonFriendlyClass().getConstructor(World.class).newInstance(friendlyInstance.worldObj);
 			onReputationChange(player, repEntity, 10);
+			
+			//Remove the friendly and leave the happy particles in its place.
 			friendlyInstance.setDead();
 			Utils.spawnParticlesAroundEntityS(Particle.HAPPY, friendlyInstance, 16);
 		}
@@ -54,11 +68,12 @@ public class ReputationHandler
 
 	public static void onReputationChange(EntityPlayer player, EntityLivingBase living, int changeAmount)
 	{
+		//To start, we need the player's player data and the reputation entity's extended properties.
 		final PlayerData data = SpiderCore.getPlayerData(player);
 		final RepEntityExtension extension = (RepEntityExtension) living.getExtendedProperties(RepEntityExtension.ID);
 		WatchedInt likeData = null;
 
-		//Assign like data.
+		//Assign like data based on what entity we're working with.
 		if (extension != null)
 		{
 			likeData = ReputationContainer.getLikeDataByClass(living.getClass(), data);

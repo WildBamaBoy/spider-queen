@@ -11,9 +11,11 @@ import org.lwjgl.opengl.GL11;
 import sq.client.model.ModelCocoon;
 import sq.entity.creature.EntityCocoon;
 
+/**
+ * Sets the texture on the cocoon model pre-render and applies rotation/translation.
+ */
 public class RenderCocoon extends Render
 {
-	private final ResourceLocation[] textures = new ResourceLocation[27];
 	private final ModelBase	modelCocoon;
 
 	public RenderCocoon()

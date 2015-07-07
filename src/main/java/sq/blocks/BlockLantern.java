@@ -15,6 +15,9 @@ import net.minecraft.world.World;
 import sq.core.minecraft.ModItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The lantern is simply a new placeable light block.
+ */
 public class BlockLantern extends Block
 {
 	private static IIcon sideIcon;
@@ -61,12 +64,14 @@ public class BlockLantern extends Block
 	@Override
 	public Item getItemDropped(int unknown, Random random, int unknown2) 
 	{
+		//Return the lantern item when this block is broken.
 		return ModItems.lantern;
 	}
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) 
 	{
+		//The "block" is used only in the world. Return our item when middle clicking.
 		return new ItemStack(ModItems.lantern);
 	}
 	

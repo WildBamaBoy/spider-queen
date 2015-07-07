@@ -15,6 +15,9 @@ import sq.entity.creature.EntitySpiderEgg;
 import sq.entity.creature.EntitySpiderEx;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
+/**
+ * Defines the commands usable from the console/chat by typing /sq <command name>.
+ */
 public final class CommandSQ extends CommandBase
 {
 	@Override
@@ -43,7 +46,7 @@ public final class CommandSQ extends CommandBase
 				displayHelp(commandSender);
 			}
 			
-			else if (subcommand.equalsIgnoreCase("fsl"))
+			else if (subcommand.equalsIgnoreCase("fsl")) //Force spider level
 			{
 				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEx.class, player, 15))
 				{
@@ -52,7 +55,7 @@ public final class CommandSQ extends CommandBase
 				}
 			}
 			
-			else if (subcommand.equalsIgnoreCase("feg"))
+			else if (subcommand.equalsIgnoreCase("feg")) //Force egg grow
 			{
 				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEgg.class, player, 15))
 				{

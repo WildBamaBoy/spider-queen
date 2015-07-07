@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelYuki;
 
+/**
+ * Sets the texture on the Yuki model pre-render.
+ */
 public class RenderYuki extends RenderLiving
 {
 	private final ResourceLocation texture;

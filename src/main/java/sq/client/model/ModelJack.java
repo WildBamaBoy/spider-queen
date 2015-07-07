@@ -7,6 +7,9 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Defines the Jack's in-game model.
+ */
 public class ModelJack extends ModelBase
 {
 	private final ModelRenderer head;

@@ -8,6 +8,10 @@ import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
+/**
+ * Spider Queen's configuration settings. Applies the standard configuration settings and 
+ * helps set up the configuration GUI.
+ */
 public final class Config 
 {
 	private final Configuration config;
@@ -98,6 +102,7 @@ public final class Config
 
 		for (String s : config.getCategoryNames())
 		{
+			//Don't include server only categories in the configuration menu's list of options.
 			if (!s.equals("server"))
 			{	
 				IConfigElement element = new ConfigElement(config.getCategory(s));

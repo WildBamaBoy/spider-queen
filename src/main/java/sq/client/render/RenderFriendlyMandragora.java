@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelMandragora;
 
+/**
+ * Sets the texture on the friendly mandragora model pre-render.
+ */
 public class RenderFriendlyMandragora extends RenderLiving
 {
 	private final ResourceLocation texture;

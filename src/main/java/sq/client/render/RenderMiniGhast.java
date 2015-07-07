@@ -12,7 +12,9 @@ import sq.entity.creature.EntityMiniGhast;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+/**
+ * Sets the texture on the mini ghast model pre-render.
+ */
 public class RenderMiniGhast extends RenderLiving
 {
 	private static final ResourceLocation	ghastTextures	= new ResourceLocation("sq:textures/entities/mini-ghast.png");

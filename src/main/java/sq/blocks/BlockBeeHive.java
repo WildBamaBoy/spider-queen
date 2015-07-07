@@ -24,6 +24,11 @@ import sq.entity.creature.EntityBee;
 import sq.enums.EnumBeeType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The beehive works just like the ant hill. Every 15 seconds, a bee can spawn from it.
+ * When destroyed, it yields a random amount of nectar and lowers the player's reputation
+ * with bees.
+ */
 public class BlockBeeHive extends Block
 {
 	private IIcon topIcon;
@@ -63,20 +68,26 @@ public class BlockBeeHive extends Block
 	@Override
 	public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int meta) 
 	{
+		//The block was actively destroyed by a player, so grab the nearest one to blame.
+		//It *should* be the person who destroyed it.
 		EntityPlayer player = world.getClosestPlayer(posX, posY, posZ, 16.0D);
 		
-		if (player != null)
+		if (player != null) //Reputation requires a player instance, always.
 		{
 			boolean hasChangedReputation = false;
 			
+			//The reputation handler also requires an instance of the entity who belongs to the group
+			//that the reputation will be modified for. Search for bees around the player.
 			for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityBee.class, player, 16))
 			{
+				//Only change the reputation once by setting hasChangedReputation.
 				if (!hasChangedReputation && !world.isRemote)
 				{
 					ReputationHandler.onReputationChange(player, (EntityBee) entity, -1);
 					hasChangedReputation = true;
 				}
 				
+				//Then have all bees set the player as their target.
 				EntityBee bee = (EntityBee)entity;
 				bee.setTarget(player);
 			}
@@ -88,10 +99,12 @@ public class BlockBeeHive extends Block
 	{
 		super.updateTick(world, x, y, z, random);
 
+		//Grab the nearest player.
 		final EntityPlayer player = world.getClosestPlayer((double)x, (double)y, (double)z, 16.0D);
 
-		if (player != null)
+		if (player != null) //Don't bother spawning if there's no players around.
 		{
+			//Count the bees in the area.
 			List<Entity> nearbyEntities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, x, y, z, 16);
 			int nearbyBees = 0;
 
@@ -103,10 +116,13 @@ public class BlockBeeHive extends Block
 				}
 			}
 
+			//If we're not over the cap, we can spawn.
 			if (nearbyBees < SpiderCore.getConfig().beeSpawnCap)
 			{
+				//Build a list of points that are safe to spawn at (no blocks at that location)
 				List<Point3D> safeSpawnAreas = new ArrayList<Point3D>();
 
+				//Get blocks from [-5, -2, -5] to [5, 2, 5]
 				for (int xMov = -5; xMov < 5; xMov++)
 				{
 					for (int zMov = -5; zMov < 5; zMov++)
@@ -123,30 +139,37 @@ public class BlockBeeHive extends Block
 					}
 				}
 				
+				//Don't bother spawning if there's no safe area.
 				if (!safeSpawnAreas.isEmpty())
 				{
+					//Generate a type. Warriors and gatherers are essentially 50/50 in terms of commonality.
 					EnumBeeType type = world.rand.nextBoolean() ? EnumBeeType.GATHERER : EnumBeeType.WARRIOR;
 					
+					//5% chance of the type being a queen.
 					if (RadixLogic.getBooleanWithProbability(5))
 					{
 						type = EnumBeeType.QUEEN;
 					}
 					
-					EntityBee bee = new EntityBee(world, type);
-					
+					//Create the new bee and grab a random safe spawn area.
+					EntityBee bee = new EntityBee(world, type);					
 					Point3D spawnMovement = safeSpawnAreas.get(RadixMath.getNumberInRange(0, safeSpawnAreas.size() - 1));
+					
+					//Set the bee's rotation relative to the spawn area and spawn.
 					bee.setPositionAndRotation((double) x + spawnMovement.iPosX + 0.5F, (double) y + spawnMovement.iPosY, (double) z + spawnMovement.iPosZ + 0.5F, (float)random.nextInt(360) + 1, 0.0F);
 					world.spawnEntityInWorld(bee);
 				}
 			}
 		}
 
+		//On ecah tick, schedule a new update 15 seconds later.
 		world.scheduleBlockUpdate(x, y, z, this, tickRate());
 	}
 
 	@Override
 	public IIcon getIcon(int side, int meta) 
 	{
+		//Side 1 and side 0 need to use the top icon.
 		return side == 1 || side == 0 ? this.topIcon : this.sideIcon;
 	}
 

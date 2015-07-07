@@ -11,6 +11,9 @@ import org.lwjgl.opengl.GL12;
 import sq.entity.creature.EntityWebShot;
 import sq.enums.EnumWebType;
 
+/**
+ * Sets the texture on the web shot model pre-render.
+ */
 public class RenderWeb extends Render
 {
 	private static ResourceLocation textureWebShot = new ResourceLocation("sq:textures/entities/webshot.png");

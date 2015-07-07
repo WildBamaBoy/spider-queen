@@ -14,7 +14,9 @@ import sq.entity.throwable.EntityJackBall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+/**
+ * Actually renders a throwable textured object in the world. Used for projectiles.
+ */
 public class RenderThrowable extends Render
 {
 	private ResourceLocation jackBallLocation = new ResourceLocation("sq:textures/items/jackball.png");

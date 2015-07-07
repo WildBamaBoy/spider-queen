@@ -4,6 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.world.IBlockAccess;
 import sq.enums.EnumWebType;
 
+/**
+ * This is the web that spawns on all sides of a block except the top side ("ground") when no
+ * other web is attached to the block.
+ */
 public class BlockWebSide extends BlockWebFull
 {
 	private EnumWebType webType;
@@ -16,12 +20,13 @@ public class BlockWebSide extends BlockWebFull
 	@Override
 	public int getRenderType()
 	{
-		return 20;
+		return 20; //Render like vines.
 	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
 	{
+		//Calculate our bounds based on where we're located.
 		final int meta = blockAccess.getBlockMetadata(posX, posY, posZ);
 		float minX = 1.0F, minY = 1.0F, minZ = 1.0F;
 		float maxX = 0.0F, maxY = 0.0F, maxZ = 0.0F;

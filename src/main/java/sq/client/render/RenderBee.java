@@ -6,6 +6,9 @@ import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelBee;
 import sq.entity.creature.EntityBee;
 
+/**
+ * Sets the texture on the bee model pre-render.
+ */
 public class RenderBee extends RenderLiving
 {
 	private final ResourceLocation[] textures = new ResourceLocation[4];

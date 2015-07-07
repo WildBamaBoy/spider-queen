@@ -15,6 +15,9 @@ import sq.client.render.RenderSpiderQueen;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEx;
 
+/**
+ * Defines the Spider Queen's in-game model.
+ */
 public class ModelSpiderQueen extends ModelBase
 {
 	private final ModelRenderer head;
@@ -189,14 +192,18 @@ public class ModelSpiderQueen extends ModelBase
 		{
 			final EntityPlayer player = (EntityPlayer) entity;
 
+			//If the player is on the rider spider, we must rotate them to match the orientation
+			//of the spider as it goes up the wall.
 			if (player.ridingEntity instanceof EntitySpiderEx)
 			{
 				final EntitySpiderEx spider = (EntitySpiderEx) player.ridingEntity;
 
 				if (spider.isOnLadder())
 				{
+					//Use the look vector as a reference.
 					final Vec3 lookVector = spider.getLookVec();
 
+					//Rotate as needed.
 					if (lookVector.xCoord <= -0.90 || lookVector.zCoord <= -0.90)
 					{
 						GL11.glRotatef(270, 1, 0, 0);
@@ -212,16 +219,21 @@ public class ModelSpiderQueen extends ModelBase
 			}
 		}
 
+		//If this player wants their skin overlayed on the spider model.
 		if (SpiderCore.getConfig().usePlayerSkin && entity instanceof EntityPlayer)
 		{
+			//Bind the client player's texture for these next few renders.
 			EntityClientPlayerMP mp = (EntityClientPlayerMP)entity;
 			Minecraft.getMinecraft().renderEngine.bindTexture(mp.getLocationSkin());
+
+			//Apply translation and scale corrections.
 			GL11.glPushMatrix();
 			{
 				GL11.glScaled(0.90D, 0.90D, 0.90D);
 				playerHead.render(f5);
 				playerBody.render(f5);
 
+				//Arms were a disaster, translated them slightly to fix.
 				GL11.glPushMatrix();
 				{
 					GL11.glTranslated(-0.25D, 0.0D, 0.0D);
@@ -243,7 +255,7 @@ public class ModelSpiderQueen extends ModelBase
 			GL11.glPopMatrix();
 		}
 
-		else
+		else //Render the default spider queen front/likeness.
 		{
 			head.render(f5);
 			torso.render(f5);
@@ -252,6 +264,7 @@ public class ModelSpiderQueen extends ModelBase
 			armRight.render(f5);
 		}
 
+		//Bind the spider queen texture, and finish rendering the spider body.
 		Minecraft.getMinecraft().renderEngine.bindTexture(RenderSpiderQueen.spiderQueenTextures[0]);
 		body.render(f5);
 		rear.render(f5);

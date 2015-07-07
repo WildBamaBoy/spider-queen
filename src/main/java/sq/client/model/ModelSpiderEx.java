@@ -13,7 +13,9 @@ import sq.enums.EnumSpiderType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+/**
+ * Defines all extended spider models in-game.
+ */
 public class ModelSpiderEx extends ModelBase
 {
 	public ModelRenderer	villagerSpiderChestRight;

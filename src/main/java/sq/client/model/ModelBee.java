@@ -8,6 +8,9 @@ import sq.entity.creature.EntityBee;
 import sq.entity.friendly.EntityFriendlyBee;
 import sq.enums.EnumBeeType;
 
+/**
+ * Defines the Bees' in-game model. Contains the model data for all three types.
+ */
 public class ModelBee extends ModelBase
 {
 	private final ModelRenderer head;
@@ -290,6 +293,8 @@ public class ModelBee extends ModelBase
 		final EntityBee bee = (EntityBee)entity;
 		final EnumBeeType type = bee.getBeeType();
 
+		//Friendly bee renders as the gatherer. Its underlying type can be something
+		//other than gatherer, so account for that here.
 		if (bee instanceof EntityFriendlyBee)
 		{
 			head.render(f5);
@@ -312,6 +317,7 @@ public class ModelBee extends ModelBase
 			return;
 		}
 		
+		//Switch to the attack stance (stinger out) if the bee is attacking.
 		if (type == EnumBeeType.WARRIOR && bee.getAttacking())
 		{
 			headAttack.render(f5);
@@ -329,7 +335,7 @@ public class ModelBee extends ModelBase
 			stingerAttack1.render(f5);
 		}
 
-		else
+		else //Render normal warrior or gatherer.
 		{
 			head.render(f5);
 			body.render(f5);
@@ -346,6 +352,7 @@ public class ModelBee extends ModelBase
 			stinger1.render(f5);
 		}
 
+		//Gatherer renders with buckets in its hands.
 		if (bee.getBeeType() == EnumBeeType.GATHERER)
 		{
 			handle1.render(f5);
@@ -354,6 +361,7 @@ public class ModelBee extends ModelBase
 			bucket2.render(f5);
 		}
 
+		//The queen bee holds a scepter and wears a crown.
 		if (bee.getBeeType() == EnumBeeType.QUEEN)
 		{
 			crown.render(f5);

@@ -13,6 +13,10 @@ import sq.client.model.ModelSpiderEx;
 import sq.entity.creature.EntitySpiderEx;
 import sq.enums.EnumSpiderType;
 
+/**
+ * Sets the texture on the extended spiders' models pre-render.
+ * Also applies effects on each render pass.
+ */
 public class RenderSpiderEx extends RenderLiving
 {
 	private static ResourceLocation[][] textures;
@@ -50,12 +54,14 @@ public class RenderSpiderEx extends RenderLiving
 	{
 		EntitySpiderEx spider = (EntitySpiderEx)entitySpider;
 
+		//When the spider is a powered boom spider, we render the "charged" effect over them.
 		if (spider.getPowered())
 		{
 			if (entitySpider.isInvisible())
 			{
 				GL11.glDepthMask(false);
 			}
+			
 			else
 			{
 				GL11.glDepthMask(true);
@@ -96,6 +102,8 @@ public class RenderSpiderEx extends RenderLiving
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
+		//On each pass greater than 0, we render the spider eyes without lighting taking effect. 
+		//This makes spider eyes glow in the dark.
 		if (passNumber > 0)
 		{
 			this.bindTexture(eyes);
@@ -114,6 +122,7 @@ public class RenderSpiderEx extends RenderLiving
 	{
 		final EntitySpiderEx spider = (EntitySpiderEx) entityLiving;
 
+		//Scale according to the spider's type.
 		if (spider.getSpiderType() == EnumSpiderType.WIMPY)
 		{
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
@@ -165,6 +174,7 @@ public class RenderSpiderEx extends RenderLiving
 			{
 				for (int i = 1; i < 4; i++)
 				{
+					//Textures are organized as: [id][textures for levels 1, 2, and 3].
 					textures[type.getId()][i - 1] = new ResourceLocation("sq:textures/entities/spider-" + type.name().toLowerCase() + "-" + i + ".png");
 				}
 			}

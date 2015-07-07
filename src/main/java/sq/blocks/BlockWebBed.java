@@ -20,6 +20,9 @@ import sq.entity.creature.EntitySpiderQueen;
 import sq.packet.PacketSleepC;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The web bed is a block usable on right-click that enables the player to sleep.
+ */
 public class BlockWebBed extends Block
 {
 	public BlockWebBed()
@@ -31,6 +34,8 @@ public class BlockWebBed extends Block
 	@Override
 	public int quantityDropped(Random random)
 	{
+		//This is not an item that should be obtainable via any means. It is placed
+		//in the world only under special circumstances.
 		return 0;
 	}
 
@@ -43,6 +48,7 @@ public class BlockWebBed extends Block
 	@Override
 	public void onEntityCollidedWithBlock(World world, int posX, int posY, int posZ, Entity entity)
 	{
+		//This is a web, so if the creature caught inside isn't a web climber, hinder its motion.
 		if (entity instanceof EntitySpider || entity instanceof EntitySpiderEx || entity instanceof EntityPlayer || entity instanceof EntitySpiderQueen)
 		{
 			return;
@@ -67,6 +73,7 @@ public class BlockWebBed extends Block
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{
+		//No collision, this is a web.
 		return null;
 	}
 
@@ -102,6 +109,7 @@ public class BlockWebBed extends Block
 		{
 			if (world.isDaytime())
 			{
+				//Send a packet to the client that will open the sleep GUI.
 				SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(false), (EntityPlayerMP) entityPlayer);
 			}
 

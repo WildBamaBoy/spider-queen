@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelFly;
 
+/**
+ * Sets the texture on the fly model pre-render.
+ */
 public class RenderFly extends RenderLiving
 {
 	private final ResourceLocation texture;

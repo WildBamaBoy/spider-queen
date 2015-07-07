@@ -4,6 +4,9 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
+/**
+ * Defines the Octopus's in-game model.
+ */
 public class ModelOctopus extends ModelBase
 {
 	private final ModelRenderer body;

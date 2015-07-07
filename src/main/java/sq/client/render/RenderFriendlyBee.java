@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelBee;
 
+/**
+ * Sets the texture on the friendly bee model pre-render.
+ */
 public class RenderFriendlyBee extends RenderLiving
 {
 	private final ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-bee.png");

@@ -12,6 +12,10 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 @MCVersion("1.7.10")
 @DependsOn("forge")
 @TransformerExclusions({ "sq.asm" })
+/**
+ * Spider Queen's loading plugin. Returns the name of the transformer class for method
+ * transforming.
+ */
 public class SpiderLoadingPlugin implements IFMLLoadingPlugin
 {
 	@Override

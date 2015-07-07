@@ -5,6 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelJack;
 
+/**
+ * Sets the texture on the Jack model pre-render.
+ */
 public class RenderJack extends RenderLiving
 {
 	private final ResourceLocation texture;

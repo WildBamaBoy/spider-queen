@@ -16,6 +16,9 @@ import sq.entity.creature.EntityAnt;
 import sq.enums.EnumAntType;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The ant hill ticks every fifteen seconds, and on each tick, an ant can spawn.
+ */
 public class BlockAntHill extends Block
 {
 	public BlockAntHill() 
@@ -42,10 +45,12 @@ public class BlockAntHill extends Block
     {
 		super.updateTick(world, x, y, z, random);
 		
+		//Grab the nearest player within 16 blocks.
 		final EntityPlayer player = world.getClosestPlayer((double)x, (double)y, (double)z, 16.0D);
 
-		if (player != null)
+		if (player != null) //Don't bother spawning anything if there are no players nearby.
 		{
+			//Count the number of ants that are already around this block.
 			List<Entity> nearbyEntities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, x, y, z, 16);
 			int nearbyAnts = 0;
 			
@@ -57,6 +62,7 @@ public class BlockAntHill extends Block
 				}
 			}
 			
+			//Make sure that we're not going to be over the spawn cap, and spawn the ant if so.
 			if (nearbyAnts < SpiderCore.getConfig().antSpawnCap)
 			{
 				EntityAnt ant = new EntityAnt(world, EnumAntType.BLACK);
@@ -65,6 +71,7 @@ public class BlockAntHill extends Block
 			}
 		}
 		
+		//On each tick, schedule another update 15 seconds later.
 		world.scheduleBlockUpdate(x, y, z, this, tickRate());
 	}
 	
@@ -89,6 +96,7 @@ public class BlockAntHill extends Block
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{
+		//This block has no collision.
 		return null;
 	}
 }

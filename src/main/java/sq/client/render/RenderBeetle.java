@@ -6,6 +6,9 @@ import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelBeetle;
 import sq.entity.creature.EntityBeetle;
 
+/**
+ * Sets the texture on the beetle model pre-render.
+ */
 public class RenderBeetle extends RenderLiving
 {
 	private final ResourceLocation[] textures = new ResourceLocation[2];

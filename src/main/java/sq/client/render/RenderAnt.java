@@ -7,6 +7,9 @@ import sq.client.model.ModelAnt;
 import sq.entity.creature.EntityAnt;
 import sq.enums.EnumAntType;
 
+/**
+ * Sets the texture on the ant model pre-render.
+ */
 public class RenderAnt extends RenderLiving
 {
 	private final ResourceLocation[] textures = new ResourceLocation[2];

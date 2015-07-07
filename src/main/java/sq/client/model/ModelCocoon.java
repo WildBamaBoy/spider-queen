@@ -10,6 +10,9 @@ import sq.entity.creature.EntityCocoon;
 import sq.enums.EnumCocoonSize;
 import sq.enums.EnumCocoonType;
 
+/**
+ * Defines all of the cocoon models in-game.
+ */
 public class ModelCocoon extends ModelBase
 {
 	private final ModelRenderer	modelWrappedHead;

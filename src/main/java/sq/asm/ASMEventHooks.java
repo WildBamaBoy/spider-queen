@@ -11,8 +11,14 @@ import net.minecraft.world.World;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModBlocks;
 
+/***
+ * This class contains the method calls that Spider Queen injects into various parts of Minecraft.
+ */
 public final class ASMEventHooks 
 {
+	/**
+	 * When the player eats, drop 1 - 3 string at their location.
+	 */
 	public static void onEaten(ItemStack stack, World world, EntityPlayer player)
 	{
 		if (!world.isRemote)
@@ -22,6 +28,9 @@ public final class ASMEventHooks
 		}
 	}
 
+	/**
+	 * When pumpkin patches generate, randomly replace the pumpkin with the Jack block.
+	 */
 	public static void onPumpkinGenerate(World world, Random random, int x, int y, int z)
 	{
 		if (random.nextInt(6) == 0)
@@ -30,9 +39,11 @@ public final class ASMEventHooks
 		}
 	} 
 	
+	/**
+	 * Make spiders always hostile to other players, even during the day.
+	 */
 	public static Entity onSpiderFindPlayerToAttack(EntitySpider spider)
 	{
-		//Make spiders ALWAYS hostile to vulnerable players.
 		return spider.worldObj.getClosestVulnerablePlayerToEntity(spider, 16.0D);
 	}
 }

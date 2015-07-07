@@ -12,6 +12,9 @@ import org.lwjgl.opengl.GL12;
 
 import sq.entity.creature.EntityWebslinger;
 
+/**
+ * Sets the texture on the webslinger and renders it in-game.
+ */
 public class RenderWebslinger extends Render
 {
 	public RenderWebslinger()

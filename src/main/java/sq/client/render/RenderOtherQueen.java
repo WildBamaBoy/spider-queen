@@ -7,6 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelSpiderQueen;
 import sq.entity.creature.EntitySpiderQueen;
 
+/**
+ * Sets the texture on the other spider queens' model pre-render.
+ */
 public class RenderOtherQueen extends RenderLiving
 {
 	private final ModelSpiderQueen	modelBipedMain;

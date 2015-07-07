@@ -5,6 +5,9 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
+/**
+ * Defines the Mandragora's in-game model.
+ */
 public class ModelMandragora extends ModelBase
 {
 	private final ModelRenderer head;

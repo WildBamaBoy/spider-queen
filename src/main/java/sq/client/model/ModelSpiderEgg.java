@@ -4,6 +4,9 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
+/**
+ * Defines the spider egg's in-game model.
+ */
 public class ModelSpiderEgg extends ModelBase
 {
 	private final ModelRenderer	New_Shape0;

@@ -4,6 +4,9 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
+/**
+ * Defines Yuki's model in-game.
+ */
 public class ModelYuki extends ModelBase
 {
 	private final ModelRenderer head;
