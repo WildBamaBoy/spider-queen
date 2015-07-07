@@ -66,7 +66,7 @@ public final class Config
 		
 		config.setCategoryComment("Graphics", "Settings that affect graphics-related portions of the mod.");
 		usePlayerSkin = config.get("Graphics", "Use player skin?", false, "True if you want your Minecraft skin to be used instead of the spider queen skin.").getBoolean();
-		useSpiderQueenModel = config.get("Graphics", "Use spider queen model?", true, "False if you want to keep the standard Minecraft player model. THIS OPTION REQUIRES A RESTART.").getBoolean();
+		useSpiderQueenModel = config.get("Graphics", "Use spider queen model?", true, "False if you want to keep the standard Minecraft player model.").getBoolean();
 		enableNightVision = config.get("Graphics", "Enable night vision?", true, "False if you want the Spider Queen's default night vision to be disabled").getBoolean();
 		
 		showHumanName = config.get("Graphics", "Show human names?", false, "True if you want the humans in the game to have the names of real players.").getBoolean();

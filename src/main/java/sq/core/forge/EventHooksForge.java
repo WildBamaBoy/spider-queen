@@ -2,6 +2,8 @@ package sq.core.forge;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +21,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -30,6 +33,7 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
+import sq.client.render.RenderSpiderQueen;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
@@ -48,9 +52,14 @@ import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumWatchedDataIDs;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public final class EventHooksForge
 {
+	@SideOnly(Side.CLIENT)
+	private final RenderSpiderQueen renderSpiderQueen = new RenderSpiderQueen();
+
 	@SubscribeEvent
 	public void onPlayerSleepInBed(PlayerSleepInBedEvent event)
 	{
@@ -343,6 +352,23 @@ public final class EventHooksForge
 			{
 				event.entityPlayer.triggerAchievement(ModAchievements.acquireEgg);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onRenderPlayerPre(RenderPlayerEvent.Pre pre) 
+	{
+		if (SpiderCore.getConfig().useSpiderQueenModel)
+		{
+			pre.setCanceled(true);
+
+			GL11.glPushMatrix();
+			{
+				GL11.glScaled(0.95D, 0.95D, 0.95D);
+				GL11.glTranslated(0.0D, -0.10D, 0.0D);
+				renderSpiderQueen.doRender(pre.entity, 0F, 0F, 0F, 0F, pre.partialRenderTick);
+			}
+			GL11.glPopMatrix();
 		}
 	}
 }

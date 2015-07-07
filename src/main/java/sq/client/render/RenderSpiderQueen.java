@@ -14,6 +14,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.entity.Entity;
@@ -51,6 +52,7 @@ public class RenderSpiderQueen extends RenderPlayer
 	public RenderSpiderQueen()
 	{
 		super();
+		renderManager = RenderManager.instance;
 		modelBipedMain = new ModelSpiderQueen();
 		modelFirstPerson = new ModelBiped();
 		mainModel = modelBipedMain;
