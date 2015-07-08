@@ -52,6 +52,7 @@ public abstract class AbstractNewMob extends EntityMob
 		appendAI();
 	}
 
+	@Override
 	protected final void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();

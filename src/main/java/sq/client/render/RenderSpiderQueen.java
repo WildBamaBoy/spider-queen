@@ -406,7 +406,7 @@ public class RenderSpiderQueen extends RenderPlayer
 				GL11.glPushMatrix();
 				GL11.glRotatef(f10, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(f2, 1.0F, 0.0F, 0.0F);
-				GL11.glTranslatef(0.375F * (float)(j * 2 - 1), 0.0F, 0.0F);
+				GL11.glTranslatef(0.375F * (j * 2 - 1), 0.0F, 0.0F);
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-f2, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(-f10, 0.0F, 1.0F, 0.0F);
@@ -425,12 +425,12 @@ public class RenderSpiderQueen extends RenderPlayer
 			this.bindTexture(clientPlayer.getLocationCape());
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-			double d3 = clientPlayer.field_71091_bM + (clientPlayer.field_71094_bP - clientPlayer.field_71091_bM) * (double)partialTickTime - (clientPlayer.prevPosX + (clientPlayer.posX - clientPlayer.prevPosX) * (double)partialTickTime);
-			double d4 = clientPlayer.field_71096_bN + (clientPlayer.field_71095_bQ - clientPlayer.field_71096_bN) * (double)partialTickTime - (clientPlayer.prevPosY + (clientPlayer.posY - clientPlayer.prevPosY) * (double)partialTickTime);
-			double d0 = clientPlayer.field_71097_bO + (clientPlayer.field_71085_bR - clientPlayer.field_71097_bO) * (double)partialTickTime - (clientPlayer.prevPosZ + (clientPlayer.posZ - clientPlayer.prevPosZ) * (double)partialTickTime);
+			double d3 = clientPlayer.field_71091_bM + (clientPlayer.field_71094_bP - clientPlayer.field_71091_bM) * partialTickTime - (clientPlayer.prevPosX + (clientPlayer.posX - clientPlayer.prevPosX) * partialTickTime);
+			double d4 = clientPlayer.field_71096_bN + (clientPlayer.field_71095_bQ - clientPlayer.field_71096_bN) * partialTickTime - (clientPlayer.prevPosY + (clientPlayer.posY - clientPlayer.prevPosY) * partialTickTime);
+			double d0 = clientPlayer.field_71097_bO + (clientPlayer.field_71085_bR - clientPlayer.field_71097_bO) * partialTickTime - (clientPlayer.prevPosZ + (clientPlayer.posZ - clientPlayer.prevPosZ) * partialTickTime);
 			f5 = clientPlayer.prevRenderYawOffset + (clientPlayer.renderYawOffset - clientPlayer.prevRenderYawOffset) * partialTickTime;
-			double d1 = (double)MathHelper.sin(f5 * (float)Math.PI / 180.0F);
-			double d2 = (double)(-MathHelper.cos(f5 * (float)Math.PI / 180.0F));
+			double d1 = MathHelper.sin(f5 * (float)Math.PI / 180.0F);
+			double d2 = (-MathHelper.cos(f5 * (float)Math.PI / 180.0F));
 			float f6 = (float)d4 * 10.0F;
 
 			if (f6 < -6.0F)
@@ -549,9 +549,9 @@ public class RenderSpiderQueen extends RenderPlayer
 				for (k = 0; k <= itemstack1.getItem().getRenderPasses(itemstack1.getItemDamage()); ++k)
 				{
 					int i = itemstack1.getItem().getColorFromItemStack(itemstack1, k);
-					f12 = (float)(i >> 16 & 255) / 255.0F;
-					f4 = (float)(i >> 8 & 255) / 255.0F;
-					f5 = (float)(i & 255) / 255.0F;
+					f12 = (i >> 16 & 255) / 255.0F;
+					f4 = (i >> 8 & 255) / 255.0F;
+					f5 = (i & 255) / 255.0F;
 					GL11.glColor4f(f12, f4, f5, 1.0F);
 					this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, k);
 				}
@@ -559,9 +559,9 @@ public class RenderSpiderQueen extends RenderPlayer
 			else
 			{
 				k = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
-				float f11 = (float)(k >> 16 & 255) / 255.0F;
-				f12 = (float)(k >> 8 & 255) / 255.0F;
-				f4 = (float)(k & 255) / 255.0F;
+				float f11 = (k >> 16 & 255) / 255.0F;
+				f12 = (k >> 8 & 255) / 255.0F;
+				f4 = (k & 255) / 255.0F;
 				GL11.glColor4f(f11, f12, f4, 1.0F);
 				this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, 0);
 			}

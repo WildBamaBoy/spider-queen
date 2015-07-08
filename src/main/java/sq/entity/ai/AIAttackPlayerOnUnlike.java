@@ -29,6 +29,7 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 		this.setMutexBits(1);
 	}
 
+	@Override
 	public boolean shouldExecute()
 	{
 		//Search for players.
@@ -65,6 +66,7 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 		}
 	}
 
+	@Override
 	public void startExecuting()
 	{
 		this.taskOwner.setAttackTarget(this.targetEntity);

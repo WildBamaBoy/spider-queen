@@ -56,6 +56,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		}
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();

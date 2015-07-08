@@ -59,7 +59,7 @@ public class BlockJack extends Block
 	public IIcon getIcon(int side, int meta) 
 	{
 		//This is from BlockPumpkin. It assigns the correct block icon based on metadata and the side of the block we're working with.
-        return side == 1 ? this.topIcon : (side == 0 ? this.topIcon : (meta == 2 && side == 2 ? this.faceIcon : (meta == 3 && side == 5 ? this.faceIcon : (meta == 0 && side == 3 ? this.faceIcon : (meta == 1 && side == 4 ? this.faceIcon : this.sideIcon)))));
+        return side == 1 ? BlockJack.topIcon : (side == 0 ? BlockJack.topIcon : (meta == 2 && side == 2 ? BlockJack.faceIcon : (meta == 3 && side == 5 ? BlockJack.faceIcon : (meta == 0 && side == 3 ? BlockJack.faceIcon : (meta == 1 && side == 4 ? BlockJack.faceIcon : BlockJack.sideIcon)))));
 	}
 
 	@Override
@@ -70,10 +70,11 @@ public class BlockJack extends Block
 		topIcon = iconRegister.registerIcon("sq:jack-top");
 	}
 	
-    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase entityLiving, ItemStack itemStack)
+    @Override
+	public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase entityLiving, ItemStack itemStack)
     {
     	//Calculate our meta relative to the player's rotation when the block was placed.
-        int meta = MathHelper.floor_double((double)(entityLiving.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
+        int meta = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 2.5D) & 3;
         world.setBlockMetadataWithNotify(posX, posY, posZ, meta, 2);
     }
 }

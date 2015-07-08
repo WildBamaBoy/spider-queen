@@ -19,6 +19,7 @@ public class WorldGenAntHill implements IWorldGenerator
 	{
 	}
 
+	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
 	{
 		if (chunkGenerator instanceof ChunkProviderGenerate)

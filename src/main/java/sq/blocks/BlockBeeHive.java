@@ -100,7 +100,7 @@ public class BlockBeeHive extends Block
 		super.updateTick(world, x, y, z, random);
 
 		//Grab the nearest player.
-		final EntityPlayer player = world.getClosestPlayer((double)x, (double)y, (double)z, 16.0D);
+		final EntityPlayer player = world.getClosestPlayer(x, y, z, 16.0D);
 
 		if (player != null) //Don't bother spawning if there's no players around.
 		{

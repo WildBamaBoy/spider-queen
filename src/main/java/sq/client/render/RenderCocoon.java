@@ -53,7 +53,7 @@ public class RenderCocoon extends Render
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		render((EntityCocoon) entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		render(entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override

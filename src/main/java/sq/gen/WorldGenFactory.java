@@ -175,7 +175,7 @@ public class WorldGenFactory implements IWorldGenerator
 
 							else
 							{
-								ItemStack potionStack = new ItemStack(Items.potionitem, 4, (Integer) DISPENSER_ARRAY[RadixMath.getNumberInRange(0, DISPENSER_ARRAY.length - 1)]);
+								ItemStack potionStack = new ItemStack(Items.potionitem, 4, DISPENSER_ARRAY[RadixMath.getNumberInRange(0, DISPENSER_ARRAY.length - 1)]);
 								dispenser.setInventorySlotContents(0, potionStack);
 							}
 						}

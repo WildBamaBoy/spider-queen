@@ -81,6 +81,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		}
 	}
 
+	@Override
 	protected final void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
@@ -89,6 +90,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0F);
 	}
 
+	@Override
 	protected void dropFewItems(boolean flag, int i)
 	{
 		//Only drop items if a player is close by.
@@ -166,6 +168,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		return null;
 	}
 
+	@Override
 	protected boolean canDespawn()
 	{
 		return false;
@@ -265,11 +268,11 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 				if(attackTime <= 0)
 				{
 					EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
-					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityArrow.posY;
+					double d2 = (entity.posY + entity.getEyeHeight()) - 0.20000000298023224D - entityArrow.posY;
 					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
 					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 					worldObj.spawnEntityInWorld(entityArrow);
-					entityArrow.setThrowableHeading(dX, d2 + (double)f1, dZ, 0.6F, 12F);
+					entityArrow.setThrowableHeading(dX, d2 + f1, dZ, 0.6F, 12F);
 					attackTime = 50;
 				}
 				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
@@ -288,6 +291,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		}
 	}
 
+	@Override
 	public boolean getCanSpawnHere()
 	{
 		int i = MathHelper.floor_double(posX);
@@ -296,11 +300,13 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		return (worldObj.getBlock(i, j - 1, k) == Blocks.grass || worldObj.getBlock(i, j - 1, k) == Blocks.snow_layer) && super.getCanSpawnHere();
 	}
 
+	@Override
 	protected String getLivingSound()
 	{
 		return null;
 	}
 
+	@Override
 	public ItemStack getHeldItem()
 	{
 		switch (type)
@@ -354,12 +360,14 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		return sb.toString();
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		nbt.setString("username", username);
 		nbt.setInteger("type", type.getId());
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		username = nbt.getString("username");

@@ -542,6 +542,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		return false;
 	}
 
+	@Override
 	public void onStruckByLightning(EntityLightningBolt lightning)
 	{
 		super.onStruckByLightning(lightning);

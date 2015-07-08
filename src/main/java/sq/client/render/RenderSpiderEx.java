@@ -68,7 +68,7 @@ public class RenderSpiderEx extends RenderLiving
 
 			if (passNumber == 1)
 			{
-				float f1 = (float)spider.ticksExisted + partialTickTime;
+				float f1 = spider.ticksExisted + partialTickTime;
 				Minecraft.getMinecraft().renderEngine.bindTexture(charge);
 				GL11.glMatrixMode(GL11.GL_TEXTURE);
 				GL11.glLoadIdentity();
@@ -98,7 +98,7 @@ public class RenderSpiderEx extends RenderLiving
 		char c0 = 61680;
 		int j = c0 % 65536;
 		int k = c0 / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		//On each pass greater than 0, we render the spider eyes without lighting taking effect. 

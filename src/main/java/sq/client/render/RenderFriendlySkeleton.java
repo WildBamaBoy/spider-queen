@@ -11,7 +11,8 @@ public class RenderFriendlySkeleton extends RenderSkeleton
 {
 	private ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-skeleton.png");
 	
-    protected ResourceLocation getEntityTexture(Entity entity)
+    @Override
+	protected ResourceLocation getEntityTexture(Entity entity)
     {
         return texture;
     }

@@ -26,6 +26,7 @@ public class RenderThrowable extends Render
 
 	}
 
+	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationPitch, float rotationYaw)
 	{
 		GL11.glPushMatrix();
@@ -48,16 +49,17 @@ public class RenderThrowable extends Render
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		tess.setNormal(0.0F, 1.0F, 0.0F);
-		tess.addVertexWithUV((double)(0.0F - f5), (double)(0.0F - f6), 0.0D, (double)f, (double)f3);
-		tess.addVertexWithUV((double)(f4 - f5), (double)(0.0F - f6), 0.0D, (double)f1, (double)f3);
-		tess.addVertexWithUV((double)(f4 - f5), (double)(f4 - f6), 0.0D, (double)f1, (double)f2);
-		tess.addVertexWithUV((double)(0.0F - f5), (double)(f4 - f6), 0.0D, (double)f, (double)f2);
+		tess.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, f, f3);
+		tess.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, f1, f3);
+		tess.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, f1, f2);
+		tess.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, f, f2);
 		tess.draw();
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
 
+	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		if (entity instanceof EntityJackBall)

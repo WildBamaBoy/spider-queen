@@ -86,11 +86,11 @@ public class GuiSleep extends GuiScreen
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			{
 				//Increase intensity as sleep progress grows larger.
-				float colorIntensity = (float)sleepProgress / 100.0F;
+				float colorIntensity = sleepProgress / 100.0F;
 
 				if (colorIntensity > 1.0F)
 				{
-					colorIntensity = 1.0F - (float)(sleepProgress - 100) / 10.0F;
+					colorIntensity = 1.0F - (sleepProgress - 100) / 10.0F;
 				}
 
 				int color = (int)(220.0F * colorIntensity) << 24 | 1052704;

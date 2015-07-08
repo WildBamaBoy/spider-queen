@@ -61,7 +61,8 @@ public class EntityFly extends AbstractFlyingMob
 		return 20.0F;
 	}
 
-    protected Entity findPlayerToAttack()
+    @Override
+	protected Entity findPlayerToAttack()
     {
     	return null;
     }

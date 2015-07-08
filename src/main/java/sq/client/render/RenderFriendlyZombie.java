@@ -11,7 +11,8 @@ public class RenderFriendlyZombie extends RenderZombie
 {
 	private ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-zombie.png");
 	
-    protected ResourceLocation getEntityTexture(Entity entity)
+    @Override
+	protected ResourceLocation getEntityTexture(Entity entity)
     {
         return texture;
     }

@@ -39,6 +39,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		attackMode = new WatchedInt(0, 2, dataWatcherEx);
 	}
 
+	@Override
 	protected final void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
@@ -47,6 +48,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(140.0F);
 	}
 
+	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
@@ -59,6 +61,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		}
 	}
 
+	@Override
 	protected Entity findPlayerToAttack()
 	{
 		if (rand.nextInt(15) != 1) 
@@ -79,26 +82,31 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		return worldObj.getBlock(i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
 	}
 
+	@Override
 	protected boolean canDespawn()
 	{
 		return true;
 	}
 
+	@Override
 	protected String getLivingSound()
 	{
 		return "mob.spider.say";
 	}
 
+	@Override
 	protected String getHurtSound()
 	{
 		return "mob.spider.say";
 	}
 
+	@Override
 	protected String getDeathSound()
 	{
 		return "mob.spider.death";
 	}
 
+	@Override
 	protected void attackEntity(Entity entity, float f)
 	{
 		if (attackMode.getInt() == 0) // SWORD
@@ -122,11 +130,11 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 				if (attackTime == 0)
 				{
 					EntityArrow arrow = new EntityArrow(worldObj, this, 1);
-					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20D - arrow.posY;
+					double d2 = (entity.posY + entity.getEyeHeight()) - 0.20D - arrow.posY;
 					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
 					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 					worldObj.spawnEntityInWorld(arrow);
-					arrow.setThrowableHeading(dX, d2 + (double)f1, dZ, 0.75F, 12F);
+					arrow.setThrowableHeading(dX, d2 + f1, dZ, 0.75F, 12F);
 					attackTime = 30;
 				}
 
@@ -148,6 +156,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		return super.attackEntityFrom(damageSource, f);
 	}
 
+	@Override
 	protected void dropFewItems(boolean hitByPlayer, int lootLevel)
 	{
 		dropItem(ModItems.spiderEgg, 3);
@@ -156,6 +165,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		dropItem(Items.saddle, 1);
 	}
 
+	@Override
 	public ItemStack getHeldItem()
 	{
 		return attackMode.getInt() == 0 ? stoneSword : bow;

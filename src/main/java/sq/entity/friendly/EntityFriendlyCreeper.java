@@ -121,7 +121,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	@SideOnly(Side.CLIENT)
 	public float getCreeperFlashIntensity(float partialTickTime)
 	{
-		return (float)(getExplosionTicks() / 32.0F) * partialTickTime;
+		return getExplosionTicks() / 32.0F * partialTickTime;
 	}
 
 	@Override

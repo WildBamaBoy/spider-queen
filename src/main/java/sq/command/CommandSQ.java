@@ -39,7 +39,7 @@ public final class CommandSQ extends CommandBase
 		{
 			final EntityPlayer player = (EntityPlayer)commandSender;
 			String subcommand = input[0];
-			String[] arguments = (String[]) Arrays.copyOfRange(input, 1, input.length);
+			String[] arguments = Arrays.copyOfRange(input, 1, input.length);
 
 			if (subcommand.equalsIgnoreCase("help"))
 			{

@@ -49,11 +49,11 @@ public class EntityFreezeBall extends EntityThrowable
 		this.shooter = shooter;
 		this.renderDistanceWeight = 10.0D;
 
-		this.posY = shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D;
+		this.posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
 		double d0 = target.posX - shooter.posX;
-		double d1 = target.boundingBox.minY + (double)(target.height / 3.0F) - this.posY;
+		double d1 = target.boundingBox.minY + target.height / 3.0F - this.posY;
 		double d2 = target.posZ - shooter.posZ;
-		double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+		double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 
 		if (d3 >= 1.0E-7D)
 		{
@@ -64,7 +64,7 @@ public class EntityFreezeBall extends EntityThrowable
 			this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f2, f3);
 			this.yOffset = 0.0F;
 			float f4 = (float)d3 * 0.2F;
-			this.setThrowableHeading(d0, d1 + (double)f4, d2, speed, unknown);
+			this.setThrowableHeading(d0, d1 + f4, d2, speed, unknown);
 		}
 	}
 

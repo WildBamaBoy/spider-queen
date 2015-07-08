@@ -70,6 +70,7 @@ public class EntityMandragora extends AbstractNewMob
 		vineTimer = nbt.getInteger("vineTimer");
 	}
 
+	@Override
 	public boolean getCanSpawnHere()
 	{
 		int i = MathHelper.floor_double(posX);
@@ -116,7 +117,7 @@ public class EntityMandragora extends AbstractNewMob
 					float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
 					worldObj.playSoundAtEntity(this, "sq:mand.vine", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 					worldObj.spawnEntityInWorld(vines);
-					vines.setArrowHeading(d, d2 + (double)f1, d1, 0.5F, 8F);
+					vines.setArrowHeading(d, d2 + f1, d1, 0.5F, 8F);
 					attackTime = 20 - rand.nextInt(5);
 				}
 				rotationYaw = (float)((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
@@ -153,6 +154,7 @@ public class EntityMandragora extends AbstractNewMob
 		return dataWatcher.getWatchableObjectInt(12) != 0;
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();

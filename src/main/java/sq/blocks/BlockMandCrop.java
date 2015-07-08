@@ -36,7 +36,8 @@ public class BlockMandCrop extends BlockCrops
 		GameRegistry.registerBlock(this, name);
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
     	//We only switch icons every other growth cycle.
@@ -58,7 +59,8 @@ public class BlockMandCrop extends BlockCrops
     /**
      * Return the item dropped when this crop is destroyed while fully grown.
      */
-    protected Item func_149866_i()
+    @Override
+	protected Item func_149866_i()
     {
         return ModItems.mandragoraSeeds;
     }
@@ -66,7 +68,8 @@ public class BlockMandCrop extends BlockCrops
     /**
      * Return the item dropped when this crop is destroyed while partially grown.
      */
-    protected Item func_149865_P()
+    @Override
+	protected Item func_149865_P()
     {
         return ModItems.mandragoraSeeds;
     }
@@ -103,6 +106,7 @@ public class BlockMandCrop extends BlockCrops
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister)
     {

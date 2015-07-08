@@ -67,7 +67,7 @@ public class EntityVines extends Entity
         owner = entityliving;
         
         setSize(0.2F, 0.2F);
-        setLocationAndAngles(entityliving.posX, entityliving.posY + (double)entityliving.getEyeHeight(), entityliving.posZ, entityliving.rotationYaw, entityliving.rotationPitch);
+        setLocationAndAngles(entityliving.posX, entityliving.posY + entityliving.getEyeHeight(), entityliving.posZ, entityliving.rotationYaw, entityliving.rotationPitch);
         posX -= MathHelper.cos((rotationYaw / 180F) * 3.141593F) * 0.16F;
         posY -= 0.10000000149011612D;
         posZ -= MathHelper.sin((rotationYaw / 180F) * 3.141593F) * 0.16F;
@@ -79,7 +79,8 @@ public class EntityVines extends Entity
         setArrowHeading(motionX, motionY, motionZ, 1.5F, 1.0F);
     }
 
-    protected void entityInit()
+    @Override
+	protected void entityInit()
     {
     }
 
@@ -90,9 +91,9 @@ public class EntityVines extends Entity
         d /= f2;
         d1 /= f2;
         d2 /= f2;
-        d += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
-        d1 += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
-        d2 += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
+        d += rand.nextGaussian() * 0.0074999998323619366D * f1;
+        d1 += rand.nextGaussian() * 0.0074999998323619366D * f1;
+        d2 += rand.nextGaussian() * 0.0074999998323619366D * f1;
         d *= f;
         d1 *= f;
         d2 *= f;
@@ -105,7 +106,8 @@ public class EntityVines extends Entity
         ticksInGround = 0;
     }
 
-    public void setVelocity(double d, double d1, double d2)
+    @Override
+	public void setVelocity(double d, double d1, double d2)
     {
         motionX = d;
         motionY = d1;
@@ -122,7 +124,8 @@ public class EntityVines extends Entity
         }
     }
 
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         super.onUpdate();
         if(prevRotationPitch == 0.0F && prevRotationYaw == 0.0F)
@@ -289,7 +292,7 @@ public class EntityVines extends Entity
             for(int i1 = 0; i1 < 4; i1++)
             {
                 float f6 = 0.25F;
-                worldObj.spawnParticle("bubble", posX - motionX * (double)f6, posY - motionY * (double)f6, posZ - motionZ * (double)f6, motionX, motionY, motionZ);
+                worldObj.spawnParticle("bubble", posX - motionX * f6, posY - motionY * f6, posZ - motionZ * f6, motionX, motionY, motionZ);
             }
 
             f3 = 0.8F;
@@ -301,7 +304,8 @@ public class EntityVines extends Entity
         setPosition(posX, posY, posZ);
     }
 
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound)
+    @Override
+	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
         nbttagcompound.setShort("xTile", (short)xTile);
         nbttagcompound.setShort("yTile", (short)yTile);
@@ -313,7 +317,8 @@ public class EntityVines extends Entity
         nbttagcompound.setBoolean("player", doesArrowBelongToPlayer);
     }
 
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    @Override
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
     {
         xTile = nbttagcompound.getShort("xTile");
         yTile = nbttagcompound.getShort("yTile");
@@ -325,12 +330,14 @@ public class EntityVines extends Entity
         doesArrowBelongToPlayer = nbttagcompound.getBoolean("player");
     }
 
-    public void onCollideWithPlayer(EntityPlayer entityplayer)
+    @Override
+	public void onCollideWithPlayer(EntityPlayer entityplayer)
     {
         return;
     }
 
-    public float getShadowSize()
+    @Override
+	public float getShadowSize()
     {
         return 0.0F;
     }

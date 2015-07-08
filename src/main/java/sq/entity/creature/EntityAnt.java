@@ -31,6 +31,7 @@ public class EntityAnt extends AbstractNewMob
 		dataWatcher.updateObject(12, type.getId());
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();

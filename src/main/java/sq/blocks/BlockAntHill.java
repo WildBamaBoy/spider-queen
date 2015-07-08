@@ -46,7 +46,7 @@ public class BlockAntHill extends Block
 		super.updateTick(world, x, y, z, random);
 		
 		//Grab the nearest player within 16 blocks.
-		final EntityPlayer player = world.getClosestPlayer((double)x, (double)y, (double)z, 16.0D);
+		final EntityPlayer player = world.getClosestPlayer(x, y, z, 16.0D);
 
 		if (player != null) //Don't bother spawning anything if there are no players nearby.
 		{
@@ -66,7 +66,7 @@ public class BlockAntHill extends Block
 			if (nearbyAnts < SpiderCore.getConfig().antSpawnCap)
 			{
 				EntityAnt ant = new EntityAnt(world, EnumAntType.BLACK);
-				ant.setPositionAndRotation((double) x, (double) y, (double) z, (float)random.nextInt(360) + 1, 0.0F);
+				ant.setPositionAndRotation(x, y, z, (float)random.nextInt(360) + 1, 0.0F);
 				world.spawnEntityInWorld(ant);
 			}
 		}

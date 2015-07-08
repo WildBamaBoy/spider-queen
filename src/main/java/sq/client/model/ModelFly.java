@@ -110,6 +110,7 @@ public class ModelFly extends ModelBase
 		setRotation(wing2, -0.122173F, 0.2617994F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -153,7 +154,7 @@ public class ModelFly extends ModelBase
 		leg5.rotateAngleX = leg1.rotateAngleX; leg5.rotateAngleY = leg1.rotateAngleY; leg5.rotateAngleZ = leg1.rotateAngleZ; 
 		leg6.rotateAngleX = leg1.rotateAngleX; leg6.rotateAngleY = leg1.rotateAngleY; leg6.rotateAngleZ = leg1.rotateAngleZ; 
 
-		wing1.rotateAngleX = -0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
-		wing2.rotateAngleX = -0.122173F + ((float)SpiderCore.rand.nextInt(5)) * 0.122173F;
+		wing1.rotateAngleX = -0.122173F + (SpiderCore.rand.nextInt(5)) * 0.122173F;
+		wing2.rotateAngleX = -0.122173F + (SpiderCore.rand.nextInt(5)) * 0.122173F;
 	}
 }
