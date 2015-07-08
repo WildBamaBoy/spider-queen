@@ -1,5 +1,8 @@
 package sq.enums;
 
+/**
+ * Defines an attack ball's identity by tying it to a numeric ID.
+ */
 public enum EnumAttackBallType 
 {
 	BOOM (0),

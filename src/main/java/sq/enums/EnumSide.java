@@ -1,5 +1,8 @@
 package sq.enums;
 
+/**
+ * Turns Minecraft's side metadata into named numerical enums.
+ */
 public enum EnumSide 
 {
 	BOTTOM(0),

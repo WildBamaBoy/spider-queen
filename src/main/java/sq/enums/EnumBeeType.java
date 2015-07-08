@@ -2,6 +2,9 @@ package sq.enums;
 
 import radixcore.util.RadixString;
 
+/**
+ * Defines a bee's type by tying it to a numerical ID.
+ */
 public enum EnumBeeType 
 {
 	WARRIOR (0),

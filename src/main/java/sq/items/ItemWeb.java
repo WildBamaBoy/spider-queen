@@ -9,6 +9,9 @@ import sq.core.SpiderCore;
 import sq.entity.creature.EntityWebShot;
 import sq.enums.EnumWebType;
 
+/**
+ * The web item allows the player to shoot a web shot when they right click with this item.
+ */
 public class ItemWeb extends Item
 {
 	private EnumWebType webType;

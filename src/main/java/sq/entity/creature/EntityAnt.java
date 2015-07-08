@@ -10,6 +10,10 @@ import sq.core.minecraft.ModBlocks;
 import sq.entity.AbstractNewMob;
 import sq.enums.EnumAntType;
 
+/**
+ * Ants are aggressive creatures that can be red or black. Red ants inflict more damage.
+ * Ants also dig away blocks nearby in order to dig from their spawn location up to the surface.
+ */
 public class EntityAnt extends AbstractNewMob
 {
 	private int eatTime;
@@ -43,6 +47,7 @@ public class EntityAnt extends AbstractNewMob
 			setDead();
 		}
 
+		//Ants instantly drown in water.
 		if (isInWater())
 		{
 			attackEntityFrom(DamageSource.drown, 100.0F);
@@ -50,6 +55,7 @@ public class EntityAnt extends AbstractNewMob
 
 		if (!worldObj.isRemote)
 		{
+			//Every 20 ticks, check for a block to eat and destroy it.
 			eatTime++;
 			
 			if (eatTime > 20)

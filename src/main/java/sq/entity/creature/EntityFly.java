@@ -7,6 +7,9 @@ import sq.core.SpiderCore;
 import sq.entity.AbstractFlyingMob;
 import sq.util.Utils;
 
+/**
+ * Flies are passive flying creatures that the player can eat by right-clicking.
+ */
 public class EntityFly extends AbstractFlyingMob
 {
 	public EntityFly(World world) 
@@ -68,10 +71,12 @@ public class EntityFly extends AbstractFlyingMob
 	{
 		if (!worldObj.isRemote)
 		{
+			//Disappear with smoke and play the eat and burp sounds on the player.
 			Utils.spawnParticlesAroundEntityS("smoke", this, 16);
 			worldObj.playSoundAtEntity(player, "random.eat", 0.85F, 1.0F);
 			worldObj.playSoundAtEntity(player, "random.burp", 0.85F, 1.0F);
 			
+			//Heal the player and restore food stats.
 			player.heal(3);
 			player.getFoodStats().addStats(4, 0.4f);
 			

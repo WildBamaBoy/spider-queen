@@ -24,6 +24,10 @@ import radixcore.constant.Time;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 
+/**
+ * The friendly skeleton is gifted to the player with a high skeleton reputation. 
+ * By gifting the friendly skeleton a skull, the player will receive bones.
+ */
 public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;

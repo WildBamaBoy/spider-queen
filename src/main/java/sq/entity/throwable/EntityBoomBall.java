@@ -16,6 +16,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import sq.entity.creature.EntitySpiderEx;
 
+/**
+ * The boom ball is a projectile that explodes on impact.
+ */
 public class EntityBoomBall extends Entity implements IProjectile
 {
 	private int	ticksInAir;

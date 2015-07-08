@@ -7,9 +7,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import sq.entity.creature.EntityWebslinger;
 
+/**
+ * Stores extra data about the player it is attached to.
+ */
 public class PlayerExtension implements IExtendedEntityProperties
 {
 	public static final String					ID	= "SQPlayerExtension";
+	
 	public EntityWebslinger						webEntity;
 	private final EntityPlayer					player;
 	public int slingerCooldown;

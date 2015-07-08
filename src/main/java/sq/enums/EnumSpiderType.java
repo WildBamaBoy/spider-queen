@@ -2,6 +2,9 @@ package sq.enums;
 
 import radixcore.util.RadixString;
 
+/**
+ * Defines the possible spider types and ties them to an ID.
+ */
 public enum EnumSpiderType
 {
 	NONE (-1),

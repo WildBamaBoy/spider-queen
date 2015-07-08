@@ -2,6 +2,9 @@ package sq.entity;
 
 import net.minecraft.world.World;
 
+/**
+ * Defines a mob that can fly.
+ */
 public abstract class AbstractFlyingMob extends AbstractNewMob 
 {
 	public AbstractFlyingMob(World world, String codeName)

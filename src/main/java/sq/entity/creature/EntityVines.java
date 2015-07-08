@@ -15,6 +15,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+/**
+ * Vines are the entities that mandragoras create in order for them to attack.
+ */
 public class EntityVines extends Entity
 {
     public EntityVines(World world)

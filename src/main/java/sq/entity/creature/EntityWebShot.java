@@ -33,6 +33,9 @@ import sq.enums.EnumCocoonType;
 import sq.enums.EnumSide;
 import sq.enums.EnumWebType;
 
+/**
+ * The web shot is the projectile shot when the player right-clicks while holding web.
+ */
 public class EntityWebShot extends Entity implements IProjectile, IEntityAdditionalSpawnData
 {
 	private int				ticksInAir;
@@ -121,6 +124,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	@Override
 	public void onUpdate()
 	{
+		//Check for all scenarios wherein the web shot needs to disappear.
 		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.blockExists((int) posX, (int) posY, (int) posZ)))
 		{
 			setDead();
@@ -277,21 +281,23 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 		if (collisionPosition != null)
 		{
+			//When we have a collision position, get the block before passing it to onImpact.
 			Block block = worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
 
-			if (block.getMaterial() == Material.plants)
+			if (block.getMaterial() == Material.plants) //Ignore all plants.
 			{
 				return;
 			}
 
-			else
+			else 
 			{
+				//Also ignore mini ghasts, as the player could accidentally hit it when shooting web while mounted on the ghast.
 				if (collisionPosition.entityHit instanceof EntityMiniGhast)
 				{
 					return;
 				}
 
-				else
+				else //Valid impact point.
 				{
 					onImpact(collisionPosition);
 				}
@@ -354,26 +360,33 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		{
 			skewMotion();
 
-			if (impactPoint.entityHit != null && impactPoint.entityHit instanceof EntityLivingBase)
+			if (impactPoint.entityHit instanceof EntityLivingBase)
 			{
+				//Do not allow a block to spawn as we've already "used" the slinger.
 				doBlockSpawn = false;
 
+				//Get the cocoon type of the creature, if it exists, and cause it to jump back by attacking it with 0 points.
 				final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(impactPoint.entityHit);
 				final EntityLivingBase entityHit = (EntityLivingBase) impactPoint.entityHit;
 				entityHit.attackEntityFrom(DamageSource.causeMobDamage(shooter), 0.0F);
 
+				//Only normal web can cocoon, and only try to cocoon if we know the cocoon type.
 				if (type == EnumWebType.NORMAL && cocoonType != null)
 				{
+					//Calculate the catch chance based on a base chance and the mob's health.
 					final int intHealth = (int) entityHit.getHealth();
 					final int catchChance = (int) (cocoonType.getCatchChance() + (entityHit.getMaxHealth() - intHealth) * 2);
 
 					if (RadixLogic.getBooleanWithProbability(catchChance))
 					{
+						//If we passed the catch test, spawn the new cocoon in the world at the entity's place.
 						EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
 						entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
 						worldObj.spawnEntityInWorld(entityCocoon);
 						entityHit.setDead();
 
+						//Pass a living death event into Forge as this technically kills the creature. This runs the code
+						//that decreases reputation for the creature that was cocooned.
 						if (shooter instanceof EntityPlayer)
 						{
 							EntityPlayer player = (EntityPlayer)shooter;
@@ -388,11 +401,13 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 			else if (doBlockSpawn)
 			{
+				//Figure out what we hit and where, and which side.
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int impactX = impactPoint.blockX;
 				int impactY = impactPoint.blockY;
 				int impactZ = impactPoint.blockZ;
 
+				//Calculate the side that the web will need to be on.
 				EnumSide sideHit = EnumSide.byId(impactPoint.sideHit);
 				int xMov = sideHit == EnumSide.NORTH ? -1 : sideHit == EnumSide.SOUTH ? 1 : 0;
 				int yMov = sideHit == EnumSide.BOTTOM ? -1 : sideHit == EnumSide.TOP ? 1 : 0;
@@ -452,11 +467,13 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 					}
 				}
 
+				//Change the actual block to the poison web variant.
 				if (type == EnumWebType.POISON)
 				{
 					blockPlaced = ModBlocks.getPoisonWebVariant(blockPlaced);
 				}
 
+				//Set the web at the impact point.
 				Block blockToSet = worldObj.getBlock(impactX + xMov, impactY + yMov, impactZ + zMov);
 
 				if (blockToSet == Blocks.air || blockToSet instanceof BlockWebFull) //Prevent overwriting terrain.

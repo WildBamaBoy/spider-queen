@@ -9,6 +9,9 @@ import net.minecraft.world.World;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityGhastEgg;
 
+/**
+ * Defines the ghast egg, which simply places the ghast egg entity into the world when used.
+ */
 public class ItemGhastEgg extends Item
 {
 	public ItemGhastEgg()

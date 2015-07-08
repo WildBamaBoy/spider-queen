@@ -9,7 +9,9 @@ import sq.entity.creature.EntityAnt;
 import sq.entity.creature.EntityBee;
 import sq.entity.creature.EntityHuman;
 
-
+/**
+ * Defines the data watcher IDs of the data that is watched by the DataWatcherEx. This is for player data.
+ */
 public enum EnumWatchedDataIDs
 {
 	IS_MALE(0),

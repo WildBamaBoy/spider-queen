@@ -35,6 +35,9 @@ import sq.items.ItemSpiderRod;
 import sq.items.ItemWeb;
 import sq.items.ItemWebslinger;
 
+/**
+ * All items in Spider Queen.
+ */
 public final class ModItems
 {
 	public static ItemCocoon cocoonBlackAnt;

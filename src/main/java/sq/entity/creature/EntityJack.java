@@ -12,6 +12,9 @@ import sq.core.minecraft.ModItems;
 import sq.entity.AbstractFlyingMob;
 import sq.entity.throwable.EntityJackBall;
 
+/**
+ * Jack is a flying mob that fires a projectile at the player. During the day, he turns into a Jack block.
+ */
 public class EntityJack extends AbstractFlyingMob
 {
 	private int attackTimer;

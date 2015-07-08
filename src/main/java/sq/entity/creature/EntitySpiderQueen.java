@@ -17,6 +17,10 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.IWebClimber;
 
+/**
+ * The spider queen creatures are rival spider queens that spawn in the world. They are hostile to the player, and attack
+ * with either swords or bows. They can alternate their attacks.
+ */
 public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IWatchable
 {
 	private static final ItemStack stoneSword = new ItemStack(Items.stone_sword, 1);
@@ -48,6 +52,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		super.onUpdate();
 		fallDistance = 0.0F;
 
+		//Randomly change our attack mode.
 		if (!worldObj.isRemote && worldObj.rand.nextInt(150) == 0)
 		{
 			attackMode.setValue(worldObj.rand.nextInt(2));
@@ -117,7 +122,6 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 				if (attackTime == 0)
 				{
 					EntityArrow arrow = new EntityArrow(worldObj, this, 1);
-					//					arrow.posY += 1.4D;
 					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20D - arrow.posY;
 					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
 					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));

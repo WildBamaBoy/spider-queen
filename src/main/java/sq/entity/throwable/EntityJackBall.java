@@ -7,6 +7,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+/**
+ * The jack ball is the projectile thrown by Jack. It injures the player for 6 points.
+ */
 public class EntityJackBall extends EntityThrowable
 {
 	private EntityLivingBase shooter;

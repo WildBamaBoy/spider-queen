@@ -33,6 +33,9 @@ import sq.entity.friendly.EntityFriendlyZombie;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumPlaceholderBlock;
 
+/**
+ * Handles generating factories in the world.
+ */
 public class WorldGenFactory implements IWorldGenerator
 {
 	public WorldGenFactory()
@@ -51,6 +54,7 @@ public class WorldGenFactory implements IWorldGenerator
 				int z = chunkZ * 16 + random.nextInt(16);
 				BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
 
+				//Only allow spawning in plains, deserts, and savannas.
 				if (biome == BiomeGenBase.plains || biome == BiomeGenBase.desert || biome == BiomeGenBase.savanna)
 				{
 					for (int maxY = 256; maxY > 0; maxY--)
@@ -69,6 +73,7 @@ public class WorldGenFactory implements IWorldGenerator
 	{
 		Block block = world.getBlock(x, y, z);
 
+		//Make sure we're spawning on grass, and perform a random operation to see if we can spawn.
 		if (block == Blocks.grass && random.nextInt(450) == 0)
 		{
 			y += 2; //Account for the test block and player standing location in schematic.
@@ -87,7 +92,7 @@ public class WorldGenFactory implements IWorldGenerator
 		return false;
 	}
 
-	//Memory-based implementation from RadixCore.
+	//Schematic within memory based implementation from RadixCore. Also populates chests with loot and dispensers with splash potions.
 	private void spawnStructureRelativeToPoint(Map<Point3D, BlockObj> schemBlocks, Point3D point, World world)
 	{
 		Map<Point3D, BlockObj> torchMap = new HashMap<Point3D, BlockObj>();

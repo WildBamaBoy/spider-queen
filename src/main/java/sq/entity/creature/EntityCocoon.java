@@ -20,12 +20,15 @@ import radixcore.util.RadixMath;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumCocoonType;
 
+/**
+ * Cocoons are entities placed in the world by the player or placed in the world after an entity is struck by a web shot.
+ */
 public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	private EnumCocoonType	cocoonType;
-
 	private int currentDamage;
 	private int	timeSinceHit;
+	
 	public EntityCocoon(World world)
 	{
 		super(world);
@@ -87,6 +90,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		super.onUpdate();
 
+		//Make the cocoon rock back and forth when it's struck.
 		if (timeSinceHit > 0)
 		{
 			timeSinceHit--;
@@ -101,6 +105,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			currentDamage--;
 		}
 
+		//For endermen, we spawn portal particles around the cocoon.
 		if (cocoonType == EnumCocoonType.ENDERMAN && !isEaten())
 		{
 			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 1 + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
@@ -126,13 +131,15 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 		if (entity instanceof EntityPlayer)
 		{
+			//When punched by a player, increment the damage to make the cocoon rock back and forth.
 			timeSinceHit = 10;
 			currentDamage += damage * 10;
-
 			setBeenAttacked();
 
+			//Destroy the cocoon when damage is greater than 8.
 			if (currentDamage > 8)
 			{
+				//When the cocoon has been eaten, destroy it with a puff of smoke.
 				if (isEaten())
 				{
 					worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2 + 1, posZ - motionZ * 2, motionX, motionY, motionZ);
@@ -140,7 +147,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 				if (!worldObj.isRemote)
 				{
-					if (!isEaten())
+					if (!isEaten()) //When it's not eaten, drop the cocoon's item.
 					{
 						dropItem(cocoonType.getCocoonItem(), 1);	
 					}
@@ -208,6 +215,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		if (!isEaten())
 		{
+			//Heal the player's health and food stats when eaten.
 			entityPlayer.heal(3);
 			entityPlayer.getFoodStats().addStats(4, 0.4f);
 
@@ -216,6 +224,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 			setEaten(true);
 
+			//Then calculate and drop string/eggs.
 			if (!worldObj.isRemote)
 			{
 				final boolean doDropEgg = RadixLogic.getBooleanWithProbability(25);

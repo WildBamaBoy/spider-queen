@@ -25,6 +25,10 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumOfferingType;
 
+/**
+ * Defines the offering items. When in an EntityItem, it causes nearby
+ * creatures that are attracted to this offering to path towards it.
+ */
 public final class ItemOffering extends Item
 {
 	private EnumOfferingType offeringType;
@@ -81,7 +85,8 @@ public final class ItemOffering extends Item
 		}
 
 		entities = RadixLogic.getAllEntitiesOfTypeWithinDistance(acceptorClass, entityItem, 8);
-
+		
+		//Move all acceptors to this item.
 		for (Entity entity : entities)
 		{
 			EntityLiving living = (EntityLiving)entity;

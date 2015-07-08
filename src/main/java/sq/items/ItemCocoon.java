@@ -18,6 +18,10 @@ import sq.entity.creature.EntityCocoon;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSpiderType;
 
+/**
+ * Defines the base cocoon item, which places an entity version of its accompanying type into the world 
+ * when the player right-clicks a block.
+ */
 public class ItemCocoon extends Item
 {
 	private EnumCocoonType cocoonType;

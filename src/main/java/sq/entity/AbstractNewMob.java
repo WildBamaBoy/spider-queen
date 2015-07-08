@@ -14,6 +14,9 @@ import radixcore.util.RadixString;
 import sq.entity.ai.AIAttackPlayerOnUnlike;
 import sq.entity.creature.EntityHuman;
 
+/**
+ * Defines a general "new" mob that can be hostile to players.
+ */
 public abstract class AbstractNewMob extends EntityMob 
 {
 	private final String codeName;

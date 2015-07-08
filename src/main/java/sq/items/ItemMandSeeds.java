@@ -9,6 +9,9 @@ import net.minecraft.world.World;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 
+/**
+ * Defines the mandragora seeds, which place mandragora crop blocks on farmland when used.
+ */
 public class ItemMandSeeds extends Item
 {
 	public ItemMandSeeds()

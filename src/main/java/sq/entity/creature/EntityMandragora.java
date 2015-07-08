@@ -12,6 +12,9 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.AbstractNewMob;
 
+/**
+ * The mandragora is a stationary aggressive creature that attacks the player with vines.
+ */
 public class EntityMandragora extends AbstractNewMob
 {
 	private int vineTimer;
@@ -105,6 +108,7 @@ public class EntityMandragora extends AbstractNewMob
 
 				if (attackTime == 0)
 				{
+					//Shoot the vines like an arrow. The vine entity will handle moving up and down periodically.
 					EntityVines vines = new EntityVines(worldObj, this);
 					vines.setFriendly(getIsFriendly());
 					vines.posY += 0.4D;
@@ -126,6 +130,7 @@ public class EntityMandragora extends AbstractNewMob
 	@Override
 	protected boolean isValidLightLevel() 
 	{
+		//Make sure we can spawn in a lit area.
 		int i = MathHelper.floor_double(this.posX);
 		int j = MathHelper.floor_double(this.boundingBox.minY);
 		int k = MathHelper.floor_double(this.posZ);
@@ -138,6 +143,7 @@ public class EntityMandragora extends AbstractNewMob
 	{
 		if (hitByPlayer && RadixLogic.getBooleanWithProbability(45))
 		{
+			//Randomly drops mandragora seeds.
 			this.dropItem(ModItems.mandragoraSeeds, 1);
 		}
 	}

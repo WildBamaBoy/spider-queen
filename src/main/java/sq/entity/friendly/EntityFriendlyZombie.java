@@ -28,6 +28,10 @@ import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityHuman;
 
+/**
+ * The friendly zombie is gifted to the player with a high zombie reputation. 
+ * By gifting the friendly zombie a brain, the player will receive logs.
+ */
 public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;

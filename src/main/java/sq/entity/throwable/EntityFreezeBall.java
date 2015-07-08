@@ -18,6 +18,9 @@ import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import sq.util.Utils;
 
+/**
+ * The freeze ball is a projectile that freezes a creature on impact with it. It also freezes water and douses flames.
+ */
 public class EntityFreezeBall extends EntityThrowable
 {
 	private EntityLivingBase shooter;

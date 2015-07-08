@@ -6,6 +6,9 @@ import radixcore.packets.PacketDataContainer;
 import sq.packet.PacketSleepC;
 import sq.packet.PacketSleepS;
 
+/**
+ * Spider Queen's packet handler from RadixCore.
+ */
 public final class SpiderPacketHandler extends AbstractPacketHandler
 {
 	public SpiderPacketHandler(String modId) 

@@ -17,6 +17,10 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import sq.entity.ai.PlayerExtension;
 
+/**
+ * The webslinger is the entity spawned when the player right-clicks while holding the webslinger item.
+ * This controls the player's movement while the webslinger is actively caught on a block.
+ */
 public class EntityWebslinger extends Entity
 {
 	public EntityWebslinger(World world)
@@ -32,7 +36,6 @@ public class EntityWebslinger extends Entity
 		field_4088_k = 0;
 		entityHit = null;
 		setSize(0.15F, 0.15F);
-		//ignoreFrustumCheck = true;
 		targetDistance = 0;
 	}
 
@@ -40,7 +43,6 @@ public class EntityWebslinger extends Entity
 	{
 		this(world);
 		setPosition(d, d1, d2);
-		//ignoreFrustumCheck = true;
 	}
 
 	public EntityWebslinger(World world, EntityPlayer entityplayer)
@@ -55,7 +57,6 @@ public class EntityWebslinger extends Entity
 		field_4089_j = 0;
 		field_4088_k = 0;
 		entityHit = null;
-		//ignoreFrustumCheck = true;
 		angler = entityplayer;
 		player = entityplayer;
 

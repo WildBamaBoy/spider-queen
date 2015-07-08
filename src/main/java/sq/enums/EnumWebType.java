@@ -1,5 +1,8 @@
 package sq.enums;
 
+/**
+ * Defines the possible web types and maps them to an ID.
+ */
 public enum EnumWebType
 {
 	NORMAL (0),

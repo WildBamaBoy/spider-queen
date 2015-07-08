@@ -2,6 +2,9 @@ package sq.enums;
 
 import radixcore.util.RadixString;
 
+/**
+ * Defines the types of ants that exist.
+ */
 public enum EnumAntType 
 {
 	BLACK (0),

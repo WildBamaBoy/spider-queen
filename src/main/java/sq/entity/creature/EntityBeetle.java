@@ -7,6 +7,9 @@ import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.entity.AbstractNewMob;
 
+/**
+ * The beetle is a flying mob that is hostile to the player and bees.
+ */
 public class EntityBeetle extends AbstractNewMob
 {
 	private EntityLivingBase target;
@@ -58,6 +61,8 @@ public class EntityBeetle extends AbstractNewMob
 			setDead();
 		}
 
+		//"target" stores the attack target assigned by the AI system.
+		//We set this to prevent flipping between multiple targets, which makes the beetle do nothing at all.
 		if (this.getAttackTarget() != null && target == null)
 		{
 			target = this.getAttackTarget();
@@ -65,11 +70,13 @@ public class EntityBeetle extends AbstractNewMob
 
 		if (target != null)
 		{
+			//If we have a target, the beetle will start to fly.
 			if (!getIsFlying())
 			{
 				setIsFlying(true);
 			}
 
+			//Flying code towards the target.
 			double sqDistanceTo = Math.sqrt(Math.pow(target.posX - posX, 2) + Math.pow(target.posZ - posZ, 2));
 			float moveAmount = 0.0F;
 
@@ -97,7 +104,7 @@ public class EntityBeetle extends AbstractNewMob
 			}
 		}
 
-		else
+		else //If we don't have a target and we're flying, stop.
 		{
 			if (getIsFlying())
 			{
@@ -105,11 +112,13 @@ public class EntityBeetle extends AbstractNewMob
 			}
 		}
 
+		//Reset our target if it's dead or more than 16 blocks away.
 		if (target != null && (target.isDead || RadixMath.getDistanceToEntity(this, target) >= 16.0D))
 		{
 			target = null;
 		}
 
+		//When we're flying, run the flying code for passive movement.
 		if (getIsFlying())
 		{
 			if (motionY > 0)

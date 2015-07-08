@@ -44,6 +44,11 @@ import sq.entity.throwable.EntityBoomBall;
 import sq.enums.EnumSpiderType;
 import sq.util.Utils;
 
+/**
+ * The SpiderEx is an extended version of Minecraft's original spider. It comes in several different types and 
+ * has several different abilities depending on that type. Spiders can "level up" to increase their ability strength
+ * and health via varying means.
+ */
 public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEntityAdditionalSpawnData
 {
 	private int abilityCounter;
@@ -114,30 +119,37 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 			if (getHealth() > 0)
 			{
+				//Since attributes can change over this spider's life time, consistently update the attributes.
 				updateEntityAttributes();
 			}
 
+			//Always try to follow the owner first.
 			if (!tryFollowOwnerPlayer())
 			{
+				//If we can't, then attack our target if we have one.
 				if (target != null && !target.isDead)
 				{
 					attackEntity(target, 3.5F);
 				}
 
+				//Or if our target is now dead, reset the target and register it as a kill.
 				else if (target != null && target.isDead)
 				{
 					registerKill();
 					target = null;
 				}
 
-				else
+				else //With no target, find one.
 				{
 					target = findEntityToAttack();
 				}
 
+				//Move to the spider rod inline with attacking to keep the spider in range of the rod
+				//but still be able to defend itself.
 				tryMoveToSpiderRod();
 			}
 
+			//The pack spider scans the area for items and picks them up if they're within 3 blocks.
 			if (this.getSpiderType() == EnumSpiderType.PACK)
 			{
 				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityItem.class, this, 3))
@@ -156,6 +168,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		super.onDeath(source);
 
+		//The boom spider explodes on death. Double the size if charged.
 		if (spiderType == EnumSpiderType.BOOM)
 		{
 			if (getPowered())
@@ -169,6 +182,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			}
 		}
 
+		//Make sure to dismount the player when the rider spider dies.
 		if (spiderType == EnumSpiderType.RIDER && riddenByEntity != null)
 		{
 			final EntityPlayer player = (EntityPlayer)riddenByEntity;
@@ -180,13 +194,16 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	@Override
 	public boolean interact(EntityPlayer entityPlayer)
 	{
+		//Only the owner can interact with extended spiders.
 		if (owner.equals(entityPlayer.getUniqueID()))
 		{
+			//Pack spider displays its inventory.
 			if (spiderType == EnumSpiderType.PACK)
 			{
 				entityPlayer.displayGUIChest(inventory);
 			}
 
+			//Rider spider causes the player to mount it.
 			else if (spiderType == EnumSpiderType.RIDER)
 			{
 				entityPlayer.rotationYaw = rotationYaw;
@@ -205,6 +222,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	@Override
 	public void moveEntityWithHeading(float moveStrafe, float moveForward)
 	{
+		//This controls the rider spider while it is mounted by the player.
 		if (riddenByEntity != null)
 		{
 			final int level = getLevel();
@@ -259,6 +277,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			limbSwingAmount += (f4 - limbSwingAmount) * 0.4F;
 			limbSwing += limbSwingAmount;
 		}
+		
 		else
 		{
 			stepHeight = 0.5F;
@@ -419,6 +438,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		{
 			final EntityLivingBase living = (EntityLivingBase)entity;
 
+			//The tank spider can poison its targets.
 			if (spiderType == EnumSpiderType.TANK)
 			{
 				PotionEffect poison = new PotionEffect(Potion.poison.id, Time.SECOND * 5 * getLevel());
@@ -486,12 +506,14 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		if (entity instanceof EntityPlayer) //Check for player attacking their own spiders.
 		{
+			//If the owner is being set as the target, ignore.
 			if (entity.getPersistentID().equals(owner))
 			{
 				return;
 			}
 		}
 
+		//If another spider hit us, make sure it's not also owned by our owner.
 		if (entity instanceof EntitySpiderEx)
 		{
 			EntitySpiderEx spider = (EntitySpiderEx)entity;
@@ -502,6 +524,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			}
 		}
 
+		//From the living attack event hook.
 		else if (entity instanceof EntityCocoon)
 		{
 			return;
@@ -523,6 +546,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		super.onStruckByLightning(lightning);
 
+		//Boom spiders can become charged by lightning.
 		if (this.getSpiderType() == EnumSpiderType.BOOM)
 		{
 			this.dataWatcher.updateObject(20, Byte.valueOf((byte)1));
@@ -601,6 +625,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		case WIMPY: width = 0.9F; height = 0.5F; break;			
 		}
 
+		//The tank spider gets larger as it levels up.
 		if (spiderType == EnumSpiderType.TANK)
 		{
 			if (getLevel() == 2)
@@ -647,6 +672,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		IAttributeInstance moveSpeed = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 		IAttributeInstance maxHealth = getEntityAttribute(SharedMonsterAttributes.maxHealth);
 
+		//Only set the base value if it's not equal to what we expect.
 		if (moveSpeed.getBaseValue() != getMovementSpeed())
 		{
 			moveSpeed.setBaseValue(getMovementSpeed());
@@ -663,7 +689,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		if (spiderType == EnumSpiderType.SLINGER || spiderType == EnumSpiderType.BOOM)
 		{
-
+			//Slinger spider and boom spider do not path to their targets, as they shoot projectiles.
 		}
 
 		else
@@ -723,12 +749,14 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 			if (abilityCounter <= 0)
 			{
+				//Boom spider throws a boom ball.
 				if (spiderType == EnumSpiderType.BOOM && target != null)
 				{
 					EntityBoomBall boomBall = new EntityBoomBall(this, target, 2.5F);
 					worldObj.spawnEntityInWorld(boomBall);
 				}
 
+				//Slinger spider throws a web shot.
 				else if (spiderType == EnumSpiderType.SLINGER && target != null)
 				{
 					EntityWebShot webShot = new EntityWebShot(this, target, 2.5F);
@@ -737,6 +765,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					worldObj.playSoundAtEntity(this, "random.bow", 0.75F, 1.0F);
 				}
 
+				//Nova spider heals nearby spiders.
 				else if (spiderType == EnumSpiderType.NOVA && RadixLogic.getBooleanWithProbability(20))
 				{
 					EntitySpiderEx spider = (EntitySpiderEx) RadixLogic.getNearestEntityOfTypeWithinDistance(EntitySpiderEx.class, this, 8);
@@ -750,6 +779,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					}
 				}
 
+				//Ender spider throws targets into the air.
 				else if (spiderType == EnumSpiderType.ENDER && target != null)
 				{
 					if (worldObj.canBlockSeeTheSky((int)posX, (int)posY, (int)posZ))
@@ -779,6 +809,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 	private int calculateAbilityThreshold() 
 	{
+		//Different abilities take different amounts of time to execute.
 		switch (spiderType)
 		{
 		case BOOM: return (Time.SECOND * 7) - getLevel();
@@ -793,6 +824,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		if (owner != null && target == null)
 		{
+			//Look up the owner by uuid.
 			final EntityPlayer ownerPlayer = worldObj.func_152378_a(owner);
 
 			if (ownerPlayer != null)
@@ -833,30 +865,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			break;			
 		}
 
-		//Attack on their own?
 		return null;
-
-		//		final List<Entity> entitiesAroundMe = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
-		//		EntityLivingBase closestValidTarget = null;
-		//		double distanceToTarget = 100D;
-		//	
-		//		for (final Entity entity : entitiesAroundMe)
-		//		{
-		//			if (entity == this)
-		//			{
-		//				continue;
-		//			}
-		//			
-		//			final double distanceToThisEntity = getDistanceToEntity(entity);
-		//	
-		//			if (entity instanceof EntitySheep && distanceToThisEntity < distanceToTarget)
-		//			{
-		//				closestValidTarget = (EntityLivingBase) entity;
-		//				distanceToTarget = distanceToThisEntity;
-		//			}
-		//		}
-		//	
-		//		return closestValidTarget;
 	}
 
 	private void moveToPlayer(EntityPlayer player)

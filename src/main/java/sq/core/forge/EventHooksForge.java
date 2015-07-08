@@ -55,15 +55,25 @@ import sq.entity.friendly.EntityFriendlyMandragora;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumWatchedDataIDs;
 
+/**
+ * This class contains all event hooks that belong to Forge.
+ */
 public final class EventHooksForge
 {
 	@SubscribeEvent
 	public void onPlayerSleepInBed(PlayerSleepInBedEvent event)
 	{
+		//Disable sleeping in normal beds.
 		event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
 		event.entityPlayer.addChatMessage(new ChatComponentText("Spiders can't sleep in normal beds."));
 	}
 
+	/**
+	 * When an entity is attacked by a player we check to see if this entity belongs to a reputation group. If so, the entity can be "angered"
+	 * by being struck three times. onAttackEntity will increment that value if needed.
+	 * 
+	 * We also set the player's friendly entities and spiders to target the entity that was struck.
+	 */
 	@SubscribeEvent
 	public void onAttackEntity(AttackEntityEvent event)
 	{
@@ -178,6 +188,10 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * In this event, we consistently set isInWeb to false for the player. This prevents
+	 * slowdown in web from other mods, and Minecraft's cobwebs.
+	 */
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
@@ -190,6 +204,13 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * Its name may not suggest it, however this runs whenever a living creature takes damage.
+	 * 
+	 * With it, we check to see if the player is supposed to take fall damage, then check to see if they recently
+	 * used the webslinger. This prevents damage in the case that the player has been hanging on the webslinger
+	 * for a long period of time, and their fall distance has kept increasing on the server.
+	 */
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event)
 	{
@@ -251,6 +272,11 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * Whenever a creature dies, we check to see if it belongs to a reputation group. If so, there's a random chance to
+	 * negatively affect the player's reputation with that creatures' reputation group. If the creature is a creeper, zombie, or skeleton,
+	 * killing five will increase reputation with humans.
+	 */
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
@@ -292,6 +318,12 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * When an entity is being constructed, we check to see if it is a player or it should belong to a reputation group.
+	 * Players get the PlayerExtension, and reputation entities get the RepEntityExtension.
+	 * 
+	 * We also add target tasks to creatures extending EntityMob. These tasks will instruct them to attack human entities.
+	 */
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event)
 	{

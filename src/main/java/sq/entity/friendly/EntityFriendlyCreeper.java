@@ -30,6 +30,10 @@ import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 
+/**
+ * The friendly creeper is gifted to the player with a high creeper reputation. 
+ * By gifting the friendly creeper a heart, the player will receive gunpowder.
+ */
 public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;

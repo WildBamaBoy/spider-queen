@@ -13,6 +13,10 @@ import sq.core.SpiderCore;
 import sq.core.radix.PlayerData;
 import sq.entity.IRep;
 
+/**
+ * An entity AI that causes creatures using the new AI system 
+ * to attack the player when they are unliked.
+ */
 public class AIAttackPlayerOnUnlike extends EntityAITarget
 {
 	private final int targetChance;
@@ -27,6 +31,7 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 
 	public boolean shouldExecute()
 	{
+		//Search for players.
 		List<Entity> list = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityPlayerMP.class, taskOwner, 8);
 
 		if (list.isEmpty())
@@ -36,10 +41,12 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 
 		else
 		{
+			//Get the first player in the list and set it as the target.
 			this.targetEntity = (EntityLivingBase)list.get(0);
 
 			try
 			{
+				//Check to make sure that the targeted player is unliked. If they're liked, this cannot execute.
 				IRep executor = (IRep)this.taskOwner;
 				PlayerData data = SpiderCore.getPlayerData((EntityPlayer)targetEntity);
 

@@ -57,6 +57,9 @@ import sq.entity.throwable.EntityBoomBall;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.entity.throwable.EntityJackBall;
 
+/**
+ * The client-side proxy class used to handle client side registration, such as renderers.
+ */
 public final class ClientProxy extends ServerProxy
 {
 	public static RenderSpiderQueen renderSpiderQueen = new RenderSpiderQueen();

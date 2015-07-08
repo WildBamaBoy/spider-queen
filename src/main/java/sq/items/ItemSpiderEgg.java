@@ -9,6 +9,9 @@ import net.minecraft.world.World;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEgg;
 
+/**
+ * The spider egg allows the player to place a spider egg entity into the world.
+ */
 public class ItemSpiderEgg extends Item
 {
 	public ItemSpiderEgg()

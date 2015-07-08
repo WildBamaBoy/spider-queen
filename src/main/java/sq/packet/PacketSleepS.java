@@ -8,6 +8,9 @@ import radixcore.network.ByteBufIO;
 import radixcore.packets.AbstractPacket;
 import sq.core.SpiderCore;
 
+/**
+ * Defines the sleep packet processed on the server.
+ */
 public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHandler<PacketSleepS, IMessage>
 {
 	private String username;

@@ -10,6 +10,9 @@ import radixcore.packets.AbstractPacket;
 import sq.core.SpiderCore;
 import sq.core.forge.GuiHandler;
 
+/**
+ * Defines the sleep packet processed on the client.
+ */
 public class PacketSleepC extends AbstractPacket implements IMessage, IMessageHandler<PacketSleepC, IMessage>
 {
 	private boolean doStop;

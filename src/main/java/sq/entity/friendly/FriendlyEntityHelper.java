@@ -28,6 +28,11 @@ import sq.core.minecraft.ModBlocks;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityBee;
 
+/**
+ * This class contains static methods called by most friendly creatures.
+ * This is used as no common abstract creature can be defined while the friendly
+ * creatures retain the properties of their originals.
+ */
 public final class FriendlyEntityHelper
 {
 	private FriendlyEntityHelper() {}
@@ -86,6 +91,7 @@ public final class FriendlyEntityHelper
 			}
 		}
 
+		//Generally the same code used for spiders.
 		if (!tryFollowFriend(friendlyEntity))
 		{
 			final Entity target = friendlyEntity.getTarget();

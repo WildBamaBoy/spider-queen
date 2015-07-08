@@ -1,5 +1,8 @@
 package sq.enums;
 
+/**
+ * Defines the possible offerings in the game.
+ */
 public enum EnumOfferingType
 {
 	BRAIN,

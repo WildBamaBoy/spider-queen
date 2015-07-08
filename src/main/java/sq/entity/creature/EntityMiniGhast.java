@@ -19,9 +19,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+/**
+ * The mini ghast is a mountable creature that will allow the player to fly while mounted.
+ */
 public class EntityMiniGhast extends EntityCreature
 {
-	private UUID	owner;
+	private UUID owner;
 
 	public EntityMiniGhast(World world)
 	{
@@ -151,6 +154,7 @@ public class EntityMiniGhast extends EntityCreature
 	@Override
 	public boolean interact(EntityPlayer entityPlayer)
 	{
+		//Allow the player to mount the entity if they are the owner.
 		if (!entityPlayer.worldObj.isRemote && owner.equals(entityPlayer.getUniqueID()))
 		{
 			entityPlayer.rotationYaw = rotationYaw;
@@ -166,6 +170,7 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		super.onUpdate();
 		
+		//The ghast will gradually fall as it is ridden.
 		if (motionY < 0)
 		{
 			motionY = -0.15F;
@@ -191,8 +196,10 @@ public class EntityMiniGhast extends EntityCreature
 				moveForward /= 4;
 			}
 			
+			//isJumping
 			if (ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, (EntityLivingBase) riddenByEntity, 41))
 			{
+				//If the player is jumping, increase our Y motion.
 				motionY = 0.4F;
 			}
 			

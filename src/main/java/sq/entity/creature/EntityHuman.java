@@ -38,6 +38,9 @@ import sq.entity.ai.RepEntityExtension;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumHumanType;
 
+/**
+ * The human is a reputation creature that has multiple types and a 'fortune' value. Its type and fortune affect its drops and attack power.
+ */
 public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData, IRep, IWatchable
 {
 	private static final ItemStack swordStone;

@@ -13,9 +13,13 @@ import sq.core.minecraft.ModItems;
 import sq.entity.AbstractFlyingMob;
 import sq.entity.throwable.EntityFreezeBall;
 
+/**
+ * Yuki is a hostile creature that attacks with a freezing projectile periodically. 
+ * It drops the freeze rod on death.
+ */
 public class EntityYuki extends AbstractFlyingMob
 {
-	private int lightningTimer;
+	private int freezeTimer;
 
 	public EntityYuki(World world) 
 	{
@@ -64,11 +68,11 @@ public class EntityYuki extends AbstractFlyingMob
 				setDead();
 			}
 			
-			lightningTimer--;
+			freezeTimer--;
 
-			if (lightningTimer <= 0)
+			if (freezeTimer <= 0)
 			{
-				lightningTimer = Time.SECOND * RadixMath.getNumberInRange(1, 3);
+				freezeTimer = Time.SECOND * RadixMath.getNumberInRange(1, 3);
 
 				if (this.getEntityToAttack() != null)
 				{

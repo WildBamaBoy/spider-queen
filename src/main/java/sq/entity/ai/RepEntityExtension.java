@@ -5,6 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
+/**
+ * Stores extra data about creatures that can have a reputation with the player.
+ */
 public class RepEntityExtension implements IExtendedEntityProperties
 {
 	public static final String ID = "SpiderQueenRepEntityExtension";

@@ -14,6 +14,9 @@ import radixcore.math.Point3D;
 import radixcore.util.RadixMath;
 import sq.core.minecraft.ModItems;
 
+/**
+ * The ghast egg is a spider egg variant that hatches into a mini ghast.
+ */
 public class EntityGhastEgg extends EntitySpiderEgg
 {
 	private UUID	owner;
@@ -59,11 +62,13 @@ public class EntityGhastEgg extends EntitySpiderEgg
 			final Block spawnBlock = worldObj.getBlock((int)posX,(int)posY,(int)posZ);
 			Point3D spawnPoint = new Point3D(posX, posY, posZ);
 
+			//Check the spawn location.
 			if (worldObj.getBlock(spawnPoint.iPosX + 1, spawnPoint.iPosY, spawnPoint.iPosZ) == Blocks.air) { spawnPoint = new Point3D(posX + 1, posY, posZ); }
 			else if (worldObj.getBlock(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ + 1) == Blocks.air) { spawnPoint = new Point3D(posX, posY, posZ + 1); }
 			else if (worldObj.getBlock(spawnPoint.iPosX - 1, spawnPoint.iPosY, spawnPoint.iPosZ) == Blocks.air) { spawnPoint = new Point3D(posX - 1, posY, posZ); }
 			else if (worldObj.getBlock(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ - 1) == Blocks.air) { spawnPoint = new Point3D(posX, posY, posZ - 1); }
 
+			//Spawn the ghast at the safe spawn location.
 			EntityMiniGhast ghast = new EntityMiniGhast(worldObj, owner);
 			ghast.setLocationAndAngles(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ, rotationYaw, rotationPitch);
 			worldObj.spawnEntityInWorld(ghast);

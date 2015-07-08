@@ -11,6 +11,9 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityHuman;
 
+/**
+ * Defines types of humans and ties them to an ID.
+ */
 public enum EnumHumanType 
 {
 	WARRIOR(1),

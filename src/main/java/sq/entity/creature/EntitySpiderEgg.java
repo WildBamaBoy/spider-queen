@@ -24,6 +24,10 @@ import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumSpiderType;
 
+/**
+ * The spider egg is the entity placed by using the spider egg item on a block. It will hatch into a spider after
+ * a random amount of time. Depending on any cocoons nearby, the type of spider that will hatch will change.
+ */
 public class EntitySpiderEgg extends EntityCreature
 {
 	private UUID	owner = new UUID(0, 0);
@@ -155,6 +159,7 @@ public class EntitySpiderEgg extends EntityCreature
 
 	private EntityCocoon getConsumableCocoon()
 	{
+		//Search for cocoons up to 5 blocks away. Return the nearest one that is not eaten.
 		final List<Entity> nearbyCocoons = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityCocoon.class, this, 5);
 		EntityCocoon nearestCocoon = null;
 		double lowestDistance = 100D;
@@ -178,6 +183,7 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		EntitySpiderEx spider;
 
+		//No cocoon, so the spider is a wimpy spider.
 		if (cocoonToConsume == null)
 		{
 			spider = new EntitySpiderEx(worldObj, owner, EnumSpiderType.WIMPY);
@@ -185,6 +191,7 @@ public class EntitySpiderEgg extends EntityCreature
 
 		else
 		{
+			//There is a cocoon, so look up the spider type that this cocoon yields.
 			cocoonToConsume.setEaten(true);
 			spider = new EntitySpiderEx(worldObj, owner, cocoonToConsume.getCocoonType().getSpiderTypeYield());
 		}
@@ -198,6 +205,7 @@ public class EntitySpiderEgg extends EntityCreature
 		{
 			final EntityPlayer player = worldObj.func_152378_a(owner);
 
+			//Find a safe spawn point.
 			final Block spawnBlock = worldObj.getBlock((int)posX,(int)posY,(int)posZ);
 			Point3D spawnPoint = new Point3D(posX, posY, posZ);
 
@@ -207,9 +215,12 @@ public class EntitySpiderEgg extends EntityCreature
 			else if (worldObj.getBlock(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ - 1) == Blocks.air) { spawnPoint = new Point3D(posX, posY, posZ - 1); }
 
 			spider.setLocationAndAngles(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ, rotationYaw, rotationPitch);
+
+			//Spawn the spider and remove the egg.
 			worldObj.spawnEntityInWorld(spider);
 			setDead();
 
+			//Trigger needed achievements.
 			if (player != null)
 			{
 				if (spider.getSpiderType() == EnumSpiderType.WIMPY)

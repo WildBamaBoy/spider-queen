@@ -26,6 +26,10 @@ import sq.entity.friendly.EntityFriendlyBee;
 import sq.enums.EnumBeeType;
 import sq.util.Utils;
 
+/**
+ * Bees are passive/aggressive based on reputation. There are three types, Warrior, Gatherer, and Queen.
+ * Gatherers cannot attack, Warriors sting the player with an animation, and Queens deal 5 points of damage.
+ */
 public class EntityBee extends AbstractFlyingMob implements IRep
 {
 	public EntityBee(World world) 
@@ -111,22 +115,26 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	@Override
 	protected void attackEntity(Entity entity, float damage) 
 	{
+		//Gatherers do not attack.
 		if (this.getBeeType() == EnumBeeType.GATHERER || this instanceof EntityFriendlyBee)
 		{
 			return;
 		}
 
+		//Within 1.2 blocks of the target, damage it.
 		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 1.2D)
 		{
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getHitDamage());
 		}
 
+		//Within 3 blocks of the target, set the attacking flag to true. This switches the
+		//warrior to its "stinging" model.
 		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 3.0D)
 		{
 			setAttacking(true);
 		}
 
-		else
+		else //Reset the attacking flag when we're more than 3 blocks away.
 		{
 			if (getAttacking())
 			{
@@ -143,6 +151,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	@Override
 	protected Entity findPlayerToAttack() 
 	{
+		//Find players to attack, but check reputation and times hit first.
 		EntityPlayer player = worldObj.getClosestPlayerToEntity(this, 16.0D);
 
 		if (player != null)
@@ -161,7 +170,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			}
 		}
 
-		else
+		else //Bees also attack wasps.
 		{
 			Entity entity = RadixLogic.getNearestEntityOfTypeWithinDistance(EntityWasp.class, this, 16);
 			return entity;
@@ -175,6 +184,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 
 		if (entityToAttack != null)
 		{
+			//If we have a creature to attack, we need to move downwards if we're above it, and vice-versa.
 			double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
 			float moveAmount = 0.0F;
 
@@ -193,7 +203,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 				motionY = motionY + 0.01F * moveAmount;
 			}
 
-
+			//When stinging, speed up in order to lunge at the player.
 			if (getBeeType() == EnumBeeType.WARRIOR && getAttacking())
 			{
 				motionX = motionX * 1.2F;
@@ -201,6 +211,9 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			}
 		}
 
+		//We also make gatherer bees set their target to the nearest player holding a flower in order
+		//to show that they are attracted to flowers. Since gatherers do not attack, they won't hurt
+		//the player, they'll only path towards them.
 		if (getBeeType() == EnumBeeType.GATHERER)
 		{
 			final EntityPlayer nearbyPlayer = worldObj.getClosestPlayer(posX, posY, posZ, 8.0D);
@@ -217,6 +230,9 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		}
 	}
 
+	/**
+	 * When the player right-clicks a bee with a flower, they gain reputation.
+	 */
 	@Override
 	protected boolean interact(EntityPlayer entityPlayer) 
 	{

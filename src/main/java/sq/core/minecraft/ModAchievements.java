@@ -6,6 +6,9 @@ import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 import radixcore.util.RadixAchievement;
 
+/**
+ * All achievements in Spider Queen.
+ */
 public final class ModAchievements
 {
 	public static AchievementPage page;

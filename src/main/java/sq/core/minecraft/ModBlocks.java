@@ -14,6 +14,9 @@ import sq.blocks.BlockWebGround;
 import sq.blocks.BlockWebSide;
 import sq.enums.EnumWebType;
 
+/**
+ * All blocks in Spider Queen.
+ */
 public final class ModBlocks
 {
 	public static BlockAntHill antHill;

@@ -8,7 +8,8 @@ import sq.core.radix.PlayerData;
 import sq.entity.IRep;
 
 /**
- * Creates and holds reputation data for vanilla mobs.
+ * Creates and holds reputation data for mobs by implementing IRep and returning 
+ * the like data for mob classes that have been registered.
  */
 public class ReputationContainer implements IRep
 {

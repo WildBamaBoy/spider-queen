@@ -25,6 +25,9 @@ import sq.core.radix.PlayerData;
 import sq.entity.ai.PlayerExtension;
 import sq.packet.PacketSleepC;
 
+/**
+ * This class contains all event hooks that belong to FML.
+ */
 public final class EventHooksFML
 {
 	private int counter;
@@ -60,13 +63,14 @@ public final class EventHooksFML
 			timeUntilSpawnWeb = Time.MINUTE * 3;
 		}
 
-		//Update sleeping
+		//Update sleeping. Check each second to see if all players are asleep.
 		if (counter <= 0)
 		{
 			int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
 
 			if (SpiderCore.sleepingPlayers.size() >= totalPlayers && totalPlayers != 0)
 			{
+				//When all players are asleep, loop through all worlds and look for them.
 				for (String s : SpiderCore.sleepingPlayers)
 				{
 					for (WorldServer world : MinecraftServer.getServer().worldServers)
@@ -76,11 +80,14 @@ public final class EventHooksFML
 						if (player != null)
 						{
 							player.setSpawnChunk(new ChunkCoordinates((int)player.posX, (int)player.posY, (int)player.posZ), true, player.worldObj.provider.dimensionId);
+							
+							//Each time we find them, send a packet to close their sleeping GUI.
 							SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(true), player);
 						}
 					}
 				}
 
+				//When all done, set the time to night and clear the sleeping player list.
 				MinecraftServer.getServer().worldServers[0].provider.setWorldTime(13000);
 				SpiderCore.sleepingPlayers.clear();
 			}
@@ -98,10 +105,10 @@ public final class EventHooksFML
 				final EntityPlayer player = (EntityPlayer) obj;
 				final PlayerExtension extension = PlayerExtension.get(player);
 
-				//Tick extensions.
+				//Tick player extensions to reduce slinger cooldown.
 				extension.tick();
 
-				//Check for buffs.
+				//Check for buffs when light level is above 8.
 				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
 					player.triggerAchievement(ModAchievements.goInTheDark);
@@ -142,30 +149,35 @@ public final class EventHooksFML
 		EntityPlayer player = event.player;
 		PlayerData data = null;
 
+		//If this player's player data is not contained in our map.
 		if (!SpiderCore.playerDataMap.containsKey(player.getUniqueID().toString()))
 		{
 			data = new PlayerData(player);
 
+			//Check to see if there's an existing file, if so, read it.
 			if (data.dataExists())
 			{
 				data = data.readDataFromFile(event.player, PlayerData.class, null);
 			}
 
+			//Otherwise set up the new file.
 			else
 			{
 				data.initializeNewData(event.player);
 			}
 
+			//Save the data in our player data map.
 			SpiderCore.playerDataMap.put(event.player.getUniqueID().toString(), data);
 		}
 
-		else
+		else //We already have the player's data loaded.
 		{
 			data = SpiderCore.getPlayerData(player);
 			data = data.readDataFromFile(event.player, PlayerData.class, null);  //Read from the file again to assign owner.
 			SpiderCore.playerDataMap.put(event.player.getUniqueID().toString(), data);  //Put updated data back into the map.
 		}
 
+		//Send the player their own player data.
 		SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketDataContainer(SpiderCore.ID, data), (EntityPlayerMP)event.player);
 	}
 
@@ -178,6 +190,8 @@ public final class EventHooksFML
 		{
 			data.saveDataToFile();
 		}
+		
+		//TODO SpiderCore.sleepingPlayers.remove(event.player);
 	}
 
 	@SubscribeEvent

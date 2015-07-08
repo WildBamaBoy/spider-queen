@@ -10,6 +10,9 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import sq.core.minecraft.ModBlocks;
 
+/**
+ * Generates the ant hill in the world.
+ */
 public class WorldGenAntHill implements IWorldGenerator
 {
 	public WorldGenAntHill()
@@ -70,6 +73,7 @@ public class WorldGenAntHill implements IWorldGenerator
 			return false;
 		}
 
+		//This creates an empty square room around an origin point.
 		for(int x = 0; x < 5; x++)
 		{
 			for(int y = 0; y < 3; y++)
@@ -81,6 +85,7 @@ public class WorldGenAntHill implements IWorldGenerator
 			}
 		}
 
+		//Set the ant hill at the origin point.
 		world.setBlock(i,j,k, ModBlocks.antHill);
 		return true;
 	}

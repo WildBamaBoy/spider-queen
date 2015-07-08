@@ -7,6 +7,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.ChunkCoordinates;
 
+/**
+ * Defines various utility methods that have no other place in the mod's files.
+ */
 public final class Utils 
 {
 	private Utils()
@@ -14,6 +17,9 @@ public final class Utils
 		
 	}
 	
+	/**
+	 * Uses Minecraft's packets to spawn particles.
+	 */
 	public static void spawnParticlesAroundEntityS(String name, Entity entityOrigin, int rate)
 	{
 		final Random rand = entityOrigin.worldObj.rand;

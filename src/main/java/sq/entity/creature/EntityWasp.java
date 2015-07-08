@@ -6,6 +6,9 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.entity.AbstractFlyingMob;
 
+/**
+ * Wasps are hostile flying mobs. On death, they drop a stinger.
+ */
 public class EntityWasp extends AbstractFlyingMob
 {
 	public EntityWasp(World world) 

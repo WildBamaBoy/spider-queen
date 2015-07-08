@@ -16,6 +16,9 @@ import sq.core.SpiderCore;
 import sq.entity.ai.PlayerExtension;
 import sq.entity.creature.EntityWebslinger;
 
+/**
+ * The webslinger allows the player to throw the webslinger entity when right-clicking with this item.
+ */
 public class ItemWebslinger extends Item
 {
 	private IIcon iconNormal;

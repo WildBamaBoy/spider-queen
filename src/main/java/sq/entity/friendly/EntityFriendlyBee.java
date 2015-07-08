@@ -17,6 +17,10 @@ import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityBee;
 
+/**
+ * The friendly bee is gifted to the player with a high bee reputation. It does not follow the spider rod in the player's hand.
+ * Instead, the player must lure it with a flower. By gifting the friendly bee a flower, the player will receive nectar.
+ */
 public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;

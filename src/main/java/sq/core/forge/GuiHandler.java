@@ -5,6 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import sq.client.gui.GuiSleep;
 
+/**
+ * Spider Queen's GUI handler, registered with Forge.
+ */
 public final class GuiHandler implements IGuiHandler
 {
 	public static final byte ID_GUI_SLEEP = 1;

@@ -12,6 +12,9 @@ import sq.core.SpiderCore;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.util.Utils;
 
+/**
+ * Defines the freeze rod, which shoots the freeze ball projectile when right clicked.
+ */
 public class ItemFreezeRod extends Item
 {
 	public ItemFreezeRod()

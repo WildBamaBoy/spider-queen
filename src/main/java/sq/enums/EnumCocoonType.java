@@ -24,6 +24,10 @@ import sq.entity.creature.EntityHuman;
 import sq.entity.creature.EntityWasp;
 import sq.items.ItemCocoon;
 
+/**
+ * Defines all possible cocoon types. Each entry ties the type to an id, defines a base catch chance,
+ * provides the cocoon size, spider yield, and the creature class that can be cocooned.
+ */
 public enum EnumCocoonType
 {
 	BLACK_ANT 	(0, 50, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityAnt.class),

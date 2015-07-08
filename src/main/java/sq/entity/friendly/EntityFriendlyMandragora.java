@@ -25,6 +25,11 @@ import sq.core.ReputationHandler;
 import sq.entity.creature.EntityMandragora;
 import sq.util.Utils;
 
+/**
+ * The friendly mandragora is created by a player growing a mandragora crop and staying nearby
+ * while the crop grows to its fullest and the mandragora is spawned. Periodically, it will cause
+ * all nearby crops to get a boost in their growth.
+ */
 public class EntityFriendlyMandragora extends EntityMandragora implements IFriendlyEntity
 {
 	private int timeUntilAbility;
@@ -73,6 +78,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 			{
 				timeUntilAbility = Time.MINUTE * RadixMath.getNumberInRange(2, 5);
 
+				//Get all nearby crops and make them grow.
 				for (Point3D point : RadixLogic.getNearbyBlocks(this, BlockCrops.class, 10))
 				{
 					try
