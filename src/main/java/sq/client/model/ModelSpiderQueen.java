@@ -38,6 +38,7 @@ public class ModelSpiderQueen extends ModelBase
 	private final ModelRenderer leg7;
 	private final ModelRenderer leg8;
 	private final ModelRenderer playerHead;
+	private final ModelRenderer playerHeadwear;
 	private final ModelRenderer playerBody;
 	private final ModelRenderer playerArmLeft;
 	private final ModelRenderer playerArmRight;
@@ -61,6 +62,11 @@ public class ModelSpiderQueen extends ModelBase
 		head.setTextureSize(64, 32);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
+        playerHeadwear = new ModelRenderer(this, 32, 0);
+        playerHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F + 0.5F);
+        playerHeadwear.setRotationPoint(0.0F, 0.0F + 0.0F, 0.0F);
+        playerHeadwear.mirror = true;
+        setRotation(playerHeadwear, 0F, 0F, 0F);
 		body = new ModelRenderer(this, 1, 0);
 		body.addBox(-3F, -3F, -3F, 6, 6, 5);
 		body.setRotationPoint(0F, 15F, 0F);
@@ -251,6 +257,13 @@ public class ModelSpiderQueen extends ModelBase
 					}
 				}
 				GL11.glPopMatrix();
+				
+				GL11.glPushMatrix();
+				{
+					GL11.glTranslated(0.0D, -0.25D, 0.25D);
+					playerHeadwear.render(f5);
+				}
+				GL11.glPopMatrix();
 			}
 			GL11.glPopMatrix();
 		}
@@ -284,7 +297,9 @@ public class ModelSpiderQueen extends ModelBase
 	{
 		head.rotateAngleY = playerHead.rotateAngleY = f3 / (180F / (float) Math.PI);
 		head.rotateAngleX = playerHead.rotateAngleX = f4 / (180F / (float) Math.PI);
-
+        playerHeadwear.rotateAngleY = head.rotateAngleY;
+        playerHeadwear.rotateAngleX = head.rotateAngleX;
+        
 		float f6 = 0.7853982F;
 		leg1.rotateAngleZ = -f6;
 		leg2.rotateAngleZ = f6;
