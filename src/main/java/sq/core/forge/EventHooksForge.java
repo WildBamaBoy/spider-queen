@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,16 +54,9 @@ import sq.entity.creature.EntitySpiderEx;
 import sq.entity.friendly.EntityFriendlyMandragora;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumWatchedDataIDs;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public final class EventHooksForge
 {
-	@SideOnly(Side.CLIENT)
-	private final RenderSpiderQueen renderSpiderQueen = new RenderSpiderQueen();
-
 	@SubscribeEvent
 	public void onPlayerSleepInBed(PlayerSleepInBedEvent event)
 	{
@@ -355,6 +352,7 @@ public final class EventHooksForge
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderPlayerPre(RenderPlayerEvent.Pre pre) 
 	{
@@ -366,7 +364,7 @@ public final class EventHooksForge
 			{
 				GL11.glScaled(0.95D, 0.95D, 0.95D);
 				GL11.glTranslated(0.0D, -0.10D, 0.0D);
-				renderSpiderQueen.doRender(pre.entity, 0F, 0F, 0F, 0F, pre.partialRenderTick);
+				ClientProxy.renderSpiderQueen.doRender(pre.entity, 0F, 0F, 0F, 0F, pre.partialRenderTick);
 			}
 			GL11.glPopMatrix();
 		}

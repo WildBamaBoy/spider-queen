@@ -56,9 +56,13 @@ import sq.entity.throwable.EntityBoomBall;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.entity.throwable.EntityJackBall;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public final class ClientProxy extends ServerProxy
 {
+	public static RenderSpiderQueen renderSpiderQueen = new RenderSpiderQueen();
+	
 	@Override
 	public void registerRenderers() 
 	{
