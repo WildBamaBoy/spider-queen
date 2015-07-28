@@ -1,16 +1,15 @@
 package sq.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-
-import org.lwjgl.opengl.GL11;
-
 import sq.client.render.RenderSpiderQueen;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEx;
@@ -229,7 +228,7 @@ public class ModelSpiderQueen extends ModelBase
 		if (SpiderCore.getConfig().usePlayerSkin && entity instanceof EntityPlayer)
 		{
 			//Bind the client player's texture for these next few renders.
-			EntityClientPlayerMP mp = (EntityClientPlayerMP)entity;
+			AbstractClientPlayer mp = (AbstractClientPlayer)entity;	
 			Minecraft.getMinecraft().renderEngine.bindTexture(mp.getLocationSkin());
 
 			//Apply translation and scale corrections.

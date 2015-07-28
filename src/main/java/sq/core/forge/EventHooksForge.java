@@ -8,6 +8,7 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -356,7 +357,7 @@ public final class EventHooksForge
 	@SubscribeEvent
 	public void onRenderPlayerPre(RenderPlayerEvent.Pre pre) 
 	{
-		if (SpiderCore.getConfig().useSpiderQueenModel)
+		if (SpiderCore.getConfig().useSpiderQueenModel && pre.entityPlayer == Minecraft.getMinecraft().thePlayer)
 		{
 			pre.setCanceled(true);
 
