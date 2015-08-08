@@ -105,7 +105,7 @@ public enum EnumHumanType
 			if (fortuneLevel == 1)
 			{
 				list.add(new ItemStack(Items.iron_pickaxe, RadixMath.getNumberInRange(0, 1)));
-				list.add(new ItemStack(Blocks.iron_ore, RadixMath.getNumberInRange(0, 16)));
+				list.add(new ItemStack(Blocks.iron_ore, RadixMath.getNumberInRange(0, 5)));
 				list.add(new ItemStack(Items.redstone, RadixMath.getNumberInRange(0, 32)));
 				list.add(new ItemStack(Blocks.gold_ore, RadixMath.getNumberInRange(0, 5)));
 			}
@@ -124,18 +124,18 @@ public enum EnumHumanType
 			list.add(new ItemStack(Items.iron_shovel, RadixMath.getNumberInRange(0, 1)));
 			list.add(new ItemStack(Items.iron_pickaxe, RadixMath.getNumberInRange(0, 1)));
 			list.add(new ItemStack(Blocks.torch, RadixMath.getNumberInRange(0, 9)));
-			list.add(new ItemStack(Items.coal, RadixMath.getNumberInRange(0, 32)));
-			list.add(new ItemStack(Items.iron_ingot, RadixMath.getNumberInRange(0, 32)));
+			list.add(new ItemStack(Items.coal, RadixMath.getNumberInRange(0, 5)));
+			list.add(new ItemStack(Items.iron_ingot, RadixMath.getNumberInRange(0, 5)));
 			list.add(new ItemStack(Blocks.tnt, RadixMath.getNumberInRange(0, 4)));
 			
 			if (fortuneLevel == 1)
 			{
-				list.add(new ItemStack(Items.gold_ingot, RadixMath.getNumberInRange(0, 8)));
+				list.add(new ItemStack(Items.gold_ingot, RadixMath.getNumberInRange(0, 7)));
 			}
 			
 			else if (fortuneLevel == 2)
 			{
-				list.add(new ItemStack(Items.diamond, RadixMath.getNumberInRange(0, 7)));
+				list.add(new ItemStack(Items.diamond, RadixMath.getNumberInRange(0, 5)));
 				list.add(new ItemStack(Items.emerald, RadixMath.getNumberInRange(0, 3)));
 			}
 			
@@ -154,16 +154,16 @@ public enum EnumHumanType
 			break;
 			
 		case NOMAD:
-			list.add(new ItemStack(Blocks.torch, RadixMath.getNumberInRange(0, 16)));
-			list.add(new ItemStack(Blocks.planks, RadixMath.getNumberInRange(0, 32)));
+			list.add(new ItemStack(Blocks.torch, RadixMath.getNumberInRange(0, 5)));
+			list.add(new ItemStack(Blocks.planks, RadixMath.getNumberInRange(0, 16)));
 			list.add(new ItemStack(Blocks.glass, RadixMath.getNumberInRange(0, 16)));
 			list.add(new ItemStack(Blocks.log, RadixMath.getNumberInRange(0, 16)));
 			list.add(new ItemStack(Blocks.cobblestone, RadixMath.getNumberInRange(0, 16)));
 			list.add(new ItemStack(Blocks.chest, RadixMath.getNumberInRange(0, 1)));
 			list.add(new ItemStack(Blocks.crafting_table, RadixMath.getNumberInRange(0, 1)));
 			list.add(new ItemStack(Blocks.furnace, RadixMath.getNumberInRange(0, 2)));
-			list.add(new ItemStack(Items.cooked_beef, RadixMath.getNumberInRange(0, 7)));
-			list.add(new ItemStack(Items.cooked_chicken, RadixMath.getNumberInRange(0, 7)));
+			list.add(new ItemStack(Items.cooked_beef, RadixMath.getNumberInRange(0, 3)));
+			list.add(new ItemStack(Items.cooked_chicken, RadixMath.getNumberInRange(0, 3)));
 			list.add(new ItemStack(Items.stone_sword, RadixMath.getNumberInRange(0, 1)));
 			
 			if (fortuneLevel == 1)
@@ -179,14 +179,14 @@ public enum EnumHumanType
 			{
 				list.add(new ItemStack(Blocks.enchanting_table, RadixMath.getNumberInRange(0, 1)));
 				list.add(new ItemStack(Items.diamond_sword, RadixMath.getNumberInRange(0, 1)));
-				list.add(new ItemStack(Items.diamond, RadixMath.getNumberInRange(0, 4)));
-				list.add(new ItemStack(Items.emerald, RadixMath.getNumberInRange(0, 12)));
+				list.add(new ItemStack(Items.diamond, RadixMath.getNumberInRange(0, 3)));
+				list.add(new ItemStack(Items.emerald, RadixMath.getNumberInRange(0, 2)));
 			}
 			
 			break;
 			
 		case FARMER:
-			list.add(new ItemStack(Items.wheat, RadixMath.getNumberInRange(0, 16)));
+			list.add(new ItemStack(Items.wheat, RadixMath.getNumberInRange(0, 8)));
 			list.add(new ItemStack(Items.wheat_seeds, RadixMath.getNumberInRange(0, 8)));
 			list.add(new ItemStack(Items.bread, RadixMath.getNumberInRange(0, 3)));
 			list.add(new ItemStack(Items.chicken, RadixMath.getNumberInRange(0, 4)));
@@ -195,32 +195,26 @@ public enum EnumHumanType
 			if (fortuneLevel == 1)
 			{
 				list.add(new ItemStack(Items.iron_hoe, RadixMath.getNumberInRange(0, 1)));
-				list.add(new ItemStack(Items.potato, RadixMath.getNumberInRange(0, 16)));
-				list.add(new ItemStack(Items.carrot, RadixMath.getNumberInRange(0, 16)));
+				list.add(new ItemStack(Items.potato, RadixMath.getNumberInRange(0, 10)));
+				list.add(new ItemStack(Items.carrot, RadixMath.getNumberInRange(0, 10)));
 			}
 			
 			else if (fortuneLevel == 2)
 			{
 				list.add(new ItemStack(Items.diamond_hoe, RadixMath.getNumberInRange(0, 1)));
-				list.add(new ItemStack(ModItems.nectar, RadixMath.getNumberInRange(0, 32)));
-				list.add(new ItemStack(ModItems.rareFruit, RadixMath.getNumberInRange(0, 3)));
+				list.add(new ItemStack(ModItems.nectar, RadixMath.getNumberInRange(0, 16)));
+				list.add(new ItemStack(ModItems.rareFruit, RadixMath.getNumberInRange(0, 2)));
 				list.add(new ItemStack(ModItems.mandragoraSeeds, RadixMath.getNumberInRange(0, 3)));
 				list.add(new ItemStack(Items.emerald, RadixMath.getNumberInRange(0, 2)));
 			}
 		}
 		
-		//Standard drop rate from the original mod.
-		Random r = new Random();
-		if(r.nextInt(100) < 30) { list.add(new ItemStack(ModItems.skull)); }
-		if(r.nextInt(100) < 30) { list.add(new ItemStack(ModItems.heart)); }
-		if(r.nextInt(100) < 30) { list.add(new ItemStack(ModItems.brain)); }
-
 		for (int i = list.size() - 1; i > 0; i--)
 		{
 			ItemStack stack = list.get(i);
 			
-			//Clear empty stacks, and randomly remove other items if the fortune level is not rich.
-			if (stack.stackSize == 0 || (r.nextBoolean() && fortuneLevel != 2))
+			//Clear empty stacks.
+			if (stack.stackSize == 0)
 			{
 				list.remove(i);
 			}

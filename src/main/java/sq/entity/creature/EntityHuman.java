@@ -24,14 +24,19 @@ import radixcore.data.WatchedBoolean;
 import radixcore.data.WatchedInt;
 import radixcore.network.ByteBufIO;
 import radixcore.util.RadixLogic;
+import radixcore.util.RadixMath;
 import radixcore.util.RadixString;
 import sq.core.SpiderCore;
+import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.AbstractNewMob;
 import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumHumanType;
+
+import java.util.Random;
+
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData, IRep, IWatchable
@@ -84,9 +89,23 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 	protected void dropFewItems(boolean flag, int i)
 	{
-		for (ItemStack stack : type.getDropsForType(this))
+		//Only drop items if a player is close by.
+		if (worldObj.getClosestPlayerToEntity(this, 10.0D) != null)
 		{
-			entityDropItem(stack, 1.0F);
+			ItemStack[] drops = type.getDropsForType(this);
+
+			for (int loop = 0; loop < 3; loop++)
+			{
+				int index = RadixMath.getNumberInRange(0, drops.length - 1);
+				entityDropItem(drops[index], 1.0F);
+			}
+			
+			//Drop offering items.
+			Random r = worldObj.rand;
+			
+			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(ModItems.skull), 1.0F); }
+			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(ModItems.heart), 1.0F); }
+			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(ModItems.brain), 1.0F); }
 		}
 	}
 
@@ -159,7 +178,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		{
 			PlayerData data = SpiderCore.getPlayerData(entityPlayer);
 			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
-			
+
 			if (data.humanLike.getInt() < 0 || extension.getTimesHitByPlayer() >= 2)
 			{
 				return entityPlayer;
@@ -181,19 +200,19 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 					{
 						continue;
 					}
-					
+
 					else if (entity instanceof IFriendlyEntity)
 					{
 						continue;
 					}
-					
+
 					else
 					{
 						if (this.canEntityBeSeen(entity))
 						{
 							return entity;
 						}
-						
+
 						else
 						{
 							continue;
@@ -201,7 +220,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 					}
 				}
 			}
-			
+
 			return null;
 		}
 	}
@@ -214,18 +233,18 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		{
 			PlayerData data = SpiderCore.getPlayerData(((EntityPlayer)source.getEntity()));
 			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
-			
+
 			if (data.humanLike.getInt() >= 0 && extension.getTimesHitByPlayer() <= 2)
 			{
 				//Do nothing.
 			}
 		}
-		
+
 		if (source.getEntity() != null)
 		{
 			entityToAttack = source.getEntity();
 		}
-		
+
 		return super.attackEntityFrom(source, amount);
 	}
 
@@ -240,7 +259,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 			{
 				double dX = entity.posX - posX;
 				double dZ = entity.posZ - posZ;
-				
+
 				if(attackTime <= 0)
 				{
 					EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
@@ -262,7 +281,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		{
 			attackTime = 40;
 			swingItem();
-			
+
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
 		}
 	}
