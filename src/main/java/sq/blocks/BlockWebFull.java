@@ -91,7 +91,11 @@ public class BlockWebFull extends Block
 		if (webType == EnumWebType.NORMAL)
 		{
 			Block fillerBlock = ModBlocks.webFull;
-			Block outlineBlock = Blocks.log;
+			Block[] outlineBlocks = new Block[]
+			{
+				Blocks.log,
+				Blocks.log2
+			};
 
 			if (world.getBlock(x,y,z) != fillerBlock) { return; }
 
@@ -108,27 +112,30 @@ public class BlockWebFull extends Block
 			if (world.getBlock(x+1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
 			if (world.getBlock(x+1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
 
-			if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x,y,z-2) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x+1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x,y,z+2) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-
+			for (Block outlineBlock : outlineBlocks)
+			{
+				if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
+				if (world.getBlock(x-2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x,y,z-2) == outlineBlock)   { outlineBlocksPresent++; }
+				if (world.getBlock(x+1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x-1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x,y,z+2) == outlineBlock)   { outlineBlocksPresent++; }
+				if (world.getBlock(x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+			}
+			
 			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
 			{
 				world.setBlock(x-1,y,z-1,ModBlocks.webBed);
@@ -158,7 +165,7 @@ public class BlockWebFull extends Block
 			}
 		}
 	}
-	
+
 	@Override
 	public void onBlockAdded(World world, int posX, int posY, int posZ)
 	{
@@ -166,7 +173,7 @@ public class BlockWebFull extends Block
 		checkForBed(world, posX, posY, posZ, 0);
 		onNeighborBlockChange(world, posX, posY, posZ, 0);
 	}
-	
+
 	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)
 	{
 		if (world.getBlock(posX - 1, posY, posZ) != Blocks.air) { return; }
@@ -178,7 +185,7 @@ public class BlockWebFull extends Block
 
 		world.setBlock(posX, posY, posZ, Blocks.air);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{
