@@ -1,5 +1,11 @@
 package sq.core.forge;
 
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -7,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
@@ -17,12 +24,6 @@ import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.PlayerExtension;
 import sq.packet.PacketSleepC;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public final class EventHooksFML
 {
@@ -74,6 +75,7 @@ public final class EventHooksFML
 
 						if (player != null)
 						{
+							player.setSpawnChunk(new ChunkCoordinates((int)player.posX, (int)player.posY, (int)player.posZ), true, player.worldObj.provider.dimensionId);
 							SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(true), player);
 						}
 					}
