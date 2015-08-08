@@ -7,6 +7,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
+import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.AbstractNewMob;
@@ -88,9 +89,15 @@ public class EntityMandragora extends AbstractNewMob
 		if (vineTimer <= 0)
 		{
 			Entity entityToAttack = this.getAttackTarget();
-
+			
 			if (entityToAttack != null)
 			{
+				//Only allow vine attacks if the target is less than 10 blocks away.
+				if (RadixMath.getDistanceToEntity(this, entityToAttack) > 10.0D)
+				{
+					return;
+				}
+				
 				vineTimer = Time.SECOND * 1;
 
 				double d = entityToAttack.posX - posX + entityToAttack.motionX * 15D;
