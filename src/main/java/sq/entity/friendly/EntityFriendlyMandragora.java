@@ -61,6 +61,10 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 		super.onUpdate();
 		FriendlyEntityHelper.onUpdate(this);
 
+		if (target != null)
+		{
+			
+		}
 		if (!worldObj.isRemote)
 		{
 			timeUntilAbility--;
@@ -158,13 +162,13 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	@Override
 	public EntityLivingBase getTarget() 
 	{
-		return target;
+		return null; //Does not attack at all.
 	}
 
 	@Override
 	public void setTarget(EntityLivingBase target) 
 	{
-		this.target = target;
+		this.target = null; //Does not attack at all.
 	}
 
 	@Override
