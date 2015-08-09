@@ -1,5 +1,6 @@
 package sq.core.minecraft;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityAnt;
@@ -33,7 +34,6 @@ import sq.items.ItemSpiderEgg;
 import sq.items.ItemSpiderRod;
 import sq.items.ItemWeb;
 import sq.items.ItemWebslinger;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModItems
 {

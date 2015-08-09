@@ -1,5 +1,6 @@
 package sq.items;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,7 +13,6 @@ import sq.entity.creature.EntitySpiderEx;
 import sq.entity.friendly.EntityFriendlyBee;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.util.Utils;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemRecallRod extends Item
 {

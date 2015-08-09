@@ -3,6 +3,8 @@ package sq.entity.creature;
 import java.util.List;
 import java.util.UUID;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -21,8 +23,6 @@ import radixcore.util.RadixMath;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumSpiderType;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntitySpiderEgg extends EntityCreature
 {

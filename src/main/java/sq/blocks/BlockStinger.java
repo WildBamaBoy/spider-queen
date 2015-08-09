@@ -1,5 +1,6 @@
 package sq.blocks;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -7,7 +8,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * The stinger is an item dropped by bees and wasps. It damages creatures that fall on it.

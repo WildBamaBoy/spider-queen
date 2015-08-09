@@ -3,6 +3,7 @@ package sq.blocks;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -14,7 +15,6 @@ import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityAnt;
 import sq.enums.EnumAntType;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * The ant hill ticks every fifteen seconds, and on each tick, an ant can spawn.

@@ -1,5 +1,8 @@
 package sq.entity.creature;
 
+import java.util.Random;
+
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
@@ -34,10 +37,6 @@ import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumHumanType;
-
-import java.util.Random;
-
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityHuman extends EntityCreature implements IEntityAdditionalSpawnData, IRep, IWatchable
 {

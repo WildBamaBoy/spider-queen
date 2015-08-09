@@ -2,6 +2,8 @@ package sq.entity.friendly;
 
 import java.util.UUID;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,8 +29,6 @@ import radixcore.constant.Time;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEntity
 {

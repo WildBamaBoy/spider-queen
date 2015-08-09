@@ -1,11 +1,10 @@
 package sq.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-
-import org.lwjgl.opengl.GL11;
-
 import sq.entity.creature.EntityCocoon;
 import sq.enums.EnumCocoonSize;
 import sq.enums.EnumCocoonType;

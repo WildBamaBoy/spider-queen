@@ -1,18 +1,15 @@
 package sq.client.render;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import sq.entity.throwable.EntityBoomBall;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.entity.throwable.EntityJackBall;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Actually renders a throwable textured object in the world. Used for projectiles.

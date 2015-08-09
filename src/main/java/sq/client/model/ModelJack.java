@@ -1,11 +1,11 @@
 package sq.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * Defines the Jack's in-game model.

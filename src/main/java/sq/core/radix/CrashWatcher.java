@@ -5,9 +5,9 @@ import java.io.File;
 import java.net.Socket;
 import java.util.Scanner;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import radixcore.core.ModCrashWatcher;
 import sq.core.SpiderCore;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public final class CrashWatcher extends ModCrashWatcher
 {

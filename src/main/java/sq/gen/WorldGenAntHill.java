@@ -2,13 +2,13 @@ package sq.gen;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import sq.core.minecraft.ModBlocks;
-import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenAntHill implements IWorldGenerator
 {

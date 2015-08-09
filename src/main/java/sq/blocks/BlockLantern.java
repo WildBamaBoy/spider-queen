@@ -2,6 +2,7 @@ package sq.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,7 +14,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import sq.core.minecraft.ModItems;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * The lantern is simply a new placeable light block.

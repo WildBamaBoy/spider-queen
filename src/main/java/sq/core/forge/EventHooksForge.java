@@ -38,7 +38,6 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
-import sq.client.render.RenderSpiderQueen;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;

@@ -1,16 +1,13 @@
 package sq.client.render;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelGhast;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import sq.entity.creature.EntityMiniGhast;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Sets the texture on the mini ghast model pre-render.

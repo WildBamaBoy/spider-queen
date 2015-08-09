@@ -1,8 +1,8 @@
 package sq.items;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemFood;
 import sq.core.SpiderCore;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemNectar extends ItemFood
 {

@@ -2,6 +2,7 @@ package sq.command;
 
 import java.util.Arrays;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -13,7 +14,6 @@ import radixcore.constant.Font.Format;
 import radixcore.util.RadixLogic;
 import sq.entity.creature.EntitySpiderEgg;
 import sq.entity.creature.EntitySpiderEx;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 /**
  * Defines the commands usable from the console/chat by typing /sq <command name>.

@@ -1,5 +1,6 @@
 package sq.items;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +11,6 @@ import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
 import sq.entity.friendly.IFriendlyEntity;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemEggSpawner extends Item
 {

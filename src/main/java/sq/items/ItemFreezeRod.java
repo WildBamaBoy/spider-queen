@@ -2,6 +2,7 @@ package sq.items;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,7 +11,6 @@ import radixcore.constant.Particle;
 import sq.core.SpiderCore;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.util.Utils;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemFreezeRod extends Item
 {

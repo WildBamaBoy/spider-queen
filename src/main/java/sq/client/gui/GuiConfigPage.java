@@ -2,10 +2,10 @@ package sq.client.gui;
 
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
-import sq.core.SpiderCore;
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;
+import net.minecraft.client.gui.GuiScreen;
+import sq.core.SpiderCore;
 
 /**
  * Provides Spider Queen's configuration page.

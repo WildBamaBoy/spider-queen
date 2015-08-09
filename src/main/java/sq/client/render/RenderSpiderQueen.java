@@ -5,6 +5,10 @@ import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3
 
 import java.util.UUID;
 
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.authlib.GameProfile;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -33,13 +37,8 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.opengl.GL11;
-
 import radixcore.util.RadixMath;
 import sq.client.model.ModelSpiderQueen;
-
-import com.mojang.authlib.GameProfile;
 
 public class RenderSpiderQueen extends RenderPlayer
 {

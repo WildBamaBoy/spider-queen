@@ -1,9 +1,9 @@
 package sq.entity.creature;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,7 +19,6 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumCocoonType;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpawnData
 {

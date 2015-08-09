@@ -2,6 +2,7 @@ package sq.items;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +15,6 @@ import radixcore.constant.Time;
 import sq.core.SpiderCore;
 import sq.entity.ai.PlayerExtension;
 import sq.entity.creature.EntityWebslinger;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemWebslinger extends Item
 {

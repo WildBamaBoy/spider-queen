@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -31,7 +32,6 @@ import sq.entity.friendly.EntityFriendlySkeleton;
 import sq.entity.friendly.EntityFriendlyZombie;
 import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumPlaceholderBlock;
-import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenFactory implements IWorldGenerator
 {

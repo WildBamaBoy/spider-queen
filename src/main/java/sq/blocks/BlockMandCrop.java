@@ -2,6 +2,9 @@ package sq.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -12,9 +15,6 @@ import net.minecraft.world.World;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityMandragora;
 import sq.entity.friendly.EntityFriendlyMandragora;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * The mandragora crop has seven stages of growth, and on the final stage, a new

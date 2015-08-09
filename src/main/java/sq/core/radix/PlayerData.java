@@ -1,5 +1,6 @@
 package sq.core.radix;
 
+import cpw.mods.fml.common.ModMetadata;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import radixcore.data.AbstractPlayerData;
@@ -7,7 +8,6 @@ import radixcore.data.WatchedBoolean;
 import radixcore.data.WatchedInt;
 import sq.core.SpiderCore;
 import sq.enums.EnumWatchedDataIDs;
-import cpw.mods.fml.common.ModMetadata;
 
 public final class PlayerData extends AbstractPlayerData
 {

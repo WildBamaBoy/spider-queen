@@ -1,10 +1,12 @@
 package sq.entity.creature;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -30,9 +32,6 @@ import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSide;
 import sq.enums.EnumWebType;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityWebShot extends Entity implements IProjectile, IEntityAdditionalSpawnData
 {

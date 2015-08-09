@@ -1,10 +1,10 @@
 package sq.entity.creature;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 import java.util.UUID;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -43,7 +43,6 @@ import sq.entity.IWebClimber;
 import sq.entity.throwable.EntityBoomBall;
 import sq.enums.EnumSpiderType;
 import sq.util.Utils;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEntityAdditionalSpawnData
 {

@@ -1,5 +1,6 @@
 package sq.core.forge;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import sq.client.render.RenderAnt;
 import sq.client.render.RenderBee;
@@ -55,9 +56,6 @@ import sq.entity.friendly.EntityFriendlyZombie;
 import sq.entity.throwable.EntityBoomBall;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.entity.throwable.EntityJackBall;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public final class ClientProxy extends ServerProxy
 {

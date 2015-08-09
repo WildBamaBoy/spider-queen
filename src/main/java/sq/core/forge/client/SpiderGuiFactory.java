@@ -2,10 +2,10 @@ package sq.core.forge.client;
 
 import java.util.Set;
 
+import cpw.mods.fml.client.IModGuiFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import sq.client.gui.GuiConfigPage;
-import cpw.mods.fml.client.IModGuiFactory;
 
 public final class SpiderGuiFactory implements IModGuiFactory
 {

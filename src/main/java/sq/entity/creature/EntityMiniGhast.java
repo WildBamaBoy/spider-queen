@@ -2,6 +2,7 @@ package sq.entity.creature;
 
 import java.util.UUID;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 public class EntityMiniGhast extends EntityCreature
 {
