@@ -100,7 +100,7 @@ import sq.gen.WorldGenBeeHive;
 import sq.gen.WorldGenFactory;
 import sq.items.ItemCocoon;
 
-@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[1.7.10-2.0.0,)", acceptedMinecraftVersions = "[1.7.10]",
+@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.0.2,)", acceptedMinecraftVersions = "[1.7.10]",
 guiFactory = "sq.core.forge.client.SpiderGuiFactory")
 public final class SpiderCore
 {
