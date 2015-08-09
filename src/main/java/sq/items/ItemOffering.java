@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,14 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import radixcore.constant.Font.Color;
-import radixcore.constant.Font.Format;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.enums.EnumOfferingType;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ItemOffering extends Item
 {
@@ -105,6 +104,18 @@ public final class ItemOffering extends Item
 			}
 		}
 
+		//For when the player drops the item by clicking from the inventory, not pressing Q.
+		else if (!entityItem.getEntityItem().hasTagCompound())
+		{
+			EntityPlayer player = entityItem.worldObj.getClosestPlayerToEntity(entityItem, 5.0D);
+			
+			if (player != null)
+			{
+				entityItem.getEntityItem().stackTagCompound = new NBTTagCompound();
+				entityItem.getEntityItem().stackTagCompound.setString("player", player.getCommandSenderName());
+			}
+		}
+		
 		return false;
 	}
 
