@@ -202,6 +202,33 @@ public final class EventHooksForge
 			event.setCanceled(cancel);
 		}
 
+		else if (event.entityLiving instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX, player.posY, player.posZ, 20);
+			
+			for (Entity entity : entities)
+			{
+				try
+				{
+					if (entity instanceof IFriendlyEntity && !(entity instanceof EntityFriendlyMandragora))
+					{
+						IFriendlyEntity friendly = (IFriendlyEntity)entity;
+
+						if (!entity.worldObj.isRemote && friendly.getFriendPlayerUUID().equals(player.getPersistentID()) && event.source.getEntity() instanceof EntityLivingBase)
+						{
+							friendly.setTarget((EntityLivingBase)event.source.getEntity());
+						}
+					}
+				}
+
+				catch (Exception e)
+				{
+					continue;
+				}
+			}
+		}
+		
 		else if (event.entityLiving.getClass().equals(EntitySpider.class) && event.source.getSourceOfDamage() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)event.source.getSourceOfDamage();
