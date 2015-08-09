@@ -94,7 +94,11 @@ public final class ClientProxy extends ServerProxy
 		RenderingRegistry.registerEntityRenderingHandler(EntityMiniGhast.class, new RenderMiniGhast());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFriendlyBee.class, new RenderFriendlyBee());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFreezeBall.class, new RenderThrowable());
-		RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
+		
+		if (SpiderCore.getConfig().useSpiderQueenModel)
+		{
+			RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
+		}
 	}
 	
 	@Override
