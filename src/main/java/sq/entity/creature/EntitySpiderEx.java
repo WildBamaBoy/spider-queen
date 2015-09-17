@@ -430,7 +430,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		super.attackEntity(entity, damage);
 
 		double distance = RadixMath.getDistanceToEntity(this, entity);
-
+		this.faceEntity(entity, 1.0F, 1.0F);
+		
 		if (distance > 3.0F)
 		{
 			setAttackPath(entity);
