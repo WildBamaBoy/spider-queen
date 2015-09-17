@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
@@ -93,6 +94,12 @@ public class BlockAntHill extends Block
 		return 1;
 	}
 	
+	@Override
+	protected void dropBlockAsItem(World world, int posX, int posY, int posZ, ItemStack stack) 
+	{
+		return;
+	}
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{
