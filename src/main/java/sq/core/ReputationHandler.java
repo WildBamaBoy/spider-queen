@@ -122,7 +122,8 @@ public class ReputationHandler
 		if (newReputation > 3 && newReputation % 2 == 0)
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They give you one of their own."));
-
+			player.triggerAchievement(ModAchievements.makeFriend);
+			
 			Class friendClass = FriendlyEntityHelper.getFriendlyVariant(living);
 
 			try
