@@ -53,6 +53,60 @@
             "bee-death"
         ]
     },
+    "beetle.death":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "ant-death"
+        ]
+    },
+    "beetle.hurt":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "ant-hurt"
+        ]
+    },
+    "beetle.idle":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "ant-idle-1",
+            "ant-idle-2",
+            "ant-idle-3",
+            "ant-idle-4"
+        ]
+    },
+    "fly.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "bee-idle-1",
+            "bee-idle-2",
+            "bee-idle-3",
+            "bee-idle-4"
+        ]
+    },
+    "fly.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "bee-hurt"
+        ]
+    },
+    "fly.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "bee-death"
+        ]
+    },
     "jack.idle":
     {
         "category": "neutral",
@@ -65,7 +119,7 @@
     },
     "jack.hurt":
     {
-        "category": "neutral",
+        "category": "hostile",
         "sounds":
         [
             "jack-hurt"
@@ -73,7 +127,7 @@
     },
     "jack.death":
     {
-        "category": "neutral",
+        "category": "hostile",
         "sounds":
         [
             "jack-death"
@@ -81,7 +135,7 @@
     },
     "mand.vine":
     {
-        "category": "neutral",
+        "category": "hostile",
         "sounds":
         [
             "mand-vine"
@@ -89,7 +143,7 @@
     },
     "mand.idle":
     {
-        "category": "neutral",
+        "category": "hostile",
         "sounds":
         [
             "mand-idle-1",
@@ -100,7 +154,7 @@
     },
     "mand.death":
     {
-        "category": "neutral",
+        "category": "hostile",
         "sounds":
         [
             "mand-death"
@@ -108,10 +162,37 @@
     },
     "mand.hurt":
     {
-        "category": "neutral",
+        "category": "hostile",
         "sounds":
         [
             "mand-hurt"
+        ]
+    },
+    "wasp.death":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "bee-death"
+        ]
+    },
+    "wasp.hurt":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "bee-hurt"
+        ]
+    },
+    "wasp.idle":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "bee-idle-1",
+            "bee-idle-2",
+            "bee-idle-3",
+            "bee-idle-4"
         ]
     },
     "recall.rod":
