@@ -80,6 +80,11 @@ public final class EventHooksForge
 		final EntityPlayer player = event.entityPlayer;
 		final PlayerData data = SpiderCore.getPlayerData(player);
 
+		if (data == null)
+		{
+			return;
+		}
+
 		if (event.target instanceof EntityLivingBase && !(event.target instanceof EntityCocoon))
 		{
 			EntityLivingBase livingBase = (EntityLivingBase)event.target;
@@ -255,6 +260,11 @@ public final class EventHooksForge
 			PlayerData data = SpiderCore.getPlayerData((EntityPlayer)event.source.getSourceOfDamage());
 			RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
 
+			if (data == null)
+			{
+				return;
+			}
+
 			//Cancel the target if...
 			boolean doCancel = data.spiderLike.getInt() >= 0 && extension.getTimesHitByPlayer() < 3;
 
@@ -286,6 +296,11 @@ public final class EventHooksForge
 			final PlayerData data = SpiderCore.getPlayerData(player);
 			final PlayerExtension playerExtension = (PlayerExtension) player.getExtendedProperties(PlayerExtension.ID);
 			final RepEntityExtension repExtension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
+
+			if (data == null)
+			{
+				return;
+			}
 
 			if (repExtension != null) //If they have an extension, they are a vanilla mob with a reputation entry.
 			{
@@ -359,6 +374,12 @@ public final class EventHooksForge
 		if (event.target instanceof EntityPlayer && event.entityLiving instanceof EntityLiving)
 		{
 			PlayerData data = SpiderCore.getPlayerData((EntityPlayer) event.target);
+
+			if (data == null)
+			{
+				return;
+			}
+
 			EntityLiving entityLiving = (EntityLiving)event.entityLiving;
 			RepEntityExtension extension = (RepEntityExtension) entityLiving.getExtendedProperties(RepEntityExtension.ID);
 			WatchedInt watchedLikeInstance = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
