@@ -303,6 +303,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		nbt.setLong("ownerMSB", owner.getMostSignificantBits());
 		nbt.setLong("ownerLSB", owner.getLeastSignificantBits());
 		nbt.setTag("inventory", inventory.saveInventoryToNBT());
+		nbt.setInteger("level", dataWatcher.getWatchableObjectInt(18));
 	}
 
 	@Override
@@ -316,6 +317,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		owner = new UUID(nbt.getLong("ownerMSB"), nbt.getLong("ownerLSB"));
 		final NBTTagList tagList = nbt.getTagList("inventory", 10);
 		inventory.loadInventoryFromNBT(tagList);
+		dataWatcher.updateObject(18, nbt.getInteger("level"));
 	}
 
 	@Override
@@ -428,7 +430,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		super.attackEntity(entity, damage);
 
 		double distance = RadixMath.getDistanceToEntity(this, entity);
-
+		this.faceEntity(entity, 1.0F, 1.0F);
+		
 		if (distance > 3.0F)
 		{
 			setAttackPath(entity);

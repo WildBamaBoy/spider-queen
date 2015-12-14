@@ -89,7 +89,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		{
 			Block block = worldObj.getBlock((int)posX, (int)posY, (int)posZ);
 
-			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass)
+			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass || block == ModBlocks.beeHive)
 			{
 				return false;
 			}

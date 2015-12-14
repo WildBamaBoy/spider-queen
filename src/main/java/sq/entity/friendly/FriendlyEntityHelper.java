@@ -203,6 +203,11 @@ public final class FriendlyEntityHelper
 	{
 		final EntityLiving me = friendlyEntity.getInstance();
 
+		if (me instanceof EntityFriendlyMandragora)
+		{
+			return;
+		}
+		
 		if (friendPlayer.onGround)
 		{
 			me.getLookHelper().setLookPositionWithEntity(friendPlayer, 10.0F, me.getVerticalFaceSpeed());
