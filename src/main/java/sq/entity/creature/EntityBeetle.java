@@ -52,6 +52,24 @@ public class EntityBeetle extends AbstractNewMob
 	}
 
 	@Override
+	protected String getHurtSound() 
+	{
+		return "sq:ant.hurt";
+	}
+
+	@Override
+	protected String getDeathSound() 
+	{
+		return "sq:ant.death";
+	}
+
+	@Override
+	protected String getLivingSound()
+	{
+		return "sq:ant.idle";
+	}
+	
+	@Override
 	public void onUpdate() 
 	{
 		super.onUpdate();
