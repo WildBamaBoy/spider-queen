@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.ChunkCoordinates;
+import radixcore.util.RadixLogic;
 
 /**
  * Defines various utility methods that have no other place in the mod's files.
@@ -50,6 +51,19 @@ public final class Utils
 					entityPlayerMP.playerNetServerHandler.sendPacket(packet);
 				}
 			}
+		}
+	}
+	
+	public static int plusOrMinus(int number)
+	{
+		if (RadixLogic.getBooleanWithProbability(50))
+		{
+			return number * -1;
+		}
+		
+		else
+		{
+			return number;
 		}
 	}
 }

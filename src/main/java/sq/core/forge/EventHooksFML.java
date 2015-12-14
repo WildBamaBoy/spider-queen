@@ -14,6 +14,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
@@ -21,6 +22,7 @@ import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModItems;
+import sq.core.minecraft.Spawner;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.PlayerExtension;
 import sq.packet.PacketSleepC;
@@ -32,6 +34,7 @@ public final class EventHooksFML
 {
 	private int counter;
 	private int timeUntilSpawnWeb;
+	private int timeUntilSpawnerRun;
 
 	@SubscribeEvent
 	public void onConfigChanges(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
@@ -80,7 +83,7 @@ public final class EventHooksFML
 						if (player != null)
 						{
 							player.setSpawnChunk(new ChunkCoordinates((int)player.posX, (int)player.posY, (int)player.posZ), true, player.worldObj.provider.dimensionId);
-							
+
 							//Each time we find them, send a packet to close their sleeping GUI.
 							SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(true), player);
 						}
@@ -112,7 +115,7 @@ public final class EventHooksFML
 				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
 					player.triggerAchievement(ModAchievements.goInTheDark);
-					
+
 					if (SpiderCore.getConfig().enableNightVision && player.getActivePotionEffect(Potion.nightVision) == null)
 					{
 						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
@@ -141,6 +144,19 @@ public final class EventHooksFML
 				}
 			}
 		}
+
+		//Run the spawner when appropriate.
+		if (timeUntilSpawnerRun <= 0)
+		{
+			timeUntilSpawnerRun = Time.MINUTE * 1; 
+
+			for (World world : MinecraftServer.getServer().worldServers)
+			{
+				Spawner.runSpawner(world);
+			}
+		}
+
+		timeUntilSpawnerRun--;
 	}
 
 	@SubscribeEvent
@@ -190,7 +206,7 @@ public final class EventHooksFML
 		{
 			data.saveDataToFile();
 		}
-		
+
 		//TODO SpiderCore.sleepingPlayers.remove(event.player);
 	}
 
@@ -218,7 +234,7 @@ public final class EventHooksFML
 		{
 			player.triggerAchievement(ModAchievements.craftWebslinger);
 		}
-		
+
 		else if (event.crafting.getItem() == ModItems.webPoison)
 		{
 			player.triggerAchievement(ModAchievements.craftPoisonWeb);

@@ -25,6 +25,8 @@ public final class Config
 
 	public boolean usePlayerSkin;
 	public boolean useSpiderQueenModel;
+	public boolean useSpawnSystem;
+	
 	public boolean enableNightVision;
 	
 	public boolean enableYuki;
@@ -55,6 +57,7 @@ public final class Config
 		baseItemId = config.get("Init", "Base Item ID", 38955, "The base ID to use for items in Spider Queen. Only applicable in 1.6.4.").getInt();
 		baseBlockId = config.get("Init", "Base Block ID", 3121, "The base ID to use for blocks in Spider Queen. Only applicable in 1.6.4.").getInt();
 		baseEntityId = config.get("Init", "Base Entity ID", 127, "The base ID to use for entities in Spider Queen. Only change if you know what you are doing!").getInt();
+		useSpawnSystem = config.get("Init", "Use built-in spawn system?", true, "Enables or disables Spider Queen's custom spawn system (Requires restart).").getBoolean();
 		enableYuki = config.get("Init", "Enable Yuki?", true, "Enables/disables Yuki.").getBoolean();
 		enableJack = config.get("Init", "Enable Jack?", true, "Enables/disables Jack. WARNING: You will not be able to acquire the bug light!").getBoolean();
 		enableMandragora = config.get("Init", "Enable Mandragora?", true, "Enables/disables the mandragora. WARNING: Removes friendly mandragoras as well!").getBoolean();
