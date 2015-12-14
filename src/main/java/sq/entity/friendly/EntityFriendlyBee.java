@@ -16,6 +16,7 @@ import radixcore.constant.Time;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityBee;
+import sq.util.Utils;
 
 /**
  * The friendly bee is gifted to the player with a high bee reputation. It does not follow the spider rod in the player's hand.
@@ -118,6 +119,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 			
 			if (!entity.worldObj.isRemote)
 			{
+				Utils.spawnParticlesAroundEntityS("heart", this, 16);
 				dropItem(ModItems.nectar, 1);
 			}
 		}

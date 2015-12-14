@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import radixcore.constant.Time;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
+import sq.util.Utils;
 
 /**
  * The friendly skeleton is gifted to the player with a high skeleton reputation. 
@@ -88,6 +89,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 
 			if (!entity.worldObj.isRemote)
 			{
+				Utils.spawnParticlesAroundEntityS("heart", this, 16);
 				dropItem(Items.bone, 10);
 			}
 		}
