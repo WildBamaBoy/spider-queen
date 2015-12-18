@@ -3,6 +3,7 @@ package sq.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class SpawnEntry 
@@ -11,17 +12,17 @@ public class SpawnEntry
 	private final int percentChanceToSpawn;
 	private final int minimumGroupSpawn;
 	private final int maximumGroupSpawn;
+	private final EnumCreatureType creatureType;
 	private final List<BiomeGenBase> spawnBiomes;
-	private final int maximumInArea;
 	
-	public SpawnEntry(Class entityClass, int percentChanceToSpawn, int minimumSpawn, int maximumSpawn, int maximumInArea, BiomeGenBase... biomes)
+	public SpawnEntry(Class entityClass, int percentChanceToSpawn, int minimumSpawn, int maximumSpawn, EnumCreatureType type, BiomeGenBase... biomes)
 	{
 		this.spawnBiomes = new ArrayList<BiomeGenBase>();	
 		this.entityClass = entityClass;
 		this.percentChanceToSpawn = percentChanceToSpawn;
+		this.creatureType = type;
 		this.minimumGroupSpawn = minimumSpawn;
 		this.maximumGroupSpawn = maximumSpawn;
-		this.maximumInArea = maximumInArea;
 		
 		for (BiomeGenBase biome : biomes)
 		{
@@ -29,9 +30,14 @@ public class SpawnEntry
 		}
 	}
 	
-	public int getMaxInArea()
+	public EnumCreatureType getCreatureType()
 	{
-		return maximumInArea;
+		return creatureType;
+	}
+	
+	public int getPercentChanceToSpawn()
+	{
+		return percentChanceToSpawn;
 	}
 	
 	public int getMaximumSpawn()

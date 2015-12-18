@@ -266,21 +266,21 @@ public final class SpiderCore
 		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
 		
 		//Add spawns.
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityBeetle.class, 70, 1, 3, 20, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityBeetle.class, 70, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityFly.class, 75, 1, 3, 20, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityFly.class, 75, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityMandragora.class, 50, 1, 3, 20, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityMandragora.class, 50, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityOctopus.class, 80, 1, 3, 15, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityOctopus.class, 70, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.beach, BiomeGenBase.ocean, BiomeGenBase.deepOcean));
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityWasp.class, 45, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityWasp.class, 45, 1, 3, 15, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityHuman.class, 30, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityHuman.class, 30, 1, 3, 7, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntitySpiderQueen.class, 15, 1, 2, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntitySpiderQueen.class, 15, 1, 2, 20, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityYuki.class, 10, 1, 3, 20, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityYuki.class, 10, 1, 3, EnumCreatureType.monster, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
 				BiomeGenBase.iceMountains, BiomeGenBase.icePlains));
 		
 		//Register world generation.

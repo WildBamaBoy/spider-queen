@@ -42,6 +42,7 @@ public final class Config
 	public boolean showHumanSkin;
 	public boolean showHumanType;
 	
+	public int maxSQEntities;
 	public int antSpawnCap;
 	public int beeSpawnCap;
 	
@@ -57,7 +58,6 @@ public final class Config
 		baseItemId = config.get("Init", "Base Item ID", 38955, "The base ID to use for items in Spider Queen. Only applicable in 1.6.4.").getInt();
 		baseBlockId = config.get("Init", "Base Block ID", 3121, "The base ID to use for blocks in Spider Queen. Only applicable in 1.6.4.").getInt();
 		baseEntityId = config.get("Init", "Base Entity ID", 127, "The base ID to use for entities in Spider Queen. Only change if you know what you are doing!").getInt();
-		useSpawnSystem = config.get("Init", "Use built-in spawn system?", true, "Enables or disables Spider Queen's custom spawn system (Requires restart).").getBoolean();
 		enableYuki = config.get("Init", "Enable Yuki?", true, "Enables/disables Yuki.").getBoolean();
 		enableJack = config.get("Init", "Enable Jack?", true, "Enables/disables Jack. WARNING: You will not be able to acquire the bug light!").getBoolean();
 		enableMandragora = config.get("Init", "Enable Mandragora?", true, "Enables/disables the mandragora. WARNING: Removes friendly mandragoras as well!").getBoolean();
@@ -67,6 +67,12 @@ public final class Config
 		enableHumans = config.get("Init", "Enable Humans?", true, "Enables/disables humans.").getBoolean();
 		enableFactories = config.get("Init", "Enable Factories?", true, "Enables/disables NPC factories.").getBoolean();
 		
+		config.setCategoryComment("Spawning", "Settings that affect the spawning of creatures from this mod.");
+		useSpawnSystem = config.get("Spawning", "Use built-in spawn system?", true, "Enables or disables Spider Queen's custom spawn system (Requires restart).").getBoolean();
+		maxSQEntities = config.get("Spawning", "Global spawn cap", 15, "ONLY AFFECTS BUILT-IN SPAWNER. How many creatures from Spider Queen that can spawn naturally in an area.").getInt();
+		antSpawnCap = config.get("Spawning", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();
+		beeSpawnCap = config.get("Spawning", "Bee spawn cap", 5, "The maximum number of bees that can spawn within a 16 block radius.").getInt();
+
 		config.setCategoryComment("Graphics", "Settings that affect graphics-related portions of the mod.");
 		usePlayerSkin = config.get("Graphics", "Use player skin?", false, "True if you want your Minecraft skin to be used instead of the spider queen skin.").getBoolean();
 		useSpiderQueenModel = config.get("Graphics", "Use spider queen model?", true, "False if you want to keep the standard Minecraft player model.").getBoolean();
@@ -75,11 +81,7 @@ public final class Config
 		showHumanName = config.get("Graphics", "Show human names?", false, "True if you want the humans in the game to have the names of real players.").getBoolean();
 		showHumanSkin = config.get("Graphics", "Show human skins?", true, "True if you want the humans in the game to have the skins of real players.").getBoolean();
 		showHumanType = config.get("Graphics", "Show human type?", true, "True if you want to see the human's type (ex. Poor Miner) when you are near them.").getBoolean();
-		
-		config.setCategoryComment("Performance", "Settings that can affect your game performance.");
-		antSpawnCap = config.get("Performance", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();
-		beeSpawnCap = config.get("Performance", "Bee spawn cap", 5, "The maximum number of bees that can spawn within a 16 block radius.").getInt();
-		
+
 		config.setCategoryComment("Privacy", "Setting pertaining to your privacy while using Spider Queen.");
 		allowCrashReporting = config.get("Privacy", "Allow crash reporting", true, "True if Spider Queen can send crash reports to the mod authors. Crash reports may include your Minecraft username, OS version, Java version, and PC username.").getBoolean();
 		allowUpdateChecking = config.get("Privacy", "Allow update checking", true, "True if Spider Queen can check for updates. This setting requires a restart in order to take effect.").getBoolean();

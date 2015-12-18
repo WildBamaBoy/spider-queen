@@ -2,10 +2,14 @@ package sq.core.minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import radixcore.math.Point3D;
@@ -28,7 +32,10 @@ public class Spawner
 
 		else
 		{
-			spawnEntries.add(entry);			
+			EntityRegistry.addSpawn(
+					entry.getSpawnClass(), 
+					entry.getPercentChanceToSpawn(), entry.getMinimumSpawn(), entry.getMaximumSpawn(), 
+					entry.getCreatureType(), (BiomeGenBase[])entry.getSpawnBiomes().toArray());
 		}
 	}
 
@@ -38,8 +45,8 @@ public class Spawner
 		final int MAX_DISTANCE_FROM_PLAYER = 32;
 		final int MIN_OFFSET = 3;
 		final int MAX_OFFSET = 8;
-		
-		if (spawnEntries.size() == 0) //Will be zero if spawner is turned off.
+
+		if (spawnEntries.size() > 0) //Will be zero if spawner is turned off.
 		{
 			for (Object obj : world.playerEntities)
 			{
@@ -47,17 +54,26 @@ public class Spawner
 				SpawnEntry entry = getNextSpawnEntry();
 				BiomeGenBase biome = world.getBiomeGenForCoords((int)player.posX, (int)player.posZ);
 
-				int entitiesInArea = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, player.posX, player.posY, player.posZ, 64).size();
+				List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, player.posX, player.posY, player.posZ, MAX_DISTANCE_FROM_PLAYER);
+				int sqEntityCount = 0;
 
-				if (entitiesInArea < entry.getMaxInArea() && entry.getSpawnBiomes().contains(biome))
+				for (Entity entity : entities)
+				{
+					if (entity.getClass().getName().contains("sq.entity"))
+					{
+						sqEntityCount++;
+					}
+				}
+				
+				if (sqEntityCount < SpiderCore.getConfig().maxSQEntities && entry.getSpawnBiomes().contains(biome))
 				{
 					int spawnAmount = RadixMath.getNumberInRange(entry.getMinimumSpawn(), entry.getMaximumSpawn());
-					
+
 					Point3D groupSpawnArea = new Point3D(
 							player.posX + Utils.plusOrMinus(RadixMath.getNumberInRange(MIN_DISTANCE_FROM_PLAYER, MAX_DISTANCE_FROM_PLAYER)),
 							255.0D,
-							player.posX + Utils.plusOrMinus(RadixMath.getNumberInRange(MIN_DISTANCE_FROM_PLAYER, MAX_DISTANCE_FROM_PLAYER)));
-					
+							player.posZ + Utils.plusOrMinus(RadixMath.getNumberInRange(MIN_DISTANCE_FROM_PLAYER, MAX_DISTANCE_FROM_PLAYER)));
+
 					while (spawnAmount > 0)
 					{
 						spawnAmount--;
@@ -70,6 +86,23 @@ public class Spawner
 									255.0D,
 									groupSpawnArea.dPosZ + Utils.plusOrMinus(RadixMath.getNumberInRange(MIN_OFFSET, MAX_OFFSET)));
 
+							//Find the ground
+							while (spawnPoint.dPosY > 0)
+							{
+								Block blockAtPoint = world.getBlock((int)spawnPoint.dPosX, (int)spawnPoint.dPosY, (int)spawnPoint.dPosZ);
+
+								if (blockAtPoint != Blocks.air)
+								{
+									spawnPoint.dPosY++;
+									break;
+								}
+
+								else
+								{
+									spawnPoint.dPosY--;
+								}
+							}
+							
 							entity.setPosition(spawnPoint.dPosX, spawnPoint.dPosY, spawnPoint.dPosZ);
 
 							if (entity.getCanSpawnHere())
@@ -90,8 +123,23 @@ public class Spawner
 
 	private static SpawnEntry getNextSpawnEntry()
 	{
-		int index = RadixMath.getNumberInRange(0, spawnEntries.size() - 1);
-		return spawnEntries.get(index);
+		int totalSum = 0;
+
+        for(SpawnEntry entry : spawnEntries) 
+        {
+            totalSum += entry.getPercentChanceToSpawn();
+        }
+        
+		int index = SpiderCore.rand.nextInt(totalSum);
+		int sum = 0;
+		int i = 0;
+
+		while (sum < index) 
+		{
+			sum += spawnEntries.get(i++).getPercentChanceToSpawn();
+		}
+
+		return spawnEntries.get(Math.max(0,i-1));
 	}
 
 	private Spawner()
