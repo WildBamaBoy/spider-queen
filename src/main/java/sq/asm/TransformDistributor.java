@@ -2,6 +2,7 @@ package sq.asm;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.RETURN;
 import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.POP;
@@ -20,6 +21,8 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 /**
@@ -28,7 +31,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
  */
 public class TransformDistributor implements IClassTransformer
 {
-	public static final int ASM_CHANGES_TO_MAKE = 3;
+	public static final int ASM_CHANGES_TO_MAKE = 4;
 	public static int asmChangesMade;
 	public static final Logger logger = LogManager.getLogger("SQ");
 	
@@ -49,6 +52,11 @@ public class TransformDistributor implements IClassTransformer
 		else if (transformedName.equals("net.minecraft.world.gen.feature.WorldGenPumpkin"))
 		{
 			return transformPumpkin(basicClass);
+		}
+		
+		else if (transformedName.equals("net.minecraft.entity.Entity"))
+		{
+			return transformEntity(basicClass);
 		}
 		
 		return basicClass;
@@ -229,6 +237,49 @@ public class TransformDistributor implements IClassTransformer
 		return writer.toByteArray();
 	}
 
+	private byte[] transformEntity(byte[] basicClass)
+	{
+		boolean found = false;
+		ClassNode node = new ClassNode();
+		ClassReader reader = new ClassReader(basicClass);
+		reader.accept(node, 0);
+
+		for (MethodNode method : node.methods) //Run through each method in this class.
+		{
+			//In a normal environment this is func_xxxxx_x, which changes across Minecraft versions.
+			if (method.name.equals("func_145780_a"))
+			{
+				logger.info("Patching func_145780_a() [Step sounds]...");
+				
+				//We completely wipe out this method and redirect it to use our own.
+				method.instructions.clear();
+				
+				//Build the new list of opcodes to be added to the method.
+				InsnList inject = new InsnList();
+
+				inject.add(new VarInsnNode(ALOAD, 0));
+				inject.add(new VarInsnNode(ILOAD, 1));
+				inject.add(new VarInsnNode(ILOAD, 2));
+				inject.add(new VarInsnNode(ILOAD, 3));
+				inject.add(new VarInsnNode(ALOAD, 4));
+				inject.add(new MethodInsnNode(INVOKESTATIC,
+						"sq/asm/ASMEventHooks", 
+						"onPlayStepSound", 
+						"(Lnet/minecraft/entity/Entity;IIILnet/minecraft/block/Block;)V", false));
+				inject.add(new InsnNode(RETURN));
+				
+				method.instructions.insert(inject);
+				incrementChangesMade();
+				break;
+			}
+		}
+		
+		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+		node.accept(writer);
+
+		return writer.toByteArray();
+	}
+	
 	private void incrementChangesMade()
 	{
 		asmChangesMade++;

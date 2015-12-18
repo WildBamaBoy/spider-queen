@@ -2,12 +2,15 @@ package sq.asm;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModBlocks;
 
@@ -38,12 +41,36 @@ public final class ASMEventHooks
 			world.setBlock(x, y, z, ModBlocks.jack, random.nextInt(4), 4);
 		}
 	} 
-	
+
 	/**
 	 * Make spiders always hostile to other players, even during the day.
 	 */
 	public static Entity onSpiderFindPlayerToAttack(EntitySpider spider)
 	{
 		return spider.worldObj.getClosestVulnerablePlayerToEntity(spider, 16.0D);
+	}
+
+	/**
+	 * Makes players have spider walking sounds.
+	 */
+	public static void onPlayStepSound(Entity entity, int posX, int posY, int posZ, Block block)
+	{
+		Block.SoundType soundtype = block.stepSound;
+
+		if (SpiderCore.getConfig().useSpiderQueenModel && entity instanceof EntityPlayer && !block.getMaterial().isLiquid())
+		{
+			entity.playSound("mob.spider.step", soundtype.getVolume() * 0.15F, soundtype.getPitch());
+		}
+		
+		else if (entity.worldObj.getBlock(posX, posY + 1, posZ) == Blocks.snow_layer)
+		{
+			soundtype = Blocks.snow_layer.stepSound;
+			entity.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+		}
+		
+		else if (!block.getMaterial().isLiquid())
+		{
+			entity.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+		}
 	}
 }
