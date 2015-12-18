@@ -29,6 +29,7 @@ import radixcore.constant.Time;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
+import sq.util.Utils;
 
 /**
  * The friendly creeper is gifted to the player with a high creeper reputation. 
@@ -166,6 +167,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 			if (!entity.worldObj.isRemote)
 			{
+				Utils.spawnParticlesAroundEntityS("heart", this, 16);
 				dropItem(Items.gunpowder, 10);
 			}
 		}

@@ -14,7 +14,7 @@ public class EntityFly extends AbstractFlyingMob
 {
 	public EntityFly(World world) 
 	{
-		super(world, "bee"); //Uses bee sounds.
+		super(world, "fly");
 		setSize(0.9F, 0.9F);
 	}
 	

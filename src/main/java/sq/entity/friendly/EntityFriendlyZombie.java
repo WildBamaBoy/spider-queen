@@ -27,6 +27,7 @@ import radixcore.constant.Time;
 import sq.core.ReputationHandler;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityHuman;
+import sq.util.Utils;
 
 /**
  * The friendly zombie is gifted to the player with a high zombie reputation. 
@@ -90,6 +91,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 			
 			if (!entity.worldObj.isRemote)
 			{
+				Utils.spawnParticlesAroundEntityS("heart", this, 16);
 				dropItem(Item.getItemFromBlock(Blocks.log), 10);
 			}
 		}

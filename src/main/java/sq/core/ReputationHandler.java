@@ -108,14 +108,14 @@ public class ReputationHandler
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They are calling for a truce."));
 			player.triggerAchievement(ModAchievements.makeFriend);
+		}
 
-			for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
-			{
-				Utils.spawnParticlesAroundEntityS("heart", entity, 16);
-				EntityLiving e = (EntityLiving)entity;
-				e.setAttackTarget(null);
-				e.getNavigator().clearPathEntity();
-			}
+		for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
+		{
+			Utils.spawnParticlesAroundEntityS("heart", entity, 16);
+			EntityLiving e = (EntityLiving)entity;
+			e.setAttackTarget(null);
+			e.getNavigator().clearPathEntity();
 		}
 
 		//Allies
