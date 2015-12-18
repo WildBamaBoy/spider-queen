@@ -10,14 +10,18 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.minecraft.ModItems;
+import sq.enums.EnumAntType;
+import sq.enums.EnumBeeType;
 import sq.enums.EnumCocoonType;
 
 /**
@@ -25,10 +29,10 @@ import sq.enums.EnumCocoonType;
  */
 public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpawnData
 {
-	private EnumCocoonType	cocoonType;
+	private EnumCocoonType cocoonType;
 	private int currentDamage;
 	private int	timeSinceHit;
-	
+
 	public EntityCocoon(World world)
 	{
 		super(world);
@@ -151,10 +155,10 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 					{
 						dropItem(cocoonType.getCocoonItem(), 1);	
 					}
-					
+
 					setDead();
 				}
-				
+
 			}
 		}
 
@@ -215,35 +219,94 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		if (!isEaten())
 		{
-			//Heal the player's health and food stats when eaten.
-			entityPlayer.heal(3);
-			entityPlayer.getFoodStats().addStats(4, 0.4f);
+			ItemStack stack = entityPlayer.getCurrentEquippedItem();
 
-			worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
-			worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
-
-			setEaten(true);
-
-			//Then calculate and drop string/eggs.
-			if (!worldObj.isRemote)
+			//Right-clicking with shears frees the creature inside.
+			if (stack != null && stack.getItem() instanceof ItemShears && !worldObj.isRemote)
 			{
-				final boolean doDropEgg = RadixLogic.getBooleanWithProbability(25);
-				final int dropAmount = RadixMath.getNumberInRange(1, 2);
-
-				int maxString = 5;
-				
-				switch (cocoonType)
+				try
 				{
-				case ENDERMAN:
-				case QUEEN_BEE:
-				case HUMAN: maxString = 20;
+					Class clazz = cocoonType.getCaptureClass();
+					Entity newEntity = null;
+
+					if (clazz == EntityBee.class)
+					{
+						EnumBeeType beeType = null;
+						
+						switch (cocoonType)
+						{
+							case QUEEN_BEE: beeType = EnumBeeType.QUEEN; break;
+							case WARRIOR_BEE: beeType = EnumBeeType.WARRIOR; break;
+							case GATHERER_BEE: beeType = EnumBeeType.GATHERER; break;
+						}
+						
+						newEntity = (Entity) cocoonType.getCaptureClass().getConstructor(World.class, EnumBeeType.class).newInstance(worldObj, beeType);
+					}
+
+					else if (clazz == EntityAnt.class)
+					{
+						EnumAntType antType = null;
+						
+						switch (cocoonType)
+						{
+							case RED_ANT: antType = EnumAntType.RED; break;
+							case BLACK_ANT: antType = EnumAntType.BLACK; break;
+						}
+						
+						newEntity = (Entity) cocoonType.getCaptureClass().getConstructor(World.class, EnumAntType.class).newInstance(worldObj, antType);
+					}
+
+					else
+					{
+						newEntity = (Entity) cocoonType.getCaptureClass().getConstructor(World.class).newInstance(worldObj);
+					}
+					
+					newEntity.setPositionAndRotation(posX, posY, posZ, worldObj.rand.nextInt(360), rotationPitch);
+					worldObj.spawnEntityInWorld(newEntity);
+
+					stack.damageItem(1, this);
+					playSound("mob.sheep.shear", 1.0F, 1.0F);
+					setDead();
 				}
-				
-				entityDropItem(new ItemStack(Items.string, RadixMath.getNumberInRange(2, 20), 0), 0);
 
-				if (doDropEgg)
+				catch (Exception e)
 				{
-					entityDropItem(new ItemStack(ModItems.spiderEgg, dropAmount, 0), 0);
+					RadixExcept.logErrorCatch(e, "Unable to free captured entity from cocoon.");
+				}
+			}
+
+			else //Right-clicked with anything other than shears.
+			{
+				//Heal the player's health and food stats when eaten.
+				entityPlayer.heal(3);
+				entityPlayer.getFoodStats().addStats(4, 0.4f);
+
+				worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
+				worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
+
+				setEaten(true);
+
+				//Then calculate and drop string/eggs.
+				if (!worldObj.isRemote)
+				{
+					final boolean doDropEgg = RadixLogic.getBooleanWithProbability(25);
+					final int dropAmount = RadixMath.getNumberInRange(1, 2);
+
+					int maxString = 5;
+
+					switch (cocoonType)
+					{
+					case ENDERMAN:
+					case QUEEN_BEE:
+					case HUMAN: maxString = 20;
+					}
+
+					entityDropItem(new ItemStack(Items.string, RadixMath.getNumberInRange(2, 20), 0), 0);
+
+					if (doDropEgg)
+					{
+						entityDropItem(new ItemStack(ModItems.spiderEgg, dropAmount, 0), 0);
+					}
 				}
 			}
 		}

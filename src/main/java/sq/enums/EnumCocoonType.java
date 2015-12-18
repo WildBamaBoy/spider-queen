@@ -98,6 +98,11 @@ public enum EnumCocoonType
 		return null;
 	}
 	
+	public Class getCaptureClass()
+	{
+		return captureClass;
+	}
+	
 	public EnumCocoonSize getCocoonSize()
 	{
 		return cocoonSize;
