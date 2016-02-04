@@ -81,8 +81,13 @@ public class WorldGenFactory implements IWorldGenerator
 
 			Point3D point = new Point3D(x, y, z);
 
+			boolean flagDarkTemplar = false;
 			long t1 = System.nanoTime();
-			spawnStructureRelativeToPoint(SpiderCore.structureSchematics.get(random.nextInt(SpiderCore.structureSchematics.size())), point, world);		
+
+			int structureIndex = random.nextInt(SpiderCore.structureSchematics.size());
+			flagDarkTemplar = structureIndex == 5;
+			spawnStructureRelativeToPoint(SpiderCore.structureSchematics.get(structureIndex), new Point3D(point.iPosX, flagDarkTemplar ? point.iPosY - 23 : point.iPosY, point.iPosZ), world);		
+
 			long t2 = System.nanoTime();
 
 			long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);

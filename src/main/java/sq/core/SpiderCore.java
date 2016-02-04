@@ -303,6 +303,7 @@ public final class SpiderCore
 		structureSchematics.put(2, SchematicHandler.readSchematic("/assets/sq/schematics/factoryAllenWL-fixed.schematic"));
 		structureSchematics.put(3, SchematicHandler.readSchematic("/assets/sq/schematics/factoryMario384-fixed.schematic"));
 		structureSchematics.put(4, SchematicHandler.readSchematic("/assets/sq/schematics/lairFangdam1.schematic"));
+		structureSchematics.put(5, SchematicHandler.readSchematic("/assets/sq/schematics/factoryDarktemplaar.schematic"));
 		long t2 = System.nanoTime();
 		
 		long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
