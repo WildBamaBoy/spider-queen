@@ -14,7 +14,9 @@ import sq.entity.creature.EntityOctopus;
 import sq.entity.creature.EntitySpiderQueen;
 import sq.entity.creature.EntityWasp;
 import sq.entity.creature.EntityYuki;
+import sq.entity.friendly.EntityFriendlyBee;
 import sq.entity.friendly.EntityFriendlyCreeper;
+import sq.entity.friendly.EntityFriendlyMandragora;
 import sq.entity.friendly.EntityFriendlySkeleton;
 import sq.entity.friendly.EntityFriendlyZombie;
 import sq.enums.EnumCocoonType;
@@ -72,6 +74,8 @@ public final class ModItems
 	public static ItemEggSpawner eggFriendlyCreeper;
 	public static ItemEggSpawner eggFriendlySkeleton;
 	public static ItemEggSpawner eggFriendlyZombie;
+	public static ItemEggSpawner eggFriendlyBee;
+	public static ItemEggSpawner eggFriendlyMandragora;
 	public static ItemEggSpawner eggHuman;
 	
 	public static ItemGhastEgg ghastEgg;
@@ -124,6 +128,8 @@ public final class ModItems
 		eggFriendlyCreeper = new ItemEggSpawner(EntityFriendlyCreeper.class, "egg-f-creeper");
 		eggFriendlySkeleton = new ItemEggSpawner(EntityFriendlySkeleton.class, "egg-f-skeleton");
 		eggFriendlyZombie = new ItemEggSpawner(EntityFriendlyZombie.class, "egg-f-zombie");
+		eggFriendlyMandragora = new ItemEggSpawner(EntityFriendlyMandragora.class, "egg-f-mandragora");
+		eggFriendlyBee = new ItemEggSpawner(EntityFriendlyBee.class, "egg-f-bee");
 		eggHuman = new ItemEggSpawner(EntityHuman.class, "egg-human");
 		
 		ghastEgg = new ItemGhastEgg();

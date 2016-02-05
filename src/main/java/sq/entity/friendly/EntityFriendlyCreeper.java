@@ -21,6 +21,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -315,5 +316,11 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	public String getCommandSenderName() 
 	{
 		return "Creeper";
+	}
+	
+	@Override
+	public Item getEgg()
+	{
+		return ModItems.eggFriendlyCreeper;
 	}
 }

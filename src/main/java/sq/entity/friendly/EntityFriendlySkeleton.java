@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -225,5 +226,11 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	public String getCommandSenderName() 
 	{
 		return "Skeleton";
+	}
+	
+	@Override
+	public Item getEgg()
+	{
+		return ModItems.eggFriendlySkeleton;
 	}
 }

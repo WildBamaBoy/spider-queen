@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 
 /**
  * Defines an entity that is a friendly version of a previously hostile creature.
@@ -46,4 +47,7 @@ public interface IFriendlyEntity
 	
 	/** Returns the class of the creature that is the non-friendly form of the creature implementing this interface. */
 	Class getNonFriendlyClass();
+	
+	/** Returns the egg item used to spawn this creature in creative mode. */
+	Item getEgg();
 }

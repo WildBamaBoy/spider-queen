@@ -215,4 +215,10 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		return "Zombie";
 	}
+	
+	@Override
+	public Item getEgg()
+	{
+		return ModItems.eggFriendlyZombie;
+	}
 }

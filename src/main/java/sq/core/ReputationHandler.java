@@ -6,6 +6,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
@@ -13,10 +15,13 @@ import net.minecraft.world.World;
 import radixcore.constant.Font.Color;
 import radixcore.constant.Particle;
 import radixcore.data.WatchedInt;
+import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixString;
 import sq.core.minecraft.ModAchievements;
+import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
@@ -54,7 +59,7 @@ public class ReputationHandler
 			//that the appropriate group is modified.
 			EntityLivingBase repEntity = (EntityLivingBase) friendly.getNonFriendlyClass().getConstructor(World.class).newInstance(friendlyInstance.worldObj);
 			onReputationChange(player, repEntity, 10);
-			
+
 			//Remove the friendly and leave the happy particles in its place.
 			friendlyInstance.setDead();
 			Utils.spawnParticlesAroundEntityS(Particle.HAPPY, friendlyInstance, 16);
@@ -123,7 +128,7 @@ public class ReputationHandler
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They give you one of their own."));
 			player.triggerAchievement(ModAchievements.makeFriend);
-			
+
 			Class friendClass = FriendlyEntityHelper.getFriendlyVariant(living);
 
 			try
@@ -131,14 +136,36 @@ public class ReputationHandler
 				EntityCreature entity = (EntityCreature) friendClass.getConstructor(World.class, EntityPlayer.class).newInstance(player.worldObj, player);
 				IFriendlyEntity friendly = (IFriendlyEntity)entity;
 
-				Vec3 target = RandomPositionGenerator.findRandomTarget(entity, 5, 1);
-				entity.setPosition(player.posX + target.xCoord, player.posY + target.yCoord, player.posZ + target.zCoord);
-				player.worldObj.spawnEntityInWorld(entity);
+				int tries = 0;
 
-				String messageId = "message." + friendly.getSpeakId() + ".appearance";
-				player.addChatComponentMessage(new ChatComponentText(
-						RadixString.upperFirstLetter(friendly.getSpeakId() + ": " + 
-								SpiderCore.getLanguageManager().getString(messageId))));
+				while (tries < 5)
+				{
+					tries++;
+
+					Vec3 target = RandomPositionGenerator.findRandomTarget(entity, 5, 1);
+					Point3D point = new Point3D(player.posX + target.xCoord, player.posY + target.yCoord, player.posZ + target.zCoord);
+					Point3D pointAbove = new Point3D(point.iPosX, point.iPosY + 1, point.iPosZ);
+					boolean isClear = BlockHelper.getBlock(entity.worldObj, point) == Blocks.air && BlockHelper.getBlock(entity.worldObj, pointAbove) == Blocks.air;
+
+					if (isClear)
+					{
+						entity.setPosition(point.iPosX, point.iPosY, point.iPosZ);
+						player.worldObj.spawnEntityInWorld(entity);
+
+						String messageId = "message." + friendly.getSpeakId() + ".appearance";
+						player.addChatComponentMessage(new ChatComponentText(
+								RadixString.upperFirstLetter(friendly.getSpeakId() + ": " + 
+										SpiderCore.getLanguageManager().getString(messageId))));
+						
+						break;
+					}
+				}
+				
+				if (tries == 5) //Can't find a spawn point.
+				{
+					player.inventory.addItemStackToInventory(new ItemStack(friendly.getEgg()));
+					return;
+				}
 
 				Achievement achievement = null;
 

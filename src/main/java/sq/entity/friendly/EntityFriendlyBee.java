@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -203,5 +204,11 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	public String getCommandSenderName() 
 	{
 		return super.getCommandSenderName();
+	}
+	
+	@Override
+	public Item getEgg()
+	{
+		return ModItems.eggFriendlyBee;
 	}
 }
