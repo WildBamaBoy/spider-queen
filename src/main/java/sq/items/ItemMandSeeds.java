@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 
@@ -30,14 +31,14 @@ public class ItemMandSeeds extends Item
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
 	{
-		if (!world.isRemote && world.isAirBlock(posX, posY + 1, posZ) && world.getBlock(posX, posY, posZ) == Blocks.farmland)
+		if (!world.isRemote && world.isAirBlock(posX, posY + 1, posZ) && BlockHelper.getBlock(world, posX, posY, posZ) == Blocks.farmland)
 		{
 			if (!player.capabilities.isCreativeMode)
 			{
 				stack.stackSize--;
 			}
 			
-			world.setBlock(posX, posY + 1, posZ, ModBlocks.cropMand);
+			BlockHelper.setBlock(world, posX, posY + 1, posZ, ModBlocks.cropMand);
 		}
 		
 		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);

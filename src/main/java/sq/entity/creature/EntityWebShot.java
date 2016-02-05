@@ -23,6 +23,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
@@ -282,7 +283,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		if (collisionPosition != null)
 		{
 			//When we have a collision position, get the block before passing it to onImpact.
-			Block block = worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
+			Block block = BlockHelper.getBlock(worldObj, collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
 
 			if (block.getMaterial() == Material.plants) //Ignore all plants.
 			{
@@ -402,7 +403,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 			else if (doBlockSpawn)
 			{
 				//Figure out what we hit and where, and which side.
-				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
+				final Block blockHit = BlockHelper.getBlock(worldObj, impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
 				int impactX = impactPoint.blockX;
 				int impactY = impactPoint.blockY;
 				int impactZ = impactPoint.blockZ;
@@ -474,11 +475,11 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 				}
 
 				//Set the web at the impact point.
-				Block blockToSet = worldObj.getBlock(impactX + xMov, impactY + yMov, impactZ + zMov);
+				Block blockToSet = BlockHelper.getBlock(worldObj, impactX + xMov, impactY + yMov, impactZ + zMov);
 
 				if (blockToSet == Blocks.air || blockToSet instanceof BlockWebFull) //Prevent overwriting terrain.
 				{
-					worldObj.setBlock(impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta, 2);
+					BlockHelper.setBlock(worldObj, impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta);
 				}
 
 				setDead();

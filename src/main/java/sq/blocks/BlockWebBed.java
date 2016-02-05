@@ -15,6 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEx;
 import sq.entity.creature.EntitySpiderQueen;
@@ -92,12 +93,12 @@ public class BlockWebBed extends Block
 	@Override
 	public boolean canPlaceBlockAt(World world, int posX, int posY, int posZ)
 	{
-		if (world.getBlock(posX - 1, posY, posZ) != Blocks.air) { return true; }
-		if (world.getBlock(posX + 1, posY, posZ) != Blocks.air) { return true; }
-		if (world.getBlock(posX, posY - 1, posZ) != Blocks.air) { return true; }
-		if (world.getBlock(posX, posY + 1, posZ) != Blocks.air) { return true; }
-		if (world.getBlock(posX, posY, posZ - 1) != Blocks.air) { return true; }
-		if (world.getBlock(posX, posY, posZ + 1) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(world, posX - 1, posY, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(world, posX + 1, posY, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(world, posX, posY - 1, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(world, posX, posY + 1, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(world, posX, posY, posZ - 1) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(world, posX, posY, posZ + 1) != Blocks.air) { return true; }
 
 		return false;
 	}
@@ -130,14 +131,14 @@ public class BlockWebBed extends Block
 
 	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)
 	{
-		if (world.getBlock(posX - 1, posY, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX + 1, posY, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY - 1, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY + 1, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY, posZ - 1) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY, posZ + 1) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX - 1, posY, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX + 1, posY, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY - 1, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY + 1, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY, posZ - 1) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY, posZ + 1) != Blocks.air) { return; }
 
-		world.setBlock(posX, posY, posZ, Blocks.air);
+		world.setBlockToAir(posX, posY, posZ);
 	}
 
 	private boolean canBePlacedOn(Block block)

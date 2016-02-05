@@ -2,7 +2,6 @@ package sq.core.minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.block.Block;
@@ -13,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
@@ -89,7 +89,7 @@ public class Spawner
 							//Find the ground
 							while (spawnPoint.dPosY > 0)
 							{
-								Block blockAtPoint = world.getBlock((int)spawnPoint.dPosX, (int)spawnPoint.dPosY, (int)spawnPoint.dPosZ);
+								Block blockAtPoint = BlockHelper.getBlock(world, (int)spawnPoint.dPosX, (int)spawnPoint.dPosY, (int)spawnPoint.dPosZ);
 
 								if (blockAtPoint != Blocks.air)
 								{

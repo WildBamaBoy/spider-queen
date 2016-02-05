@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityMandragora;
 import sq.entity.friendly.EntityFriendlyMandragora;
@@ -80,7 +81,7 @@ public class BlockMandCrop extends BlockCrops
 		super.updateTick(world, x, y, z, random);
 		
 		//Only grow if we're not fully grown (meta >= 7)
-		if (world.getBlockMetadata(x, y, z) >= 7)
+		if (BlockHelper.getBlockMetadata(world, x, y, z) >= 7)
 		{
 			//Get rid of the crop block as it has sprouted into a mandragora.
 			world.setBlockToAir(x, y, z);

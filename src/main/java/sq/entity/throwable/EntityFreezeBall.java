@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import sq.util.Utils;
 
@@ -85,27 +86,27 @@ public class EntityFreezeBall extends EntityThrowable
 
 				for (Point3D point : RadixLogic.getNearbyBlocks(entityHit, Blocks.grass, 1))
 				{
-					worldObj.setBlock(point.iPosX, point.iPosY + 1, point.iPosZ, Blocks.snow_layer);
+					BlockHelper.setBlock(worldObj, point.iPosX, point.iPosY + 1, point.iPosZ, Blocks.snow_layer);
 				}
 
 				entityHit.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, Time.SECOND * 5, 5));
 				entityHit.setPosition(Math.floor(entityHit.posX) + 0.5F, Math.floor(entityHit.posY), Math.floor(entityHit.posZ) + 0.5F);
-				worldObj.setBlock((int)entityHit.posX, (int)entityHit.posY, (int)entityHit.posZ, Blocks.ice);
-				worldObj.setBlock((int)entityHit.posX, (int)entityHit.posY + 1, (int)entityHit.posZ, Blocks.ice);
+				BlockHelper.setBlock(worldObj, (int)entityHit.posX, (int)entityHit.posY, (int)entityHit.posZ, Blocks.ice);
+				BlockHelper.setBlock(worldObj, (int)entityHit.posX, (int)entityHit.posY + 1, (int)entityHit.posZ, Blocks.ice);
 			}
 
 			for (int i = -2; i < 2; i++) for (int j = -1; j < 3; j++) for (int k = -2; k < 2; k++)
 			{
-				Block block = worldObj.getBlock(objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k);
+				Block block = BlockHelper.getBlock(worldObj, objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k);
 
 				if (block == Blocks.water || block == Blocks.flowing_water)
 				{
-					worldObj.setBlock(objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k, Blocks.ice);
+					BlockHelper.setBlock(worldObj, objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k, Blocks.ice);
 				}
 
 				else if (block == Blocks.fire)
 				{
-					worldObj.setBlock(objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k, Blocks.air);
+					BlockHelper.setBlock(worldObj, objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k, Blocks.air);
 				}
 			}
 

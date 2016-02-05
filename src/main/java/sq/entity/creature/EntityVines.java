@@ -14,6 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 
 /**
  * Vines are the entities that mandragoras create in order for them to attack.
@@ -135,11 +136,11 @@ public class EntityVines extends Entity
             prevRotationPitch = rotationPitch = (float)((Math.atan2(motionY, f) * 180D) / 3.1415927410125732D);
         }
         
-        Block block = worldObj.getBlock(xTile, yTile - 1, zTile);
+        Block block = BlockHelper.getBlock(worldObj, xTile, yTile - 1, zTile);
         if(block != Blocks.air)
         {
-			Block ikk = worldObj.getBlock(xTile, yTile + 2 - 1, zTile);
-            Block ikk2 = worldObj.getBlock(xTile, yTile - 1 - 1, zTile);
+			Block ikk = BlockHelper.getBlock(worldObj, xTile, yTile + 2 - 1, zTile);
+            Block ikk2 = BlockHelper.getBlock(worldObj, xTile, yTile - 1 - 1, zTile);
             motionY = 0F;
             
 			if(ikk == Blocks.air)

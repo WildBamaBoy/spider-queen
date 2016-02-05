@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
@@ -77,7 +78,7 @@ public class EntityMandragora extends AbstractNewMob
 		int j = MathHelper.floor_double(boundingBox.minY);
 		int k = MathHelper.floor_double(posZ);
 		
-		return worldObj.getBlock(i, j - 1, k) == Blocks.grass;
+		return BlockHelper.getBlock(worldObj, i, j - 1, k) == Blocks.grass;
 	}
 	
 	@Override

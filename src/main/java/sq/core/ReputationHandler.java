@@ -21,7 +21,6 @@ import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixString;
 import sq.core.minecraft.ModAchievements;
-import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;

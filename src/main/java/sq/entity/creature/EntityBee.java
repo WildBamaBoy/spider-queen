@@ -13,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
@@ -24,7 +25,6 @@ import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
 import sq.entity.friendly.EntityFriendlyBee;
 import sq.enums.EnumBeeType;
-import sq.util.Utils;
 
 /**
  * Bees are passive/aggressive based on reputation. There are three types, Warrior, Gatherer, and Queen.
@@ -87,7 +87,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		//Check whether the bee is in a log or leaves, ignore if so.
 		if (source == DamageSource.inWall)
 		{
-			Block block = worldObj.getBlock((int)posX, (int)posY, (int)posZ);
+			Block block = BlockHelper.getBlock(worldObj, (int)posX, (int)posY, (int)posZ);
 
 			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass || block == ModBlocks.beeHive)
 			{

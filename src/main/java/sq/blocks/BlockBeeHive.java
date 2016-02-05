@@ -16,6 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
@@ -131,7 +132,7 @@ public class BlockBeeHive extends Block
 						{
 							Point3D newPoint = new Point3D(xMov, yMov, zMov);
 
-							if (world.getBlock(x + newPoint.iPosX, y + newPoint.iPosY, z + newPoint.iPosZ) == Blocks.air)
+							if (BlockHelper.getBlock(world, x + newPoint.iPosX, y + newPoint.iPosY, z + newPoint.iPosZ) == Blocks.air)
 							{
 								safeSpawnAreas.add(newPoint);
 							}

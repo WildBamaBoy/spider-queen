@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityJack;
 
@@ -75,6 +76,6 @@ public class BlockJack extends Block
     {
     	//Calculate our meta relative to the player's rotation when the block was placed.
         int meta = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 2.5D) & 3;
-        world.setBlockMetadataWithNotify(posX, posY, posZ, meta, 2);
+        BlockHelper.setBlockMetadataWithNotify(world, posX, posY, posZ, meta, 2);
     }
 }

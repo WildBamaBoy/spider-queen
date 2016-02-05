@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModBlocks;
@@ -38,7 +39,7 @@ public final class ASMEventHooks
 	{
 		if (random.nextInt(6) == 0)
 		{
-			world.setBlock(x, y, z, ModBlocks.jack, random.nextInt(4), 4);
+			BlockHelper.setBlock(world, x, y, z, ModBlocks.jack, random.nextInt(4));
 		}
 	} 
 
@@ -62,7 +63,7 @@ public final class ASMEventHooks
 			entity.playSound("mob.spider.step", soundtype.getVolume() * 0.15F, soundtype.getPitch());
 		}
 		
-		else if (entity.worldObj.getBlock(posX, posY + 1, posZ) == Blocks.snow_layer)
+		else if (BlockHelper.getBlock(entity.worldObj, posX, posY + 1, posZ) == Blocks.snow_layer)
 		{
 			soundtype = Blocks.snow_layer.stepSound;
 			entity.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.15F, soundtype.getPitch());

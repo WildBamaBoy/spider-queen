@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import sq.entity.AbstractNewMob;
@@ -64,11 +65,11 @@ public class EntityAnt extends AbstractNewMob
 				//Check for the block to eat.
 				for (int i = -1; i < 2; i++) for (int j = 0; j < 2; j++) for (int k = -1; k < 2; k++)
 				{
-					Block block = worldObj.getBlock((int)posX + i, (int)posY + j, (int)posZ + k);
+					Block block = BlockHelper.getBlock(worldObj, (int)posX + i, (int)posY + j, (int)posZ + k);
 
 					if (block != Blocks.bedrock && block != ModBlocks.antHill && worldObj.rand.nextBoolean())
 					{
-						worldObj.setBlock((int)posX + i, (int)posY + j, (int)posZ + k, Blocks.air);
+						BlockHelper.setBlock(worldObj, (int)posX + i, (int)posY + j, (int)posZ + k, Blocks.air);
 						break;
 					}
 				}

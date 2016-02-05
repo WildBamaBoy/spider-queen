@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import radixcore.data.DataWatcherEx;
 import radixcore.data.IWatchable;
 import radixcore.data.WatchedInt;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.IWebClimber;
@@ -79,7 +80,7 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		int j = MathHelper.floor_double(boundingBox.minY);
 		int k = MathHelper.floor_double(posZ);
 
-		return worldObj.getBlock(i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
+		return BlockHelper.getBlock(worldObj, i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
 	}
 
 	@Override

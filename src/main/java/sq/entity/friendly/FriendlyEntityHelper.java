@@ -20,6 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import radixcore.util.RadixString;
@@ -228,7 +229,7 @@ public final class FriendlyEntityHelper
 					{
 						for (int i2 = 0; i2 <= 4; ++i2)
 						{
-							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && World.doesBlockHaveSolidTopSurface(me.worldObj, playerX + i, playerY - 1, playerZ + i2) && !me.worldObj.getBlock(playerX + i, playerY, playerZ + i2).isNormalCube() && !me.worldObj.getBlock(playerX + i, playerY + 1, playerZ + i2).isNormalCube())
+							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && World.doesBlockHaveSolidTopSurface(me.worldObj, playerX + i, playerY - 1, playerZ + i2) && !BlockHelper.getBlock(me.worldObj, playerX + i, playerY, playerZ + i2).isNormalCube() && !BlockHelper.getBlock(me.worldObj, playerX + i, playerY + 1, playerZ + i2).isNormalCube())
 							{
 								me.setLocationAndAngles(playerX + i + 0.5F, playerY, playerZ + i2 + 0.5F, me.rotationYaw, me.rotationPitch);
 								me.getNavigator().clearPathEntity();

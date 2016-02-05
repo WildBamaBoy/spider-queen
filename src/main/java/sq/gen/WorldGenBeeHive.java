@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModBlocks;
 
 /**
@@ -41,7 +42,7 @@ public class WorldGenBeeHive implements IWorldGenerator
 
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
-		Block block = world.getBlock(x, y, z);
+		Block block = BlockHelper.getBlock(world, x, y, z);
 
 		//Find a tree
 		if (block == Blocks.log)
@@ -51,7 +52,7 @@ public class WorldGenBeeHive implements IWorldGenerator
 
 			while (yMov < 30)
 			{
-				if (world.getBlock(x, y + yMov, z) != Blocks.log)
+				if (BlockHelper.getBlock(world, x, y + yMov, z) != Blocks.log)
 				{
 					yMov--;
 					break;
@@ -63,7 +64,7 @@ public class WorldGenBeeHive implements IWorldGenerator
 			int topLogY = y + yMov;
 
 			//At this point we've found the top of the tree. Test for leaves above the top log to verify it's a tree.
-			if (world.getBlock(x, topLogY + 1, z) instanceof BlockLeaves)
+			if (BlockHelper.getBlock(world, x, topLogY + 1, z) instanceof BlockLeaves)
 			{
 				int midLogY = topLogY - 2; //Move down towards the middle of the tree.
 				int leavesRadius = 2;
@@ -74,18 +75,18 @@ public class WorldGenBeeHive implements IWorldGenerator
 				{
 					if (pass == 1)
 					{
-						if (random.nextBoolean()) { world.setBlock(x + 1, midLogY + 1, z, ModBlocks.beeHive); }
-						world.setBlock(x + 1, midLogY, z, ModBlocks.beeHive);
-						if (random.nextBoolean()) { world.setBlock(x + 1, midLogY - 1, z, ModBlocks.beeHive); }
-						if (random.nextBoolean()) { world.setBlock(x + 1, midLogY, z + 1, ModBlocks.beeHive); }
-						world.setBlock(x + 1, midLogY, z - 1, ModBlocks.beeHive);
+						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY + 1, z, ModBlocks.beeHive); }
+						BlockHelper.setBlock(world, x + 1, midLogY, z, ModBlocks.beeHive);
+						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY - 1, z, ModBlocks.beeHive); }
+						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY, z + 1, ModBlocks.beeHive); }
+						BlockHelper.setBlock(world, x + 1, midLogY, z - 1, ModBlocks.beeHive);
 					}
 
 					else
 					{
-						if (world.getBlock(x + pass + 1, midLogY, z) != Blocks.air)
+						if (BlockHelper.getBlock(world, x + pass + 1, midLogY, z) != Blocks.air)
 						{
-							world.setBlock(x + pass, midLogY, z, ModBlocks.beeHive);
+							BlockHelper.setBlock(world, x + pass, midLogY, z, ModBlocks.beeHive);
 						}
 					}
 

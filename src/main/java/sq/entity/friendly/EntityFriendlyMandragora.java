@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
@@ -85,13 +86,13 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 				{
 					try
 					{
-						BlockCrops crop = (BlockCrops)worldObj.getBlock(point.iPosX, point.iPosY, point.iPosZ);
+						BlockCrops crop = (BlockCrops)BlockHelper.getBlock(worldObj, point.iPosX, point.iPosY, point.iPosZ);
 						int metadata = worldObj.getBlockMetadata(point.iPosX, point.iPosY, point.iPosZ);
 
 						if (metadata < 7)
 						{
 							int max = 7 - metadata;
-							worldObj.setBlockMetadataWithNotify(point.iPosX, point.iPosY, point.iPosZ, metadata + RadixMath.getNumberInRange(1, max), 2);
+							BlockHelper.setBlockMetadataWithNotify(worldObj, point.iPosX, point.iPosY, point.iPosZ, metadata + RadixMath.getNumberInRange(1, max), 2);
 							Utils.spawnParticlesAroundEntityS(Particle.HAPPY, this, 16);
 						}
 					}

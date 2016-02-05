@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 
@@ -36,7 +37,7 @@ public class ItemLantern extends Item
 				stack.stackSize--;
 			}
 			
-			world.setBlock(posX, posY + 1, posZ, ModBlocks.lantern);
+			BlockHelper.setBlock(world, posX, posY + 1, posZ, ModBlocks.lantern);
 		}
 		
 		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);

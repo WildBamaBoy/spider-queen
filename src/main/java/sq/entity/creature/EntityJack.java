@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
@@ -45,7 +46,7 @@ public class EntityJack extends AbstractFlyingMob
 
 				while (yMov > -255)
 				{
-					Block block = worldObj.getBlock((int)posX, (int)posY + yMov, (int)posZ);
+					Block block = BlockHelper.getBlock(worldObj, (int)posX, (int)posY + yMov, (int)posZ);
 
 					if (block != Blocks.air)
 					{
@@ -57,7 +58,7 @@ public class EntityJack extends AbstractFlyingMob
 
 				if (allowBlockPlace)
 				{
-					worldObj.setBlock((int)posX, (int)posY + yMov + 1, (int)posZ, ModBlocks.jack);
+					BlockHelper.setBlock(worldObj, (int)posX, (int)posY + yMov + 1, (int)posZ, ModBlocks.jack);
 					setDead();
 				}
 			}

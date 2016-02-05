@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModBlocks;
 
 /**
@@ -47,7 +48,7 @@ public class WorldGenAntHill implements IWorldGenerator
 			{
 				for(int i3 = k - i1 - 1; i3 <= k + i1 + 1; i3++)
 				{
-					Material material = world.getBlock(k1, j2, i3).getMaterial();
+					Material material = BlockHelper.getBlock(world, k1, j2, i3).getMaterial();
 					
 					if(j2 == j - 1 && !material.isSolid())
 					{
@@ -81,13 +82,13 @@ public class WorldGenAntHill implements IWorldGenerator
 			{
 				for(int z = 0; z < 5; z++)
 				{
-					world.setBlock(i+(x-2),j+(y),k+(z-2), Blocks.air);
+					BlockHelper.setBlock(world, i+(x-2),j+(y),k+(z-2), Blocks.air);
 				}
 			}
 		}
 
 		//Set the ant hill at the origin point.
-		world.setBlock(i,j,k, ModBlocks.antHill);
+		BlockHelper.setBlock(world, i,j,k, ModBlocks.antHill);
 		return true;
 	}
 }

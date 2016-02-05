@@ -20,6 +20,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import radixcore.data.BlockObj;
 import radixcore.math.Point3D;
+import radixcore.util.BlockHelper;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
@@ -71,7 +72,7 @@ public class WorldGenFactory implements IWorldGenerator
 
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
-		Block block = world.getBlock(x, y, z);
+		Block block = BlockHelper.getBlock(world, x, y, z);
 
 		//Make sure we're spawning on grass, and perform a random operation to see if we can spawn.
 		if (block == Blocks.grass && random.nextInt(450) == 0)
@@ -130,7 +131,7 @@ public class WorldGenFactory implements IWorldGenerator
 				int z = blockPoint.iPosZ + point.iPosZ;
 
 				BlockObj blockObj = entry.getValue();
-				world.setBlock(x, y, z, blockObj.getBlock(), blockObj.getMeta(), 0);
+				BlockHelper.setBlock(world, x, y, z, blockObj.getBlock(), blockObj.getMeta());
 
 				if (blockObj.getBlock() == Blocks.chest && world.rand.nextBoolean() && world.rand.nextBoolean())
 				{
@@ -168,7 +169,7 @@ public class WorldGenFactory implements IWorldGenerator
 				{
 					try
 					{
-						world.setBlockMetadataWithNotify(x, y, z, blockObj.getMeta() & 7, 2); //Operation used by Minecraft to determine texture.
+						BlockHelper.setBlockMetadataWithNotify(world, x, y, z, blockObj.getMeta() & 7, 2); //Operation used by Minecraft to determine texture.
 						TileEntityDispenser dispenser = (TileEntityDispenser) world.getTileEntity(x, y, z);
 
 						if (dispenser != null)
@@ -203,7 +204,7 @@ public class WorldGenFactory implements IWorldGenerator
 			int z = blockPoint.iPosZ + point.iPosZ;
 
 			BlockObj blockObj = entry.getValue();
-			world.setBlock(x, y, z, blockObj.getBlock(), blockObj.getMeta(), 0);
+			BlockHelper.setBlock(world, x, y, z, blockObj.getBlock(), blockObj.getMeta());
 		}
 
 		for (Map.Entry<Point3D, BlockObj> entry : doorMap.entrySet())
@@ -215,7 +216,7 @@ public class WorldGenFactory implements IWorldGenerator
 			int z = blockPoint.iPosZ + point.iPosZ;
 
 			BlockObj blockObj = entry.getValue();
-			world.setBlock(x, y, z, blockObj.getBlock(), blockObj.getMeta(), 0);
+			BlockHelper.setBlock(world, x, y, z, blockObj.getBlock(), blockObj.getMeta());
 		}
 
 		for (Map.Entry<Point3D, BlockObj> entry : placeholderMap.entrySet())
@@ -228,7 +229,7 @@ public class WorldGenFactory implements IWorldGenerator
 			int z = blockPoint.iPosZ + point.iPosZ;
 
 			BlockObj blockObj = entry.getValue();
-			world.setBlock(x, y, z, placeHolder.getYield(), 0, 2);
+			BlockHelper.setBlock(world, x, y, z, placeHolder.getYield(), 0);
 
 			if (placeHolder.getDoCallback())
 			{

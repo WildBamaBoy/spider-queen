@@ -18,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
+import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModBlocks;
 import sq.entity.IWebClimber;
 import sq.enums.EnumWebType;
@@ -97,56 +98,56 @@ public class BlockWebFull extends Block
 				Blocks.log2
 			};
 
-			if (world.getBlock(x,y,z) != fillerBlock) { return; }
+			if (BlockHelper.getBlock(world, x,y,z) != fillerBlock) { return; }
 
 			int fillerBlocksPresent = 0;
 			int outlineBlocksPresent = 0;
 
-			if (world.getBlock(x-1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
-			if (world.getBlock(x-1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x-1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
-			if (world.getBlock(x,y,z-1) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x,y,z) == fillerBlock)     { fillerBlocksPresent++; }
-			if (world.getBlock(x,y,z+1) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x+1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
-			if (world.getBlock(x+1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x+1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x-1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x-1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x-1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x,y,z-1) == fillerBlock)   { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x,y,z) == fillerBlock)     { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x,y,z+1) == fillerBlock)   { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x+1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x+1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
+			if (BlockHelper.getBlock(world, x+1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
 
 			for (Block outlineBlock : outlineBlocks)
 			{
-				if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
-				if (world.getBlock(x-2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x,y,z-2) == outlineBlock)   { outlineBlocksPresent++; }
-				if (world.getBlock(x+1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x-1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x,y,z+2) == outlineBlock)   { outlineBlocksPresent++; }
-				if (world.getBlock(x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-				if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x,y,z-2) == outlineBlock)   { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x-1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x,y,z+2) == outlineBlock)   { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
+				if (BlockHelper.getBlock(world, x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
 			}
 			
 			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
 			{
-				world.setBlock(x-1,y,z-1,ModBlocks.webBed);
-				world.setBlock(x-1,y,z,ModBlocks.webBed);
-				world.setBlock(x-1,y,z+1,ModBlocks.webBed);
-				world.setBlock(x,y,z-1,ModBlocks.webBed);
-				world.setBlock(x,y,z,ModBlocks.webBed);
-				world.setBlock(x,y,z+1,ModBlocks.webBed);
-				world.setBlock(x+1,y,z-1,ModBlocks.webBed);
-				world.setBlock(x+1,y,z,ModBlocks.webBed);
-				world.setBlock(x+1,y,z+1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x-1,y,z-1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x-1,y,z,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x-1,y,z+1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x,y,z-1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x,y,z,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x,y,z+1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x+1,y,z-1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x+1,y,z,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x+1,y,z+1,ModBlocks.webBed);
 			}
 
 			else
@@ -176,14 +177,14 @@ public class BlockWebFull extends Block
 
 	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)
 	{
-		if (world.getBlock(posX - 1, posY, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX + 1, posY, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY - 1, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY + 1, posZ) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY, posZ - 1) != Blocks.air) { return; }
-		if (world.getBlock(posX, posY, posZ + 1) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX - 1, posY, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX + 1, posY, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY - 1, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY + 1, posZ) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY, posZ - 1) != Blocks.air) { return; }
+		if (BlockHelper.getBlock(world, posX, posY, posZ + 1) != Blocks.air) { return; }
 
-		world.setBlock(posX, posY, posZ, Blocks.air);
+		BlockHelper.setBlock(world, posX, posY, posZ, Blocks.air);
 	}
 
 	@Override
