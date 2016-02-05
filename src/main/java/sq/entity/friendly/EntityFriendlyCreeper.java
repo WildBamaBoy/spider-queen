@@ -40,6 +40,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	private int timeUntilSpeak = Time.MINUTE * 5;
 	private UUID friendPlayerUUID = new UUID(0, 0);;
 	private boolean hasPlayedSound;
+	private boolean forceExplosion;
 	private boolean isImprisoned;
 	
 	public EntityLivingBase target;
@@ -49,6 +50,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		super(world);
 
 		dataWatcher.addObject(23, 0);
+		dataWatcher.addObject(24, 0);
 	}
 
 	public EntityFriendlyCreeper(World world, EntityPlayer friendPlayer)
@@ -80,7 +82,26 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 		if (!worldObj.isRemote)
 		{
-			if (target != null && RadixMath.getDistanceToEntity(this, target) <= 2)
+			if (forceExplosion)
+			{
+				if (!hasPlayedSound)
+				{
+					playSound("creeper.primed", 1.0F, 0.5F);
+					hasPlayedSound = true;
+				}
+				
+				setExplosionTicks(getExplosionTicks() + 1);
+
+				if (getExplosionTicks() >= 40)
+				{
+					worldObj.createExplosion(this, posX, posY, posZ, 2, false);
+					setExplosionTicks(0);
+					setTired(true);
+					forceExplosion = false;
+				}
+			}
+			
+			else if (target != null && RadixMath.getDistanceToEntity(this, target) <= 2)
 			{
 				if (!hasPlayedSound)
 				{
@@ -93,7 +114,8 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 				if (getExplosionTicks() >= 40)
 				{
 					worldObj.createExplosion(this, posX, posY, posZ, 2, false);
-					setDead();
+					setExplosionTicks(0);
+					setTired(true);
 				}
 			}
 
@@ -133,6 +155,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
 		nbt.setBoolean("isImprisoned", isImprisoned);
+		nbt.setBoolean("isTired", isTired());
 	}
 
 	@Override
@@ -142,6 +165,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
 		isImprisoned = nbt.getBoolean("isImprisoned");
+		setTired(nbt.getBoolean("isTired"));
 	}
 
 	@Override
@@ -161,7 +185,12 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 			ReputationHandler.handleInteractWithImprisoned(entity, this);
 		}
 		
-		if (heldItem != null && heldItem.getItem() == ModItems.heart)
+		if (isTired() && heldItem != null && heldItem.getItem() == Items.gunpowder)
+		{
+			setTired(false);
+		}
+		
+		if (!isTired() && heldItem != null && heldItem.getItem() == ModItems.heart)
 		{
 			heldItem.stackSize--;
 
@@ -172,7 +201,21 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 			}
 		}
 
-		return super.interact(entity);
+        if (!isTired() && heldItem != null && heldItem.getItem() == Items.flint_and_steel)
+        {
+            worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.ignite", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+            entity.swingItem();
+
+            if (!this.worldObj.isRemote)
+            {
+                setExplosionTicks(0);
+                forceExplosion = true;
+                
+                heldItem.damageItem(1, entity);
+                return true;
+            }
+        }
+		return true;
 	}
 
 	@Override
@@ -249,6 +292,17 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	public void setImprisoned(boolean value) 
 	{
 		this.isImprisoned = value;
+	}
+	
+	public boolean isTired()
+	{
+		int value = dataWatcher.getWatchableObjectInt(24);
+		return value == 1 ? true : false;
+	}
+	
+	public void setTired(boolean value)
+	{
+		dataWatcher.updateObject(24, value ? 1 : 0);
 	}
 	
 	@Override
