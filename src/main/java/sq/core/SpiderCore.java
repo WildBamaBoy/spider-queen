@@ -102,7 +102,7 @@ import sq.gen.WorldGenFactory;
 import sq.items.ItemCocoon;
 import sq.util.SpawnEntry;
 
-@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.1.0,)", acceptedMinecraftVersions = "[1.7.10]",
+@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.1.1,)", acceptedMinecraftVersions = "[1.7.10]",
 guiFactory = "sq.core.forge.client.SpiderGuiFactory")
 public final class SpiderCore
 {
