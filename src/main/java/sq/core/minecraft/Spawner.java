@@ -3,14 +3,15 @@ package sq.core.minecraft;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
@@ -52,7 +53,7 @@ public class Spawner
 			{
 				EntityPlayer player = (EntityPlayer)obj;
 				SpawnEntry entry = getNextSpawnEntry();
-				BiomeGenBase biome = world.getBiomeGenForCoords((int)player.posX, (int)player.posZ);
+				BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos((int)player.posX, (int)player.posY, (int)player.posZ));
 
 				List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, player.posX, player.posY, player.posZ, MAX_DISTANCE_FROM_PLAYER);
 				int sqEntityCount = 0;

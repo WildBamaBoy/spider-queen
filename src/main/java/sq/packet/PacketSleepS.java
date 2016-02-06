@@ -1,9 +1,9 @@
 package sq.packet;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import radixcore.network.ByteBufIO;
 import radixcore.packets.AbstractPacket;
 import sq.core.SpiderCore;
@@ -43,6 +43,15 @@ public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHa
 	@Override
 	public IMessage onMessage(PacketSleepS packet, MessageContext context)
 	{
+		SpiderCore.getPacketHandler().addPacketForProcessing(context.side, packet, context);
+		return null;
+	}
+
+	@Override
+	public void processOnGameThread(IMessageHandler message, MessageContext context) 
+	{
+		final PacketSleepS packet = (PacketSleepS)message;
+		
 		if (packet.addRemoveFlag)
 		{
 			SpiderCore.sleepingPlayers.add(packet.username);
@@ -52,7 +61,5 @@ public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHa
 		{
 			SpiderCore.sleepingPlayers.remove(packet.username);
 		}
-		
-		return null;
 	}
 }

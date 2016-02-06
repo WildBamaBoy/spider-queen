@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -14,10 +14,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import radixcore.data.BlockObj;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
@@ -53,7 +55,7 @@ public class WorldGenFactory implements IWorldGenerator
 			{
 				int x = chunkX * 16 + random.nextInt(16);
 				int z = chunkZ * 16 + random.nextInt(16);
-				BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+				BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(x, 0, z));
 
 				//Only allow spawning in plains, deserts, and savannas.
 				if (biome == BiomeGenBase.plains || biome == BiomeGenBase.desert || biome == BiomeGenBase.savanna)
@@ -112,7 +114,7 @@ public class WorldGenFactory implements IWorldGenerator
 				torchMap.put(entry.getKey(), entry.getValue());
 			}
 
-			else if (entry.getValue().getBlock() == Blocks.wooden_door)
+			else if (entry.getValue().getBlock() == Blocks.oak_door)
 			{
 				doorMap.put(entry.getKey(), entry.getValue());
 			}
@@ -131,13 +133,13 @@ public class WorldGenFactory implements IWorldGenerator
 				int z = blockPoint.iPosZ + point.iPosZ;
 
 				BlockObj blockObj = entry.getValue();
-				BlockHelper.setBlock(world, x, y, z, blockObj.getBlock(), blockObj.getMeta());
+				world.setBlockState(new BlockPos(x, y, z), blockObj.getBlock().getStateFromMeta(blockObj.getMeta()));
 
 				if (blockObj.getBlock() == Blocks.chest && world.rand.nextBoolean() && world.rand.nextBoolean())
 				{
 					try
 					{
-						TileEntityChest chest = (TileEntityChest) world.getTileEntity(x, y, z);
+						TileEntityChest chest = (TileEntityChest) world.getTileEntity(new BlockPos(x, y, z));
 
 						if (chest != null)
 						{							
@@ -169,8 +171,10 @@ public class WorldGenFactory implements IWorldGenerator
 				{
 					try
 					{
-						BlockHelper.setBlockMetadataWithNotify(world, x, y, z, blockObj.getMeta() & 7, 2); //Operation used by Minecraft to determine texture.
-						TileEntityDispenser dispenser = (TileEntityDispenser) world.getTileEntity(x, y, z);
+						BlockPos dis = new BlockPos(x, y, z);
+						IBlockState state = world.getBlockState(dis);
+						BlockHelper.setBlockMetadataWithNotify(world, x, y, z, state.getBlock().getStateFromMeta(blockObj.getMeta() & 7), 2); //Operation used by Minecraft to determine texture.
+						TileEntityDispenser dispenser = (TileEntityDispenser) world.getTileEntity(dis);
 
 						if (dispenser != null)
 						{
@@ -204,7 +208,7 @@ public class WorldGenFactory implements IWorldGenerator
 			int z = blockPoint.iPosZ + point.iPosZ;
 
 			BlockObj blockObj = entry.getValue();
-			BlockHelper.setBlock(world, x, y, z, blockObj.getBlock(), blockObj.getMeta());
+			BlockHelper.setBlock(world, x, y, z, blockObj.getBlock().getStateFromMeta(blockObj.getMeta()));
 		}
 
 		for (Map.Entry<Point3D, BlockObj> entry : doorMap.entrySet())
@@ -216,7 +220,7 @@ public class WorldGenFactory implements IWorldGenerator
 			int z = blockPoint.iPosZ + point.iPosZ;
 
 			BlockObj blockObj = entry.getValue();
-			BlockHelper.setBlock(world, x, y, z, blockObj.getBlock(), blockObj.getMeta());
+			BlockHelper.setBlock(world, x, y, z, blockObj.getBlock().getStateFromMeta(blockObj.getMeta()));
 		}
 
 		for (Map.Entry<Point3D, BlockObj> entry : placeholderMap.entrySet())
@@ -229,7 +233,7 @@ public class WorldGenFactory implements IWorldGenerator
 			int z = blockPoint.iPosZ + point.iPosZ;
 
 			BlockObj blockObj = entry.getValue();
-			BlockHelper.setBlock(world, x, y, z, placeHolder.getYield(), 0);
+			BlockHelper.setBlock(world, x, y, z, placeHolder.getYield().getDefaultState());
 
 			if (placeHolder.getDoCallback())
 			{

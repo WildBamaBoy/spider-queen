@@ -71,9 +71,9 @@ public class EntityJack extends AbstractFlyingMob
 			{
 				attackTimer = Time.SECOND * RadixMath.getNumberInRange(2, 5);
 				
-				if (this.getEntityToAttack() != null)
+				if (this.getAttackTarget() != null)
 				{
-					EntityJackBall attackBall = new EntityJackBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 1.6F, 4.0F);
+					EntityJackBall attackBall = new EntityJackBall(worldObj, this, (EntityLivingBase) this.getAttackTarget(), 1.6F, 4.0F);
 					worldObj.spawnEntityInWorld(attackBall);
 				}
 			}
@@ -81,9 +81,9 @@ public class EntityJack extends AbstractFlyingMob
 	}
 
 	@Override
-	public boolean isAIEnabled() 
+	public boolean isAIDisabled() 
 	{
-		return false;
+		return true;
 	}
 
 	@Override

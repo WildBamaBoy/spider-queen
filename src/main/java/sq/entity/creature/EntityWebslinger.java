@@ -2,19 +2,21 @@ package sq.entity.creature;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import sq.entity.ai.PlayerExtension;
 
 /**
@@ -23,6 +25,8 @@ import sq.entity.ai.PlayerExtension;
  */
 public class EntityWebslinger extends Entity
 {
+	private float yOffset;
+	
 	public EntityWebslinger(World world)
 	{
 		super(world);
@@ -64,7 +68,7 @@ public class EntityWebslinger extends Entity
 		playerExtension.webEntity = this;
 
 		setSize(0.25F, 0.25F);
-		setLocationAndAngles(entityplayer.posX, (entityplayer.posY + 1.6200000000000001D) - entityplayer.yOffset, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch);
+		setLocationAndAngles(entityplayer.posX, (entityplayer.posY + 1.6200000000000001D) - entityplayer.getYOffset(), entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch);
 		posX -= MathHelper.cos((rotationYaw / 180F) * 3.141593F) * 0.16F;
 		posY -= 0.10000000149011612D;
 		posZ -= MathHelper.sin((rotationYaw / 180F) * 3.141593F) * 0.16F;
@@ -85,7 +89,7 @@ public class EntityWebslinger extends Entity
 	@Override
 	public boolean isInRangeToRenderDist(double d)
 	{
-		double d1 = boundingBox.getAverageEdgeLength() * 4D;
+		double d1 = getEntityBoundingBox().getAverageEdgeLength() * 4D;
 		d1 *= 64D;
 		return d < d1 * d1;
 	}
@@ -113,15 +117,14 @@ public class EntityWebslinger extends Entity
 	}
 
 	@Override
-	public void setPositionAndRotation2(double d, double d1, double d2, float f,
-			float f1, int i)
+	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean p_180426_10_) 
 	{
-		field_6387_m = d;
-		field_6386_n = d1;
-		field_6385_o = d2;
-		field_6384_p = f;
-		field_6383_q = f1;
-		field_6388_l = i;
+		field_6387_m = x;
+		field_6386_n = y;
+		field_6385_o = z;
+		field_6384_p = yaw;
+		field_6383_q = pitch;
+		field_6388_l = posRotationIncrements;
 		motionX = velocityX;
 		motionY = velocityY;
 		motionZ = velocityZ;
@@ -179,8 +182,8 @@ public class EntityWebslinger extends Entity
 	{
 		if(player != null & (field_4091_h || entityHit != null))
 		{
-			Vec3 slingerVector = Vec3.createVectorHelper(posX,posY,posZ);
-			Vec3 playerVector = Vec3.createVectorHelper(player.posX,player.posY,player.posZ);
+			Vec3 slingerVector = new Vec3(posX,posY,posZ);
+			Vec3 playerVector = new Vec3(player.posX,player.posY,player.posZ);
 
 			//Prevent the player from experiencing fall damage.
 			player.fallDistance = 0.0F;
@@ -220,7 +223,7 @@ public class EntityWebslinger extends Entity
 			}
 
 			//If the player is jumping, bring the target distance up to directly behind them.
-			if (Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed())
+			if (Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed())
 			{
 				targetDistance = Math.abs(slingerVector.squareDistanceTo(playerVector)) - 1;
 			}
@@ -231,7 +234,7 @@ public class EntityWebslinger extends Entity
 			if (distance > targetDistance / 1.33D && distance > 2.0D) //1.33D starts the slinger off with a 'pull' on the player.
 			{
 				//Accelerate the player towards the midpoint between their position and the slinger's.
-				Vec3 moveVector = Vec3.createVectorHelper(
+				Vec3 moveVector = new Vec3(
 						player.motionX * 1.2D + (posX - player.posX) / 2, 
 						player.motionY * 1.2D + (posY - player.posY) / 2, 
 						player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
@@ -255,7 +258,7 @@ public class EntityWebslinger extends Entity
 			{
 				if(angler != null)
 				{
-					boolean isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
+					boolean isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed();
 					
 					if (isJumping && slingerVector.squareDistanceTo(playerVector) > 1.5D)
 					{
@@ -306,7 +309,7 @@ public class EntityWebslinger extends Entity
 				} else
 				{
 					posX = entityHit.posX;
-					posY = entityHit.boundingBox.minY + entityHit.height * 0.80000000000000004D;
+					posY = entityHit.getEntityBoundingBox().minY + entityHit.height * 0.80000000000000004D;
 					posZ = entityHit.posZ;
 					return;
 				}
@@ -330,17 +333,17 @@ public class EntityWebslinger extends Entity
 		{
 			field_4089_j++;
 		}
-		Vec3 vec3d = Vec3.createVectorHelper(posX, posY, posZ);
-		Vec3 vec3d1 = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		Vec3 vec3d = new Vec3(posX, posY, posZ);
+		Vec3 vec3d1 = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
 		MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(vec3d, vec3d1);
-		vec3d = Vec3.createVectorHelper(posX, posY, posZ);
-		vec3d1 = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		vec3d = new Vec3(posX, posY, posZ);
+		vec3d1 = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
 		if(movingobjectposition != null)
 		{
-			vec3d1 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+			vec3d1 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
 		}
 		Entity entity = null;
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 		double d3 = 0.0D;
 		for(int j = 0; j < list.size(); j++)
 		{
@@ -350,7 +353,7 @@ public class EntityWebslinger extends Entity
 				continue;
 			}
 			float f2 = 0.3F;
-			AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f2, f2, f2);
+			AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand(f2, f2, f2);
 			MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
 			if(movingobjectposition1 == null)
 			{
@@ -409,9 +412,9 @@ public class EntityWebslinger extends Entity
 		double d5 = 0.0D;
 		for(int l = 0; l < k; l++)
 		{
-			double d8 = ((boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (l + 0)) / k) - 0.125D) + 0.125D;
-			double d9 = ((boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (l + 1)) / k) - 0.125D) + 0.125D;
-			AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(boundingBox.minX, d8, boundingBox.minZ, boundingBox.maxX, d9, boundingBox.maxZ);
+			double d8 = ((getEntityBoundingBox().minY + ((getEntityBoundingBox().maxY - getEntityBoundingBox().minY) * (l + 0)) / k) - 0.125D) + 0.125D;
+			double d9 = ((getEntityBoundingBox().minY + ((getEntityBoundingBox().maxY - getEntityBoundingBox().minY) * (l + 1)) / k) - 0.125D) + 0.125D;
+			AxisAlignedBB axisalignedbb1 = AxisAlignedBB.fromBounds(getEntityBoundingBox().minX, d8, getEntityBoundingBox().minZ, getEntityBoundingBox().maxX, d9, getEntityBoundingBox().maxZ);
 			if(worldObj.isAABBInMaterial(axisalignedbb1, Material.water))
 			{
 				d5 += 1.0D / k;
@@ -426,7 +429,7 @@ public class EntityWebslinger extends Entity
 			} else
 			{
 				char c = '\u01F4';
-				if(worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY) + 1, MathHelper.floor_double(posZ)))
+				if(worldObj.canBlockSeeSky(new BlockPos(MathHelper.floor_double(posX), MathHelper.floor_double(posY) + 1, MathHelper.floor_double(posZ))))
 				{
 					c = '\u012C';
 				}
@@ -435,19 +438,19 @@ public class EntityWebslinger extends Entity
 					field_4088_k = rand.nextInt(30) + 10;
 					motionY -= 0.20000000298023224D;
 					worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
-					float f3 = MathHelper.floor_double(boundingBox.minY);
+					float f3 = MathHelper.floor_double(getEntityBoundingBox().minY);
 					for(int i1 = 0; i1 < 1.0F + width * 20F; i1++)
 					{
 						float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
 						float f6 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						worldObj.spawnParticle("bubble", posX + f4, f3 + 1.0F, posZ + f6, motionX, motionY - rand.nextFloat() * 0.2F, motionZ);
+						worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX + f4, f3 + 1.0F, posZ + f6, motionX, motionY - rand.nextFloat() * 0.2F, motionZ);
 					}
 
 					for(int j1 = 0; j1 < 1.0F + width * 20F; j1++)
 					{
 						float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
 						float f7 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						worldObj.spawnParticle("splash", posX + f5, f3 + 1.0F, posZ + f7, motionX, motionY, motionZ);
+						worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, posX + f5, f3 + 1.0F, posZ + f7, motionX, motionY, motionZ);
 					}
 
 				}
@@ -492,11 +495,12 @@ public class EntityWebslinger extends Entity
 		field_4091_h = nbttagcompound.getByte("inGround") == 1;
 	}
 
-	@Override
-	public float getShadowSize()
-	{
-		return 0.0F;
-	}
+	//FIXME
+//	@Override
+//	public float getShadowSize()
+//	{
+//		return 0.0F;
+//	}
 
 	public int catchFish()
 	{

@@ -10,10 +10,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import radixcore.constant.Font.Color;
-import radixcore.constant.Particle;
 import radixcore.data.WatchedInt;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
@@ -49,8 +49,8 @@ public class ReputationHandler
 		IFriendlyEntity friendly = (IFriendlyEntity)friendlyInstance;
 
 		//Tell the player what they've done.
-		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "You have freed this " + friendlyInstance.getCommandSenderName() + " from captivity."));
-		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "This greatly boosted your favor with the " + friendlyInstance.getCommandSenderName() + "s."));
+		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "You have freed this " + friendlyInstance.getName() + " from captivity."));
+		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "This greatly boosted your favor with the " + friendlyInstance.getName() + "s."));
 
 		try
 		{
@@ -61,7 +61,7 @@ public class ReputationHandler
 
 			//Remove the friendly and leave the happy particles in its place.
 			friendlyInstance.setDead();
-			Utils.spawnParticlesAroundEntityS(Particle.HAPPY, friendlyInstance, 16);
+			Utils.spawnParticlesAroundEntityS(EnumParticleTypes.VILLAGER_HAPPY, friendlyInstance, 16);
 		}
 
 		catch (Exception e)
@@ -116,7 +116,7 @@ public class ReputationHandler
 
 		for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
 		{
-			Utils.spawnParticlesAroundEntityS("heart", entity, 16);
+			Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, entity, 16);
 			EntityLiving e = (EntityLiving)entity;
 			e.setAttackTarget(null);
 			e.getNavigator().clearPathEntity();
@@ -219,7 +219,7 @@ public class ReputationHandler
 		{
 			player.triggerAchievement(ModAchievements.makeEnemy);
 			player.addChatComponentMessage(new ChatComponentText(
-					Color.RED + "You have broken your truce with the " + living.getCommandSenderName() + "s!"));
+					Color.RED + "You have broken your truce with the " + living.getName() + "s!"));
 		}
 	}
 

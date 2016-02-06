@@ -1,8 +1,8 @@
 package sq.core.radix;
 
-import cpw.mods.fml.common.ModMetadata;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ModMetadata;
 import radixcore.data.AbstractPlayerData;
 import radixcore.data.WatchedBoolean;
 import radixcore.data.WatchedInt;

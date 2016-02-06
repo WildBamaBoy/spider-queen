@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 public class EntityJackBall extends EntityThrowable
 {
 	private EntityLivingBase shooter;
+	private float yOffset;
 	
 	public EntityJackBall(World world) 
 	{
@@ -27,7 +28,7 @@ public class EntityJackBall extends EntityThrowable
         
         this.posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
         double d0 = target.posX - shooter.posX;
-        double d1 = target.boundingBox.minY + target.height / 3.0F - this.posY;
+        double d1 = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
         double d2 = target.posZ - shooter.posZ;
         double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 

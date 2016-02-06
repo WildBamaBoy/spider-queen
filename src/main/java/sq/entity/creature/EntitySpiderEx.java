@@ -3,7 +3,6 @@ package sq.entity.creature;
 import java.util.List;
 import java.util.UUID;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -28,9 +27,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import radixcore.inventory.Inventory;
@@ -84,9 +86,9 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	}
 
 	@Override
-	public boolean isAIEnabled()
+	public boolean isAIDisabled()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
@@ -141,7 +143,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 				else //With no target, find one.
 				{
-					target = findEntityToAttack();
+					target = findAttackTarget();
 				}
 
 				//Move to the spider rod inline with attacking to keep the spider in range of the rod
@@ -287,10 +289,10 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	}
 
 	@Override
-	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
-	{
-		playSound("mob.spider.step", 0.15F, 1.0F);
-	}
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound("mob.spider.step", 0.15F, 1.0F);
+    }
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
@@ -349,12 +351,6 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	}
 
 	@Override
-	protected void updateEntityActionState()
-	{
-		return;
-	}
-
-	@Override
 	protected Item getDropItem()
 	{
 		return Items.string;
@@ -396,7 +392,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 		if (source.getSourceOfDamage() instanceof EntityLivingBase)
 		{
-			setTarget(source.getSourceOfDamage());
+			setAttackTarget((EntityLivingBase) source.getSourceOfDamage());
 
 			//Alert other spiders that this one is being attacked.
 			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
@@ -409,7 +405,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 					if (spider.owner.equals(owner))
 					{
-						spider.setTarget(source.getSourceOfDamage());
+						spider.setAttackTarget((EntityLivingBase) source.getSourceOfDamage());
 					}
 				}
 			}
@@ -418,7 +414,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		return true;
 	}
 
-	@Override
+
+	//FIXME @Override
 	protected void attackEntity(Entity entity, float damage) 
 	{
 		//Prevent attacks during death.
@@ -427,7 +424,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			return;
 		}
 
-		super.attackEntity(entity, damage);
+//		super.attackEntity(entity, damage);
 
 		double distance = RadixMath.getDistanceToEntity(this, entity);
 		this.faceEntity(entity, 1.0F, 1.0F);
@@ -499,13 +496,13 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	}
 
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return spiderType.getFriendlyName() + " Spider";
 	}
 
 	@Override
-	public void setTarget(Entity entity) 
+	public void setAttackTarget(EntityLivingBase entity) 
 	{
 		if (entity instanceof EntityPlayer) //Check for player attacking their own spiders.
 		{
@@ -593,7 +590,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		if (getLevel() != 3)
 		{
 			worldObj.playSoundAtEntity(this, "random.levelup", 0.75F, 1.0F);
-			Utils.spawnParticlesAroundEntityS(Particle.REDSTONE, this, 16);
+			Utils.spawnParticlesAroundEntityS(EnumParticleTypes.REDSTONE, this, 16);
 			setLevel(getLevel() + 1);
 		}
 	}
@@ -778,17 +775,17 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					{
 						int healthIncrease = getLevel() * 5;
 						spider.setHealth(healthIncrease);
-						Utils.spawnParticlesAroundEntityS("heart", this, 6);
-						Utils.spawnParticlesAroundEntityS("heart", spider, 6);
+						Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, this, 6);
+						Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, spider, 6);
 					}
 				}
 
 				//Ender spider throws targets into the air.
 				else if (spiderType == EnumSpiderType.ENDER && target != null)
 				{
-					if (worldObj.canBlockSeeTheSky((int)posX, (int)posY, (int)posZ))
+					if (worldObj.canBlockSeeSky(new BlockPos((int)posX, (int)posY, (int)posZ)))
 					{
-						Utils.spawnParticlesAroundEntityS(Particle.PORTAL, this, 6);
+						Utils.spawnParticlesAroundEntityS(EnumParticleTypes.PORTAL, this, 6);
 						target.motionY = 1.0F + (0.3F * getLevel());
 
 						target.motionX = rand.nextBoolean() ? rand.nextDouble() : rand.nextBoolean() ? rand.nextDouble() * -1 : 0;
@@ -802,7 +799,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 						worldObj.playSoundAtEntity(target, "mob.endermen.portal", 1.0F, 1.0F);
 
-						Utils.spawnParticlesAroundEntityS(Particle.PORTAL, target, 6);
+						Utils.spawnParticlesAroundEntityS(EnumParticleTypes.PORTAL, target, 6);
 					}
 				}
 
@@ -829,7 +826,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		if (owner != null && target == null)
 		{
 			//Look up the owner by uuid.
-			final EntityPlayer ownerPlayer = worldObj.func_152378_a(owner);
+			final EntityPlayer ownerPlayer = worldObj.getPlayerEntityByUUID(owner);
 
 			if (ownerPlayer != null)
 			{
@@ -858,7 +855,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		}
 	}
 
-	private EntityLivingBase findEntityToAttack()
+	private EntityLivingBase findAttackTarget()
 	{
 		//Disable combat here.
 		switch (spiderType)

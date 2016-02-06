@@ -3,10 +3,10 @@ package sq.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * Spider Queen's configuration settings. Applies the standard configuration settings and 

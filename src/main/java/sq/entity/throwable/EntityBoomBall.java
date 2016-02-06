@@ -2,18 +2,19 @@ package sq.entity.throwable;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import sq.entity.creature.EntitySpiderEx;
 
 /**
@@ -37,7 +38,7 @@ public class EntityBoomBall extends Entity implements IProjectile
 
 		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
 		final double deltaX = target.posX - shooter.posX;
-		final double deltaY = target.boundingBox.minY + target.height / 3.0F - posY;
+		final double deltaY = target.getEntityBoundingBox().minY + target.height / 3.0F - posY;
 		final double deltaZ = target.posZ - shooter.posZ;
 		final double distanceXZ = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ);
 
@@ -49,7 +50,6 @@ public class EntityBoomBall extends Entity implements IProjectile
 			final double modY = deltaZ / distanceXZ;
 
 			setLocationAndAngles(shooter.posX + modX, posY, shooter.posZ + modY, rotationYaw, rotationPitch);
-			yOffset = 0.0F;
 
 			final float modDeltaY = (float) distanceXZ * 0.2F;
 			setThrowableHeading(deltaX, deltaY - modDeltaY, deltaZ, speed, 16F);
@@ -65,7 +65,7 @@ public class EntityBoomBall extends Entity implements IProjectile
 	@Override
 	public boolean isInRangeToRenderDist(double distance)
 	{
-		double weightedLength = boundingBox.getAverageEdgeLength() * 4.0D;
+		double weightedLength = getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
 		weightedLength *= 64.0D;
 		return distance < weightedLength * weightedLength;
 	}
@@ -73,7 +73,7 @@ public class EntityBoomBall extends Entity implements IProjectile
 	@Override
 	public void onUpdate()
 	{
-		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.blockExists((int) posX, (int) posY, (int) posZ)))
+		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.isAirBlock(new BlockPos((int) posX, (int) posY, (int) posZ))))
 		{
 			setDead();
 		}
@@ -116,12 +116,13 @@ public class EntityBoomBall extends Entity implements IProjectile
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public float getShadowSize()
-	{
-		return 0.0F;
-	}
+	//FIXME
+//	@SideOnly(Side.CLIENT)
+//	@Override
+//	public float getShadowSize()
+//	{
+//		return 0.0F;
+//	}
 
 	@Override
 	public float getBrightness(float unknown)
@@ -168,19 +169,19 @@ public class EntityBoomBall extends Entity implements IProjectile
 
 	private void updateCollision()
 	{
-		Vec3 currentVector = Vec3.createVectorHelper(posX, posY, posZ);
-		Vec3 nextVector = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		Vec3 currentVector = new Vec3(posX, posY, posZ);
+		Vec3 nextVector = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
 		MovingObjectPosition collisionPosition = worldObj.rayTraceBlocks(currentVector, nextVector);
-		currentVector = Vec3.createVectorHelper(posX, posY, posZ);
-		nextVector = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		currentVector = new Vec3(posX, posY, posZ);
+		nextVector = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
 
 		if (collisionPosition != null)
 		{
-			nextVector = Vec3.createVectorHelper(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
+			nextVector = new Vec3(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
 		}
 
 		Entity collidedEntity = null;
-		final List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+		final List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 		double lastDistance = 0.0D;
 
 		for (int counter = 0; counter < entitiesInAABB.size(); ++counter)
@@ -189,7 +190,7 @@ public class EntityBoomBall extends Entity implements IProjectile
 
 			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(shooter) || ticksInAir >= 25))
 			{
-				final AxisAlignedBB AABB = entityInList.boundingBox.expand(0.3D, 0.3D, 0.3D);
+				final AxisAlignedBB AABB = entityInList.getEntityBoundingBox().expand(0.3D, 0.3D, 0.3D);
 				final MovingObjectPosition entityCollisionPosition = AABB.calculateIntercept(currentVector, nextVector);
 
 				if (entityCollisionPosition != null)

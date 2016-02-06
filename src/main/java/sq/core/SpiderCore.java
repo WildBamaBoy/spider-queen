@@ -15,22 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.Logger;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -44,6 +28,22 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.core.ModMetadataEx;
 import radixcore.core.RadixCore;
 import radixcore.data.AbstractPlayerData;
@@ -102,7 +102,7 @@ import sq.gen.WorldGenFactory;
 import sq.items.ItemCocoon;
 import sq.util.SpawnEntry;
 
-@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.1.1,)", acceptedMinecraftVersions = "[1.7.10]",
+@Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.1.1,)", acceptedMinecraftVersions = "[1.8.9]",
 guiFactory = "sq.core.forge.client.SpiderGuiFactory")
 public final class SpiderCore
 {
@@ -266,21 +266,21 @@ public final class SpiderCore
 		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
 		
 		//Add spawns.
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityBeetle.class, 70, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityBeetle.class, 70, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityFly.class, 75, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityFly.class, 75, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityMandragora.class, 50, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityMandragora.class, 50, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityOctopus.class, 70, 1, 3, EnumCreatureType.waterCreature, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityOctopus.class, 70, 1, 3, EnumCreatureType.WATER_CREATURE, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.beach, BiomeGenBase.ocean, BiomeGenBase.deepOcean));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityWasp.class, 45, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityWasp.class, 45, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityHuman.class, 30, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityHuman.class, 30, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntitySpiderQueen.class, 15, 1, 2, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntitySpiderQueen.class, 15, 1, 2, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest));
-		Spawner.registerSpawnEntry(new SpawnEntry(EntityYuki.class, 10, 1, 3, EnumCreatureType.monster, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
+		Spawner.registerSpawnEntry(new SpawnEntry(EntityYuki.class, 10, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
 				BiomeGenBase.iceMountains, BiomeGenBase.icePlains));
 		
 		//Register world generation.

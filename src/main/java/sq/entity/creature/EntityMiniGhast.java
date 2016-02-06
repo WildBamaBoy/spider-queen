@@ -2,7 +2,7 @@ package sq.entity.creature;
 
 import java.util.UUID;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,9 +15,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 /**
  * The mini ghast is a mountable creature that will allow the player to fly while mounted.
@@ -63,12 +65,6 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return false;
 	}
-	
-	@Override
-	protected void updateEntityActionState()
-	{
-		return;
-	}
 
 	@Override
 	public void setInWeb()
@@ -106,9 +102,9 @@ public class EntityMiniGhast extends EntityCreature
 	}
 
 	@Override
-	public boolean isAIEnabled()
+	public boolean isAIDisabled()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
@@ -240,13 +236,13 @@ public class EntityMiniGhast extends EntityCreature
 	}
 
 	@Override
-	protected void fall(float fallAmount)
+	protected void func_142017_o(float p_142017_1_) //fall()
 	{
 		return;
 	}
 
 	@Override
-	protected void updateFallState(double distanceFallen, boolean onGround)
+	protected void updateFallState(double y, boolean onGroundIn, Block blockIn, BlockPos pos) 
 	{
 		return;
 	}

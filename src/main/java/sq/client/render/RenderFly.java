@@ -1,26 +1,26 @@
 package sq.client.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelFly;
+import sq.entity.creature.EntityFly;
 
 /**
  * Sets the texture on the fly model pre-render.
  */
-public class RenderFly extends RenderLiving
+public class RenderFly<T extends EntityFly> extends RenderLiving<T>
 {
 	private final ResourceLocation texture;
 	
     public RenderFly()
     {
-        super(new ModelFly(), 1.0F);
-        setRenderPassModel(new ModelFly());
+        super(Minecraft.getMinecraft().getRenderManager(), new ModelFly(), 1.0F);
         texture = new ResourceLocation("sq:textures/entities/fly.png");
     }
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
+	protected ResourceLocation getEntityTexture(T entity)
 	{
 		return texture;
 	}

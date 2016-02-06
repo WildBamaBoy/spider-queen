@@ -1,11 +1,5 @@
 package sq.core.forge;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -13,9 +7,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import radixcore.constant.Time;
 import radixcore.packets.PacketDataContainer;
 import radixcore.util.RadixMath;
@@ -82,7 +82,7 @@ public final class EventHooksFML
 
 						if (player != null)
 						{
-							player.setSpawnChunk(new ChunkCoordinates((int)player.posX, (int)player.posY, (int)player.posZ), true, player.worldObj.provider.dimensionId);
+							player.setSpawnChunk(new BlockPos((int)player.posX, (int)player.posY, (int)player.posZ), true, player.worldObj.provider.getDimensionId());
 
 							//Each time we find them, send a packet to close their sleeping GUI.
 							SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(true), player);
@@ -112,13 +112,13 @@ public final class EventHooksFML
 				extension.tick();
 
 				//Check for buffs when light level is above 8.
-				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
+				if (player.worldObj.getBlockLightOpacity(new BlockPos((int) player.posX, (int) player.posY, (int) player.posZ)) <= 8)
 				{
 					player.triggerAchievement(ModAchievements.goInTheDark);
 
 					if (SpiderCore.getConfig().enableNightVision && player.getActivePotionEffect(Potion.nightVision) == null)
 					{
-						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
+						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true, false));
 					}
 
 					if (player.getActivePotionEffect(Potion.weakness) != null)
@@ -129,7 +129,7 @@ public final class EventHooksFML
 
 				else //Light level below 8
 				{
-					if (player.worldObj.canBlockSeeTheSky((int) player.posX, (int) player.posY, (int) player.posZ))
+					if (player.worldObj.canBlockSeeSky(new BlockPos((int) player.posX, (int) player.posY, (int) player.posZ)))
 					{
 						if (player.getActivePotionEffect(Potion.nightVision) != null)
 						{
@@ -138,7 +138,7 @@ public final class EventHooksFML
 
 						if (player.getActivePotionEffect(Potion.weakness) == null)
 						{
-							player.addPotionEffect(new PotionEffect(Potion.weakness.id, 12000, 0, true));
+							player.addPotionEffect(new PotionEffect(Potion.weakness.id, 12000, 0, true, false));
 						}
 					}
 				}

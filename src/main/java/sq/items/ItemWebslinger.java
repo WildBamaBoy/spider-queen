@@ -2,15 +2,13 @@ package sq.items;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.constant.Time;
 import sq.core.SpiderCore;
 import sq.entity.ai.PlayerExtension;
@@ -21,9 +19,6 @@ import sq.entity.creature.EntityWebslinger;
  */
 public class ItemWebslinger extends Item
 {
-	private IIcon iconNormal;
-	private IIcon iconThrown;
-	
 	public ItemWebslinger()
 	{
 		setMaxStackSize(1);
@@ -31,7 +26,6 @@ public class ItemWebslinger extends Item
 
 		final String name = "webslinger";
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
 
@@ -41,7 +35,7 @@ public class ItemWebslinger extends Item
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack)
 	{
-		return EnumAction.none;
+		return EnumAction.NONE;
 	}
 
 	@Override
@@ -102,30 +96,6 @@ public class ItemWebslinger extends Item
 
 		entityPlayer.swingItem();
 		return itemstack;
-	}
-
-	@Override
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) 
-	{
-		PlayerExtension extension = PlayerExtension.get(player);
-		
-		if (extension.webEntity != null)
-		{
-			return iconThrown;
-		}
-		
-		else
-		{
-			return iconNormal;
-		}
-	}
-
-	@Override
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		iconNormal = iconRegister.registerIcon("sq:webslinger");
-		iconThrown = iconRegister.registerIcon("sq:webslinger-thrown");
-		itemIcon = iconNormal;
 	}
 
 	@Override

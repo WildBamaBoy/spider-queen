@@ -1,7 +1,7 @@
 package sq.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemFood;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import sq.core.SpiderCore;
 
 public class ItemRareFruit extends ItemFood
@@ -13,7 +13,6 @@ public class ItemRareFruit extends ItemFood
 		
 		final String name = "rare-fruit";
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		
 		GameRegistry.registerItem(this, name);

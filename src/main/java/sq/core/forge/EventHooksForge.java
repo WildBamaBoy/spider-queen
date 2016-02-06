@@ -4,10 +4,6 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -35,6 +31,10 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.constant.Font.Color;
 import radixcore.data.WatchedInt;
 import radixcore.util.RadixLogic;
@@ -100,7 +100,7 @@ public final class EventHooksForge
 
 					if (spider.getOwner().equals(player.getPersistentID()))
 					{
-						spider.setTarget(event.target);
+						spider.setAttackTarget((EntityLivingBase) event.target);
 					}
 				}
 			}
@@ -170,7 +170,7 @@ public final class EventHooksForge
 
 				if (!player.worldObj.isRemote && extension.getTimesHitByPlayer() == 3 && calculatedHealth > 0.0F && reputation >= 0)
 				{
-					player.addChatComponentMessage(new ChatComponentText(Color.RED + "You have angered this " + event.target.getCommandSenderName() + "!"));
+					player.addChatComponentMessage(new ChatComponentText(Color.RED + "You have angered this " + event.target.getName() + "!"));
 				}
 			}
 
@@ -363,7 +363,7 @@ public final class EventHooksForge
 
 			if (mob.targetTasks != null)
 			{
-				mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityHuman.class, 0, true));
+				mob.targetTasks.addTask(3, new EntityAINearestAttackableTarget(mob, EntityHuman.class, true));
 			}
 		}
 	}
@@ -444,7 +444,7 @@ public final class EventHooksForge
 			{
 				GL11.glScaled(0.95D, 0.95D, 0.95D);
 				GL11.glTranslated(0.0D, -0.10D, 0.0D);
-				ClientProxy.renderSpiderQueen.doRender(pre.entity, 0F, 0F, 0F, 0F, pre.partialRenderTick);
+//				ClientProxy.renderSpiderQueen.doRender(pre.entity, 0F, 0F, 0F, 0F, pre.partialRenderTick);
 			}
 			GL11.glPopMatrix();
 		}

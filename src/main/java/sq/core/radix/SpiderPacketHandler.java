@@ -1,6 +1,6 @@
 package sq.core.radix;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import radixcore.network.AbstractPacketHandler;
 import radixcore.packets.PacketDataContainer;
 import sq.packet.PacketSleepC;

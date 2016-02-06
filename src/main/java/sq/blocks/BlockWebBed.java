@@ -2,19 +2,21 @@ package sq.blocks;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEx;
@@ -40,29 +42,31 @@ public class BlockWebBed extends Block
 		return 0;
 	}
 
+
 	@Override
-	public void onBlockAdded(World world, int posX, int posY, int posZ)
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) 
 	{
-		onNeighborBlockChange(world, posX, posY, posZ, 0);
+		onNeighborBlockChange(worldIn, pos, state);
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, int posX, int posY, int posZ, Entity entity)
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, Entity entityIn) 
 	{
 		//This is a web, so if the creature caught inside isn't a web climber, hinder its motion.
-		if (entity instanceof EntitySpider || entity instanceof EntitySpiderEx || entity instanceof EntityPlayer || entity instanceof EntitySpiderQueen)
+		if (entityIn instanceof EntitySpider || entityIn instanceof EntitySpiderEx || entityIn instanceof EntityPlayer || entityIn instanceof EntitySpiderQueen)
 		{
 			return;
 		}
 
 		else
 		{
-			entity.setInWeb();
+			entityIn.setInWeb();
 
-			entity.motionX = entity.motionX * -0.1D;
-			entity.motionZ = entity.motionZ * -0.1D;
-			entity.motionY = entity.motionY * 0.1D;
+			entityIn.motionX = entityIn.motionX * -0.1D;
+			entityIn.motionZ = entityIn.motionZ * -0.1D;
+			entityIn.motionY = entityIn.motionY * 0.1D;
 		}
+
 	}
 
 	@Override
@@ -72,7 +76,7 @@ public class BlockWebBed extends Block
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
+	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) 
 	{
 		//No collision, this is a web.
 		return null;
@@ -85,38 +89,36 @@ public class BlockWebBed extends Block
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister IIconRegister)
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) 
 	{
-		blockIcon = IIconRegister.registerIcon("sq:web-bed");
-	}
+		int posX = pos.getX();
+		int posY = pos.getY();
+		int posZ = pos.getZ();
 
-	@Override
-	public boolean canPlaceBlockAt(World world, int posX, int posY, int posZ)
-	{
-		if (BlockHelper.getBlock(world, posX - 1, posY, posZ) != Blocks.air) { return true; }
-		if (BlockHelper.getBlock(world, posX + 1, posY, posZ) != Blocks.air) { return true; }
-		if (BlockHelper.getBlock(world, posX, posY - 1, posZ) != Blocks.air) { return true; }
-		if (BlockHelper.getBlock(world, posX, posY + 1, posZ) != Blocks.air) { return true; }
-		if (BlockHelper.getBlock(world, posX, posY, posZ - 1) != Blocks.air) { return true; }
-		if (BlockHelper.getBlock(world, posX, posY, posZ + 1) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(worldIn, posX - 1, posY, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(worldIn, posX + 1, posY, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(worldIn, posX, posY - 1, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(worldIn, posX, posY + 1, posZ) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(worldIn, posX, posY, posZ - 1) != Blocks.air) { return true; }
+		if (BlockHelper.getBlock(worldIn, posX, posY, posZ + 1) != Blocks.air) { return true; }
 
 		return false;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer entityPlayer, int meta, float unknown, float unknown1, float unknown2)
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) 
 	{
-		if (!world.isRemote)
+		if (!worldIn.isRemote)
 		{
-			if (world.isDaytime())
+			if (worldIn.isDaytime())
 			{
 				//Send a packet to the client that will open the sleep GUI.
-				SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(false), (EntityPlayerMP) entityPlayer);
+				SpiderCore.getPacketHandler().sendPacketToPlayer(new PacketSleepC(false), (EntityPlayerMP) playerIn);
 			}
 
 			else
 			{
-				entityPlayer.addChatMessage(new ChatComponentText("You can only sleep during the day."));
+				playerIn.addChatMessage(new ChatComponentText("You can only sleep during the day."));
 			}
 		}
 
@@ -124,13 +126,17 @@ public class BlockWebBed extends Block
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
+	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) 
 	{
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)
+	private void onNeighborBlockChange(World world, BlockPos pos, IBlockState state)
 	{
+		int posX = pos.getX();
+		int posY = pos.getY();
+		int posZ = pos.getZ();
+
 		if (BlockHelper.getBlock(world, posX - 1, posY, posZ) != Blocks.air) { return; }
 		if (BlockHelper.getBlock(world, posX + 1, posY, posZ) != Blocks.air) { return; }
 		if (BlockHelper.getBlock(world, posX, posY - 1, posZ) != Blocks.air) { return; }
@@ -138,7 +144,7 @@ public class BlockWebBed extends Block
 		if (BlockHelper.getBlock(world, posX, posY, posZ - 1) != Blocks.air) { return; }
 		if (BlockHelper.getBlock(world, posX, posY, posZ + 1) != Blocks.air) { return; }
 
-		world.setBlockToAir(posX, posY, posZ);
+		world.setBlockToAir(pos);
 	}
 
 	private boolean canBePlacedOn(Block block)
@@ -150,7 +156,7 @@ public class BlockWebBed extends Block
 
 		else
 		{
-			return block.renderAsNormalBlock() && block.getMaterial().blocksMovement();
+			return block.isBlockNormalCube() && block.getMaterial().blocksMovement();
 		}
 	}
 }

@@ -3,8 +3,11 @@ package sq.client.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.entity.creature.EntityWebShot;
@@ -20,6 +23,7 @@ public class RenderWeb extends Render
 	
 	public RenderWeb()
 	{
+		super(Minecraft.getMinecraft().getRenderManager());
 	}
 
 	public void render(EntityWebShot entityWeb, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
@@ -28,8 +32,9 @@ public class RenderWeb extends Render
 
 		GL11.glPushMatrix();
 		{
-			final Tessellator tessellator = Tessellator.instance;
-
+			final Tessellator tessellator = Tessellator.getInstance();
+			final WorldRenderer ren = tessellator.getWorldRenderer();
+			
 			GL11.glTranslated(posX, posY, posZ);
 			GL11.glRotatef(entityWeb.prevRotationYaw + (entityWeb.rotationYaw - entityWeb.prevRotationYaw) * rotationYaw - 90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(entityWeb.prevRotationPitch + (entityWeb.rotationPitch - entityWeb.prevRotationPitch) * rotationYaw, 0.0F, 0.0F, 1.0F);
@@ -52,30 +57,30 @@ public class RenderWeb extends Render
 			GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
 			GL11.glNormal3f(f10, 0.0F, 0.0F);
 
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(-7.0D, -2.0D, -2.0D, f6, f8);
-			tessellator.addVertexWithUV(-7.0D, -2.0D, 2.0D, f7, f8);
-			tessellator.addVertexWithUV(-7.0D, 2.0D, 2.0D, f7, f9);
-			tessellator.addVertexWithUV(-7.0D, 2.0D, -2.0D, f6, f9);
+			ren.begin(7, DefaultVertexFormats.POSITION_TEX);
+			ren.pos(-7.0D, -2.0D, -2.0D).tex(f6, f8).endVertex();
+			ren.pos(-7.0D, -2.0D, 2.0D).tex(f7, f8).endVertex();
+			ren.pos(-7.0D, 2.0D, 2.0D).tex(f7, f9).endVertex();
+			ren.pos(-7.0D, 2.0D, -2.0D).tex(f6, f9).endVertex();
 			tessellator.draw();
 
 			GL11.glNormal3f(-f10, 0.0F, 0.0F);
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(-7.0D, 2.0D, -2.0D, f6, f8);
-			tessellator.addVertexWithUV(-7.0D, 2.0D, 2.0D, f7, f8);
-			tessellator.addVertexWithUV(-7.0D, -2.0D, 2.0D, f7, f9);
-			tessellator.addVertexWithUV(-7.0D, -2.0D, -2.0D, f6, f9);
+			ren.begin(7, DefaultVertexFormats.POSITION_TEX);
+			ren.pos(-7.0D, 2.0D, -2.0D).tex(f6, f8).endVertex();
+			ren.pos(-7.0D, 2.0D, 2.0D).tex(f7, f8).endVertex();
+			ren.pos(-7.0D, -2.0D, 2.0D).tex(f7, f9).endVertex();
+			ren.pos(-7.0D, -2.0D, -2.0D).tex(f6, f9).endVertex();
 			tessellator.draw();
 
 			for (int i = 0; i < 4; ++i)
 			{
 				GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glNormal3f(0.0F, 0.0F, f10);
-				tessellator.startDrawingQuads();
-				tessellator.addVertexWithUV(-8.0D, -2.0D, 0.0D, f2, f4);
-				tessellator.addVertexWithUV(8.0D, -2.0D, 0.0D, f3, f4);
-				tessellator.addVertexWithUV(8.0D, 2.0D, 0.0D, f3, f5);
-				tessellator.addVertexWithUV(-8.0D, 2.0D, 0.0D, f2, f5);
+				ren.begin(7, DefaultVertexFormats.POSITION_TEX);
+				ren.pos(-8.0D, -2.0D, 0.0D).tex(f2, f4).endVertex();
+				ren.pos(8.0D, -2.0D, 0.0D).tex(f3, f4).endVertex();
+				ren.pos(8.0D, 2.0D, 0.0D).tex(f3, f5).endVertex();
+				ren.pos(-8.0D, 2.0D, 0.0D).tex(f2, f5).endVertex();
 				tessellator.draw();
 			}
 

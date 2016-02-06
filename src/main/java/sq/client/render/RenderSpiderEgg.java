@@ -2,9 +2,9 @@ package sq.client.render;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelSpiderEgg;
 import sq.entity.creature.EntitySpiderEgg;
@@ -12,13 +12,14 @@ import sq.entity.creature.EntitySpiderEgg;
 /**
  * Sets the texture on the spider egg model pre-render.
  */
-public class RenderSpiderEgg extends Render
+public class RenderSpiderEgg<T extends EntitySpiderEgg> extends Render<T>
 {
 	private static final ResourceLocation	TEXTURE	= new ResourceLocation("sq:textures/entities/spider-egg.png");
 	private final ModelBase					modelEgg;
 
 	public RenderSpiderEgg()
 	{
+		super(Minecraft.getMinecraft().getRenderManager());
 		shadowSize = 0.5F;
 		modelEgg = new ModelSpiderEgg();
 	}
@@ -41,13 +42,13 @@ public class RenderSpiderEgg extends Render
 	}
 
 	@Override
-	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
+	public void doRender(T entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
 		render((EntitySpiderEgg) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
+	protected ResourceLocation getEntityTexture(EntitySpiderEgg entity)
 	{
 		return TEXTURE;
 	}

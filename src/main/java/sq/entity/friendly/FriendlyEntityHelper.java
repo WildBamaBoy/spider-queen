@@ -14,6 +14,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -222,14 +223,14 @@ public final class FriendlyEntityHelper
 				if (me.getDistanceToEntity(friendPlayer) >= 10.0D && me.getDistanceToEntity(friendPlayer) <= 30.0D)
 				{
 					final int playerX = MathHelper.floor_double(friendPlayer.posX) - 2;
-					final int playerY = MathHelper.floor_double(friendPlayer.boundingBox.minY);
+					final int playerY = MathHelper.floor_double(friendPlayer.getEntityBoundingBox().minY);
 					final int playerZ = MathHelper.floor_double(friendPlayer.posZ) - 2;
 
 					for (int i = 0; i <= 4; ++i)
 					{
 						for (int i2 = 0; i2 <= 4; ++i2)
 						{
-							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && World.doesBlockHaveSolidTopSurface(me.worldObj, playerX + i, playerY - 1, playerZ + i2) && !BlockHelper.getBlock(me.worldObj, playerX + i, playerY, playerZ + i2).isNormalCube() && !BlockHelper.getBlock(me.worldObj, playerX + i, playerY + 1, playerZ + i2).isNormalCube())
+							if ((i < 1 || i2 < 1 || i > 3 || i2 > 3) && World.doesBlockHaveSolidTopSurface(me.worldObj, new BlockPos(playerX + i, playerY - 1, playerZ + i2)) && !BlockHelper.getBlock(me.worldObj, playerX + i, playerY, playerZ + i2).isNormalCube() && !BlockHelper.getBlock(me.worldObj, playerX + i, playerY + 1, playerZ + i2).isNormalCube())
 							{
 								me.setLocationAndAngles(playerX + i + 0.5F, playerY, playerZ + i2 + 0.5F, me.rotationYaw, me.rotationPitch);
 								me.getNavigator().clearPathEntity();
@@ -246,7 +247,7 @@ public final class FriendlyEntityHelper
 	{
 		try
 		{
-			final EntityPlayer returnPlayer = world.func_152378_a(uuid);
+			final EntityPlayer returnPlayer = world.getPlayerEntityByUUID(uuid);
 			return returnPlayer;
 		}
 

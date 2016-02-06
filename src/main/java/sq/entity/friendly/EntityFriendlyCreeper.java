@@ -2,8 +2,6 @@ package sq.entity.friendly;
 
 import java.util.UUID;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,7 +23,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.constant.Time;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
@@ -71,7 +72,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
 	}
 
@@ -197,7 +198,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 
 			if (!entity.worldObj.isRemote)
 			{
-				Utils.spawnParticlesAroundEntityS("heart", this, 16);
+				Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, this, 16);
 				dropItem(Items.gunpowder, 10);
 			}
 		}
@@ -313,7 +314,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	}
 	
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return "Creeper";
 	}

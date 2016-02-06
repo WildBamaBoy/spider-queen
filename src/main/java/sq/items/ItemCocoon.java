@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Facing;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.constant.Font.Color;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityCocoon;
@@ -34,7 +37,6 @@ public class ItemCocoon extends Item
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setCocoonType(type);
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 
 		GameRegistry.registerItem(this, name);
 	}
@@ -50,27 +52,33 @@ public class ItemCocoon extends Item
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) 
 	{
-		if (!world.isRemote)
+		if (!worldIn.isRemote)
 		{
-			if (!player.capabilities.isCreativeMode)
+			if (!playerIn.capabilities.isCreativeMode)
 			{
 				stack.stackSize--;
 			}
+			
+            IBlockState blockState = worldIn.getBlockState(pos);
+            
+            pos = pos.offset(side);
+            double yOffset = 0.0D;
 
-			posX += Facing.offsetsXForSide[meta];
-			posY += Facing.offsetsYForSide[meta];
-			posZ += Facing.offsetsZForSide[meta];
-
-			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
-			world.spawnEntityInWorld(entityCocoon);
+            if (side == EnumFacing.UP && blockState.getBlock() instanceof BlockFence)
+            {
+                yOffset = 0.5D;
+            }
+            
+			final EntityCocoon entityCocoon = new EntityCocoon(worldIn, cocoonType);
+			entityCocoon.setPositionAndRotation(pos.getX() + 0.5F, pos.getY() + yOffset, pos.getZ() + 0.5F, playerIn.rotationYaw * -1, 0F);
+			worldIn.spawnEntityInWorld(entityCocoon);
 
 			return true;
 		}
 
-		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);
+		return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
 	}
 
 	@SideOnly(Side.CLIENT)

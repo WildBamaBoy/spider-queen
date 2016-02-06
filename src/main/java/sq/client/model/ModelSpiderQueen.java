@@ -341,9 +341,9 @@ public class ModelSpiderQueen extends ModelBase
 		armRight.rotateAngleY = playerArmRight.rotateAngleY = 0.0F;
 		armLeft.rotateAngleY = playerArmLeft.rotateAngleY = 0.0F;
 
-		if (onGround > -9990F)
+		if (swingProgress > -9990F)
 		{
-			float ff6 = onGround;
+			float ff6 = swingProgress;
 			body.rotateAngleY = playerBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(ff6) * 3.141593F * 2.0F) * 0.2F;
 			armRight.rotationPointZ = playerArmRight.rotationPointZ = MathHelper.sin(getBody().rotateAngleY) * 4F - 3F;
 			armRight.rotationPointX = playerArmRight.rotationPointX = -MathHelper.cos(getBody().rotateAngleY) * 4F;
@@ -352,15 +352,15 @@ public class ModelSpiderQueen extends ModelBase
 			playerArmRight.rotateAngleY = armRight.rotateAngleY += getBody().rotateAngleY;
 			playerArmLeft.rotateAngleY = armLeft.rotateAngleY += getBody().rotateAngleY;
 			playerArmLeft.rotateAngleX = armLeft.rotateAngleX += getBody().rotateAngleY;
-			ff6 = 1.0F - onGround;
+			ff6 = 1.0F - swingProgress;
 			ff6 *= ff6;
 			ff6 *= ff6;
 			ff6 = 1.0F - ff6;
 			final float ff7 = MathHelper.sin(ff6 * 3.141593F);
-			final float ff8 = MathHelper.sin(onGround * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
+			final float ff8 = MathHelper.sin(swingProgress * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
 			playerArmRight.rotateAngleX = armRight.rotateAngleX -= ff7 * 1.2D + ff8;
 			playerArmRight.rotateAngleY = armRight.rotateAngleY += getBody().rotateAngleY * 2.0F;
-			playerArmRight.rotateAngleZ = armRight.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
+			playerArmRight.rotateAngleZ = armRight.rotateAngleZ = MathHelper.sin(swingProgress * 3.141593F) * -0.4F;
 		}
 
 		body.rotateAngleX = 0.0F;

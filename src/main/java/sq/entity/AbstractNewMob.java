@@ -1,5 +1,6 @@
 package sq.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -26,7 +27,7 @@ public abstract class AbstractNewMob extends EntityMob
 		super(world);
 		this.codeName = codeName;
 
-		this.getNavigator().setAvoidsWater(false);
+//		this.getNavigator().setAvoidsWater(false); //FIXME
 		this.tasks.addTask(1, new EntityAIWander(this, getMoveSpeed()));
 		this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(3, new EntityAILookIdle(this));
@@ -42,11 +43,11 @@ public abstract class AbstractNewMob extends EntityMob
 
 			else
 			{
-				this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+				this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
 			}
 
 			this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-			this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 0, true));
+			this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, true));
 		}
 		
 		appendAI();
@@ -69,10 +70,10 @@ public abstract class AbstractNewMob extends EntityMob
 	public abstract double getMoveSpeed();
 
 	@Override
-    public boolean isAIEnabled()
-    {
-        return true;
-    }
+	public boolean isAIDisabled() 
+	{
+		return false;
+	}
 	
 	@Override
 	protected String getHurtSound() 
@@ -93,7 +94,7 @@ public abstract class AbstractNewMob extends EntityMob
 	}
 
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return RadixString.upperFirstLetter(codeName);
 	}
@@ -104,4 +105,14 @@ public abstract class AbstractNewMob extends EntityMob
 	}
 	
 	public abstract boolean isPassive();
+
+	protected Entity findPlayerToAttack() 
+	{
+		return null;
+	}
+
+	protected void attackEntity(Entity entity, float damage) 
+	{
+		
+	}
 }

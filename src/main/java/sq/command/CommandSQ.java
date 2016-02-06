@@ -2,13 +2,12 @@ package sq.command;
 
 import java.util.Arrays;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import radixcore.constant.Font.Color;
 import radixcore.constant.Font.Format;
 import radixcore.util.RadixLogic;
@@ -67,7 +66,7 @@ public final class CommandSQ extends CommandBase
 		
 		catch (Exception e)
 		{
-			throw new WrongUsageException("An invalid argument was provided. Usage: " + getCommandUsage(commandSender));
+			commandSender.addChatMessage(new ChatComponentText("An invalid argument was provided. Usage: " + getCommandUsage(commandSender)));
 		}
 	}
 

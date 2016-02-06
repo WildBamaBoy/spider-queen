@@ -1,7 +1,7 @@
 package sq.core.minecraft;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityAnt;
 import sq.entity.creature.EntityBee;
@@ -148,7 +148,7 @@ public final class ModItems
 		mandragoraSeeds = new ItemMandSeeds();
 		lantern = new ItemLantern();
 
-		royalBlood = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("royalblood").setTextureName("sq:royal-blood").setMaxStackSize(1);
+		royalBlood = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("royalblood").setMaxStackSize(1);
 		GameRegistry.registerItem(royalBlood, "royalblood");
 	}
 }

@@ -2,9 +2,9 @@ package sq.blocks;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
@@ -15,8 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.constant.Time;
 import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModBlocks;
@@ -36,8 +38,6 @@ public class BlockWebFull extends Block
 
 		String name = "web-" + type.getName() + "-block";
 		setWebType(type);
-		setBlockName(name);
-		setBlockTextureName("sq:" + name);
 		setHardness(1.0F);
 
 		//Change registry name based on which web we are working with.
@@ -78,7 +78,7 @@ public class BlockWebFull extends Block
 	}
 
 	@Override
-	public Item getItemDropped(int fortune, Random rand, int meta) 
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) 
 	{
 		//Do not drop the block, it is not obtainable.
 		return Items.string;
@@ -93,10 +93,10 @@ public class BlockWebFull extends Block
 		{
 			Block fillerBlock = ModBlocks.webFull;
 			Block[] outlineBlocks = new Block[]
-			{
-				Blocks.log,
-				Blocks.log2
-			};
+					{
+							Blocks.log,
+							Blocks.log2
+					};
 
 			if (BlockHelper.getBlock(world, x,y,z) != fillerBlock) { return; }
 
@@ -136,7 +136,7 @@ public class BlockWebFull extends Block
 				if (BlockHelper.getBlock(world, x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
 				if (BlockHelper.getBlock(world, x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
 			}
-			
+
 			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
 			{
 				BlockHelper.setBlock(world, x-1,y,z-1,ModBlocks.webBed);
@@ -168,15 +168,19 @@ public class BlockWebFull extends Block
 	}
 
 	@Override
-	public void onBlockAdded(World world, int posX, int posY, int posZ)
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) 
 	{
 		//Each time we're placed in the world, notify other blocks and check for the bed.
-		checkForBed(world, posX, posY, posZ, 0);
-		onNeighborBlockChange(world, posX, posY, posZ, 0);
+		checkForBed(worldIn, pos.getX(), pos.getY(), pos.getZ(), 0);
+		onNeighborBlockChange(worldIn, pos, state);
 	}
 
-	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)
+	private void onNeighborBlockChange(World world, BlockPos pos, IBlockState state)
 	{
+		int posX = pos.getX();
+		int posY = pos.getY();
+		int posZ = pos.getZ();
+
 		if (BlockHelper.getBlock(world, posX - 1, posY, posZ) != Blocks.air) { return; }
 		if (BlockHelper.getBlock(world, posX + 1, posY, posZ) != Blocks.air) { return; }
 		if (BlockHelper.getBlock(world, posX, posY - 1, posZ) != Blocks.air) { return; }
@@ -188,39 +192,39 @@ public class BlockWebFull extends Block
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
+	public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state)
 	{
 		//No collision.
 		return null;
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
+	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) 
 	{
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) 
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, Entity entityIn) 
 	{
 		//Hinder the motion of entities that aren't spiders.
-		if (entity instanceof EntitySpider || entity instanceof EntityPlayer || entity instanceof IWebClimber)
+		if (entityIn instanceof EntitySpider || entityIn instanceof EntityPlayer || entityIn instanceof IWebClimber)
 		{
 			return;
 		}
 
 		else
 		{
-			entity.setInWeb();
+			entityIn.setInWeb();
 
-			entity.motionX = entity.motionX * -0.1D;
-			entity.motionZ = entity.motionZ * -0.1D;
-			entity.motionY = entity.motionY * 0.1D;
+			entityIn.motionX = entityIn.motionX * -0.1D;
+			entityIn.motionZ = entityIn.motionZ * -0.1D;
+			entityIn.motionY = entityIn.motionY * 0.1D;
 
 			//If this web is poison, add a poison effect to the creature caught inside.
-			if (webType == EnumWebType.POISON && entity instanceof EntityLivingBase)
+			if (webType == EnumWebType.POISON && entityIn instanceof EntityLivingBase)
 			{
-				final EntityLivingBase entityLiving = (EntityLivingBase)entity;
+				final EntityLivingBase entityLiving = (EntityLivingBase)entityIn;
 
 				if (entityLiving.getActivePotionEffect(Potion.poison) == null)
 				{
@@ -231,7 +235,7 @@ public class BlockWebFull extends Block
 	}
 
 	@Override
-	public boolean isLadder(IBlockAccess world, int posX, int posY, int posZ, EntityLivingBase entity)
+	public boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity) 
 	{
 		//Allow web climbers and players to climb this web like a ladder.
 		if (entity instanceof EntityPlayer || entity instanceof EntitySpider || entity instanceof IWebClimber)

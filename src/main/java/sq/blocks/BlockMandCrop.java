@@ -1,17 +1,17 @@
 package sq.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityMandragora;
@@ -25,95 +25,51 @@ import sq.entity.friendly.EntityFriendlyMandragora;
  */
 public class BlockMandCrop extends BlockCrops
 {
-	private IIcon[] icons = new IIcon[4];
-	
 	public BlockMandCrop()
 	{
 		super();
-		
-		final String name = "mandragora";
-		setBlockName(name);
-		
+
+		final String name = "mandragora";		
 		GameRegistry.registerBlock(this, name);
 	}
-	
-    @Override
-	@SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-    	//We only switch icons every other growth cycle.
-    	switch (meta)
-    	{
-    	case 0:
-    	case 1: return icons[0];
-    	case 2:
-    	case 3: return icons[1];
-    	case 4:  
-    	case 5: return icons[2];
-    	case 6:
-    	case 7: return icons[3];
-    	}
-    	
-    	return icons[0];
-    }
-
-    /**
-     * Return the item dropped when this crop is destroyed while fully grown.
-     */
-    @Override
-	protected Item func_149866_i()
-    {
-        return ModItems.mandragoraSeeds;
-    }
-
-    /**
-     * Return the item dropped when this crop is destroyed while partially grown.
-     */
-    @Override
-	protected Item func_149865_P()
-    {
-        return ModItems.mandragoraSeeds;
-    }
 
     @Override
-	public void updateTick(World world, int x, int y, int z, Random random) 
+    public List<ItemStack> getDrops(net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-		super.updateTick(world, x, y, z, random);
-		
+        List<ItemStack> ret = new ArrayList<ItemStack>();
+        ret.add(new ItemStack(ModItems.mandragoraSeeds));
+        return ret;
+    }
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) 
+	{
+		super.updateTick(worldIn, pos, state, rand);
+
 		//Only grow if we're not fully grown (meta >= 7)
-		if (BlockHelper.getBlockMetadata(world, x, y, z) >= 7)
+		if (BlockHelper.getBlockMetadata(worldIn, pos.getX(), pos.getY(), pos.getZ()) >= 7)
 		{
 			//Get rid of the crop block as it has sprouted into a mandragora.
-			world.setBlockToAir(x, y, z);
-			
+			worldIn.setBlockToAir(pos);
+
 			//Find a nearby player.
 			Entity entityToSpawn = null;
-			EntityPlayer player = world.getClosestPlayer(x, y, z, 16.0D);
-			
+			EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 16.0D);
+
 			//If we found one, we're friendly to that player.
 			if (player != null)
 			{
-				entityToSpawn = new EntityFriendlyMandragora(world, player);
+				entityToSpawn = new EntityFriendlyMandragora(worldIn, player);
 			}
-			
+
 			else //If not, we're hostile.
 			{
-				entityToSpawn = new EntityMandragora(world);
+				entityToSpawn = new EntityMandragora(worldIn);
 			}
-			
+
 			//Set the position to the crop's position and spawn.
-			entityToSpawn.setPosition(x, y, z);
-			world.spawnEntityInWorld(entityToSpawn);
+			entityToSpawn.setPosition(pos.getX(), pos.getY(), pos.getZ());
+			worldIn.spawnEntityInWorld(entityToSpawn);
 		}
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-    	icons[0] = iconRegister.registerIcon("sq:mand_crop_1");
-    	icons[1] = iconRegister.registerIcon("sq:mand_crop_2");
-    	icons[2] = iconRegister.registerIcon("sq:mand_crop_3");
-    	icons[3] = iconRegister.registerIcon("sq:mand_crop_4");
-    }
 }

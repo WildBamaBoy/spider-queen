@@ -36,26 +36,26 @@ public class TransformDistributor implements IClassTransformer
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass)
 	{
-		//Work with the readable name, not the obfuscated name.
-		if (transformedName.equals("net.minecraft.item.ItemFood"))
-		{
-			return transformOnEaten(basicClass);
-		}
-
-		else if (transformedName.equals("net.minecraft.entity.monster.EntitySpider"))
-		{
-			return transformSpider(basicClass);
-		}
-		
-		else if (transformedName.equals("net.minecraft.world.gen.feature.WorldGenPumpkin"))
-		{
-			return transformPumpkin(basicClass);
-		}
-		
-		else if (transformedName.equals("net.minecraft.entity.Entity"))
-		{
-			return transformEntity(basicClass);
-		}
+//		//Work with the readable name, not the obfuscated name.
+//		if (transformedName.equals("net.minecraft.item.ItemFood"))
+//		{
+//			return transformOnEaten(basicClass);
+//		}
+//
+//		else if (transformedName.equals("net.minecraft.entity.monster.EntitySpider"))
+//		{
+//			return transformSpider(basicClass);
+//		}
+//		
+//		else if (transformedName.equals("net.minecraft.world.gen.feature.WorldGenPumpkin"))
+//		{
+//			return transformPumpkin(basicClass);
+//		}
+//		
+//		else if (transformedName.equals("net.minecraft.entity.Entity"))
+//		{
+//			return transformEntity(basicClass);
+//		}
 		
 		return basicClass;
 	}

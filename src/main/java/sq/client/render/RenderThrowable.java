@@ -3,8 +3,11 @@ package sq.client.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.entity.throwable.EntityBoomBall;
@@ -23,7 +26,7 @@ public class RenderThrowable extends Render
 
 	public RenderThrowable()
 	{
-
+		super(Minecraft.getMinecraft().getRenderManager());
 	}
 
 	@Override
@@ -34,8 +37,7 @@ public class RenderThrowable extends Render
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 		this.bindEntityTexture(entity);
-		Tessellator tessellator = Tessellator.instance;
-
+		
 		float f = 0;
 		float f1 = 1;
 		float f2 = 0;
@@ -46,13 +48,15 @@ public class RenderThrowable extends Render
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
-		Tessellator tess = Tessellator.instance;
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, 1.0F, 0.0F);
-		tess.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, f, f3);
-		tess.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, f1, f3);
-		tess.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, f1, f2);
-		tess.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, f, f2);
+		Tessellator tess = Tessellator.getInstance();
+		WorldRenderer ren = tess.getWorldRenderer();
+		
+		ren.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+		ren.normal(0.0F, 1.0F, 0.0F);
+		ren.pos(0.0F - f5, 0.0F - f6, 0.0D).tex(f, f3).endVertex();
+		ren.pos(f4 - f5, 0.0F - f6, 0.0D).tex(f1, f3).endVertex();
+		ren.pos(f4 - f5, f4 - f6, 0.0D).tex(f1, f2).endVertex();
+		ren.pos(0.0F - f5, f4 - f6, 0.0D).tex(f, f2).endVertex();
 		tess.draw();
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);

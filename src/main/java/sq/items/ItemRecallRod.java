@@ -1,12 +1,12 @@
 package sq.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import radixcore.constant.Particle;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEx;
@@ -25,7 +25,6 @@ public class ItemRecallRod extends Item
 		
 		final String name = "recall-rod";
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
 		setMaxDamage(16);
@@ -58,7 +57,7 @@ public class ItemRecallRod extends Item
 				}
 			}
 			
-			Utils.spawnParticlesAroundEntityS(Particle.MAGIC_CRITICAL_HIT, player, 32);
+			Utils.spawnParticlesAroundEntityS(EnumParticleTypes.CRIT_MAGIC, player, 32);
 		}
 		
 		stack.setItemDamage(stack.getItemDamage() + 1);

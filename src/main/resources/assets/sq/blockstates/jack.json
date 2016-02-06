@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "jack" },
+        "facing=south": { "model": "jack", "y": 180 },
+        "facing=west":  { "model": "jack", "y": 270 },
+        "facing=east":  { "model": "jack", "y": 90 }
+    }
+}

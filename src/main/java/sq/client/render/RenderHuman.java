@@ -3,20 +3,11 @@ package sq.client.render;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import radixcore.constant.Font.Color;
-import radixcore.constant.Font.Format;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityHuman;
@@ -24,14 +15,15 @@ import sq.entity.creature.EntityHuman;
 /**
  * Sets the texture on the human model pre-render and renders armor/weapons.
  */
-public class RenderHuman extends RenderBiped
+public class RenderHuman<T extends EntityHuman> extends RenderBiped<T>
 {
+    private static final ResourceLocation DEFAULT_RES_LOC = new ResourceLocation("textures/entity/steve.png");
 	private final ModelBiped modelArmorPlate;
 	private final ModelBiped modelArmor;
 	
 	public RenderHuman() 
 	{
-		super(new ModelBiped(0.0F), 0.5F);
+		super(Minecraft.getMinecraft().getRenderManager(), new ModelBiped(0.0F), 0.5F);
 
 		modelBipedMain = (ModelBiped) mainModel;
 		modelArmorPlate = new ModelBiped(1.0F);
@@ -39,7 +31,7 @@ public class RenderHuman extends RenderBiped
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
+	protected ResourceLocation getEntityTexture(T entity)
 	{
 		final EntityHuman player = (EntityHuman) entity;
 
@@ -51,31 +43,25 @@ public class RenderHuman extends RenderBiped
 
 		else //Otherwise, show Steve.
 		{
-			return AbstractClientPlayer.locationStevePng;
+			return DEFAULT_RES_LOC;
 		}
 	}
 
 	@Override
-	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
+	public void doRender(T entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
+		passSpecialRender(entity, posX, posY, posZ);
 		renderHuman((EntityHuman) entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
-	public void doRender(EntityLiving entityLiving, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
-	{
-		renderHuman((EntityHuman) entityLiving, posX, posY, posZ, rotationYaw, rotationPitch);
-	}
-
-	@Override
-	protected void preRenderCallback(EntityLivingBase entityLivingBase, float partialTickTime)
+	protected void preRenderCallback(T entityLivingBase, float partialTickTime)
 	{
 		//Scale down to the size of the player.
 		GL11.glScalef(0.9375F, 0.9375F, 0.9375F);
 	}
 
-	@Override
-	protected void passSpecialRender(EntityLivingBase entityLivingBase, double posX, double posY, double posZ)
+	protected void passSpecialRender(T entityLivingBase, double posX, double posY, double posZ)
 	{
 		if (Minecraft.isGuiEnabled())
 		{
@@ -101,7 +87,7 @@ public class RenderHuman extends RenderBiped
 
 	private void renderHuman(EntityHuman entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		double posYCorrection = posY - entity.yOffset;
+		double posYCorrection = posY - entity.getYOffset();
 
 		shadowOpaque = 1.0F;
 
@@ -113,7 +99,7 @@ public class RenderHuman extends RenderBiped
 		{
 			final EnumAction useAction = heldItem.getItemUseAction();
 
-			if (useAction == EnumAction.bow)
+			if (useAction == EnumAction.BOW)
 			{
 				modelArmorPlate.aimedBow = modelArmor.aimedBow = modelBipedMain.aimedBow = true;
 			}
@@ -124,7 +110,7 @@ public class RenderHuman extends RenderBiped
 			posYCorrection -= 0.125D;
 		}
 
-		super.doRender(entity, posX, posYCorrection, posZ, rotationYaw, rotationPitch);
+		super.doRender((T)entity, posX, posYCorrection, posZ, rotationYaw, rotationPitch);
 		modelArmorPlate.aimedBow = modelArmor.aimedBow = modelBipedMain.aimedBow = false;
 		modelArmorPlate.isSneak = modelArmor.isSneak = modelBipedMain.isSneak = false;
 		modelArmorPlate.heldItemRight = modelArmor.heldItemRight = modelBipedMain.heldItemRight = 0;
@@ -151,67 +137,6 @@ public class RenderHuman extends RenderBiped
 			labelText = "SheWolfDeadly";
 		}
 
-		renderLivingLabel(entityFakePlayer, labelText, posX, posY, posZ, 64);
-	}
-
-	protected void renderLivingLabel(Entity entity, String text, double posX, double posY, double posZ, int visibleDistance)
-	{
-		final double distanceSq = entity.getDistanceSqToEntity(renderManager.livingPlayer);
-
-		if (distanceSq <= visibleDistance * visibleDistance)
-		{
-			final EntityHuman fakePlayer = (EntityHuman) entity;
-			final FontRenderer fontRenderer = getFontRendererFromRenderManager();
-			final float labelScale = 0.0268F;
-			
-			GL11.glPushMatrix();
-			{
-				GL11.glTranslatef((float) posX + 0.0F, (float) posY + entity.height + 0.5F, (float) posZ);
-				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-				GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-				GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-				GL11.glScalef(-labelScale, -labelScale, labelScale);
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glDepthMask(false);
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				GL11.glEnable(GL11.GL_BLEND);
-				
-				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
-				
-				final Tessellator tessellator = Tessellator.instance;
-				tessellator.startDrawingQuads();
-				tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-				
-				final int halfStringWidth = fontRenderer.getStringWidth(text) / 2;
-				tessellator.addVertex(-halfStringWidth - 1, -1, 0.0D);
-				tessellator.addVertex(-halfStringWidth - 1, 8, 0.0D);
-				tessellator.addVertex(halfStringWidth + 1, 8, 0.0D);
-				tessellator.addVertex(halfStringWidth + 1, -1, 0.0D);
-				tessellator.draw();
-				
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, 553648127);
-
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
-				GL11.glDepthMask(true);
-
-				if (fakePlayer.getIsUsernameContributor())
-				{
-					fontRenderer.drawString(Color.YELLOW + Format.ITALIC + text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
-				}
-
-				else
-				{
-					fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
-				}
-
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			}
-			GL11.glPopMatrix();
-		}
+		renderLivingLabel((T)entityFakePlayer, labelText, posX, posY, posZ, 64);
 	}
 }

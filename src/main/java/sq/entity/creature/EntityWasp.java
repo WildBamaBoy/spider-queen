@@ -22,9 +22,9 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		super.onUpdate();
 
-		if (entityToAttack != null)
+		if (getAttackTarget() != null)
 		{
-			double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
+			double sqDistanceTo = Math.sqrt(Math.pow(getAttackTarget().posX - posX, 2) + Math.pow(getAttackTarget().posZ - posZ, 2));
 			float moveAmount = 0.0F;
 			
 			if(sqDistanceTo < 8F) 
@@ -32,12 +32,12 @@ public class EntityWasp extends AbstractFlyingMob
 				moveAmount = ((8F - (float)sqDistanceTo) / 8F)*4F; 
 			}
 			
-			if (entityToAttack.posY + 0.2F < posY)
+			if (getAttackTarget().posY + 0.2F < posY)
 			{
 				motionY = motionY - 0.05F * moveAmount;
 			}
 			
-			if(entityToAttack.posY - 0.5F > posY)
+			if(getAttackTarget().posY - 0.5F > posY)
 			{
 				motionY = motionY + 0.01F * moveAmount;
 			}
@@ -45,9 +45,9 @@ public class EntityWasp extends AbstractFlyingMob
 	}
 
 	@Override
-	public boolean isAIEnabled() 
+	public boolean isAIDisabled() 
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

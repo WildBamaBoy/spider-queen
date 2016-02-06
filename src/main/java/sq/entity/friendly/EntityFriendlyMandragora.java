@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import radixcore.constant.Particle;
 import radixcore.constant.Time;
@@ -87,13 +88,13 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 					try
 					{
 						BlockCrops crop = (BlockCrops)BlockHelper.getBlock(worldObj, point.iPosX, point.iPosY, point.iPosZ);
-						int metadata = worldObj.getBlockMetadata(point.iPosX, point.iPosY, point.iPosZ);
+						int metadata = BlockHelper.getBlockMetadata(worldObj, point.iPosX, point.iPosY, point.iPosZ);
 
 						if (metadata < 7)
 						{
 							int max = 7 - metadata;
-							BlockHelper.setBlockMetadataWithNotify(worldObj, point.iPosX, point.iPosY, point.iPosZ, metadata + RadixMath.getNumberInRange(1, max), 2);
-							Utils.spawnParticlesAroundEntityS(Particle.HAPPY, this, 16);
+							BlockHelper.setBlockMetadataWithNotify(worldObj, point.iPosX, point.iPosY, point.iPosZ, crop.getStateFromMeta(metadata + RadixMath.getNumberInRange(1, max)), 2);
+							Utils.spawnParticlesAroundEntityS(EnumParticleTypes.VILLAGER_HAPPY, this, 16);
 						}
 					}
 
@@ -229,7 +230,7 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	}
 	
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return "Mandragora";
 	}

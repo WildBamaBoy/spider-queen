@@ -75,10 +75,10 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	}
 
 	@Override
-	public boolean isAIEnabled() 
+	public boolean isAIDisabled() 
 	{
 		//Bees use their own logic.
-		return false;
+		return true;
 	}
 
 	@Override
@@ -105,13 +105,12 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 
 			if (data.beeLike.getInt() >= 0 && extension.getTimesHitByPlayer() <= 2)
 			{
-				this.setTarget(null);
+				this.setAttackTarget(null);
 			}
 		}
 
 		return true;
 	}
-
 
 	@Override
 	protected void attackEntity(Entity entity, float damage) 
@@ -123,14 +122,14 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		}
 
 		//Within 1.2 blocks of the target, damage it.
-		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 1.2D)
+		if (RadixMath.getDistanceToEntity(getAttackTarget(), this) <= 1.2D)
 		{
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), getHitDamage());
 		}
 
 		//Within 3 blocks of the target, set the attacking flag to true. This switches the
 		//warrior to its "stinging" model.
-		if (RadixMath.getDistanceToEntity(entityToAttack, this) <= 3.0D)
+		if (RadixMath.getDistanceToEntity(getAttackTarget(), this) <= 3.0D)
 		{
 			setAttacking(true);
 		}
@@ -144,9 +143,9 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		}
 	}
 
-	public boolean hasEntitytoAttack()
+	public boolean hasAttackTarget()
 	{
-		return entityToAttack != null;
+		return getAttackTarget() != null;
 	}
 
 	@Override
@@ -183,10 +182,10 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		super.onUpdate();
 
-		if (entityToAttack != null)
+		if (getAttackTarget() != null)
 		{
 			//If we have a creature to attack, we need to move downwards if we're above it, and vice-versa.
-			double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
+			double sqDistanceTo = Math.sqrt(Math.pow(getAttackTarget().posX - posX, 2) + Math.pow(getAttackTarget().posZ - posZ, 2));
 			float moveAmount = 0.0F;
 
 			if(sqDistanceTo < 8F) 
@@ -194,12 +193,12 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 				moveAmount = ((8F - (float)sqDistanceTo) / 8F)*4F; 
 			}
 
-			if (entityToAttack.posY + 0.2F < posY)
+			if (getAttackTarget().posY + 0.2F < posY)
 			{
 				motionY = motionY - 0.05F * moveAmount;
 			}
 
-			if(entityToAttack.posY - 0.5F > posY)
+			if(getAttackTarget().posY - 0.5F > posY)
 			{
 				motionY = motionY + 0.01F * moveAmount;
 			}
@@ -225,7 +224,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 
 				if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) instanceof BlockFlower)
 				{
-					this.entityToAttack = nearbyPlayer;
+					this.setAttackTarget(nearbyPlayer);
 				}
 			}
 		}
@@ -245,7 +244,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			entityPlayer.getHeldItem().stackSize--;
 			entityPlayer.addChatComponentMessage(new ChatComponentText(Color.GREEN + "The Bees have accepted your offering."));
 			ReputationHandler.onReputationChange(entityPlayer, this, 1);
-			this.entityToAttack = null;
+			this.setAttackTarget(null);
 		}
 
 		return super.interact(entityPlayer);
@@ -266,7 +265,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	}
 
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return "Bee";
 	}

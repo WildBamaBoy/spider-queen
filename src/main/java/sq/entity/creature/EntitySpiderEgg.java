@@ -3,8 +3,6 @@ package sq.entity.creature;
 import java.util.List;
 import java.util.UUID;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -17,6 +15,8 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
@@ -57,28 +57,16 @@ public class EntitySpiderEgg extends EntityCreature
 	}
 
 	@Override
-	public boolean isAIEnabled()
-	{
-		return false;
-	}
-
-	@Override
-	protected boolean isMovementCeased()
+	public boolean isAIDisabled()
 	{
 		return true;
 	}
 
-	@Override
-	public AxisAlignedBB getCollisionBox(Entity entity)
-	{
-		return entity.boundingBox;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox()
-	{
-		return boundingBox;
-	}
+//	@Override
+//	protected boolean isMovementCeased()
+//	{
+//		return true;
+//	}
 
 	@Override
 	public boolean canBeCollidedWith()
@@ -204,7 +192,7 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		try
 		{
-			final EntityPlayer player = worldObj.func_152378_a(owner);
+			final EntityPlayer player = worldObj.getPlayerEntityByUUID(owner);
 
 			//Find a safe spawn point.
 			final Block spawnBlock = BlockHelper.getBlock(worldObj, (int)posX,(int)posY,(int)posZ);

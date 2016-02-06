@@ -58,7 +58,7 @@ public class EntityGhastEgg extends EntitySpiderEgg
 	{
 		try
 		{
-			final EntityPlayer player = worldObj.func_152378_a(owner);
+			final EntityPlayer player = worldObj.getPlayerEntityByUUID(owner);
 
 			final Block spawnBlock = BlockHelper.getBlock(worldObj, (int)posX,(int)posY,(int)posZ);
 			Point3D spawnPoint = new Point3D(posX, posY, posZ);

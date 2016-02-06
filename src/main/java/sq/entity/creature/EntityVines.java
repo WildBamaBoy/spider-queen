@@ -9,7 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -21,6 +23,8 @@ import radixcore.util.BlockHelper;
  */
 public class EntityVines extends Entity
 {
+	private float yOffset;
+	
     public EntityVines(World world)
     {
         super(world);
@@ -155,7 +159,7 @@ public class EntityVines extends Entity
 			
 			if(block == Blocks.tallgrass || block == Blocks.yellow_flower || block == Blocks.red_flower)
 			{
-				worldObj.setBlockToAir(xTile, yTile - 1, zTile);
+				worldObj.setBlockToAir(new BlockPos(xTile, yTile - 1, zTile));
 			}
 			else
 			{
@@ -178,17 +182,17 @@ public class EntityVines extends Entity
 		ticksInAir++;
 		if(ticksInAir > 200) { setDead(); }
 		
-        Vec3 vec3d = Vec3.createVectorHelper(posX, posY, posZ);
-        Vec3 vec3d1 = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+        Vec3 vec3d = new Vec3(posX, posY, posZ);
+        Vec3 vec3d1 = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
         MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(vec3d, vec3d1, false);
-        vec3d = Vec3.createVectorHelper(posX, posY, posZ);
-        vec3d1 = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+        vec3d = new Vec3(posX, posY, posZ);
+        vec3d1 = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
         if(movingobjectposition != null)
         {
-            vec3d1 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3d1 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
         }
         Entity entity = null;
-        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+        List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
         double d = 0.0D;
         for(int l = 0; l < list.size(); l++)
         {
@@ -198,7 +202,7 @@ public class EntityVines extends Entity
                 continue;
             }
             float f4 = 0.3F;
-            AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(f4, f4, f4);
+            AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f4, f4, f4);
             MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3d, vec3d1);
             if(movingobjectposition1 == null)
             {
@@ -223,9 +227,9 @@ public class EntityVines extends Entity
 		
         if(movingobjectposition != null)
         {
-			xTile = movingobjectposition.blockX;
-            yTile = movingobjectposition.blockY;
-            zTile = movingobjectposition.blockZ;
+			xTile = movingobjectposition.getBlockPos().getX();
+            yTile = movingobjectposition.getBlockPos().getY();
+            zTile = movingobjectposition.getBlockPos().getZ();
 				
             if(movingobjectposition.entityHit != null)
             {
@@ -293,7 +297,7 @@ public class EntityVines extends Entity
             for(int i1 = 0; i1 < 4; i1++)
             {
                 float f6 = 0.25F;
-                worldObj.spawnParticle("bubble", posX - motionX * f6, posY - motionY * f6, posZ - motionZ * f6, motionX, motionY, motionZ);
+                worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX - motionX * f6, posY - motionY * f6, posZ - motionZ * f6, motionX, motionY, motionZ);
             }
 
             f3 = 0.8F;
@@ -337,11 +341,12 @@ public class EntityVines extends Entity
         return;
     }
 
-    @Override
-	public float getShadowSize()
-    {
-        return 0.0F;
-    }
+    //FIXME
+//    @Override
+//	public float getShadowSize()
+//    {
+//        return 0.0F;
+//    }
 
 	public void setFriendly(boolean f) { friendly = f; }
 	

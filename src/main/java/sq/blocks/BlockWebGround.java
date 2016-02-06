@@ -1,5 +1,6 @@
 package sq.blocks;
 
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import sq.enums.EnumWebType;
 
@@ -23,7 +24,7 @@ public class BlockWebGround extends BlockWebFull
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
+	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
 	{
 		//Collision matches the area of the web as it is on the ground.
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);

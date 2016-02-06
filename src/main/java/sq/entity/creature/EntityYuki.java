@@ -51,9 +51,9 @@ public class EntityYuki extends AbstractFlyingMob
 	}
 
 	@Override
-	public boolean isAIEnabled()
+	public boolean isAIDisabled()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -74,10 +74,10 @@ public class EntityYuki extends AbstractFlyingMob
 			{
 				freezeTimer = Time.SECOND * RadixMath.getNumberInRange(1, 3);
 
-				if (this.getEntityToAttack() != null)
+				if (this.getAttackTarget() != null)
 				{
-					Entity entityToAttack = this.getEntityToAttack();
-					EntityFreezeBall ball = new EntityFreezeBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 2.0F, 1.0F);
+					Entity attackTarget = this.getAttackTarget();
+					EntityFreezeBall ball = new EntityFreezeBall(worldObj, this, (EntityLivingBase) attackTarget, 2.0F, 1.0F);
 					worldObj.spawnEntityInWorld(ball);
 					worldObj.playSoundAtEntity(this, "sq:freeze.rod", 1.0F, 1.0F);
 				}

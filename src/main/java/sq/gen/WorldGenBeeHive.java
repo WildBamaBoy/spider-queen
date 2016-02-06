@@ -2,13 +2,13 @@ package sq.gen;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import radixcore.util.BlockHelper;
 import sq.core.minecraft.ModBlocks;
 

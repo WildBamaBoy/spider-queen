@@ -3,12 +3,10 @@ package sq.client.render;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelSpiderEx;
+import sq.client.render.layer.LayerSpiderCharge;
 import sq.entity.creature.EntitySpiderEx;
 import sq.enums.EnumSpiderType;
 
@@ -16,7 +14,7 @@ import sq.enums.EnumSpiderType;
  * Sets the texture on the extended spiders' models pre-render.
  * Also applies effects on each render pass.
  */
-public class RenderSpiderEx extends RenderLiving
+public class RenderSpiderEx<T extends EntitySpiderEx> extends RenderLiving<T>
 {
 	private static ResourceLocation[][] textures;
 	private static ResourceLocation charge = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
@@ -26,98 +24,25 @@ public class RenderSpiderEx extends RenderLiving
 
 	public RenderSpiderEx()
 	{
-		super(new ModelSpiderEx(), 1.0F);
-		setRenderPassModel(new ModelSpiderEx());
+		super(Minecraft.getMinecraft().getRenderManager(), new ModelSpiderEx(), 1.0F);
+		this.addLayer(new LayerSpiderCharge(this));
 	}
 
 	@Override
-	protected float getDeathMaxRotation(EntityLivingBase entityLivingBase)
+	protected float getDeathMaxRotation(T entityLivingBase)
 	{
 		return 180.0F;
 	}
-
+	
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-	{
-		return getEntityTexture((EntitySpiderEx) entity);
-	}
-
-	protected ResourceLocation getEntityTexture(EntitySpiderEx spider)
+	protected ResourceLocation getEntityTexture(T spider)
 	{
 		final int level = spider.getLevel();
 		return textures[spider.getSpiderType().getId()][level - 1];
 	}
 
 	@Override
-	protected int shouldRenderPass(EntityLivingBase entitySpider, int passNumber, float partialTickTime)
-	{
-		EntitySpiderEx spider = (EntitySpiderEx)entitySpider;
-
-		//When the spider is a powered boom spider, we render the "charged" effect over them.
-		if (spider.getPowered())
-		{
-			if (entitySpider.isInvisible())
-			{
-				GL11.glDepthMask(false);
-			}
-			
-			else
-			{
-				GL11.glDepthMask(true);
-			}
-
-			if (passNumber == 1)
-			{
-				float f1 = spider.ticksExisted + partialTickTime;
-				Minecraft.getMinecraft().renderEngine.bindTexture(charge);
-				GL11.glMatrixMode(GL11.GL_TEXTURE);
-				GL11.glLoadIdentity();
-				float f2 = f1 * 0.01F;
-				float f3 = f1 * 0.01F;
-				GL11.glTranslatef(f2, f3, 0.0F);
-				this.setRenderPassModel(model);
-				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glEnable(GL11.GL_BLEND);
-				float f4 = 0.5F;
-				GL11.glColor4f(f4, f4, f4, 1.0F);
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-				return 1;
-			}
-
-			else if (passNumber == 2)
-			{
-				GL11.glMatrixMode(GL11.GL_TEXTURE);
-				GL11.glLoadIdentity();
-				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_BLEND);
-			}
-		}
-
-		char c0 = 61680;
-		int j = c0 % 65536;
-		int k = c0 / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		//On each pass greater than 0, we render the spider eyes without lighting taking effect. 
-		//This makes spider eyes glow in the dark.
-		if (passNumber > 0)
-		{
-			this.bindTexture(eyes);
-			GL11.glTranslatef(0.0F, 0.0F, -0.0001F); //Prevent Z clipping.
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-			return 1;
-		}
-		
-		return -1;
-	}
-
-	@Override
-	protected void preRenderCallback(EntityLivingBase entityLiving, float partialTickTime)
+	protected void preRenderCallback(T entityLiving, float partialTickTime)
 	{
 		final EntitySpiderEx spider = (EntitySpiderEx) entityLiving;
 

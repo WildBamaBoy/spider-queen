@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.constant.Font.Color;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
@@ -40,7 +40,6 @@ public final class ItemOffering extends Item
 		final String name = type.getName();
 		setOfferingType(type);
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 
 		GameRegistry.registerItem(this, name);
@@ -96,7 +95,7 @@ public final class ItemOffering extends Item
 		if (entities.size() > 0 && entityItem.ticksExisted >= Time.SECOND * 5 && entityItem.getEntityItem().hasTagCompound())
 		{
 			Entity exampleEntity = entities.get(0);
-			String player = entityItem.getEntityItem().stackTagCompound.getString("player");
+			String player = entityItem.getEntityItem().getTagCompound().getString("player");
 			entityItem.setDead();
 
 			//Handle notification and like increase.
@@ -104,7 +103,7 @@ public final class ItemOffering extends Item
 
 			if (entityPlayer != null && !entityPlayer.worldObj.isRemote)
 			{
-				entityPlayer.addChatComponentMessage(new ChatComponentText(Color.GREEN + "The " + exampleEntity.getCommandSenderName() + "s have accepted your offering."));
+				entityPlayer.addChatComponentMessage(new ChatComponentText(Color.GREEN + "The " + exampleEntity.getName() + "s have accepted your offering."));
 				ReputationHandler.onReputationChange(entityPlayer, (EntityLivingBase)exampleEntity, 1);
 			}
 		}
@@ -116,8 +115,8 @@ public final class ItemOffering extends Item
 			
 			if (player != null)
 			{
-				entityItem.getEntityItem().stackTagCompound = new NBTTagCompound();
-				entityItem.getEntityItem().stackTagCompound.setString("player", player.getCommandSenderName());
+				entityItem.getEntityItem().setTagCompound(new NBTTagCompound());
+				entityItem.getEntityItem().getTagCompound().setString("player", player.getName());
 			}
 		}
 		
@@ -127,8 +126,8 @@ public final class ItemOffering extends Item
 	@Override
 	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) 
 	{
-		item.stackTagCompound = new NBTTagCompound();
-		item.stackTagCompound.setString("player", player.getCommandSenderName());
+		item.setTagCompound(new NBTTagCompound());
+		item.getTagCompound().setString("player", player.getName());
 
 		return super.onDroppedByPlayer(item, player);
 	}

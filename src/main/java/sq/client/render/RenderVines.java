@@ -2,6 +2,7 @@ package sq.client.render;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -16,8 +17,10 @@ import sq.entity.creature.EntityVines;
 public class RenderVines extends Render
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("sq:textures/entities/vines.png");
+	
 	public RenderVines()
 	{
+		super(Minecraft.getMinecraft().getRenderManager());
 		shadowSize = 0.5F;
 		modelVines = new ModelVines();
 	}

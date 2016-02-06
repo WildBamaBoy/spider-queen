@@ -1,26 +1,26 @@
 package sq.client.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import sq.client.model.ModelOctopus;
+import sq.entity.creature.EntityOctopus;
 
 /**
  * Sets the texture on the octopus model pre-render.
  */
-public class RenderOctopus extends RenderLiving
+public class RenderOctopus<T extends EntityOctopus> extends RenderLiving<T>
 {
 	private final ResourceLocation texture;
 	
     public RenderOctopus()
     {
-        super(new ModelOctopus(), 1.0F);
-        setRenderPassModel(new ModelOctopus());
+        super(Minecraft.getMinecraft().getRenderManager(), new ModelOctopus(), 1.0F);
         texture = new ResourceLocation("sq:textures/entities/octopus.png");
     }
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
+	protected ResourceLocation getEntityTexture(T entity)
 	{
 		return texture;
 	}

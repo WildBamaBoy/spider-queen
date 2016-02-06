@@ -1,7 +1,10 @@
 package sq.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import radixcore.util.BlockHelper;
 import sq.enums.EnumWebType;
 
 /**
@@ -24,10 +27,10 @@ public class BlockWebSide extends BlockWebFull
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int posX, int posY, int posZ)
+	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
 	{
 		//Calculate our bounds based on where we're located.
-		final int meta = blockAccess.getBlockMetadata(posX, posY, posZ);
+		final int meta = BlockHelper.getBlockMetadata((World)blockAccess, pos.getX(), pos.getY(), pos.getZ());
 		float minX = 1.0F, minY = 1.0F, minZ = 1.0F;
 		float maxX = 0.0F, maxY = 0.0F, maxZ = 0.0F;
 		boolean flag = meta > 0;
@@ -76,7 +79,7 @@ public class BlockWebSide extends BlockWebFull
 			flag = true;
 		}
 
-		if (!flag && canBePlacedOn(blockAccess.getBlock(posX, posY + 1, posZ)))
+		if (!flag && canBePlacedOn(BlockHelper.getBlock((World)blockAccess, pos.getX(), pos.getY() + 1, pos.getZ())))
 		{
 			minY = Math.min(minY, 0.9375F);
 			maxY = 1.0F;

@@ -1,11 +1,11 @@
 package sq.packet;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import radixcore.packets.AbstractPacket;
 import sq.core.SpiderCore;
 import sq.core.forge.GuiHandler;
@@ -41,6 +41,14 @@ public class PacketSleepC extends AbstractPacket implements IMessage, IMessageHa
 	@Override
 	public IMessage onMessage(PacketSleepC packet, MessageContext context)
 	{
+		SpiderCore.getPacketHandler().addPacketForProcessing(context.side, packet, context);
+		return null;
+	}
+
+	@Override
+	public void processOnGameThread(IMessageHandler message, MessageContext context) 
+	{
+		final PacketSleepC packet = (PacketSleepC)message;
 		final EntityPlayer player = getPlayer(context);
 
 		if (player != null)
@@ -55,7 +63,5 @@ public class PacketSleepC extends AbstractPacket implements IMessage, IMessageHa
 				player.openGui(SpiderCore.getInstance(), GuiHandler.ID_GUI_SLEEP, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 		}
-
-		return null;
 	}
 }

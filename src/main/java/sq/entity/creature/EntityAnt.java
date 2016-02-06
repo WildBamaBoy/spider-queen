@@ -80,9 +80,9 @@ public class EntityAnt extends AbstractNewMob
 	}
 
 	@Override
-	public boolean isAIEnabled() 
+	public boolean isAIDisabled() 
 	{
-		return true;
+		return false;
 	}
 
 	@Override

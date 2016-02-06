@@ -2,6 +2,7 @@ package sq.entity.creature;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
 import sq.entity.AbstractFlyingMob;
@@ -23,7 +24,7 @@ public class EntityFly extends AbstractFlyingMob
 	{
 		super.onUpdate();
 		
-		this.entityToAttack = null;
+		this.setAttackTarget(null);
 		
 		if (!SpiderCore.getConfig().enableFly)
 		{
@@ -32,13 +33,13 @@ public class EntityFly extends AbstractFlyingMob
 	}
 
 	@Override
-	public boolean isAIEnabled()
+	public boolean isAIDisabled()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return "Fly";
 	}
@@ -73,7 +74,7 @@ public class EntityFly extends AbstractFlyingMob
 		if (!worldObj.isRemote)
 		{
 			//Disappear with smoke and play the eat and burp sounds on the player.
-			Utils.spawnParticlesAroundEntityS("smoke", this, 16);
+			Utils.spawnParticlesAroundEntityS(EnumParticleTypes.SMOKE_NORMAL, this, 16);
 			worldObj.playSoundAtEntity(player, "random.eat", 0.85F, 1.0F);
 			worldObj.playSoundAtEntity(player, "random.burp", 0.85F, 1.0F);
 			

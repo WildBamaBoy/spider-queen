@@ -2,7 +2,9 @@ package sq.entity.creature;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,11 +28,12 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 {
 	private static final ItemStack stoneSword = new ItemStack(Items.stone_sword, 1);
 	private static final ItemStack bow = new ItemStack(Items.bow, 1);
-	
+
 	private DataWatcherEx dataWatcherEx;
 	private WatchedInt textureId;
 	private WatchedInt attackMode;
 
+	private int attackTime;
 	public EntitySpiderQueen(World world)
 	{
 		super(world);
@@ -55,6 +58,11 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		super.onUpdate();
 		fallDistance = 0.0F;
 
+		if (getAttackTarget() == null)
+		{
+			setAttackTarget(findPlayerToAttack());
+		}
+		
 		//Randomly change our attack mode.
 		if (!worldObj.isRemote && worldObj.rand.nextInt(150) == 0)
 		{
@@ -62,22 +70,21 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		}
 	}
 
-	@Override
-	protected Entity findPlayerToAttack()
+	protected EntityPlayer findPlayerToAttack()
 	{
 		if (rand.nextInt(15) != 1) 
 		{ 
 			return null; 
 		}
 
-		return worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
+		return worldObj.getClosestPlayerToEntity(this, 16D);
 	}
 
 	@Override
 	public boolean getCanSpawnHere() 
 	{
 		int i = MathHelper.floor_double(posX);
-		int j = MathHelper.floor_double(boundingBox.minY);
+		int j = MathHelper.floor_double(getEntityBoundingBox().minY);
 		int k = MathHelper.floor_double(posZ);
 
 		return BlockHelper.getBlock(worldObj, i, j - 1, k) == Blocks.grass && super.getCanSpawnHere();
@@ -107,12 +114,13 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 		return "mob.spider.death";
 	}
 
-	@Override
+	//	@Override
+	//FIXME
 	protected void attackEntity(Entity entity, float f)
 	{
 		if (attackMode.getInt() == 0) // SWORD
 		{
-			if (attackTime <= 0 && f < 3.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
+			if (attackTime <= 0 && f < 3.0F && entity.getEntityBoundingBox().maxY > getEntityBoundingBox().minY && entity.getEntityBoundingBox().minY < getEntityBoundingBox().maxY)
 			{
 				attackTime = 12;
 				entity.attackEntityFrom(DamageSource.causeMobDamage(this), 6.0F);
@@ -140,7 +148,6 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 				}
 
 				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
-				hasAttacked = true;
 			}
 
 			return;
@@ -152,8 +159,12 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 	public boolean attackEntityFrom(DamageSource damageSource, float f)
 	{
 		final Entity entity = damageSource.getEntity();
-		entityToAttack = entity;
 
+		if (entity instanceof EntityLivingBase)
+		{
+			setAttackTarget((EntityLivingBase) entity);
+		}
+		
 		return super.attackEntityFrom(damageSource, f);
 	}
 

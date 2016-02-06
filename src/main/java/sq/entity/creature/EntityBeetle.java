@@ -175,7 +175,7 @@ public class EntityBeetle extends AbstractNewMob
 	@Override
 	public void appendAI()
 	{
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, 0, true));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, true));
 	}
 
 	@Override

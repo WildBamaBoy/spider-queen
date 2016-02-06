@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import sq.core.ReputationHandler;
@@ -53,14 +54,14 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 		{
 			if (nearestPlayer.getHeldItem() != null && Block.getBlockFromItem(nearestPlayer.getHeldItem().getItem()) instanceof BlockFlower)
 			{
-				entityToAttack = nearestPlayer;
+				setAttackTarget(nearestPlayer);
 			}
 			
 			else
 			{
-				if (entityToAttack == nearestPlayer)
+				if (getAttackTarget() == nearestPlayer)
 				{
-					entityToAttack = null;
+					setAttackTarget(null);
 				}
 			}
 		}
@@ -120,7 +121,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 			
 			if (!entity.worldObj.isRemote)
 			{
-				Utils.spawnParticlesAroundEntityS("heart", this, 16);
+				Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, this, 16);
 				dropItem(ModItems.nectar, 1);
 			}
 		}
@@ -201,9 +202,9 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	}
 
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
-		return super.getCommandSenderName();
+		return super.getName();
 	}
 	
 	@Override

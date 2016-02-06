@@ -2,12 +2,12 @@ package sq.entity.creature;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
@@ -21,6 +21,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import radixcore.data.DataWatcherEx;
 import radixcore.data.IWatchable;
 import radixcore.data.WatchedBoolean;
@@ -163,73 +164,68 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		swingProgress = (float) swingProgressTicks / (float) 8;
 	}
 
-	@Override //armorItemInSlot
-	public ItemStack func_130225_q(int armorId)
-	{
-		return null;
-	}
-
 	@Override
 	protected boolean canDespawn()
 	{
 		return false;
 	}
 
-	@Override
-	protected Entity findPlayerToAttack()
-	{
-		EntityPlayer entityPlayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
-
-		if (entityPlayer != null && canEntityBeSeen(entityPlayer))
-		{
-			PlayerData data = SpiderCore.getPlayerData(entityPlayer);
-			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
-
-			if (data.humanLike.getInt() < 0 || extension.getTimesHitByPlayer() >= 2)
-			{
-				return entityPlayer;
-			}
-
-			else
-			{
-				return null;
-			}
-		} 
-
-		else
-		{
-			for (Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 16))
-			{
-				if (entity instanceof EntityMob || entity instanceof AbstractNewMob)
-				{
-					if (entity instanceof EntityCreeper)
-					{
-						continue;
-					}
-
-					else if (entity instanceof IFriendlyEntity)
-					{
-						continue;
-					}
-
-					else
-					{
-						if (this.canEntityBeSeen(entity))
-						{
-							return entity;
-						}
-
-						else
-						{
-							continue;
-						}
-					}
-				}
-			}
-
-			return null;
-		}
-	}
+	//FIXME
+//	@Override
+//	protected Entity findPlayerToAttack()
+//	{
+//		EntityPlayer entityPlayer = worldObj.getClosestPlayerToEntity(this, 16D);
+//
+//		if (entityPlayer != null && canEntityBeSeen(entityPlayer))
+//		{
+//			PlayerData data = SpiderCore.getPlayerData(entityPlayer);
+//			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
+//
+//			if (data.humanLike.getInt() < 0 || extension.getTimesHitByPlayer() >= 2)
+//			{
+//				return entityPlayer;
+//			}
+//
+//			else
+//			{
+//				return null;
+//			}
+//		} 
+//
+//		else
+//		{
+//			for (Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 16))
+//			{
+//				if (entity instanceof EntityMob || entity instanceof AbstractNewMob)
+//				{
+//					if (entity instanceof EntityCreeper)
+//					{
+//						continue;
+//					}
+//
+//					else if (entity instanceof IFriendlyEntity)
+//					{
+//						continue;
+//					}
+//
+//					else
+//					{
+//						if (this.canEntityBeSeen(entity))
+//						{
+//							return entity;
+//						}
+//
+//						else
+//						{
+//							continue;
+//						}
+//					}
+//				}
+//			}
+//
+//			return null;
+//		}
+//	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) 
@@ -248,55 +244,56 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 		if (source.getEntity() != null)
 		{
-			entityToAttack = source.getEntity();
+			setAttackTarget((EntityLivingBase) source.getEntity());
 		}
 
 		return super.attackEntityFrom(source, amount);
 	}
 
-	@Override
-	protected void attackEntity(Entity entity, float f)
-	{
-		attackTime--;
-
-		if (type == EnumHumanType.ARCHER)
-		{
-			if (f < 10F)
-			{
-				double dX = entity.posX - posX;
-				double dZ = entity.posZ - posZ;
-
-				if(attackTime <= 0)
-				{
-					EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
-					double d2 = (entity.posY + entity.getEyeHeight()) - 0.20000000298023224D - entityArrow.posY;
-					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
-					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-					worldObj.spawnEntityInWorld(entityArrow);
-					entityArrow.setThrowableHeading(dX, d2 + f1, dZ, 0.6F, 12F);
-					attackTime = 50;
-				}
-				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
-				hasAttacked = true;
-			}
-
-			return;
-		}
-
-		if (attackTime <= 0 && f < 2.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
-		{
-			attackTime = 40;
-			swingItem();
-
-			entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
-		}
-	}
+	//FIXME
+//	@Override
+//	protected void attackEntity(Entity entity, float f)
+//	{
+//		attackTime--;
+//
+//		if (type == EnumHumanType.ARCHER)
+//		{
+//			if (f < 10F)
+//			{
+//				double dX = entity.posX - posX;
+//				double dZ = entity.posZ - posZ;
+//
+//				if(attackTime <= 0)
+//				{
+//					EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
+//					double d2 = (entity.posY + entity.getEyeHeight()) - 0.20000000298023224D - entityArrow.posY;
+//					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
+//					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+//					worldObj.spawnEntityInWorld(entityArrow);
+//					entityArrow.setThrowableHeading(dX, d2 + f1, dZ, 0.6F, 12F);
+//					attackTime = 50;
+//				}
+//				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
+//				hasAttacked = true;
+//			}
+//
+//			return;
+//		}
+//
+//		if (attackTime <= 0 && f < 2.0F && entity.getEntityBoundingBox().maxY > getEntityBoundingBox().minY && entity.getEntityBoundingBox().minY < getEntityBoundingBox().maxY)
+//		{
+//			attackTime = 40;
+//			swingItem();
+//
+//			entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
+//		}
+//	}
 
 	@Override
 	public boolean getCanSpawnHere()
 	{
 		int i = MathHelper.floor_double(posX);
-		int j = MathHelper.floor_double(boundingBox.minY);
+		int j = MathHelper.floor_double(getEntityBoundingBox().minY);
 		int k = MathHelper.floor_double(posZ);
 		return (BlockHelper.getBlock(worldObj, i, j - 1, k) == Blocks.grass || BlockHelper.getBlock(worldObj, i, j - 1, k) == Blocks.snow_layer) && super.getCanSpawnHere();
 	}
@@ -324,7 +321,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	}
 
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return "Human";
 	}

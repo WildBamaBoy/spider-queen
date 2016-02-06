@@ -3,8 +3,11 @@ package sq.client.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -18,12 +21,14 @@ public class RenderWebslinger extends Render
 {
 	public RenderWebslinger()
 	{
+		super(Minecraft.getMinecraft().getRenderManager());
 	}
 
 	public void renderWebSlinger(EntityWebslinger entityWebslinger, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		final Tessellator tessellator = Tessellator.instance;
-
+		final Tessellator tessellator = Tessellator.getInstance();
+		final WorldRenderer ren = tessellator.getWorldRenderer();
+		
 		GL11.glPushMatrix();
 		{
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -35,12 +40,12 @@ public class RenderWebslinger extends Render
 
 			bindTexture(getEntityTexture(entityWebslinger));
 
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 1.0F, 0.0F);
-			tessellator.addVertexWithUV(-0.5F, -0.5F, 0.0D, 0, 1);
-			tessellator.addVertexWithUV(0.5F, -0.5F, 0.0D, 1, 1);
-			tessellator.addVertexWithUV(0.5F, 0.5F, 0.0D, 1, 0);
-			tessellator.addVertexWithUV(-0.5F, 0.5F, 0.0D, 0, 0);
+			ren.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+			ren.normal(0.0F, 1.0F, 0.0F);
+			ren.pos(-0.5F, -0.5F, 0.0D).tex(0, 1).endVertex();
+			ren.pos(0.5F, -0.5F, 0.0D).tex(1, 1).endVertex();
+			ren.pos(0.5F, 0.5F, 0.0D).tex(1, 0).endVertex();
+			ren.pos(-0.5F, 0.5F, 0.0D).tex(0, 0).endVertex();
 			tessellator.draw();
 
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -51,9 +56,9 @@ public class RenderWebslinger extends Render
 		{
 			final float deltaYaw = (entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F;
 
-			final Vec3 vec3d = Vec3.createVectorHelper(-0.5D, 0.03D, 0.8D);
-			vec3d.rotateAroundX(-(entityWebslinger.player.prevRotationPitch + (entityWebslinger.player.rotationPitch - entityWebslinger.player.prevRotationPitch) * rotationPitch) * 3.141593F / 180F);
-			vec3d.rotateAroundY(-(entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F);
+			final Vec3 vec3d = new Vec3(-0.5D, 0.03D, 0.8D);
+			vec3d.rotatePitch(-(entityWebslinger.player.prevRotationPitch + (entityWebslinger.player.rotationPitch - entityWebslinger.player.prevRotationPitch) * rotationPitch) * 3.141593F / 180F);
+			vec3d.rotateYaw(-(entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F);
 
 			double correctedPosX = entityWebslinger.player.prevPosX + (entityWebslinger.player.posX - entityWebslinger.player.prevPosX) * rotationPitch + vec3d.xCoord;
 			double correctedPosY = entityWebslinger.player.prevPosY + (entityWebslinger.player.posY - entityWebslinger.player.prevPosY) * rotationPitch + vec3d.yCoord;
@@ -79,14 +84,15 @@ public class RenderWebslinger extends Render
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			
-			tessellator.startDrawing(3);
-			tessellator.setColorOpaque_I(8161437);
+			ren.begin(3, DefaultVertexFormats.POSITION);
+//			tessellator.startDrawing(3);
+//			tessellator.setColorOpaque_I(8161437); //TODO
 			
 			final int verteces = 16;
 			for (int currentVertex = 0; currentVertex <= verteces; currentVertex++)
 			{
 				final float vertexPos = (float) currentVertex / (float) verteces;
-				tessellator.addVertex(posX + correctedDeltaPosX * vertexPos, posY + correctedDeltaPosY * vertexPos + 0.2F, posZ + correctedDeltaPosZ * vertexPos);
+				ren.pos(posX + correctedDeltaPosX * vertexPos, posY + correctedDeltaPosY * vertexPos + 0.2F, posZ + correctedDeltaPosZ * vertexPos).endVertex();
 			}
 
 			tessellator.draw();

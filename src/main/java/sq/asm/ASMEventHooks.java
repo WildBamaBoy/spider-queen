@@ -9,8 +9,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import radixcore.util.BlockHelper;
+import sq.blocks.BlockJack;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
 import sq.core.minecraft.ModBlocks;
@@ -35,11 +38,11 @@ public final class ASMEventHooks
 	/**
 	 * When pumpkin patches generate, randomly replace the pumpkin with the Jack block.
 	 */
-	public static void onPumpkinGenerate(World world, Random random, int x, int y, int z)
+	public static void onPumpkinGenerate(World world, Random random, BlockPos position)
 	{
 		if (random.nextInt(6) == 0)
 		{
-			BlockHelper.setBlock(world, x, y, z, ModBlocks.jack, random.nextInt(4));
+			world.setBlockState(position, ModBlocks.jack.getDefaultState().withProperty(BlockJack.FACING, EnumFacing.Plane.HORIZONTAL.random(random)), 2);
 		}
 	} 
 
@@ -48,7 +51,7 @@ public final class ASMEventHooks
 	 */
 	public static Entity onSpiderFindPlayerToAttack(EntitySpider spider)
 	{
-		return spider.worldObj.getClosestVulnerablePlayerToEntity(spider, 16.0D);
+		return spider.worldObj.getClosestPlayerToEntity(spider, 16.0D);
 	}
 
 	/**
@@ -60,18 +63,18 @@ public final class ASMEventHooks
 
 		if (SpiderCore.getConfig().useSpiderQueenModel && entity instanceof EntityPlayer && !block.getMaterial().isLiquid())
 		{
-			entity.playSound("mob.spider.step", soundtype.getVolume() * 0.15F, soundtype.getPitch());
+			entity.playSound("mob.spider.step", soundtype.getVolume() * 0.15F, soundtype.getFrequency());
 		}
 		
 		else if (BlockHelper.getBlock(entity.worldObj, posX, posY + 1, posZ) == Blocks.snow_layer)
 		{
 			soundtype = Blocks.snow_layer.stepSound;
-			entity.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+			entity.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getFrequency());
 		}
 		
 		else if (!block.getMaterial().isLiquid())
 		{
-			entity.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.15F, soundtype.getPitch());
+			entity.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getFrequency());
 		}
 	}
 }

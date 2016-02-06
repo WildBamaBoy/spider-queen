@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
@@ -32,16 +32,11 @@ import sq.enums.EnumBeeType;
  */
 public class BlockBeeHive extends Block
 {
-	private IIcon topIcon;
-	private IIcon sideIcon;
-
 	public BlockBeeHive() 
 	{
 		super(Material.ground);
 
 		final String name = "beehive";
-		setBlockName(name);
-		setBlockTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(3.0F);
@@ -55,58 +50,59 @@ public class BlockBeeHive extends Block
 	}
 
 	@Override
-	public Item getItemDropped(int unknown, Random random, int unknown2) 
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) 
 	{
 		return ModItems.nectar;
 	}
 
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) 
+	public int quantityDropped(IBlockState state, int fortune, Random random) 
 	{
 		return random.nextInt(8) + 1;
 	}
 
+
 	@Override
-	public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int meta) 
+	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) 
 	{
 		//The block was actively destroyed by a player, so grab the nearest one to blame.
 		//It *should* be the person who destroyed it.
-		EntityPlayer player = world.getClosestPlayer(posX, posY, posZ, 16.0D);
-		
+		EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 16.0D);
+
 		if (player != null) //Reputation requires a player instance, always.
 		{
 			boolean hasChangedReputation = false;
-			
+
 			//The reputation handler also requires an instance of the entity who belongs to the group
 			//that the reputation will be modified for. Search for bees around the player.
 			for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityBee.class, player, 16))
 			{
 				//Only change the reputation once by setting hasChangedReputation.
-				if (!hasChangedReputation && !world.isRemote)
+				if (!hasChangedReputation && !worldIn.isRemote)
 				{
 					ReputationHandler.onReputationChange(player, (EntityBee) entity, -1);
 					hasChangedReputation = true;
 				}
-				
+
 				//Then have all bees set the player as their target.
 				EntityBee bee = (EntityBee)entity;
-				bee.setTarget(player);
+				bee.setAttackTarget(player);
 			}
 		}
 	}
 
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random random) 
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) 
 	{
-		super.updateTick(world, x, y, z, random);
+		super.updateTick(world, pos, state, random);
 
 		//Grab the nearest player.
-		final EntityPlayer player = world.getClosestPlayer(x, y, z, 16.0D);
+		final EntityPlayer player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 16.0D);
 
 		if (player != null) //Don't bother spawning if there's no players around.
 		{
 			//Count the bees in the area.
-			List<Entity> nearbyEntities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, x, y, z, 16);
+			List<Entity> nearbyEntities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(world, pos.getX(), pos.getY(), pos.getZ(), 16);
 			int nearbyBees = 0;
 
 			for (Entity entity : nearbyEntities)
@@ -132,52 +128,38 @@ public class BlockBeeHive extends Block
 						{
 							Point3D newPoint = new Point3D(xMov, yMov, zMov);
 
-							if (BlockHelper.getBlock(world, x + newPoint.iPosX, y + newPoint.iPosY, z + newPoint.iPosZ) == Blocks.air)
+							if (BlockHelper.getBlock(world, pos.getX() + newPoint.iPosX, pos.getY() + newPoint.iPosY, pos.getZ() + newPoint.iPosZ) == Blocks.air)
 							{
 								safeSpawnAreas.add(newPoint);
 							}
 						}
 					}
 				}
-				
+
 				//Don't bother spawning if there's no safe area.
 				if (!safeSpawnAreas.isEmpty())
 				{
 					//Generate a type. Warriors and gatherers are essentially 50/50 in terms of commonality.
 					EnumBeeType type = world.rand.nextBoolean() ? EnumBeeType.GATHERER : EnumBeeType.WARRIOR;
-					
+
 					//5% chance of the type being a queen.
 					if (RadixLogic.getBooleanWithProbability(5))
 					{
 						type = EnumBeeType.QUEEN;
 					}
-					
+
 					//Create the new bee and grab a random safe spawn area.
 					EntityBee bee = new EntityBee(world, type);					
 					Point3D spawnMovement = safeSpawnAreas.get(RadixMath.getNumberInRange(0, safeSpawnAreas.size() - 1));
-					
+
 					//Set the bee's rotation relative to the spawn area and spawn.
-					bee.setPositionAndRotation((double) x + spawnMovement.iPosX + 0.5F, (double) y + spawnMovement.iPosY, (double) z + spawnMovement.iPosZ + 0.5F, (float)random.nextInt(360) + 1, 0.0F);
+					bee.setPositionAndRotation((double) pos.getX() + spawnMovement.iPosX + 0.5F, (double) pos.getY() + spawnMovement.iPosY, (double) pos.getZ() + spawnMovement.iPosZ + 0.5F, (float)random.nextInt(360) + 1, 0.0F);
 					world.spawnEntityInWorld(bee);
 				}
 			}
 		}
 
-		//On ecah tick, schedule a new update 15 seconds later.
-		world.scheduleBlockUpdate(x, y, z, this, tickRate());
-	}
-
-	@Override
-	public IIcon getIcon(int side, int meta) 
-	{
-		//Side 1 and side 0 need to use the top icon.
-		return side == 1 || side == 0 ? this.topIcon : this.sideIcon;
-	}
-
-	@Override
-	public void registerBlockIcons(IIconRegister iconRegister) 
-	{
-		sideIcon = iconRegister.registerIcon("sq:beehive-side");
-		topIcon = iconRegister.registerIcon("sq:beehive-top");
+		//On each tick, schedule a new update 15 seconds later.
+		world.scheduleBlockUpdate(pos, this, tickRate(), 1);
 	}
 }

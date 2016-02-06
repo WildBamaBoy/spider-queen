@@ -2,7 +2,6 @@ package sq.entity.creature;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -13,9 +12,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
@@ -54,27 +54,9 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	}
 
 	@Override
-	public boolean isAIEnabled()
+	public boolean isAIDisabled()
 	{
 		return true;
-	}
-
-	@Override
-	protected boolean isMovementCeased()
-	{
-		return true;
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBox(Entity entity)
-	{
-		return entity.boundingBox;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox()
-	{
-		return boundingBox;
 	}
 
 	@Override
@@ -112,7 +94,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 		//For endermen, we spawn portal particles around the cocoon.
 		if (cocoonType == EnumCocoonType.ENDERMAN && !isEaten())
 		{
-			worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * width, posY + 1 + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
+			worldObj.spawnParticle(EnumParticleTypes.PORTAL, posX + (rand.nextDouble() - 0.5D) * width, posY + 1 + rand.nextDouble() * 0.25D, posZ + rand.nextDouble() - 0.5D * width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 		}
 	}
 
@@ -146,7 +128,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				//When the cocoon has been eaten, destroy it with a puff of smoke.
 				if (isEaten())
 				{
-					worldObj.spawnParticle("largesmoke", posX - motionX * 2, posY - motionY * 2 + 1, posZ - motionZ * 2, motionX, motionY, motionZ);
+					worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX - motionX * 2, posY - motionY * 2 + 1, posZ - motionZ * 2, motionX, motionY, motionZ);
 				}
 
 				if (!worldObj.isRemote)
@@ -281,8 +263,8 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				entityPlayer.heal(3);
 				entityPlayer.getFoodStats().addStats(4, 0.4f);
 
-				worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
-				worldObj.spawnParticle("largesmoke", posX, posY + 2, posZ, motionX, motionY, motionZ);
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY + 2, posZ, motionX, motionY, motionZ);
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY + 2, posZ, motionX, motionY, motionZ);
 
 				setEaten(true);
 

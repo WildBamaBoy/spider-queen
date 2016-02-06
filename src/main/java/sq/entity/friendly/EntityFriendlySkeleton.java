@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import sq.core.ReputationHandler;
@@ -60,7 +61,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
 
 		//Add bow.
 		this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
@@ -90,7 +91,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 
 			if (!entity.worldObj.isRemote)
 			{
-				Utils.spawnParticlesAroundEntityS("heart", this, 16);
+				Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, this, 16);
 				dropItem(Items.bone, 10);
 			}
 		}
@@ -223,7 +224,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	}
 	
 	@Override
-	public String getCommandSenderName() 
+	public String getName() 
 	{
 		return "Skeleton";
 	}

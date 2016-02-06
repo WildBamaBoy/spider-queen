@@ -3,9 +3,6 @@ package sq.entity.creature;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,12 +14,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import sq.blocks.BlockWebFull;
@@ -48,6 +49,8 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	public double			accelerationY;
 	public double			accelerationZ;
 
+	private float yOffset;
+	
 	public EntityWebShot(World worldObj)
 	{
 		super(worldObj);
@@ -89,7 +92,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 		posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
 		final double deltaX = target.posX - shooter.posX;
-		final double deltaY = target.boundingBox.minY + target.height / 3.0F - posY;
+		final double deltaY = target.getEntityBoundingBox().minY + target.height / 3.0F - posY;
 		final double deltaZ = target.posZ - shooter.posZ;
 		final double distanceXZ = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ);
 
@@ -117,7 +120,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	@Override
 	public boolean isInRangeToRenderDist(double distance)
 	{
-		double weightedLength = boundingBox.getAverageEdgeLength() * 4.0D;
+		double weightedLength = getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
 		weightedLength *= 64.0D;
 		return distance < weightedLength * weightedLength;
 	}
@@ -126,7 +129,9 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	public void onUpdate()
 	{
 		//Check for all scenarios wherein the web shot needs to disappear.
-		if (!worldObj.isRemote && (ticksInAir > 150 || shooter != null && shooter.isDead || !worldObj.blockExists((int) posX, (int) posY, (int) posZ)))
+		if (!worldObj.isRemote 
+				&& (ticksInAir > 150 || shooter != null 
+				&& shooter.isDead))
 		{
 			setDead();
 		}
@@ -169,12 +174,13 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public float getShadowSize()
-	{
-		return 0.0F;
-	}
+	//FIXME
+//	@SideOnly(Side.CLIENT)
+//	@Override
+//	public float getShadowSize()
+//	{
+//		return 0.0F;
+//	}
 
 	@Override
 	public float getBrightness(float unknown)
@@ -238,19 +244,19 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 	private void updateCollision()
 	{
-		Vec3 currentVector = Vec3.createVectorHelper(posX, posY, posZ);
-		Vec3 nextVector = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		Vec3 currentVector = new Vec3(posX, posY, posZ);
+		Vec3 nextVector = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
 		MovingObjectPosition collisionPosition = worldObj.rayTraceBlocks(currentVector, nextVector);
-		currentVector = Vec3.createVectorHelper(posX, posY, posZ);
-		nextVector = Vec3.createVectorHelper(posX + motionX, posY + motionY, posZ + motionZ);
+		currentVector = new Vec3(posX, posY, posZ);
+		nextVector = new Vec3(posX + motionX, posY + motionY, posZ + motionZ);
 
 		if (collisionPosition != null)
 		{
-			nextVector = Vec3.createVectorHelper(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
+			nextVector = new Vec3(collisionPosition.hitVec.xCoord, collisionPosition.hitVec.yCoord, collisionPosition.hitVec.zCoord);
 		}
 
 		Entity collidedEntity = null;
-		final List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+		final List entitiesInAABB = worldObj.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 		double lastDistance = 0.0D;
 
 		for (int counter = 0; counter < entitiesInAABB.size(); ++counter)
@@ -259,7 +265,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 			if (entityInList.canBeCollidedWith() && (!entityInList.isEntityEqual(shooter) || ticksInAir >= 25))
 			{
-				final AxisAlignedBB AABB = entityInList.boundingBox.expand(0.3D, 0.3D, 0.3D);
+				final AxisAlignedBB AABB = entityInList.getEntityBoundingBox().expand(0.3D, 0.3D, 0.3D);
 				final MovingObjectPosition entityCollisionPosition = AABB.calculateIntercept(currentVector, nextVector);
 
 				if (entityCollisionPosition != null)
@@ -283,7 +289,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		if (collisionPosition != null)
 		{
 			//When we have a collision position, get the block before passing it to onImpact.
-			Block block = BlockHelper.getBlock(worldObj, collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
+			Block block = BlockHelper.getBlock(worldObj, collisionPosition.getBlockPos().getX(), collisionPosition.getBlockPos().getY(), collisionPosition.getBlockPos().getZ());
 
 			if (block.getMaterial() == Material.plants) //Ignore all plants.
 			{
@@ -403,13 +409,15 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 			else if (doBlockSpawn)
 			{
 				//Figure out what we hit and where, and which side.
-				final Block blockHit = BlockHelper.getBlock(worldObj, impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
-				int impactX = impactPoint.blockX;
-				int impactY = impactPoint.blockY;
-				int impactZ = impactPoint.blockZ;
+				int impactX = impactPoint.getBlockPos().getX();
+				int impactY = impactPoint.getBlockPos().getY();
+				int impactZ = impactPoint.getBlockPos().getZ();
+				
+				final Block blockHit = BlockHelper.getBlock(worldObj, impactX, impactY, impactZ);
+
 
 				//Calculate the side that the web will need to be on.
-				EnumSide sideHit = EnumSide.byId(impactPoint.sideHit);
+				EnumSide sideHit = EnumSide.SOUTH; //impactPoint.sideHit;//FIXME
 				int xMov = sideHit == EnumSide.NORTH ? -1 : sideHit == EnumSide.SOUTH ? 1 : 0;
 				int yMov = sideHit == EnumSide.BOTTOM ? -1 : sideHit == EnumSide.TOP ? 1 : 0;
 				int zMov = sideHit == EnumSide.EAST ? -1 : sideHit == EnumSide.WEST ? 1 : 0;
@@ -479,7 +487,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 				if (blockToSet == Blocks.air || blockToSet instanceof BlockWebFull) //Prevent overwriting terrain.
 				{
-					BlockHelper.setBlock(worldObj, impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced, meta);
+					BlockHelper.setBlock(worldObj, impactX + xMov, impactY + yMov, impactZ + zMov, blockPlaced.getStateFromMeta(meta));
 				}
 
 				setDead();

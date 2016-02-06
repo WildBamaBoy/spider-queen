@@ -2,12 +2,12 @@ package sq.items;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import radixcore.constant.Particle;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import sq.core.SpiderCore;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.util.Utils;
@@ -23,7 +23,6 @@ public class ItemFreezeRod extends Item
 		
 		final String name = "freeze-rod";
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
 		setMaxDamage(32);
@@ -39,7 +38,7 @@ public class ItemFreezeRod extends Item
 			EntityFreezeBall freezeBall = new EntityFreezeBall(world, player);
 			world.spawnEntityInWorld(freezeBall);
 
-			Utils.spawnParticlesAroundEntityS(Particle.SNOWBALL, player, 32);
+			Utils.spawnParticlesAroundEntityS(EnumParticleTypes.SNOWBALL, player, 32);
 		}
 		
 		stack.setItemDamage(stack.getItemDamage() + 1);

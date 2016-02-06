@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -25,7 +26,8 @@ import sq.util.Utils;
 public class EntityFreezeBall extends EntityThrowable
 {
 	private EntityLivingBase shooter;
-
+	private float yOffset;
+	
 	public EntityFreezeBall(World world) 
 	{
 		super(world);
@@ -52,7 +54,7 @@ public class EntityFreezeBall extends EntityThrowable
 
 		this.posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
 		double d0 = target.posX - shooter.posX;
-		double d1 = target.boundingBox.minY + target.height / 3.0F - this.posY;
+		double d1 = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
 		double d2 = target.posZ - shooter.posZ;
 		double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 
@@ -82,7 +84,7 @@ public class EntityFreezeBall extends EntityThrowable
 				worldObj.playSoundAtEntity(shooter, "fireworks.largeBlast", 1.0F, 1.0F);
 				worldObj.playSoundAtEntity(entityHit, "fireworks.largeBlast", 1.0F, 1.0F);
 
-				Utils.spawnParticlesAroundEntityS(Particle.SNOWBALL, entityHit, 16);
+				Utils.spawnParticlesAroundEntityS(EnumParticleTypes.SNOWBALL, entityHit, 16);
 
 				for (Point3D point : RadixLogic.getNearbyBlocks(entityHit, Blocks.grass, 1))
 				{
@@ -97,16 +99,16 @@ public class EntityFreezeBall extends EntityThrowable
 
 			for (int i = -2; i < 2; i++) for (int j = -1; j < 3; j++) for (int k = -2; k < 2; k++)
 			{
-				Block block = BlockHelper.getBlock(worldObj, objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k);
+				Block block = BlockHelper.getBlock(worldObj, (int)objectPosition.hitVec.xCoord + i, (int)objectPosition.hitVec.yCoord + j, (int)objectPosition.hitVec.zCoord + k);
 
 				if (block == Blocks.water || block == Blocks.flowing_water)
 				{
-					BlockHelper.setBlock(worldObj, objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k, Blocks.ice);
+					BlockHelper.setBlock(worldObj, (int)objectPosition.hitVec.xCoord + i, (int)objectPosition.hitVec.yCoord + j, (int)objectPosition.hitVec.zCoord + k, Blocks.ice);
 				}
 
 				else if (block == Blocks.fire)
 				{
-					BlockHelper.setBlock(worldObj, objectPosition.blockX + i, objectPosition.blockY + j, objectPosition.blockZ + k, Blocks.air);
+					BlockHelper.setBlock(worldObj, (int)objectPosition.hitVec.xCoord + i, (int)objectPosition.hitVec.yCoord + j, (int)objectPosition.hitVec.zCoord + k, Blocks.air);
 				}
 			}
 

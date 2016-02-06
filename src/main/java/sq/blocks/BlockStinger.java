@@ -1,12 +1,14 @@
 package sq.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import sq.core.SpiderCore;
 
 /**
@@ -19,20 +21,19 @@ public class BlockStinger extends Block
 		super(Material.circuits);
 		
 		final String name = "stinger";
-		setBlockName(name);
-		setBlockTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setHardness(1.0F);
 		
 		GameRegistry.registerBlock(this, name);
 	}
 
+	
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity entity) 
+	public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) 
 	{
 		//onEntityWalking is only called when the entity was falling and it landed on
 		//this block. When this happens, damage them for 3 points.
-		entity.attackEntityFrom(DamageSource.cactus, 3);
+		entityIn.attackEntityFrom(DamageSource.cactus, 3);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class BlockStinger extends Block
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
+	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) 
 	{
 		//No collision.
 		return null;

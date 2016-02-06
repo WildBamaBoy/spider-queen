@@ -1,7 +1,7 @@
 package sq.client.render;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import sq.entity.creature.EntitySpiderEgg;
 
 /**
  * Sets the texture on the ghast egg model pre-render.
@@ -16,7 +16,7 @@ public class RenderGhastEgg extends RenderSpiderEgg
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
+	protected ResourceLocation getEntityTexture(EntitySpiderEgg entity)
 	{
 		return TEXTURE;
 	}

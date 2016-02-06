@@ -51,7 +51,7 @@ public class GuiSleep extends GuiScreen
 			//and advance the time of day in-game if all players are asleep.
 			if (!hasSentSleepComplete)
 			{
-				SpiderCore.getPacketHandler().sendPacketToServer(new PacketSleepS(player.getCommandSenderName(), true));
+				SpiderCore.getPacketHandler().sendPacketToServer(new PacketSleepS(player.getName(), true));
 				hasSentSleepComplete = true;
 			}
 		}
@@ -63,7 +63,7 @@ public class GuiSleep extends GuiScreen
 		super.onGuiClosed();
 		
 		//When we close out of this GUI, tell the server we are no longer sleeping.
-		SpiderCore.getPacketHandler().sendPacketToServer(new PacketSleepS(player.getCommandSenderName(), false));
+		SpiderCore.getPacketHandler().sendPacketToServer(new PacketSleepS(player.getName(), false));
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class GuiSleep extends GuiScreen
 		if (sleepProgress > 0)
 		{
 			//This draws the purple gradient on the screen.
-			ScaledResolution scaledResolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+			ScaledResolution scaledResolution = new ScaledResolution(this.mc);
 
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);

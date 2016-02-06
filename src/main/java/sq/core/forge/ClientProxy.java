@@ -1,7 +1,7 @@
 package sq.core.forge;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import sq.client.render.RenderAnt;
 import sq.client.render.RenderBee;
 import sq.client.render.RenderBeetle;

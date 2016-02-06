@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "sq:lantern-top",
+        "front": "sq:lantern-side",
+        "side": "sq:lantern-side"
+    }
+}

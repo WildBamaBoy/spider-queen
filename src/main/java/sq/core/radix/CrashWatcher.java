@@ -5,7 +5,7 @@ import java.io.File;
 import java.net.Socket;
 import java.util.Scanner;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import radixcore.core.ModCrashWatcher;
 import sq.core.SpiderCore;
 

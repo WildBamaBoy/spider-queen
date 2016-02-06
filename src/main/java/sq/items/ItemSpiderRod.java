@@ -1,14 +1,15 @@
 package sq.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
@@ -24,7 +25,6 @@ public class ItemSpiderRod extends Item
 		
 		final String name = "spider-rod";
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
 		
@@ -32,24 +32,23 @@ public class ItemSpiderRod extends Item
 	}
 	
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) 
 	{
-		EnumFacing facing = EnumFacing.getFront(meta);
-		Block targetBlock = BlockHelper.getBlock(world, posX, posY, posZ);
-		Block aboveBlock = BlockHelper.getBlock(world, posX, posY + 1, posZ);
+		Block targetBlock = worldIn.getBlockState(pos).getBlock();
+		Block aboveBlock = worldIn.getBlockState(new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ())).getBlock();
 		boolean targetIsPlant = targetBlock instanceof IPlantable;
 		
-		if (!world.isRemote && facing == EnumFacing.UP && targetBlock.getMaterial().isSolid() || targetIsPlant && aboveBlock == Blocks.air)
+		if (!worldIn.isRemote && side == EnumFacing.UP && targetBlock.getMaterial().isSolid() || targetIsPlant && aboveBlock == Blocks.air)
 		{
-			if (!player.capabilities.isCreativeMode)
+			if (!playerIn.capabilities.isCreativeMode)
 			{
 				stack.stackSize--;
 			}
 			
-			posY = targetIsPlant ? posY : posY + 1;
-			BlockHelper.setBlock(world, posX, posY, posZ, ModBlocks.spiderRod);
+			int posY = targetIsPlant ? pos.getY() : pos.getY() + 1;
+			BlockHelper.setBlock(worldIn, pos.getX(), posY, pos.getZ(), ModBlocks.spiderRod);
 		}
 		
-		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);
+		return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
 	}
 }

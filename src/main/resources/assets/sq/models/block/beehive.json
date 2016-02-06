@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "sq:beehive-top",
+        "front": "sq:beehive-side",
+        "side": "sq:beehive-side"
+    }
+}
