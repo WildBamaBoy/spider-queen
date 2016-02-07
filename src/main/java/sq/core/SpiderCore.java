@@ -149,7 +149,6 @@ public final class SpiderCore
 		config = new Config(event);
 		crashWatcher = new CrashWatcher();
 		packetHandler = new SpiderPacketHandler(ID);
-		proxy.registerRenderers();
 		proxy.registerEventHandlers();
 		playerDataMap = new HashMap<String, AbstractPlayerData>();
 		fakePlayerNames = downloadFakePlayerNames();
@@ -223,6 +222,7 @@ public final class SpiderCore
 		items = ModItems.getInstance();
 		blocks = ModBlocks.getInstance();
 		achievements = ModAchievements.getInstance();
+		proxy.registerRenderers();
 		proxy.registerModelMeshers();
 		
 		//Register entities.
