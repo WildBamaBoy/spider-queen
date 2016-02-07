@@ -1,6 +1,14 @@
 package sq.core.minecraft;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import sq.blocks.BlockAntHill;
 import sq.blocks.BlockBeeHive;
 import sq.blocks.BlockJack;
@@ -12,6 +20,7 @@ import sq.blocks.BlockWebBed;
 import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
 import sq.blocks.BlockWebSide;
+import sq.core.SpiderCore;
 import sq.enums.EnumWebType;
 
 /**
@@ -19,23 +28,37 @@ import sq.enums.EnumWebType;
  */
 public final class ModBlocks
 {
-	public static BlockAntHill antHill;
-	public static BlockBeeHive beeHive;
-	public static BlockJack jack;
-	public static BlockWebFull poisonWebFull;
-	public static BlockWebSide poisonWebSide;
-	public static BlockWebGround poisonWebGround;
-	public static BlockSpiderRod spiderRod;
-	public static BlockStinger stinger;
-	public static BlockWebBed webBed;
-	public static BlockWebFull webFull;
-	public static BlockWebSide webSide;
-	public static BlockWebGround webGround;
-	public static BlockMandCrop cropMand;
-	public static BlockLantern lantern;
+	private static ModBlocks instance;
 	
-	public ModBlocks()
+	public BlockAntHill antHill;
+	public BlockBeeHive beeHive;
+	public BlockJack jack;
+	public BlockWebFull poisonWebFull;
+	public BlockWebSide poisonWebSide;
+	public BlockWebGround poisonWebGround;
+	public BlockSpiderRod spiderRod;
+	public BlockStinger stinger;
+	public BlockWebBed webBed;
+	public BlockWebFull webFull;
+	public BlockWebSide webSide;
+	public BlockWebGround webGround;
+	public BlockMandCrop cropMand;
+	public BlockLantern lantern;
+	
+	public static ModBlocks getInstance()
 	{
+		if (instance == null)
+		{
+			instance = new ModBlocks(); 
+		}
+		
+		return instance;
+	}
+	
+	private ModBlocks()
+	{
+		instance = this;
+		
 		antHill = new BlockAntHill();
 		beeHive = new BlockBeeHive();
 		jack = new BlockJack();
@@ -56,19 +79,40 @@ public final class ModBlocks
 	{	
 		if (web instanceof BlockWebGround)
 		{
-			return poisonWebGround;
+			return SpiderCore.getBlocks().poisonWebGround;
 		}
 		
 		else if (web instanceof BlockWebSide)
 		{
-			return poisonWebSide;
+			return SpiderCore.getBlocks().poisonWebSide;
 		}
 		
 		else if (web instanceof BlockWebFull)
 		{
-			return poisonWebFull;
+			return SpiderCore.getBlocks().poisonWebFull;
 		}
 		
 		return null;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void registerModelMeshers()
+	{
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+
+		for (Field f : ModBlocks.class.getFields())
+		{
+			try
+			{
+				Item item = Item.getItemFromBlock((Block) f.get(instance));
+				String name = item.getUnlocalizedName().substring(5);
+				mesher.register(item, 0, new ModelResourceLocation("sq:" + name, "inventory"));
+			}
+
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 }

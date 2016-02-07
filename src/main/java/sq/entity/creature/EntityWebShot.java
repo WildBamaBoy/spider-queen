@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -29,8 +28,8 @@ import radixcore.util.RadixLogic;
 import sq.blocks.BlockWebFull;
 import sq.blocks.BlockWebGround;
 import sq.blocks.BlockWebSide;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
-import sq.core.minecraft.ModBlocks;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSide;
 import sq.enums.EnumWebType;
@@ -398,7 +397,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 						{
 							EntityPlayer player = (EntityPlayer)shooter;
 							MinecraftForge.EVENT_BUS.post(new LivingDeathEvent(entityHit, DamageSource.causePlayerDamage(player)));
-							player.triggerAchievement(ModAchievements.catchMob);
+							player.triggerAchievement(SpiderCore.getAchievements().catchMob);
 						}
 					}
 
@@ -427,7 +426,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 				//When hitting a 'partial' web, the web will be made full.
 				if (blockHit instanceof BlockWebGround || blockHit instanceof BlockWebSide)
 				{
-					blockPlaced = ModBlocks.webFull;
+					blockPlaced = SpiderCore.getBlocks().webFull;
 
 					if (blockHit instanceof BlockWebGround)
 					{
@@ -451,12 +450,12 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 				{
 					if (sideHit == EnumSide.TOP)
 					{
-						blockPlaced = ModBlocks.webGround;
+						blockPlaced = SpiderCore.getBlocks().webGround;
 					}
 
 					else
 					{
-						blockPlaced = ModBlocks.webSide;
+						blockPlaced = SpiderCore.getBlocks().webSide;
 					}
 				}
 
@@ -479,7 +478,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 				//Change the actual block to the poison web variant.
 				if (type == EnumWebType.POISON)
 				{
-					blockPlaced = ModBlocks.getPoisonWebVariant(blockPlaced);
+					blockPlaced = SpiderCore.getBlocks().getPoisonWebVariant(blockPlaced);
 				}
 
 				//Set the web at the impact point.

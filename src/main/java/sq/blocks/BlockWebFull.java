@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.constant.Time;
 import radixcore.util.BlockHelper;
-import sq.core.minecraft.ModBlocks;
+import sq.core.SpiderCore;
 import sq.entity.IWebClimber;
 import sq.enums.EnumWebType;
 
@@ -51,6 +51,7 @@ public class BlockWebFull extends Block
 			name += "-side";
 		}
 
+		setUnlocalizedName(name);
 		GameRegistry.registerBlock(this, name);
 	}
 
@@ -91,7 +92,7 @@ public class BlockWebFull extends Block
 	{
 		if (webType == EnumWebType.NORMAL)
 		{
-			Block fillerBlock = ModBlocks.webFull;
+			Block fillerBlock = SpiderCore.getBlocks().webFull;
 			Block[] outlineBlocks = new Block[]
 					{
 							Blocks.log,
@@ -139,15 +140,15 @@ public class BlockWebFull extends Block
 
 			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
 			{
-				BlockHelper.setBlock(world, x-1,y,z-1,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x-1,y,z,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x-1,y,z+1,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x,y,z-1,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x,y,z,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x,y,z+1,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x+1,y,z-1,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x+1,y,z,ModBlocks.webBed);
-				BlockHelper.setBlock(world, x+1,y,z+1,ModBlocks.webBed);
+				BlockHelper.setBlock(world, x-1,y,z-1,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x-1,y,z,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x-1,y,z+1,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x,y,z-1,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x,y,z,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x,y,z+1,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x+1,y,z-1,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x+1,y,z,SpiderCore.getBlocks().webBed);
+				BlockHelper.setBlock(world, x+1,y,z+1,SpiderCore.getBlocks().webBed);
 			}
 
 			else

@@ -16,7 +16,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import sq.core.ReputationHandler;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.entity.creature.EntityBee;
 import sq.util.Utils;
 
@@ -122,7 +122,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 			if (!entity.worldObj.isRemote)
 			{
 				Utils.spawnParticlesAroundEntityS(EnumParticleTypes.HEART, this, 16);
-				dropItem(ModItems.nectar, 1);
+				dropItem(SpiderCore.getItems().nectar, 1);
 			}
 		}
 		
@@ -210,6 +210,6 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	@Override
 	public Item getEgg()
 	{
-		return ModItems.eggFriendlyBee;
+		return SpiderCore.getItems().eggFriendlyBee;
 	}
 }

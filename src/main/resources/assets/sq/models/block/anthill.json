@@ -1,7 +1,7 @@
 {
-    "parent": "block/cube_all",
+    "parent": "block/cross",
     "textures":
     {
-        "all":"sq:blocks/anthill"
+        "cross":"sq:blocks/anthill"
     }
 }

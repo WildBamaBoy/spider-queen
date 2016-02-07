@@ -16,7 +16,6 @@ import radixcore.util.BlockHelper;
 import sq.blocks.BlockJack;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
-import sq.core.minecraft.ModBlocks;
 
 /***
  * This class contains the method calls that Spider Queen injects into various parts of Minecraft.
@@ -30,7 +29,7 @@ public final class ASMEventHooks
 	{
 		if (!world.isRemote)
 		{
-			player.triggerAchievement(ModAchievements.eatToGetString);
+			player.triggerAchievement(SpiderCore.getAchievements().eatToGetString);
 			player.entityDropItem(new ItemStack(Items.string, world.rand.nextInt(3) + 1), 1.0F);
 		}
 	}
@@ -42,7 +41,7 @@ public final class ASMEventHooks
 	{
 		if (random.nextInt(6) == 0)
 		{
-			world.setBlockState(position, ModBlocks.jack.getDefaultState().withProperty(BlockJack.FACING, EnumFacing.Plane.HORIZONTAL.random(random)), 2);
+			world.setBlockState(position, SpiderCore.getBlocks().jack.getDefaultState().withProperty(BlockJack.FACING, EnumFacing.Plane.HORIZONTAL.random(random)), 2);
 		}
 	} 
 

@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/rare-fruit.png"
+        "layer0": "sq:items/rare-fruit"
     },
     "display": {
         "thirdperson": {

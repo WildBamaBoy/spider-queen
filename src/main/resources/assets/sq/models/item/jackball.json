@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/jackball.png"
+        "layer0": "sq:items/jackball"
     },
     "display": {
         "thirdperson": {

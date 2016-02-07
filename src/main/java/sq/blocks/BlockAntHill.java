@@ -9,10 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
 import sq.core.SpiderCore;
@@ -32,6 +36,7 @@ public class BlockAntHill extends Block
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(1.0F);
+		setUnlocalizedName(name);
 		
 		GameRegistry.registerBlock(this, name);
 	}
@@ -88,11 +93,11 @@ public class BlockAntHill extends Block
     	return false;
     }
 	
-	@Override
-	public int getRenderType()
-	{
-		return 1;
-	}
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 	
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) 

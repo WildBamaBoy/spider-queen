@@ -7,8 +7,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import sq.core.SpiderCore;
 
 /**
@@ -24,6 +27,7 @@ public class BlockStinger extends Block
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setHardness(1.0F);
 		
+		setUnlocalizedName(name);
 		GameRegistry.registerBlock(this, name);
 	}
 
@@ -42,11 +46,11 @@ public class BlockStinger extends Block
 		return false;
 	}
 	
-	@Override
-	public int getRenderType()
-	{
-		return 1;
-	}
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) 

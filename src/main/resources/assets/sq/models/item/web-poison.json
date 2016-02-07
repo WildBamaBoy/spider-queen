@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/web-poison.png"
+        "layer0": "sq:items/web-poison"
     },
     "display": {
         "thirdperson": {

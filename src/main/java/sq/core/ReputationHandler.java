@@ -111,7 +111,7 @@ public class ReputationHandler
 		if (newReputation == 0 && oldReputation == -1)
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They are calling for a truce."));
-			player.triggerAchievement(ModAchievements.makeFriend);
+			player.triggerAchievement(SpiderCore.getAchievements().makeFriend);
 		}
 
 		for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
@@ -126,7 +126,7 @@ public class ReputationHandler
 		if (newReputation > 3 && newReputation % 2 == 0)
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They give you one of their own."));
-			player.triggerAchievement(ModAchievements.makeFriend);
+			player.triggerAchievement(SpiderCore.getAchievements().makeFriend);
 
 			Class friendClass = FriendlyEntityHelper.getFriendlyVariant(living);
 
@@ -170,27 +170,27 @@ public class ReputationHandler
 
 				if (entity instanceof EntityFriendlyBee)
 				{
-					achievement = ModAchievements.getFriendlyBee;
+					achievement = SpiderCore.getAchievements().getFriendlyBee;
 				}
 
 				else if (entity instanceof EntityFriendlyMandragora)
 				{
-					achievement = ModAchievements.getFriendlyMandragora;					
+					achievement = SpiderCore.getAchievements().getFriendlyMandragora;					
 				}
 
 				else if (entity instanceof EntityFriendlyCreeper)
 				{
-					achievement = ModAchievements.getFriendlyCreeper;
+					achievement = SpiderCore.getAchievements().getFriendlyCreeper;
 				}
 
 				else if (entity instanceof EntityFriendlySkeleton)
 				{
-					achievement = ModAchievements.getFriendlySkeleton;
+					achievement = SpiderCore.getAchievements().getFriendlySkeleton;
 				}
 
 				else if (entity instanceof EntityFriendlyZombie)
 				{
-					achievement = ModAchievements.getFriendlyZombie;
+					achievement = SpiderCore.getAchievements().getFriendlyZombie;
 				}
 
 				if (achievement != null)
@@ -217,7 +217,7 @@ public class ReputationHandler
 		//Broken truce.
 		if (newReputation == -1 && oldReputation == 0)
 		{
-			player.triggerAchievement(ModAchievements.makeEnemy);
+			player.triggerAchievement(SpiderCore.getAchievements().makeEnemy);
 			player.addChatComponentMessage(new ChatComponentText(
 					Color.RED + "You have broken your truce with the " + living.getName() + "s!"));
 		}

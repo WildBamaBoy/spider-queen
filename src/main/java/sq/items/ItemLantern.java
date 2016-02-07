@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
 
 /**
  * Defines the lantern item, which just places the lantern block into the world when used.
@@ -38,7 +37,7 @@ public class ItemLantern extends Item
 				stack.stackSize--;
 			}
 			
-			BlockHelper.setBlock(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), ModBlocks.lantern);
+			BlockHelper.setBlock(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), SpiderCore.getBlocks().lantern);
 		}
 		
 		return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);

@@ -33,14 +33,12 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import radixcore.inventory.Inventory;
 import radixcore.math.Point3D;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
-import sq.core.minecraft.ModBlocks;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.entity.IWebClimber;
 import sq.entity.throwable.EntityBoomBall;
 import sq.enums.EnumSpiderType;
@@ -833,7 +831,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				final double distanceToOwner = RadixMath.getDistanceToEntity(this, ownerPlayer);
 				final ItemStack currentItemStack = ownerPlayer.inventory.mainInventory[ownerPlayer.inventory.currentItem];
 
-				if (currentItemStack != null && distanceToOwner < 25.0D && currentItemStack.getItem() == ModItems.spiderRod)
+				if (currentItemStack != null && distanceToOwner < 25.0D && currentItemStack.getItem() == SpiderCore.getItems().spiderRod)
 				{
 					target = null;
 					moveToPlayer(ownerPlayer);
@@ -847,7 +845,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 	private void tryMoveToSpiderRod()
 	{
-		final Point3D nearestRod = RadixLogic.getFirstNearestBlock(this, ModBlocks.spiderRod, 10);
+		final Point3D nearestRod = RadixLogic.getFirstNearestBlock(this, SpiderCore.getBlocks().spiderRod, 10);
 
 		if (nearestRod != null && RadixMath.getDistanceToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, posX, posY, posZ) > 5.0D)
 		{

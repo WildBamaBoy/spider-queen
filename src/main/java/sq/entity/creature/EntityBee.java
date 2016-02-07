@@ -18,7 +18,6 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
 import sq.core.radix.PlayerData;
 import sq.entity.AbstractFlyingMob;
 import sq.entity.IRep;
@@ -52,7 +51,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	{
 		if (SpiderCore.rand.nextBoolean())
 		{
-			dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1);
+			dropItem(Item.getItemFromBlock(SpiderCore.getBlocks().stinger), 1);
 		}
 	}
 
@@ -89,7 +88,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		{
 			Block block = BlockHelper.getBlock(worldObj, (int)posX, (int)posY, (int)posZ);
 
-			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass || block == ModBlocks.beeHive)
+			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass || block == SpiderCore.getBlocks().beeHive)
 			{
 				return false;
 			}

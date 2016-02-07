@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/ghast-egg.png"
+        "layer0": "sq:items/ghast-egg"
     },
     "display": {
         "thirdperson": {

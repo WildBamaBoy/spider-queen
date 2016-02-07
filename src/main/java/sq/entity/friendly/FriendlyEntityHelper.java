@@ -26,8 +26,6 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import radixcore.util.RadixString;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
-import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityBee;
 
 /**
@@ -129,7 +127,7 @@ public final class FriendlyEntityHelper
 			final double distanceToOwner = RadixMath.getDistanceToEntity(me, friendPlayer);
 			final ItemStack currentItemStack = friendPlayer.inventory.mainInventory[friendPlayer.inventory.currentItem];
 
-			if (currentItemStack != null && distanceToOwner < 25.0D && (currentItemStack.getItem() == ModItems.spiderRod))
+			if (currentItemStack != null && distanceToOwner < 25.0D && (currentItemStack.getItem() == SpiderCore.getItems().spiderRod))
 			{
 				moveToPlayer(friendlyEntity, friendPlayer);
 				return true;
@@ -142,7 +140,7 @@ public final class FriendlyEntityHelper
 	public static void tryMoveToStationaryRod(IFriendlyEntity friendlyEntity)
 	{
 		final EntityLiving me = friendlyEntity.getInstance();
-		Point3D nearestRod = RadixLogic.getFirstNearestBlock(me, ModBlocks.spiderRod, 10);
+		Point3D nearestRod = RadixLogic.getFirstNearestBlock(me, SpiderCore.getBlocks().spiderRod, 10);
 
 		if (nearestRod != null && RadixMath.getDistanceToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, me.posX, me.posY, me.posZ) >= 5.0D)
 		{

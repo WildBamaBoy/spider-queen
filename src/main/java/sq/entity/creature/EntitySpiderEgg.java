@@ -12,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,8 +20,8 @@ import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
-import sq.core.minecraft.ModItems;
 import sq.enums.EnumSpiderType;
 
 /**
@@ -109,7 +108,7 @@ public class EntitySpiderEgg extends EntityCreature
 		if (entity instanceof EntityPlayer && !entity.worldObj.isRemote)
 		{
 			setDead();
-			entityDropItem(new ItemStack(ModItems.spiderEgg), entity.worldObj.rand.nextFloat());
+			entityDropItem(new ItemStack(SpiderCore.getItems().spiderEgg), entity.worldObj.rand.nextFloat());
 		}
 
 		return true;
@@ -214,30 +213,30 @@ public class EntitySpiderEgg extends EntityCreature
 			{
 				if (spider.getSpiderType() == EnumSpiderType.WIMPY)
 				{
-					player.triggerAchievement(ModAchievements.hatchSpider);
+					player.triggerAchievement(SpiderCore.getAchievements().hatchSpider);
 				}
 
 				else
 				{
-					player.triggerAchievement(ModAchievements.hatchSpiderByCocoon);
+					player.triggerAchievement(SpiderCore.getAchievements().hatchSpiderByCocoon);
 					
 					Achievement specialAchievement = null;
 					
 					switch (spider.getSpiderType())
 					{
-					case BOOM: specialAchievement = ModAchievements.hatchBoomSpider;
+					case BOOM: specialAchievement = SpiderCore.getAchievements().hatchBoomSpider;
 						break;
-					case ENDER: specialAchievement = ModAchievements.hatchEnderSpider;
+					case ENDER: specialAchievement = SpiderCore.getAchievements().hatchEnderSpider;
 						break;
-					case NOVA: specialAchievement = ModAchievements.hatchNovaSpider;
+					case NOVA: specialAchievement = SpiderCore.getAchievements().hatchNovaSpider;
 						break;
-					case PACK: specialAchievement = ModAchievements.hatchPackSpider;
+					case PACK: specialAchievement = SpiderCore.getAchievements().hatchPackSpider;
 						break;
-					case RIDER: specialAchievement = ModAchievements.hatchRiderSpider;
+					case RIDER: specialAchievement = SpiderCore.getAchievements().hatchRiderSpider;
 						break;
-					case SLINGER: specialAchievement = ModAchievements.hatchSlingerSpider;
+					case SLINGER: specialAchievement = SpiderCore.getAchievements().hatchSlingerSpider;
 						break;
-					case TANK: specialAchievement = ModAchievements.hatchTankSpider;
+					case TANK: specialAchievement = SpiderCore.getAchievements().hatchTankSpider;
 						break;
 					default:
 						break;

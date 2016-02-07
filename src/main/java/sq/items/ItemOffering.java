@@ -22,7 +22,6 @@ import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.enums.EnumOfferingType;
 
 /**
@@ -63,17 +62,17 @@ public final class ItemOffering extends Item
 		Item item = entityItem.getEntityItem().getItem();
 
 		//Determine the entity list to use.
-		if (item == ModItems.brain)
+		if (item == SpiderCore.getItems().brain)
 		{
 			acceptorClass = EntityZombie.class;
 		}
 
-		else if (item == ModItems.skull)
+		else if (item == SpiderCore.getItems().skull)
 		{
 			acceptorClass = EntitySkeleton.class;
 		}
 
-		else if (item == ModItems.heart)
+		else if (item == SpiderCore.getItems().heart)
 		{
 			acceptorClass = EntityCreeper.class;
 		}

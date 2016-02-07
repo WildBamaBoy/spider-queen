@@ -31,6 +31,8 @@ public class BlockWebBed extends Block
 	public BlockWebBed()
 	{
 		super(Material.circuits);
+		
+		setUnlocalizedName("web-bed");
 		GameRegistry.registerBlock(this, "web-bed");
 	}
 

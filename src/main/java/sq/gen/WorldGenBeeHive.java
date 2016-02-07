@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import radixcore.util.BlockHelper;
-import sq.core.minecraft.ModBlocks;
+import sq.core.SpiderCore;
 
 /**
  * Handles generating bee hives in the world.
@@ -75,18 +75,18 @@ public class WorldGenBeeHive implements IWorldGenerator
 				{
 					if (pass == 1)
 					{
-						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY + 1, z, ModBlocks.beeHive); }
-						BlockHelper.setBlock(world, x + 1, midLogY, z, ModBlocks.beeHive);
-						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY - 1, z, ModBlocks.beeHive); }
-						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY, z + 1, ModBlocks.beeHive); }
-						BlockHelper.setBlock(world, x + 1, midLogY, z - 1, ModBlocks.beeHive);
+						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY + 1, z, SpiderCore.getBlocks().beeHive); }
+						BlockHelper.setBlock(world, x + 1, midLogY, z, SpiderCore.getBlocks().beeHive);
+						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY - 1, z, SpiderCore.getBlocks().beeHive); }
+						if (random.nextBoolean()) { BlockHelper.setBlock(world, x + 1, midLogY, z + 1, SpiderCore.getBlocks().beeHive); }
+						BlockHelper.setBlock(world, x + 1, midLogY, z - 1, SpiderCore.getBlocks().beeHive);
 					}
 
 					else
 					{
 						if (BlockHelper.getBlock(world, x + pass + 1, midLogY, z) != Blocks.air)
 						{
-							BlockHelper.setBlock(world, x + pass, midLogY, z, ModBlocks.beeHive);
+							BlockHelper.setBlock(world, x + pass, midLogY, z, SpiderCore.getBlocks().beeHive);
 						}
 					}
 

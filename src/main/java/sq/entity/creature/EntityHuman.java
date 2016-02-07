@@ -5,14 +5,10 @@ import java.util.Random;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -32,12 +28,9 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import radixcore.util.RadixString;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
-import sq.entity.AbstractNewMob;
 import sq.entity.IRep;
 import sq.entity.ai.RepEntityExtension;
-import sq.entity.friendly.IFriendlyEntity;
 import sq.enums.EnumHumanType;
 
 /**
@@ -109,9 +102,9 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 			//Drop offering items.
 			Random r = worldObj.rand;
 			
-			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(ModItems.skull), 1.0F); }
-			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(ModItems.heart), 1.0F); }
-			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(ModItems.brain), 1.0F); }
+			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(SpiderCore.getItems().skull), 1.0F); }
+			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(SpiderCore.getItems().heart), 1.0F); }
+			if(r.nextInt(100) < 30) { entityDropItem(new ItemStack(SpiderCore.getItems().brain), 1.0F); }
 		}
 	}
 

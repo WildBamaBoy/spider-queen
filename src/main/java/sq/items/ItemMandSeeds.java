@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
 
 /**
  * Defines the mandragora seeds, which place mandragora crop blocks on farmland when used.
@@ -39,7 +38,7 @@ public class ItemMandSeeds extends Item
 				stack.stackSize--;
 			}
 			
-			BlockHelper.setBlock(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), ModBlocks.cropMand);
+			BlockHelper.setBlock(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), SpiderCore.getBlocks().cropMand);
 		}
 		
 		return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);

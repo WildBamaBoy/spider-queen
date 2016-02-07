@@ -26,7 +26,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import radixcore.constant.Time;
 import sq.core.ReputationHandler;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.entity.creature.EntityHuman;
 import sq.util.Utils;
 
@@ -86,7 +86,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 			ReputationHandler.handleInteractWithImprisoned(entity, this);
 		}
 		
-		if (heldItem != null && heldItem.getItem() == ModItems.brain)
+		if (heldItem != null && heldItem.getItem() == SpiderCore.getItems().brain)
 		{
 			heldItem.stackSize--;
 			
@@ -220,6 +220,6 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	@Override
 	public Item getEgg()
 	{
-		return ModItems.eggFriendlyZombie;
+		return SpiderCore.getItems().eggFriendlyZombie;
 	}
 }

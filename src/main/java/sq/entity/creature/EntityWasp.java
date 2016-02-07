@@ -3,7 +3,6 @@ package sq.entity.creature;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
 import sq.entity.AbstractFlyingMob;
 
 /**
@@ -85,7 +84,7 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		if (SpiderCore.rand.nextBoolean())
 		{
-			dropItem(Item.getItemFromBlock(ModBlocks.stinger), 1);
+			dropItem(Item.getItemFromBlock(SpiderCore.getBlocks().stinger), 1);
 		}
 	}
 }

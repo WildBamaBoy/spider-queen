@@ -94,12 +94,10 @@ import sq.entity.friendly.EntityFriendlyZombie;
 import sq.entity.throwable.EntityBoomBall;
 import sq.entity.throwable.EntityFreezeBall;
 import sq.entity.throwable.EntityJackBall;
-import sq.enums.EnumCocoonType;
 import sq.enums.EnumWatchedDataIDs;
 import sq.gen.WorldGenAntHill;
 import sq.gen.WorldGenBeeHive;
 import sq.gen.WorldGenFactory;
-import sq.items.ItemCocoon;
 import sq.util.SpawnEntry;
 
 @Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.1.1,)", acceptedMinecraftVersions = "[1.8.9]",
@@ -212,22 +210,21 @@ public final class SpiderCore
 	public void init(FMLInitializationEvent event)
 	{
 		//Set up the creative tab.
-		ModItems.cocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN);
 		creativeTab = new CreativeTabs("tabSQ")
 		{
 			@Override
 			public Item getTabIconItem()
 			{
-				return ModItems.cocoonEnderman;
+				return items == null ? null : items.cocoonEnderman;
 			}
 		};
-		ModItems.cocoonEnderman.setCreativeTab(creativeTab);
 
 		//Register classes from sq.core.minecraft.
-		items = new ModItems();
-		blocks = new ModBlocks();
-		achievements = new ModAchievements();
-
+		items = ModItems.getInstance();
+		blocks = ModBlocks.getInstance();
+		achievements = ModAchievements.getInstance();
+		proxy.registerModelMeshers();
+		
 		//Register entities.
 		int id = config.baseEntityId;
 		EntityRegistry.registerModEntity(EntityAnt.class, EntityAnt.class.getSimpleName(), id, this, 50, 2, true); id++;
@@ -258,12 +255,12 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityFreezeBall.class, EntityFreezeBall.class.getSimpleName(), id, this, 50,  2, true); id++;
 
 		//Register recipes.
-		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webNormal), Items.string, Items.string, Items.string);
-		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webPoison), Items.string, Items.string, Items.string, ModBlocks.stinger);
-		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webPoison), ModItems.webNormal, ModBlocks.stinger);
-		GameRegistry.addRecipe(new ItemStack(ModItems.spiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'T', Blocks.torch, 'S', Items.stick);
-		GameRegistry.addRecipe(new ItemStack(ModItems.recallRod), "GDG", " S ", " S ", 'G', Blocks.glass, 'D', Items.glowstone_dust, 'S', Items.stick);
-		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
+		GameRegistry.addShapelessRecipe(new ItemStack(items.webNormal), Items.string, Items.string, Items.string);
+		GameRegistry.addShapelessRecipe(new ItemStack(items.webPoison), Items.string, Items.string, Items.string, SpiderCore.getBlocks().stinger);
+		GameRegistry.addShapelessRecipe(new ItemStack(items.webPoison), items.webNormal, SpiderCore.getBlocks().stinger);
+		GameRegistry.addRecipe(new ItemStack(items.spiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'T', Blocks.torch, 'S', Items.stick);
+		GameRegistry.addRecipe(new ItemStack(items.recallRod), "GDG", " S ", " S ", 'G', Blocks.glass, 'D', Items.glowstone_dust, 'S', Items.stick);
+		GameRegistry.addRecipe(new ItemStack(items.webslinger), "DS ", "SS ", "  S", 'D', SpiderCore.getBlocks().stinger, 'S', Items.string);
 		
 		//Add spawns.
 		Spawner.registerSpawnEntry(new SpawnEntry(EntityBeetle.class, 70, 1, 3, EnumCreatureType.MONSTER, BiomeGenBase.extremeHills, BiomeGenBase.forest,
@@ -355,6 +352,21 @@ public final class SpiderCore
 		return instance;
 	}
 
+	public static ModBlocks getBlocks()
+	{
+		return blocks;
+	}
+	
+	public static ModItems getItems()
+	{
+		return items;
+	}
+	
+	public static ModAchievements getAchievements()
+	{
+		return achievements;
+	}
+	
 	public static Logger getLog()
 	{
 		return logger;

@@ -13,7 +13,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.entity.creature.EntityMandragora;
 import sq.entity.friendly.EntityFriendlyMandragora;
 
@@ -29,7 +29,8 @@ public class BlockMandCrop extends BlockCrops
 	{
 		super();
 
-		final String name = "mandragora";		
+		final String name = "mandragora";
+		setUnlocalizedName(name);
 		GameRegistry.registerBlock(this, name);
 	}
 
@@ -37,7 +38,7 @@ public class BlockMandCrop extends BlockCrops
     public List<ItemStack> getDrops(net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         List<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(new ItemStack(ModItems.mandragoraSeeds));
+        ret.add(new ItemStack(SpiderCore.getItems().mandragoraSeeds));
         return ret;
     }
 

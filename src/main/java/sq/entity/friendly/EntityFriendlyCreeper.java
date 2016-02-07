@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.constant.Time;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.util.Utils;
 
 /**
@@ -192,7 +192,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 			setTired(false);
 		}
 		
-		if (!isTired() && heldItem != null && heldItem.getItem() == ModItems.heart)
+		if (!isTired() && heldItem != null && heldItem.getItem() == SpiderCore.getItems().heart)
 		{
 			heldItem.stackSize--;
 
@@ -322,6 +322,6 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	@Override
 	public Item getEgg()
 	{
-		return ModItems.eggFriendlyCreeper;
+		return SpiderCore.getItems().eggFriendlyCreeper;
 	}
 }

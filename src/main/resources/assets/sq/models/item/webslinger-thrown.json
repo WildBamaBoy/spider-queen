@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/webslinger-thrown.png"
+        "layer0": "sq:items/webslinger-thrown"
     },
     "display": {
         "thirdperson": {

@@ -21,7 +21,6 @@ import radixcore.packets.PacketDataContainer;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
-import sq.core.minecraft.ModItems;
 import sq.core.minecraft.Spawner;
 import sq.core.radix.PlayerData;
 import sq.entity.ai.PlayerExtension;
@@ -114,7 +113,7 @@ public final class EventHooksFML
 				//Check for buffs when light level is above 8.
 				if (player.worldObj.getBlockLightOpacity(new BlockPos((int) player.posX, (int) player.posY, (int) player.posZ)) <= 8)
 				{
-					player.triggerAchievement(ModAchievements.goInTheDark);
+					player.triggerAchievement(SpiderCore.getAchievements().goInTheDark);
 
 					if (SpiderCore.getConfig().enableNightVision && player.getActivePotionEffect(Potion.nightVision) == null)
 					{
@@ -215,29 +214,29 @@ public final class EventHooksFML
 	{
 		final EntityPlayer player = event.player;
 
-		if (event.crafting.getItem() == ModItems.webNormal)
+		if (event.crafting.getItem() == SpiderCore.getItems().webNormal)
 		{
-			player.triggerAchievement(ModAchievements.craftWeb);
+			player.triggerAchievement(SpiderCore.getAchievements().craftWeb);
 		}
 
-		else if (event.crafting.getItem() == ModItems.spiderRod)
+		else if (event.crafting.getItem() == SpiderCore.getItems().spiderRod)
 		{
-			player.triggerAchievement(ModAchievements.craftSpiderRod);
+			player.triggerAchievement(SpiderCore.getAchievements().craftSpiderRod);
 		}
 
-		else if (event.crafting.getItem() == ModItems.recallRod)
+		else if (event.crafting.getItem() == SpiderCore.getItems().recallRod)
 		{
-			player.triggerAchievement(ModAchievements.craftRecallRod);
+			player.triggerAchievement(SpiderCore.getAchievements().craftRecallRod);
 		}
 
-		else if (event.crafting.getItem() == ModItems.webslinger)
+		else if (event.crafting.getItem() == SpiderCore.getItems().webslinger)
 		{
-			player.triggerAchievement(ModAchievements.craftWebslinger);
+			player.triggerAchievement(SpiderCore.getAchievements().craftWebslinger);
 		}
 
-		else if (event.crafting.getItem() == ModItems.webPoison)
+		else if (event.crafting.getItem() == SpiderCore.getItems().webPoison)
 		{
-			player.triggerAchievement(ModAchievements.craftPoisonWeb);
+			player.triggerAchievement(SpiderCore.getAchievements().craftPoisonWeb);
 		}
 	}
 }

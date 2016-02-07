@@ -13,7 +13,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 
 /**
  * The lantern is simply a new placeable light block.
@@ -27,6 +27,7 @@ public class BlockLantern extends Block
 		final String name = "lantern";
 		setTickRandomly(true);
 		setHardness(3.0F);
+		setUnlocalizedName(name);
 		
 		GameRegistry.registerBlock(this, name + "-block");
 	}
@@ -47,14 +48,14 @@ public class BlockLantern extends Block
 	public Item getItemDropped(IBlockState state, Random random, int unknown2) 
 	{
 		//Return the lantern item when this block is broken.
-		return ModItems.lantern;
+		return SpiderCore.getItems().lantern;
 	}
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) 
 	{
 		//The "block" is used only in the world. Return our item when middle clicking.
-		return new ItemStack(ModItems.lantern);
+		return new ItemStack(SpiderCore.getItems().lantern);
 	}
 	
 	@Override

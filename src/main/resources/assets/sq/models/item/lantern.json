@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/lantern.png"
+        "layer0": "sq:items/lantern"
     },
     "display": {
         "thirdperson": {

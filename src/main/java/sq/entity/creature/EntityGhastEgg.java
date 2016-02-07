@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixMath;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 
 /**
  * The ghast egg is a spider egg variant that hatches into a mini ghast.
@@ -47,7 +47,7 @@ public class EntityGhastEgg extends EntitySpiderEgg
 		if (entity instanceof EntityPlayer && !entity.worldObj.isRemote)
 		{
 			setDead();
-			entityDropItem(new ItemStack(ModItems.ghastEgg), entity.worldObj.rand.nextFloat());
+			entityDropItem(new ItemStack(SpiderCore.getItems().ghastEgg), entity.worldObj.rand.nextFloat());
 		}
 
 		return true;

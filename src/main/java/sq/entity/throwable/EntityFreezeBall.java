@@ -13,7 +13,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;

@@ -8,8 +8,6 @@ import radixcore.constant.Time;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
-import sq.core.minecraft.ModItems;
 import sq.entity.AbstractFlyingMob;
 import sq.entity.throwable.EntityJackBall;
 
@@ -58,7 +56,7 @@ public class EntityJack extends AbstractFlyingMob
 
 				if (allowBlockPlace)
 				{
-					BlockHelper.setBlock(worldObj, (int)posX, (int)posY + yMov + 1, (int)posZ, ModBlocks.jack);
+					BlockHelper.setBlock(worldObj, (int)posX, (int)posY + yMov + 1, (int)posZ, SpiderCore.getBlocks().jack);
 					setDead();
 				}
 			}
@@ -115,7 +113,7 @@ public class EntityJack extends AbstractFlyingMob
 	{
 		if (hitByPlayer)
 		{
-			this.dropItem(ModItems.lantern, 1);
+			this.dropItem(SpiderCore.getItems().lantern, 1);
 		}
 	}
 }

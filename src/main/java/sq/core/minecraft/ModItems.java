@@ -1,7 +1,14 @@
 package sq.core.minecraft;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import sq.core.SpiderCore;
 import sq.entity.creature.EntityAnt;
 import sq.entity.creature.EntityBee;
@@ -42,61 +49,65 @@ import sq.items.ItemWebslinger;
  */
 public final class ModItems
 {
-	public static ItemCocoon cocoonBlackAnt;
-	public static ItemCocoon cocoonRedAnt;
-	public static ItemCocoon cocoonCow;
-	public static ItemCocoon cocoonCreeper;
-	public static ItemCocoon cocoonGathererBee;
-	public static ItemCocoon cocoonHuman;
-	public static ItemCocoon cocoonPig;
-	public static ItemCocoon cocoonQueenBee;
-	public static ItemCocoon cocoonSheep;
-	public static ItemCocoon cocoonSkeleton;
-	public static ItemCocoon cocoonWarriorBee;
-	public static ItemCocoon cocoonWasp;
-	public static ItemCocoon cocoonWolf;
-	public static ItemCocoon cocoonZombie;
-	public static ItemCocoon cocoonEnderman;
-	public static ItemCocoon cocoonChicken;
-	public static ItemCocoon cocoonVillager;
-	public static ItemCocoon cocoonHorse;
+	private static ModItems instance;
 	
-	public static ItemEggSpawner eggAntBlack;
-	public static ItemEggSpawner eggBee;
-	public static ItemEggSpawner eggBeetle;
-	public static ItemEggSpawner eggFly;
-	public static ItemEggSpawner eggJack;
-	public static ItemEggSpawner eggMandragora;
-	public static ItemEggSpawner eggOctopus;
-	public static ItemEggSpawner eggSpiderQueen;
-	public static ItemEggSpawner eggWasp;
-	public static ItemEggSpawner eggYuki;
-	public static ItemEggSpawner eggFriendlyCreeper;
-	public static ItemEggSpawner eggFriendlySkeleton;
-	public static ItemEggSpawner eggFriendlyZombie;
-	public static ItemEggSpawner eggFriendlyBee;
-	public static ItemEggSpawner eggFriendlyMandragora;
-	public static ItemEggSpawner eggHuman;
+	public final ItemCocoon cocoonBlackAnt;
+	public final ItemCocoon cocoonRedAnt;
+	public final ItemCocoon cocoonCow;
+	public final ItemCocoon cocoonCreeper;
+	public final ItemCocoon cocoonGathererBee;
+	public final ItemCocoon cocoonHuman;
+	public final ItemCocoon cocoonPig;
+	public final ItemCocoon cocoonQueenBee;
+	public final ItemCocoon cocoonSheep;
+	public final ItemCocoon cocoonSkeleton;
+	public final ItemCocoon cocoonWarriorBee;
+	public final ItemCocoon cocoonWasp;
+	public final ItemCocoon cocoonWolf;
+	public final ItemCocoon cocoonZombie;
+	public final ItemCocoon cocoonEnderman;
+	public final ItemCocoon cocoonChicken;
+	public final ItemCocoon cocoonVillager;
+	public final ItemCocoon cocoonHorse;
 	
-	public static ItemGhastEgg ghastEgg;
-	public static ItemSpiderEgg spiderEgg;
-	public static ItemWeb webNormal;
-	public static ItemWeb webPoison;
-	public static ItemRareFruit rareFruit;
-	public static ItemOffering skull;
-	public static ItemOffering heart;
-	public static ItemOffering brain;
-	public static ItemSpiderRod spiderRod;
-	public static ItemRecallRod recallRod;
-	public static ItemFreezeRod freezeRod;
-	public static ItemWebslinger webslinger;
-	public static ItemNectar nectar;
-	public static ItemMandSeeds mandragoraSeeds;
-	public static Item royalBlood;
-	public static ItemLantern lantern;
+	public final ItemEggSpawner eggAntBlack;
+	public final ItemEggSpawner eggBee;
+	public final ItemEggSpawner eggBeetle;
+	public final ItemEggSpawner eggFly;
+	public final ItemEggSpawner eggJack;
+	public final ItemEggSpawner eggMandragora;
+	public final ItemEggSpawner eggOctopus;
+	public final ItemEggSpawner eggSpiderQueen;
+	public final ItemEggSpawner eggWasp;
+	public final ItemEggSpawner eggYuki;
+	public final ItemEggSpawner eggFriendlyCreeper;
+	public final ItemEggSpawner eggFriendlySkeleton;
+	public final ItemEggSpawner eggFriendlyZombie;
+	public final ItemEggSpawner eggFriendlyBee;
+	public final ItemEggSpawner eggFriendlyMandragora;
+	public final ItemEggSpawner eggHuman;
 	
-	public ModItems()
+	public final ItemGhastEgg ghastEgg;
+	public final ItemSpiderEgg spiderEgg;
+	public final ItemWeb webNormal;
+	public final ItemWeb webPoison;
+	public final ItemRareFruit rareFruit;
+	public final ItemOffering skull;
+	public final ItemOffering heart;
+	public final ItemOffering brain;
+	public final ItemSpiderRod spiderRod;
+	public final ItemRecallRod recallRod;
+	public final ItemFreezeRod freezeRod;
+	public final ItemWebslinger webslinger;
+	public final ItemNectar nectar;
+	public final ItemMandSeeds mandragoraSeeds;
+	public final Item royalBlood;
+	public final ItemLantern lantern;
+	
+	private ModItems()
 	{
+		instance = this;
+		
 		cocoonBlackAnt = new ItemCocoon(EnumCocoonType.BLACK_ANT);
 		cocoonRedAnt = new ItemCocoon(EnumCocoonType.RED_ANT);
 		cocoonCow = new ItemCocoon(EnumCocoonType.COW);
@@ -111,6 +122,7 @@ public final class ModItems
 		cocoonWasp = new ItemCocoon(EnumCocoonType.WASP);
 		cocoonWolf = new ItemCocoon(EnumCocoonType.WOLF);
 		cocoonZombie = new ItemCocoon(EnumCocoonType.ZOMBIE);
+		cocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN);
 		cocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN);
 		cocoonVillager = new ItemCocoon(EnumCocoonType.VILLAGER);
 		cocoonHorse = new ItemCocoon(EnumCocoonType.HORSE);
@@ -150,5 +162,36 @@ public final class ModItems
 
 		royalBlood = new Item().setCreativeTab(SpiderCore.getCreativeTab()).setUnlocalizedName("royalblood").setMaxStackSize(1);
 		GameRegistry.registerItem(royalBlood, "royalblood");
+	}
+	
+	public static ModItems getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new ModItems(); 
+		}
+		
+		return instance;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void registerModelMeshers()
+	{
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+
+		for (Field f : ModItems.class.getFields())
+		{
+			try
+			{
+				Item item = (Item) f.get(instance);
+				String name = item.getUnlocalizedName().substring(5);
+				mesher.register(item, 0, new ModelResourceLocation("sq:" + name, "inventory"));
+			}
+
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 }

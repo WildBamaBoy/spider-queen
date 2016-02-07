@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/mandragora-seeds.png"
+        "layer0": "sq:items/mandragora-seeds"
     },
     "display": {
         "thirdperson": {

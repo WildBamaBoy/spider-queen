@@ -7,7 +7,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
 import sq.entity.AbstractNewMob;
 import sq.enums.EnumAntType;
 
@@ -67,7 +66,7 @@ public class EntityAnt extends AbstractNewMob
 				{
 					Block block = BlockHelper.getBlock(worldObj, (int)posX + i, (int)posY + j, (int)posZ + k);
 
-					if (block != Blocks.bedrock && block != ModBlocks.antHill && worldObj.rand.nextBoolean())
+					if (block != Blocks.bedrock && block != SpiderCore.getBlocks().antHill && worldObj.rand.nextBoolean())
 					{
 						BlockHelper.setBlock(worldObj, (int)posX + i, (int)posY + j, (int)posZ + k, Blocks.air);
 						break;

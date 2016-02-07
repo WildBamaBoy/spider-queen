@@ -21,7 +21,6 @@ import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityBee;
 import sq.enums.EnumBeeType;
 
@@ -40,7 +39,8 @@ public class BlockBeeHive extends Block
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(3.0F);
-
+		setUnlocalizedName(name);
+		
 		GameRegistry.registerBlock(this, name);
 	}
 
@@ -52,7 +52,7 @@ public class BlockBeeHive extends Block
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) 
 	{
-		return ModItems.nectar;
+		return SpiderCore.getItems().nectar;
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockPos;
@@ -26,6 +28,8 @@ public class BlockJack extends BlockDirectional
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setTickRandomly(true);
 		setHardness(3.0F);
+		setUnlocalizedName(name);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		
 		GameRegistry.registerBlock(this, name);
 	}
@@ -51,5 +55,15 @@ public class BlockJack extends BlockDirectional
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    }
+    
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {FACING});
+    }
+    
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
     }
 }

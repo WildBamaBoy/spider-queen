@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import radixcore.util.BlockHelper;
-import sq.core.minecraft.ModBlocks;
+import sq.core.SpiderCore;
 
 /**
  * Generates the ant hill in the world.
@@ -89,7 +89,7 @@ public class WorldGenAntHill implements IWorldGenerator
 		}
 
 		//Set the ant hill at the origin point.
-		BlockHelper.setBlock(world, i,j,k, ModBlocks.antHill);
+		BlockHelper.setBlock(world, i,j,k, SpiderCore.getBlocks().antHill);
 		return true;
 	}
 }

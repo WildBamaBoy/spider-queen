@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/egg-yuki.png"
+        "layer0": "sq:items/egg-yuki"
     },
     "display": {
         "thirdperson": {

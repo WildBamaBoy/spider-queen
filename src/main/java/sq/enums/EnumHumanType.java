@@ -8,7 +8,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityHuman;
 
 /**
@@ -204,9 +203,9 @@ public enum EnumHumanType
 			else if (fortuneLevel == 2)
 			{
 				list.add(new ItemStack(Items.diamond_hoe, RadixMath.getNumberInRange(0, 1)));
-				list.add(new ItemStack(ModItems.nectar, RadixMath.getNumberInRange(0, 16)));
-				list.add(new ItemStack(ModItems.rareFruit, RadixMath.getNumberInRange(0, 2)));
-				list.add(new ItemStack(ModItems.mandragoraSeeds, RadixMath.getNumberInRange(0, 3)));
+				list.add(new ItemStack(SpiderCore.getItems().nectar, RadixMath.getNumberInRange(0, 16)));
+				list.add(new ItemStack(SpiderCore.getItems().rareFruit, RadixMath.getNumberInRange(0, 2)));
+				list.add(new ItemStack(SpiderCore.getItems().mandragoraSeeds, RadixMath.getNumberInRange(0, 3)));
 				list.add(new ItemStack(Items.emerald, RadixMath.getNumberInRange(0, 2)));
 			}
 		}

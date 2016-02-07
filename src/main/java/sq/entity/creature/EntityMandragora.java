@@ -11,7 +11,6 @@ import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.entity.AbstractNewMob;
 
 /**
@@ -150,7 +149,7 @@ public class EntityMandragora extends AbstractNewMob
 		if (hitByPlayer && RadixLogic.getBooleanWithProbability(45))
 		{
 			//Randomly drops mandragora seeds.
-			this.dropItem(ModItems.mandragoraSeeds, 1);
+			this.dropItem(SpiderCore.getItems().mandragoraSeeds, 1);
 		}
 	}
 

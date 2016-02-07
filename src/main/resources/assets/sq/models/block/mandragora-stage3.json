@@ -1,6 +1,6 @@
 {
     "parent": "block/crop",
     "textures": {
-        "crop": "blocks/mand_crop_4"
+        "crop": "sq:blocks/mand_crop_4"
     }
 }

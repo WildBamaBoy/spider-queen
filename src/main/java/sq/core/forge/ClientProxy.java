@@ -103,6 +103,13 @@ public final class ClientProxy extends ServerProxy
 	}
 	
 	@Override
+	public void registerModelMeshers()
+	{
+		SpiderCore.getItems().registerModelMeshers();
+		SpiderCore.getBlocks().registerModelMeshers();
+	}
+	
+	@Override
 	public void registerEventHandlers() 
 	{
 	}

@@ -19,4 +19,9 @@ public class ServerProxy
 	{
 		
 	}
+
+	public void registerModelMeshers() 
+	{
+	
+	}
 }

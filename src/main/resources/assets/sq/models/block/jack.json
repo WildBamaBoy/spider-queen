@@ -1,8 +1,8 @@
 {
     "parent": "block/orientable",
     "textures": {
-        "top": "sq:jack-top",
-        "front": "sq:jack-face",
-        "side": "sq:jack-side"
+        "top": "sq:blocks/jack-top",
+        "front": "sq:blocks/jack-face",
+        "side": "sq:blocks/jack-side"
     }
 }

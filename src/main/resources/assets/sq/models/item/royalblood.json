@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/royal-blood.png"
+        "layer0": "sq:items/royal-blood"
     },
     "display": {
         "thirdperson": {

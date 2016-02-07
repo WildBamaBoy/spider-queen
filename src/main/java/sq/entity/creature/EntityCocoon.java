@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import radixcore.util.RadixExcept;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.enums.EnumAntType;
 import sq.enums.EnumBeeType;
 import sq.enums.EnumCocoonType;
@@ -287,7 +287,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 
 					if (doDropEgg)
 					{
-						entityDropItem(new ItemStack(ModItems.spiderEgg, dropAmount, 0), 0);
+						entityDropItem(new ItemStack(SpiderCore.getItems().spiderEgg, dropAmount, 0), 0);
 					}
 				}
 			}

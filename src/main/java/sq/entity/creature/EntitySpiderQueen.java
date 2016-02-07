@@ -17,7 +17,6 @@ import radixcore.data.IWatchable;
 import radixcore.data.WatchedInt;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.entity.IWebClimber;
 
 /**
@@ -171,9 +170,9 @@ public class EntitySpiderQueen extends EntityCreature implements IWebClimber, IW
 	@Override
 	protected void dropFewItems(boolean hitByPlayer, int lootLevel)
 	{
-		dropItem(ModItems.spiderEgg, 3);
-		dropItem(ModItems.webNormal, 3);
-		dropItem(ModItems.royalBlood, 1);
+		dropItem(SpiderCore.getItems().spiderEgg, 3);
+		dropItem(SpiderCore.getItems().webNormal, 3);
+		dropItem(SpiderCore.getItems().royalBlood, 1);
 		dropItem(Items.saddle, 1);
 	}
 

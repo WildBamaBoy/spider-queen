@@ -18,14 +18,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import radixcore.constant.Particle;
 import radixcore.constant.Time;
 import radixcore.math.Point3D;
 import radixcore.util.BlockHelper;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.ReputationHandler;
-import sq.core.minecraft.ModItems;
+import sq.core.SpiderCore;
 import sq.entity.creature.EntityMandragora;
 import sq.util.Utils;
 
@@ -238,6 +237,6 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	@Override
 	public Item getEgg()
 	{
-		return ModItems.eggFriendlyMandragora;
+		return SpiderCore.getItems().eggFriendlyMandragora;
 	}
 }

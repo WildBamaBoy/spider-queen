@@ -17,6 +17,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import radixcore.constant.Font.Color;
+import sq.core.SpiderCore;
 import sq.core.minecraft.ModItems;
 import sq.entity.creature.EntityAnt;
 import sq.entity.creature.EntityBee;
@@ -85,7 +86,7 @@ public enum EnumCocoonType
 			{
 				if (f.getName().equalsIgnoreCase("cocoon" + name().toLowerCase().replace("_", "")))
 				{
-					ItemCocoon item = (ItemCocoon) f.get(null);
+					ItemCocoon item = (ItemCocoon) f.get(SpiderCore.getItems());
 					return item;
 				}
 			}

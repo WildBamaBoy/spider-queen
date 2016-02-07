@@ -41,7 +41,6 @@ import radixcore.util.RadixLogic;
 import sq.core.ReputationHandler;
 import sq.core.SpiderCore;
 import sq.core.minecraft.ModAchievements;
-import sq.core.minecraft.ModItems;
 import sq.core.radix.PlayerData;
 import sq.entity.AbstractNewMob;
 import sq.entity.IRep;
@@ -183,7 +182,7 @@ public final class EventHooksForge
 				{
 					if (!ghast.worldObj.isRemote && RadixLogic.getBooleanWithProbability(50))
 					{
-						ghast.dropItem(ModItems.ghastEgg, 1);
+						ghast.dropItem(SpiderCore.getItems().ghastEgg, 1);
 					}
 
 					//Half the ghast's health to prevent farming eggs.
@@ -425,9 +424,9 @@ public final class EventHooksForge
 	{
 		if (event.entityPlayer != null)
 		{
-			if (event.item.getEntityItem().getItem() == ModItems.spiderEgg)
+			if (event.item.getEntityItem().getItem() == SpiderCore.getItems().spiderEgg)
 			{
-				event.entityPlayer.triggerAchievement(ModAchievements.acquireEgg);
+				event.entityPlayer.triggerAchievement(SpiderCore.getAchievements().acquireEgg);
 			}
 		}
 	}

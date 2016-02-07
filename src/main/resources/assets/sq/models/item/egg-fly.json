@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "sq:items/egg-fly.png"
+        "layer0": "sq:items/egg-fly"
     },
     "display": {
         "thirdperson": {

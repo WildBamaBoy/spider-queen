@@ -9,7 +9,6 @@ import radixcore.constant.Time;
 import radixcore.util.RadixLogic;
 import radixcore.util.RadixMath;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModItems;
 import sq.entity.AbstractFlyingMob;
 import sq.entity.throwable.EntityFreezeBall;
 
@@ -121,7 +120,7 @@ public class EntityYuki extends AbstractFlyingMob
 	{
 		if (RadixLogic.getBooleanWithProbability(75))
 		{
-			this.dropItem(ModItems.freezeRod, 1);
+			this.dropItem(SpiderCore.getItems().freezeRod, 1);
 		}
 	}
 }

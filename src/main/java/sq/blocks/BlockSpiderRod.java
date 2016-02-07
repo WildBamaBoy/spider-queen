@@ -11,11 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import sq.core.minecraft.ModItems;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import sq.core.SpiderCore;
 
 /**
  * The spider rod is a small placeable item in the world that generates a small amount of light.
@@ -30,6 +33,7 @@ public class BlockSpiderRod extends Block
 		final String name = "spiderrod";
 		setHardness(0.5F);
 
+		setUnlocalizedName(name);
 		GameRegistry.registerBlock(this, name);
 	}
 
@@ -44,14 +48,14 @@ public class BlockSpiderRod extends Block
 	public Item getItemDropped(IBlockState state, Random random, int unknown2) 
 	{
 		//Drop the item, NEVER the block.
-		return ModItems.spiderRod;
+		return SpiderCore.getItems().spiderRod;
 	}
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) 
 	{
 		//Return the item on middle click, not the block.
-		return new ItemStack(ModItems.spiderRod);
+		return new ItemStack(SpiderCore.getItems().spiderRod);
 	}
 
 	@Override
@@ -60,11 +64,11 @@ public class BlockSpiderRod extends Block
 		return false;
 	}
 
-	@Override
-	public int getRenderType()
-	{
-		return 1;
-	}
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 
 	@Override
 	public int getLightValue() 

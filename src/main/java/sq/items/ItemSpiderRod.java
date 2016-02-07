@@ -12,7 +12,6 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.util.BlockHelper;
 import sq.core.SpiderCore;
-import sq.core.minecraft.ModBlocks;
 
 /**
  * The spider rod item is used to attract friendlies to the player holding it, or to place the spider rod block into the world.
@@ -46,7 +45,7 @@ public class ItemSpiderRod extends Item
 			}
 			
 			int posY = targetIsPlant ? pos.getY() : pos.getY() + 1;
-			BlockHelper.setBlock(worldIn, pos.getX(), posY, pos.getZ(), ModBlocks.spiderRod);
+			BlockHelper.setBlock(worldIn, pos.getX(), posY, pos.getZ(), SpiderCore.getBlocks().spiderRod);
 		}
 		
 		return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
