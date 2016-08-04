@@ -63,7 +63,7 @@ public class ItemCocoon extends Item
 			//posZ += Facing.offsetsZForSide[meta];
 
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-			if (world.getBlock(posX,poY,posZ) == ModBlocks.webSide){
+			if (world.getBlock(posX,posY,posZ) == ModBlocks.webSide){
 				
 			entityCocoon.setPositionAndRotation(posX + 0.5F, posY, posZ + 0.5F, player.rotationYaw * -1, 0F);
 		}else {
