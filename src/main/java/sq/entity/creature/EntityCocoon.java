@@ -1,7 +1,7 @@
 package sq.entity.creature;
 
 import java.util.Random;
-
+import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -104,6 +104,10 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			rotationPitch -= rand.nextFloat();
 			currentDamage--;
 		}
+		if (isInWeb && posY <= ((int)posY +.001) && worldObj.getBlock((int)posX, (int)posY - 1,(int)posZ) == Blocks.air){
+			setVelocity(0,0,0);
+		}
+
 
 		//For endermen, we spawn portal particles around the cocoon.
 		if (cocoonType == EnumCocoonType.ENDERMAN && !isEaten())
