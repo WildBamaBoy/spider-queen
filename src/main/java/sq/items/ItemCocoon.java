@@ -1,9 +1,8 @@
 package sq.items;
 
 import java.util.List;
-
 import org.lwjgl.input.Keyboard;
-
+import sq.core.minecraft.ModBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -59,14 +58,20 @@ public class ItemCocoon extends Item
 				stack.stackSize--;
 			}
 
-			posX += Facing.offsetsXForSide[meta];
+			//posX += Facing.offsetsXForSide[meta];
 			posY += Facing.offsetsYForSide[meta];
-			posZ += Facing.offsetsZForSide[meta];
+			//posZ += Facing.offsetsZForSide[meta];
 
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
+			if (world.getBlock(posX,posY,posZ) == ModBlocks.webSide){
+				
+			entityCocoon.setPositionAndRotation(posX + 0.5F, posY, posZ + 0.5F, player.rotationYaw * -1, 0F);
+		}else {
 			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
+			
+		}
 			world.spawnEntityInWorld(entityCocoon);
-
+			
 			return true;
 		}
 
