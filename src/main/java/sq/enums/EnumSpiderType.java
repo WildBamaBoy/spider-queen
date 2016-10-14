@@ -42,6 +42,7 @@ public enum EnumSpiderType
 		
 		return null;
 	}
+	
 	public String getFriendlyName()
 	{
 		return RadixString.upperFirstLetter(name().toLowerCase());

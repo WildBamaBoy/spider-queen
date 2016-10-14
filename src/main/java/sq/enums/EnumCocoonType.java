@@ -1,6 +1,5 @@
 package sq.enums;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +15,13 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import radixcore.constant.Font.Color;
-import sq.core.minecraft.ModItems;
-import sq.entity.creature.EntityAnt;
-import sq.entity.creature.EntityBee;
-import sq.entity.creature.EntityHuman;
-import sq.entity.creature.EntityWasp;
-import sq.items.ItemCocoon;
+import sq.entities.EntityAnt;
+import sq.entities.EntityBee;
+import sq.entities.EntityHuman;
+import sq.entities.EntityWasp;
 
 /**
  * Defines all possible cocoon types. Each entry ties the type to an id, defines a base catch chance,
@@ -30,24 +29,24 @@ import sq.items.ItemCocoon;
  */
 public enum EnumCocoonType
 {
-	BLACK_ANT 	(0, 50, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityAnt.class),
-	COW 		(1, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntityCow.class),
-	CREEPER 	(2, 40, EnumCocoonSize.NORMAL, EnumSpiderType.BOOM, EntityCreeper.class),
-	GATHERER_BEE (3, 50, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, EntityBee.class),
-	HUMAN 		(4, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntityHuman.class),
-	PIG 		(5, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntityPig.class),
-	QUEEN_BEE 	(6, 20, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, EntityBee.class),
-	SHEEP 		(7, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, EntitySheep.class),
-	SKELETON 	(8, 40, EnumCocoonSize.NORMAL, EnumSpiderType.SLINGER, EntitySkeleton.class),
-	WARRIOR_BEE (9, 35, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, EntityBee.class),
-	WASP 		(10, 35, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityWasp.class),
-	WOLF 		(11, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NOVA, EntityWolf.class),
-	ZOMBIE 		(12, 40, EnumCocoonSize.NORMAL, EnumSpiderType.TANK, EntityZombie.class),
-	ENDERMAN 	(13, 30, EnumCocoonSize.TALL, EnumSpiderType.ENDER, EntityEnderman.class),
-	CHICKEN 	(14, 80, EnumCocoonSize.SMALL, EnumSpiderType.NORMAL, EntityChicken.class),
-	VILLAGER 	(15, 80, EnumCocoonSize.TALL, EnumSpiderType.PACK, EntityVillager.class),
-	HORSE 		(16, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER, EntityHorse.class),
-	RED_ANT		(17, 40, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityAnt.class);
+	BLACK_ANT 	(0, 50, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, "cocoon-black-ant", EntityAnt.class),
+	COW 		(1, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, "cocoon-cow", EntityCow.class),
+	CREEPER 	(2, 40, EnumCocoonSize.NORMAL, EnumSpiderType.BOOM, "cocoon-creeper", EntityCreeper.class),
+	GATHERER_BEE (3, 50, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, "cocoon-gatherer-bee", EntityBee.class),
+	HUMAN 		(4, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, "cocoon-human", EntityHuman.class),
+	PIG 		(5, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, "cocoon-pig", EntityPig.class),
+	QUEEN_BEE 	(6, 20, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, "cocoon-queen-bee", EntityBee.class),
+	SHEEP 		(7, 40, EnumCocoonSize.NORMAL, EnumSpiderType.NORMAL, "cocoon-sheep", EntitySheep.class),
+	SKELETON 	(8, 40, EnumCocoonSize.NORMAL, EnumSpiderType.SLINGER, "cocoon-skeleton", EntitySkeleton.class),
+	WARRIOR_BEE (9, 35, EnumCocoonSize.BEE, EnumSpiderType.NORMAL, "cocoon-warrior-bee", EntityBee.class),
+	WASP 		(10, 35, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, "cocoon-wasp", EntityWasp.class),
+	WOLF 		(11, 50, EnumCocoonSize.NORMAL, EnumSpiderType.NOVA, "cocoon-wolf", EntityWolf.class),
+	ZOMBIE 		(12, 40, EnumCocoonSize.NORMAL, EnumSpiderType.TANK, "cocoon-zombie", EntityZombie.class),
+	ENDERMAN 	(13, 30, EnumCocoonSize.TALL, EnumSpiderType.ENDER, "cocoon-enderman", EntityEnderman.class),
+	CHICKEN 	(14, 80, EnumCocoonSize.SMALL, EnumSpiderType.NORMAL, "cocoon-chicken", EntityChicken.class),
+	VILLAGER 	(15, 80, EnumCocoonSize.TALL, EnumSpiderType.PACK, "cocoon-villager", EntityVillager.class),
+	HORSE 		(16, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER, "cocoon-horse", EntityHorse.class),
+	RED_ANT		(17, 40, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, "cocoon-ant", EntityAnt.class);
 	
 	final int id;
 	final int catchChance;
@@ -55,15 +54,18 @@ public enum EnumCocoonType
 	final EnumSpiderType spiderTypeYield;
 	final String deathSound;
 	final Class captureClass;
+	final ResourceLocation textureLocation;
+	final ResourceLocation deadTextureLocation;
 	
-	EnumCocoonType(int id, int catchChance, EnumCocoonSize size, EnumSpiderType spiderType, Class captureClass)
+	EnumCocoonType(int id, int catchChance, EnumCocoonSize size, EnumSpiderType spiderType, String textureName, Class captureClass)
 	{
 		this.id = id;
 		this.catchChance = catchChance;
 		this.cocoonSize = size;
 		this.spiderTypeYield = spiderType;
 		this.captureClass = captureClass;
-		
+		this.textureLocation = new ResourceLocation("spiderqueen:textures/entities/" + textureName + ".png");
+		this.deadTextureLocation = new ResourceLocation("spiderqueen:textures/entities/" + textureName + "-dead.png");
 		this.deathSound = "mob." + name().toLowerCase() + ".death";
 	}
 	
@@ -75,32 +77,6 @@ public enum EnumCocoonType
 	public int getCatchChance()
 	{
 		return catchChance;
-	}
-	
-	public ItemCocoon getCocoonItem()
-	{
-		try
-		{
-			for (Field f : ModItems.class.getDeclaredFields())
-			{
-				if (f.getName().equalsIgnoreCase("cocoon" + name().toLowerCase().replace("_", "")))
-				{
-					ItemCocoon item = (ItemCocoon) f.get(null);
-					return item;
-				}
-			}
-		}
-		
-		catch (Exception e)
-		{
-		}
-		
-		return null;
-	}
-	
-	public Class getCaptureClass()
-	{
-		return captureClass;
 	}
 	
 	public EnumCocoonSize getCocoonSize()
@@ -249,5 +225,33 @@ public enum EnumCocoonType
 		}
 		
 		return null;
+	}
+	
+	public static EnumCocoonType getCocoonType(int id)
+	{
+		for (EnumCocoonType type : values())
+		{
+			if (type.id == id)
+			{
+				return type;
+			}
+		}
+		
+		return null;
+	}
+
+	public Class getCaptureClass()
+	{
+		return captureClass;
+	}
+	
+	public ResourceLocation getTextureLocation() 
+	{
+		return textureLocation;
+	}
+	
+	public ResourceLocation getDeadTextureLocation()
+	{
+		return deadTextureLocation;
 	}
 }

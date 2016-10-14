@@ -1,22 +1,25 @@
 package sq.core.forge;
 
-/**
- * The server-side proxy class for Spider Queen.
- */
-public class ServerProxy
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import sq.items.ISubtypeModelProvider;
+
+public class ServerProxy 
 {
-	public void registerRenderers()
-	{
-		
-	}
-	
-	public void registerSpiderQueenRenderer()
-	{
-		
-	}
-	
 	public void registerEventHandlers()
 	{
 		
+	}
+	
+	public void registerEntityModels()
+	{
+		
+	}
+
+	public void registerItemRenderer(Item item, String name)
+	{
+
 	}
 }

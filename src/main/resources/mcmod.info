@@ -1,16 +1,12 @@
-[
-{
+[{
   "modid": "SQ",
   "name": "Spider Queen",
   "description": "A revival of the popular Spider Queen mod by djoslin.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
-  "updateUrl": "",
   "authorList": ["Pullahoko", "WildBamaBoy", "SheWolfDeadly"],
   "credits": "djoslin, Pullahoko, pelindolok, lemonszz, many others",
   "logoFile": "spider-queen.png",
-  "screenshots": [],
   "dependencies": []
-}
-]
+}]

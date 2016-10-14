@@ -1,0 +1,111 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "builtin/generated",
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "type": {
+      "blackant": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-blackant"
+        }
+      },
+      "blaze": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-blaze"
+        }
+      },
+      "chicken": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-chicken"
+        }
+      },
+      "cow": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-cow"
+        }
+      },
+      "creeper": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-creeper"
+        }
+      },
+      "enderman": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-enderman"
+        }
+      },
+      "gathererbee": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-gathererbee"
+        }
+      },
+      "ghast": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-ghast"
+        }
+      },
+      "horse": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-horse"
+        }
+      },
+      "human": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-human"
+        }
+      },
+      "pig": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-pig"
+        }
+      },
+      "queenbee": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-queenbee"
+        }
+      },
+      "redant": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-redant"
+        }
+      },
+      "sheep": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-sheep"
+        }
+      },
+      "skeleton": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-skeleton"
+        }
+      },
+      "villager": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-villager"
+        }
+      },
+      "warriorbee": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-warriorbee"
+        }
+      },
+      "wasp": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-wasp"
+        }
+      },
+      "wolf": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-wolf"
+        }
+      },
+      "zombie": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-zombie"
+        }
+      }
+    }
+  }
+}

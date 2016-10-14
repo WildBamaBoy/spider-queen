@@ -1,20 +1,28 @@
 package sq.items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Facing;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import radixcore.constant.Font.Color;
+import sq.client.items.MeshCocoon;
 import sq.core.SpiderCore;
-import sq.entity.creature.EntityCocoon;
+import sq.core.minecraft.SpiderItems;
+import sq.entities.EntityCocoon;
 import sq.enums.EnumCocoonType;
 import sq.enums.EnumSpiderType;
 
@@ -22,35 +30,37 @@ import sq.enums.EnumSpiderType;
  * Defines the base cocoon item, which places an entity version of its accompanying type into the world 
  * when the player right-clicks a block.
  */
-public class ItemCocoon extends Item
+public class ItemCocoon extends Item implements ISubtypeModelProvider
 {
-	private EnumCocoonType cocoonType;
-
-	public ItemCocoon(EnumCocoonType type)
+	public ItemCocoon()
 	{
-		super();
-
-		final String name = "cocoon-" + type.getName();
-		setCreativeTab(SpiderCore.getCreativeTab());
-		setCocoonType(type);
+		// Base name of a cocoon item. Suffix will be added when getUnlocalizedName() is called.
+		final String name = SpiderCore.ID + ".cocoon.";
+		
 		setUnlocalizedName(name);
-		setTextureName("sq:" + name);
-
-		GameRegistry.registerItem(this, name);
-	}
-
-	private void setCocoonType(EnumCocoonType type)
-	{
-		cocoonType = type;
-	}
-
-	public EnumCocoonType getCocoonType()
-	{
-		return cocoonType;
+		setHasSubtypes(true);
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
+    public String getUnlocalizedName(ItemStack stack)
+    {
+		// Add the appropriate suffix based on our metadata
+        return super.getUnlocalizedName() + EnumCocoonType.getCocoonType(stack.getMetadata()).getName();
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs creativeTab, List<ItemStack> list)
+    {
+    	for (EnumCocoonType type : EnumCocoonType.values())
+    	{
+    		ItemStack subItemStack = new ItemStack(this, 1, type.getId());
+            list.add(subItemStack);
+    	}
+    }
+
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
 		if (!world.isRemote)
 		{
@@ -59,24 +69,23 @@ public class ItemCocoon extends Item
 				stack.stackSize--;
 			}
 
-			posX += Facing.offsetsXForSide[meta];
-			posY += Facing.offsetsYForSide[meta];
-			posZ += Facing.offsetsZForSide[meta];
-
+			final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(stack.getMetadata());
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
-			entityCocoon.setPositionAndRotation(posX + 0.5F, posY + 1, posZ + 0.5F, player.rotationYaw * -1, 0F);
+			entityCocoon.setPositionAndRotation(pos.getX() + 0.5F, pos.getY() + 1, pos.getZ() + 0.5F, player.rotationYaw * -1, 0F);
 			world.spawnEntityInWorld(entityCocoon);
 
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
-
-		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);
+		
+		return EnumActionResult.FAIL;
 	}
-
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean unknown)
 	{
+		EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(itemStack.getMetadata());
+		
 		if (cocoonType.getSpiderTypeYield() != EnumSpiderType.NORMAL)
 		{
 			if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
@@ -110,5 +119,40 @@ public class ItemCocoon extends Item
 				}
 			}
 		}
+	}
+
+	@Override
+	public ItemMeshDefinition getMeshDefinition() 
+	{
+		return new MeshCocoon("cocoon");
+	}
+
+	@Override
+	public List<String> getVariantNames() 
+	{
+		List<String> returnList = new ArrayList<String>();
+        
+		for (EnumCocoonType type : EnumCocoonType.values())
+        {
+        	returnList.add("type=" + type.getName());
+        }
+
+        return returnList;
+	}
+
+	@Override
+	public ResourceLocation getResourceLocation() 
+	{
+		return null;
+	}
+
+	public EnumCocoonType getCocoonType(ItemStack stack)
+	{
+		return EnumCocoonType.getCocoonType(stack.getMetadata());
+	}
+	
+	public static ItemStack getCocoonItemStack(EnumCocoonType type)
+	{
+		return new ItemStack(SpiderItems.COCOON, 1, type.getId());
 	}
 }

@@ -1,0 +1,214 @@
+{
+    "ant.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:ant-death"
+        ]
+    },
+    "ant.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:ant-hurt"
+        ]
+    },
+    "ant.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:ant-idle-1",
+            "spiderqueen:ant-idle-2",
+            "spiderqueen:ant-idle-3",
+            "spiderqueen:ant-idle-4"
+        ]
+    },
+    "bee.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:bee-idle-1",
+            "spiderqueen:bee-idle-2",
+            "spiderqueen:bee-idle-3",
+            "spiderqueen:bee-idle-4"
+        ]
+    },
+    "bee.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:bee-hurt"
+        ]
+    },
+    "bee.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:bee-death"
+        ]
+    },
+    "beetle.death":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:ant-death"
+        ]
+    },
+    "beetle.hurt":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:ant-hurt"
+        ]
+    },
+    "beetle.idle":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:ant-idle-1",
+            "spiderqueen:ant-idle-2",
+            "spiderqueen:ant-idle-3",
+            "spiderqueen:ant-idle-4"
+        ]
+    },
+    "fly.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:bee-idle-1",
+            "spiderqueen:bee-idle-2",
+            "spiderqueen:bee-idle-3",
+            "spiderqueen:bee-idle-4"
+        ]
+    },
+    "fly.hurt":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:bee-hurt"
+        ]
+    },
+    "fly.death":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:bee-death"
+        ]
+    },
+    "jack.idle":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:jack-idle-1",
+            "spiderqueen:jack-idle-2",
+            "spiderqueen:jack-idle-3"
+        ]
+    },
+    "jack.hurt":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:jack-hurt"
+        ]
+    },
+    "jack.death":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:jack-death"
+        ]
+    },
+    "mand.vine":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:mand-vine"
+        ]
+    },
+    "mand.idle":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:mand-idle-1",
+            "spiderqueen:mand-idle-2",
+            "spiderqueen:mand-idle-3",
+            "spiderqueen:mand-idle-4"
+        ]
+    },
+    "mand.death":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:mand-death"
+        ]
+    },
+    "mand.hurt":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:mand-hurt"
+        ]
+    },
+    "wasp.death":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:bee-death"
+        ]
+    },
+    "wasp.hurt":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:bee-hurt"
+        ]
+    },
+    "wasp.idle":
+    {
+        "category": "hostile",
+        "sounds":
+        [
+            "spiderqueen:bee-idle-1",
+            "spiderqueen:bee-idle-2",
+            "spiderqueen:bee-idle-3",
+            "spiderqueen:bee-idle-4"
+        ]
+    },
+    "recall.rod":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:recall-rod"
+        ]
+    },
+    "freeze.rod":
+    {
+        "category": "neutral",
+        "sounds":
+        [
+            "spiderqueen:freeze-rod"
+        ]
+    }
+}
