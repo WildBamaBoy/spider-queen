@@ -105,6 +105,26 @@
         "textures": {
           "layer0": "spiderqueen:items/cocoon-zombie"
         }
+      },
+      "rabbit": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-rabbit"
+        }
+      },
+      "guardian": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-guardian"
+        }
+      },
+      "witch": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-witch"
+        }
+      },
+      "polarbear": {
+        "textures": {
+          "layer0": "spiderqueen:items/cocoon-polarbear"
+        }
       }
     }
   }

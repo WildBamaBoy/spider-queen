@@ -1,54 +1,65 @@
 package sq.client.model;
 
+import java.lang.reflect.Method;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelChicken;
+import net.minecraft.client.model.ModelCreeper;
+import net.minecraft.client.model.ModelEnderman;
+import net.minecraft.client.model.ModelGuardian;
+import net.minecraft.client.model.ModelHorse;
+import net.minecraft.client.model.ModelQuadruped;
+import net.minecraft.client.model.ModelRabbit;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.ModelVillager;
+import net.minecraft.client.model.ModelWitch;
+import net.minecraft.client.model.ModelWolf;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import sq.api.ICocoonModel;
 import sq.entities.EntityCocoon;
 import sq.enums.EnumCocoonSize;
 import sq.enums.EnumCocoonType;
+import sq.util.CocoonRenderCache;
+import sq.util.ModelRenderPair;
 
 /**
- * Defines all of the cocoon models in-game.
+ * Defines the model for all cocoons
  */
 public class ModelCocoon extends ModelBase
 {
+	/* Reference to protected method getEntityTexture in Render */
+	private static final Method REFLECT_GET_ENTITY_TEXTURE;
+
+	static
+	{
+		Method targetMethod = null;
+
+		for (Method method : Render.class.getDeclaredMethods())
+		{
+			if (method.getReturnType() == ResourceLocation.class)
+			{
+				targetMethod = method;
+				targetMethod.setAccessible(true);
+				break;
+			}
+		}
+
+		REFLECT_GET_ENTITY_TEXTURE = targetMethod;
+	}
+
 	private final ModelRenderer	modelWrappedHead;
 	private final ModelRenderer	modelWrappedBody;
 	private final ModelRenderer	modelWrappedBodyTall;
 	private final ModelRenderer	modelVisibleFlatHead;
-
-	private final ModelRenderer	modelSheepFlatHead;
-
-	private final ModelRenderer	modelWolfHead;
-	private final ModelRenderer	modelWolfEarLeft;
-	private final ModelRenderer	modelWolfEarRight;
-	private final ModelRenderer	modelWolfNose;
-
-	private final ModelRenderer	modelChickenBeak;
-	private final ModelRenderer	modelChickenHead;
-
-	private final ModelRenderer	modelEndermanHead;
-
-	private final ModelRenderer	modelVillagerHead;
-	private final ModelRenderer	modelVillagerNose;
-
-	private final ModelRenderer	modelHorseHeadStart;
-	private final ModelRenderer	modelHorseMuzzleUp;
-	private final ModelRenderer	modelHorseMuzzleDown;
-	private final ModelRenderer	modelHorseWeb;
-
-	private final ModelRenderer modelBeeHead;
 	private final ModelRenderer modelBeeCocoon;
-	private final ModelRenderer modelBeeFeeler1;
-	private final ModelRenderer modelBeeFeeler2;
-
-	private final ModelRenderer modelInsectHead;
 	private final ModelRenderer modelInsectCocoon;
-	private final ModelRenderer modelInsectFeeler1;
-	private final ModelRenderer modelInsectFeeler2;
-	private final ModelRenderer modelInsectPincer;
 
 	public ModelCocoon()
 	{
@@ -70,73 +81,6 @@ public class ModelCocoon extends ModelBase
 		modelVisibleFlatHead.addBox(-4F, -4F, -7F, 8, 8, 6, 0F);
 		modelVisibleFlatHead.setRotationPoint(0F, -16F, -1F);
 
-		modelSheepFlatHead = new ModelRenderer(this, 2, 2);
-		modelSheepFlatHead.addBox(-4F, -4F, -7F, 8, 8, 6, 0F);
-		modelSheepFlatHead.setRotationPoint(0F, -16F, 0F);
-
-		modelWolfHead = new ModelRenderer(this, 0, 0);
-		modelWolfHead.addBox(-3, -3, -2, 6, 6, 4, 0F);
-		modelWolfHead.setRotationPoint(0F, -14.5F, -7F);
-
-		modelWolfEarLeft = new ModelRenderer(this, 16, 14);
-		modelWolfEarLeft.addBox(-3, -5, 0, 2, 2, 1, 0F);
-		modelWolfEarLeft.setRotationPoint(0F, -14.5F, -7F);
-
-		modelWolfEarRight = new ModelRenderer(this, 16, 14);
-		modelWolfEarRight.addBox(1, -5, 0, 2, 2, 1, 0F);
-		modelWolfEarRight.setRotationPoint(0F, -14.5F, -7F);
-
-		modelWolfNose = new ModelRenderer(this, 0, 10);
-		modelWolfNose.addBox(-2, 0, -5, 3, 3, 4, 0F);
-		modelWolfNose.setRotationPoint(0.5F, -14.5F, -7F);
-
-		modelChickenHead = new ModelRenderer(this, 0, 0);
-		modelChickenHead.addBox(-2F, -6F, -2F, 4, 6, 3, 0.0F);
-		modelChickenHead.setRotationPoint(0F, -4F, -7F);
-
-		modelChickenBeak = new ModelRenderer(this, 14, 0);
-		modelChickenBeak.addBox(-2F, -4F, -4F, 4, 2, 2, 0.0F);
-		modelChickenBeak.setRotationPoint(0F, -4F, -7F);
-
-		modelEndermanHead = new ModelRenderer(this, 32, 16);
-		modelEndermanHead.addBox(-4F, -8F, -4F, 8, 8, 8);
-		modelEndermanHead.setRotationPoint(0F, -16F, 0F);
-
-		modelVillagerHead = new ModelRenderer(this, 32, 14);
-		modelVillagerHead.addBox(-4F, -10F, -4F, 8, 10, 8);
-		modelVillagerHead.setRotationPoint(0F, -16F, 0F);
-
-		modelVillagerNose = new ModelRenderer(this, 56, 0);
-		modelVillagerNose.addBox(-1F, -1F, -2F, 2, 4, 2);
-		modelVillagerNose.setRotationPoint(0F, -18F, -3.8F);
-
-		modelHorseHeadStart = new ModelRenderer(this, 0, 8);
-		modelHorseHeadStart.addBox(-2F, -14F, -3F, 4, 5, 6);
-		modelHorseHeadStart.setRotationPoint(0F, -7F, -2F);
-		setRotation(modelHorseHeadStart, 0.2617994F, 0F, 0F);
-
-		modelHorseMuzzleUp = new ModelRenderer(this, 20, 0);
-		modelHorseMuzzleUp.addBox(-2F, -14F, -9F, 4, 3, 6);
-		modelHorseMuzzleUp.setRotationPoint(0F, -7F, -2F);
-		setRotation(modelHorseMuzzleUp, 0.2617994F, 0F, 0F);
-
-		modelHorseMuzzleDown = new ModelRenderer(this, 0, 0);
-		modelHorseMuzzleDown.addBox(-2F, -1F, -6.2F, 4, 2, 6);
-		modelHorseMuzzleDown.setRotationPoint(0F, -16F, -7F);
-		setRotation(modelHorseMuzzleDown, 0.4476924F, 0.0174533F, 0F);
-
-		modelHorseWeb = new ModelRenderer(this, 51, -6);
-		modelHorseWeb.addBox(2F, -3F, -6F, 0, 4, 6);
-		modelHorseWeb.setRotationPoint(0F, -16F, -7F);
-		setRotation(modelHorseWeb, 0.3490659F, -0.0174533F, 0F);
-
-		modelBeeHead = new ModelRenderer(this, 0, 0);
-		modelBeeHead.addBox(-4F, -4F, -8F, 6, 6, 6);
-		modelBeeHead.setRotationPoint(1F, 8F, 0F);
-		modelBeeHead.setTextureSize(64, 32);
-		modelBeeHead.mirror = true;
-		setRotation(modelBeeHead, 0F, 0F, 0F);
-
 		modelBeeCocoon = new ModelRenderer(this, 20, 13);
 		modelBeeCocoon.addBox(0F, 0F, 0F, 10, 9, 10);
 		modelBeeCocoon.setRotationPoint(-5F, 3F, -5F);
@@ -144,54 +88,12 @@ public class ModelCocoon extends ModelBase
 		modelBeeCocoon.mirror = true;
 		setRotation(modelBeeCocoon, 0F, 0F, 0F);
 
-		modelBeeFeeler1 = new ModelRenderer(this, 0, -3);
-		modelBeeFeeler1.addBox(0F, -6F, -2F, 0, 6, 3);
-		modelBeeFeeler1.setRotationPoint(-2F, 5F, -6F);
-		modelBeeFeeler1.setTextureSize(64, 32);
-		modelBeeFeeler1.mirror = true;
-		setRotation(modelBeeFeeler1, 0.4363323F, 0.5235988F, 0F);
-
-		modelBeeFeeler2 = new ModelRenderer(this, 0, -3);
-		modelBeeFeeler2.addBox(0F, -6F, -2F, 0, 6, 3);
-		modelBeeFeeler2.setRotationPoint(2F, 5F, -6F);
-		modelBeeFeeler2.setTextureSize(64, 32);
-		modelBeeFeeler2.mirror = true;
-		setRotation(modelBeeFeeler2, 0.4363323F, -0.5235988F, 0F);
-
-		modelInsectHead = new ModelRenderer(this, 0, 0);
-		modelInsectHead.addBox(-4F, -4F, -8F, 8, 8, 8);
-		modelInsectHead.setRotationPoint(0F, 8F, 2F);
-		modelInsectHead.setTextureSize(64, 32);
-		modelInsectHead.mirror = true;
-		setRotation(modelInsectHead, 0F, 0F, 0F);
-
 		modelInsectCocoon = new ModelRenderer(this, 20, 13);
 		modelInsectCocoon.addBox(0F, 0F, 0F, 10, 9, 10);
 		modelInsectCocoon.setRotationPoint(-5F, 3F, -2F);
 		modelInsectCocoon.setTextureSize(64, 32);
 		modelInsectCocoon.mirror = true;
 		setRotation(modelInsectCocoon, 0F, 0F, 0F);
-
-		modelInsectFeeler1 = new ModelRenderer(this, 0, -3);
-		modelInsectFeeler1.addBox(0F, -6F, -2F, 0, 6, 4);
-		modelInsectFeeler1.setRotationPoint(-2F, 6F, -4F);
-		modelInsectFeeler1.setTextureSize(64, 32);
-		modelInsectFeeler1.mirror = true;
-		setRotation(modelInsectFeeler1, 0.4363323F, 0.5235988F, 0F);
-
-		modelInsectFeeler2 = new ModelRenderer(this, 0, -3);
-		modelInsectFeeler2.addBox(0F, -6F, -2F, 0, 6, 4);
-		modelInsectFeeler2.setRotationPoint(2F, 6F, -4F);
-		modelInsectFeeler2.setTextureSize(64, 32);
-		modelInsectFeeler2.mirror = true;
-		setRotation(modelInsectFeeler2, 0.4363323F, -0.5235988F, 0F);
-
-		modelInsectPincer = new ModelRenderer(this, 28, 4);
-		modelInsectPincer.addBox(-3F, -1F, -3F, 8, 1, 4);
-		modelInsectPincer.setRotationPoint(-1F, 12F, -7F);
-		modelInsectPincer.setTextureSize(64, 32);
-		modelInsectPincer.mirror = true;
-		setRotation(modelInsectPincer, 0.0174533F, 0F, 0F);
 	}
 
 	@Override
@@ -203,72 +105,141 @@ public class ModelCocoon extends ModelBase
 
 		renderCocoonBase(cocoonSize, partialTickTime);
 
-		if (cocoonType == EnumCocoonType.WOLF)
+		/* Get the entity's model and render instances from our render cache. The cache creates a new instance of a model 
+		 * when needed, so as to prevent the cocoon's head from moving around when the model instance looked up from the 
+		 * render instance is being used by another entity on screen. */
+		ModelRenderPair mrp = CocoonRenderCache.getInstance().getModelRenderPair(entityCocoon.getHeldEntity().getClass());
+		RenderLiving entityRender = mrp.getRender();
+		ModelBase entityModel = mrp.getModel();
+		
+		GL11.glPushMatrix();
 		{
-			modelWolfHead.render(partialTickTime);
-			modelWolfEarLeft.render(partialTickTime);
-			modelWolfEarRight.render(partialTickTime);
-			modelWolfNose.render(partialTickTime);
-		}
+			//Bind texture and make a couple early corrections
+			bindEntityTexture(entityRender, entityCocoon.getHeldEntity());
+			GL11.glTranslated(0.0D, -1.3D, -0.3D);
 
-		else if (cocoonType == EnumCocoonType.CHICKEN)
-		{
-			modelChickenHead.render(partialTickTime);
-			modelChickenBeak.render(partialTickTime);
-		}
+			ModelRenderer[] headModels = new ModelRenderer[0];
 
-		else if (cocoonType == EnumCocoonType.SHEEP)
-		{
-			modelSheepFlatHead.render(partialTickTime);
-		}
-
-		else if (cocoonType == EnumCocoonType.VILLAGER)
-		{
-			modelVillagerNose.render(partialTickTime);
-			modelVillagerHead.render(partialTickTime);
-		}
-
-		else if (cocoonType == EnumCocoonType.ENDERMAN)
-		{
-			modelEndermanHead.render(partialTickTime);
-		}
-
-		else if (cocoonType == EnumCocoonType.HORSE)
-		{
-			modelHorseHeadStart.render(partialTickTime);
-			modelHorseMuzzleUp.render(partialTickTime);
-			modelHorseMuzzleDown.render(partialTickTime);
-			modelHorseWeb.render(partialTickTime);
-		}
-
-		else if (cocoonSize == EnumCocoonSize.BEE)
-		{
-			GL11.glPushMatrix();
+			//Modded entities can have more control over their cocoon models
+			//when implementing ICocoonModel
+			if (entityModel instanceof ICocoonModel)
 			{
-				GL11.glTranslated(0.0D, -0.75D, 0.0D);
-				modelBeeHead.render(partialTickTime);
-				modelBeeFeeler1.render(partialTickTime);
-				modelBeeFeeler2.render(partialTickTime);
+				ICocoonModel cocoonModel = (ICocoonModel)entityModel;
+				cocoonModel.preRender();
+				headModels = cocoonModel.getHeadModelComponents();
 			}
-			GL11.glPopMatrix();
-		}
 
-		else if (cocoonSize == EnumCocoonSize.INSECT)
-		{
-			GL11.glPushMatrix();
+			else //If they don't, it's probably vanilla. Make some guesses about the model and needed corrections.
 			{
-				GL11.glTranslated(0.0D, -0.75D, 0.0D);
-				modelInsectHead.render(partialTickTime);
-				modelInsectFeeler1.render(partialTickTime);
-				modelInsectFeeler2.render(partialTickTime);
-				modelInsectPincer.render(partialTickTime);
+				if (entityModel instanceof ModelBiped && !(entityModel instanceof ModelEnderman))
+				{
+					GL11.glTranslated(0.0D, 0.5D, 0.15D);
+					ModelBiped bipedModel = (ModelBiped)entityModel;
+					headModels = new ModelRenderer[]{bipedModel.bipedHead};
+				}
+
+				else if (entityModel instanceof ModelQuadruped)
+				{
+					GL11.glTranslated(0.0D, 0.0D, 0.65D);
+					ModelQuadruped quadModel = (ModelQuadruped)entityModel;
+					headModels = new ModelRenderer[]{quadModel.head};
+					
+					if (cocoonType == EnumCocoonType.PIG)
+					{
+						GL11.glTranslated(0.0D, -0.5D, 0.0D);
+					}
+					
+					else if (cocoonType == EnumCocoonType.POLARBEAR)
+					{
+						GL11.glTranslated(0.0D, 0.0D, 0.05D);
+					}
+				}
+
+				else
+				{
+					switch (cocoonType)
+					{
+					case WOLF: 
+						ModelWolf wolfModel = (ModelWolf)entityModel;
+						headModels = new ModelRenderer[]{wolfModel.wolfHeadMain};
+						GL11.glTranslated(0.0D, -0.5D, 0.35D);
+						break;
+					case CREEPER:
+						ModelCreeper creeperModel = (ModelCreeper)entityModel;
+						headModels = new ModelRenderer[]{creeperModel.head};
+						GL11.glTranslated(0.0D, 0.15D, 0.1D);
+						break;
+					case ENDERMAN:
+						ModelEnderman endermanModel = (ModelEnderman)entityModel;
+						headModels = new ModelRenderer[]{endermanModel.bipedHead, endermanModel.bipedHeadwear};
+						GL11.glTranslated(0.0D, 1.2D, 0.3D);
+						break;
+					case CHICKEN: 
+						ModelChicken chickenModel = (ModelChicken)entityModel;
+						headModels = new ModelRenderer[]{chickenModel.head, chickenModel.bill};
+						GL11.glTranslated(0.0D, 0.15D, 0.2D);
+						break;
+					case VILLAGER: 
+						ModelVillager villagerModel = (ModelVillager)entityModel;
+						headModels = new ModelRenderer[]{villagerModel.villagerHead};
+						GL11.glTranslated(0.0D, 0.3D, 0.3D);
+						break;
+					case WITCH:
+						ModelWitch witchModel = (ModelWitch)entityModel;
+						headModels = new ModelRenderer[]{witchModel.villagerHead};
+						GL11.glTranslated(0.0D, 0.3D, 0.3D);
+						break;
+					case GUARDIAN:
+						ModelGuardian guardianModel = (ModelGuardian)entityModel;
+						headModels = new ModelRenderer[]{
+								ObfuscationReflectionHelper.getPrivateValue(ModelGuardian.class, guardianModel, 0)
+						};
+						GL11.glTranslated(0.0D, 0.0D, -0.1D);
+						GL11.glScaled(0.8D, 0.8D, 0.8D);
+						break;
+					case HORSE: 
+						ModelHorse horseModel = (ModelHorse)entityModel;
+						headModels = new ModelRenderer[]{
+								ObfuscationReflectionHelper.getPrivateValue(ModelHorse.class, horseModel, 1),
+								ObfuscationReflectionHelper.getPrivateValue(ModelHorse.class, horseModel, 2)
+						};
+						GL11.glTranslated(0.0D, 0.3D, 1.0D);
+						break;
+					case RABBIT: 
+						ModelRabbit rabbitModel = (ModelRabbit)entityModel;
+						headModels = new ModelRenderer[]{
+								ObfuscationReflectionHelper.getPrivateValue(ModelRabbit.class, rabbitModel, 7),
+								ObfuscationReflectionHelper.getPrivateValue(ModelRabbit.class, rabbitModel, 8),
+								ObfuscationReflectionHelper.getPrivateValue(ModelRabbit.class, rabbitModel, 9),
+								ObfuscationReflectionHelper.getPrivateValue(ModelRabbit.class, rabbitModel, 10),
+								ObfuscationReflectionHelper.getPrivateValue(ModelRabbit.class, rabbitModel, 11)
+								};
+						break;
+					}
+				}
 			}
-			GL11.glPopMatrix();
+			
+			//Finally render everything in our head models.
+			for (ModelRenderer model : headModels)
+			{
+				model.render(0.0625F);
+			}
 		}
 
-		else
+		GL11.glPopMatrix();
+	}
+
+	private void bindEntityTexture(RenderLiving renderLiving, Entity entity)
+	{
+		try
 		{
-			modelVisibleFlatHead.render(partialTickTime);
+			ResourceLocation loc = (ResourceLocation) REFLECT_GET_ENTITY_TEXTURE.invoke(renderLiving, entity);
+			renderLiving.bindTexture(loc);
+		}
+
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 
@@ -279,6 +250,14 @@ public class ModelCocoon extends ModelBase
 			modelWrappedBody.render(partialTickTime);
 		}
 
+		else if (cocoonSize == EnumCocoonSize.HUGE)
+		{
+			GL11.glPushMatrix();
+			GL11.glScaled(1.5D, 1.5D, 1.5D);
+			modelWrappedBody.render(partialTickTime);
+			GL11.glPopMatrix();
+		}
+		
 		else if (cocoonSize == EnumCocoonSize.NORMAL)
 		{
 			modelWrappedHead.render(partialTickTime);

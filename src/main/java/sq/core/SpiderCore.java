@@ -3,6 +3,8 @@ package sq.core;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -13,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import radixcore.core.ModMetadataEx;
 import radixcore.core.RadixCore;
 import radixcore.update.RDXUpdateProtocol;
@@ -26,6 +29,7 @@ import sq.core.minecraft.SpiderSounds;
 import sq.core.radix.CrashWatcher;
 import sq.core.radix.SpiderPacketHandler;
 import sq.entities.EntityCocoon;
+import sq.entities.EntityWebshot;
 
 @Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore", acceptedMinecraftVersions = "[1.10.2]",
 guiFactory = "sq.core.forge.client.SpiderGuiFactory")
@@ -83,8 +87,14 @@ public final class SpiderCore
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		proxy.handleInitEvent();
+		
 		//Entities
 		EntityRegistry.registerModEntity(EntityCocoon.class, EntityCocoon.class.getSimpleName(), 5897, this, 50, 2, true);
+		EntityRegistry.registerModEntity(EntityWebshot.class, EntityWebshot.class.getSimpleName(), 5898, this, 50, 2, true);
+		
+		//Recipes
+		GameRegistry.addShapelessRecipe(new ItemStack(SpiderItems.WEB), Items.STRING, Items.STRING, Items.STRING);
 		
 		MinecraftForge.EVENT_BUS.register(new SpiderEvents());
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new SpiderGuiHandler());
@@ -98,5 +108,10 @@ public final class SpiderCore
 	public static void setCreativeTab(CreativeTabs tab)
 	{
 		creativeTab = tab;
+	}
+	
+	public static Logger getLogger()
+	{
+		return logger;
 	}
 }

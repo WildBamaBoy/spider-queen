@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,26 @@ public class ItemCocoon extends Item implements ISubtypeModelProvider
 
 			final EnumCocoonType cocoonType = EnumCocoonType.getCocoonType(stack.getMetadata());
 			final EntityCocoon entityCocoon = new EntityCocoon(world, cocoonType);
+			Entity heldEntity = null;
+			
+			try
+			{
+				heldEntity = (Entity) cocoonType.getCaptureClass().getDeclaredConstructor(World.class).newInstance(world);
+				
+				if (stack.hasTagCompound())
+				{
+					heldEntity.readFromNBT(stack.getTagCompound());
+				}
+			}
+			
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 			entityCocoon.setPositionAndRotation(pos.getX() + 0.5F, pos.getY() + 1, pos.getZ() + 0.5F, player.rotationYaw * -1, 0F);
+			entityCocoon.setHeldEntity(heldEntity);
+			
 			world.spawnEntityInWorld(entityCocoon);
 
 			return EnumActionResult.SUCCESS;

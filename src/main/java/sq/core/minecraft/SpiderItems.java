@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import sq.core.SpiderCore;
 import sq.items.ItemCocoon;
+import sq.items.ItemWebShot;
 
 public class SpiderItems 
 {
@@ -28,7 +29,7 @@ public class SpiderItems
 //	
 //	public static final Item GHAST_EGG;
 //	public static final Item SPIDER_EGG;
-//	public static final Item WEB;
+	public static final Item WEB;
 //	public static final Item WEB_POISON;
 //	public static final Item RARE_FRUIT;
 //	public static final Item SKULL;
@@ -62,6 +63,8 @@ public class SpiderItems
 		};
 		COCOON.setCreativeTab(tab);
 		SpiderCore.setCreativeTab(tab);
+		
+		WEB = register(new ItemWebShot(), "webshot");
 	}
 	
 	private static Item register(Item item, String name)

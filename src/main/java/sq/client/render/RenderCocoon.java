@@ -51,6 +51,6 @@ public class RenderCocoon extends RenderLiving<EntityCocoon>
 	@Override
 	protected ResourceLocation getEntityTexture(EntityCocoon entity) 
 	{
-		return entity.getIsEaten() ? entity.getCocoonType().getDeadTextureLocation() : entity.getCocoonType().getTextureLocation();
+		return entity.getCocoonType().getTextureLocation();
 	}
 }

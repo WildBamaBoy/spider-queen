@@ -1,5 +1,7 @@
 package sq.entities;
 
+import java.util.UUID;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -7,8 +9,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -16,6 +20,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import radixcore.util.RadixLogic;
@@ -30,6 +35,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 {
 	private static final DataParameter<Boolean> IS_EATEN = EntityDataManager.<Boolean>createKey(EntityCocoon.class, DataSerializers.BOOLEAN);
 	
+	private Entity heldEntity;
 	private EnumCocoonType cocoonType;
 	private int currentDamage;
 	private int timeSinceHit;
@@ -151,6 +157,11 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 					//TODO
 					//entityDropItem(new ItemStack(SpiderItems.SPIDER_EGG, dropAmount, 0), 0);
 				}
+				
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX - motionX * 2, posY - motionY * 2 + 1, posZ - motionZ * 2, motionX, motionY, motionZ);
+				worldObj.playSound((EntityPlayer)null, player.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+			
+				setDead();
 			}
 		}
 
@@ -171,15 +182,26 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			if (!worldObj.isRemote && 
 					player.isSneaking() && 
 					player.getHeldItemMainhand() != null 
-					&& player.getHeldItemMainhand().getItem() instanceof ItemSword)
+					&& player.getHeldItemMainhand().getItem() instanceof ItemSword &&
+					!this.getIsEaten())
 			{
 				try
 				{
-					Class capturedClass = cocoonType.getCaptureClass();
-					Entity newEntity = (Entity)capturedClass.getDeclaredConstructor(World.class).newInstance(worldObj);
+					Entity newEntity = cocoonType.getCaptureEntityInstance(worldObj);
+					NBTTagCompound nbt = new NBTTagCompound();
+					
+					//Copy to a new instance by NBT data, preserve the new UUID so the spawning system doesn't remove it
+					UUID newUUID = newEntity.getUniqueID();
+					
+					heldEntity.writeToNBT(nbt);
+					newEntity.readFromNBT(nbt);
+
+					newEntity.setUniqueId(newUUID);
 					newEntity.setPosition(posX, posY, posZ);
 					worldObj.spawnEntityInWorld(newEntity);
+					
 					setDead();
+					heldEntity = null;
 				}
 				
 				catch (Exception e)
@@ -205,7 +227,12 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				{
 					if (!getIsEaten() && !player.capabilities.isCreativeMode) //When it's not eaten, drop the cocoon's item.
 					{
-						entityDropItem(ItemCocoon.getCocoonItemStack(cocoonType), 0.5F);	
+						ItemStack cocoonStack = ItemCocoon.getCocoonItemStack(cocoonType);
+						NBTTagCompound nbt = new NBTTagCompound();
+						nbt = heldEntity.writeToNBT(nbt);
+						cocoonStack.setTagCompound(nbt);
+						
+						entityDropItem(cocoonStack, 0.5F);	
 					}
 					
 					//And destroy the cocoon.
@@ -220,15 +247,27 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
+		super.readEntityFromNBT(nbt);
+		
 		setCocoonType(EnumCocoonType.getCocoonType(nbt.getInteger("cocoonType")));
 		setIsEaten(nbt.getBoolean("isEaten"));
+		
+		NBTTagCompound heldEntityNBT = (NBTTagCompound) nbt.getTag("heldEntity");
+		heldEntity = cocoonType.getCaptureEntityInstance(worldObj);
+		heldEntity.readFromNBT(heldEntityNBT);
 	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
+		super.writeEntityToNBT(nbt);
+		
 		nbt.setInteger("cocoonType", cocoonType.getId());
 		nbt.setBoolean("isEaten", getIsEaten());
+
+		NBTTagCompound heldEntityNBT = new NBTTagCompound();
+		heldEntity.writeToNBT(heldEntityNBT);
+		nbt.setTag("heldEntity", heldEntityNBT);
 	}
 	
 	@Override
@@ -236,6 +275,11 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		buffer.writeInt(cocoonType.getId());
 		buffer.writeBoolean(getIsEaten());
+		
+		//Have the held entity write itself to the buffer to be rebuilt on the other side.
+		NBTTagCompound nbt = new NBTTagCompound();
+		heldEntity.writeToNBT(nbt);
+		writeNBTToBuffer(nbt, buffer);
 	}
 
 	@Override
@@ -243,6 +287,10 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		setCocoonType(EnumCocoonType.getCocoonType(buffer.readInt()));
 		setIsEaten(buffer.readBoolean());
+		heldEntity = cocoonType.getCaptureEntityInstance(worldObj);
+		
+		NBTTagCompound readNBT = readNBTFromBuffer(heldEntity, buffer);
+		heldEntity.readFromNBT(readNBT);
 	}
 	
 	/************************************** DATA GETTERS/SETTERS *************************************/	
@@ -293,5 +341,90 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 			setSize(1.0F, 1.0F);
 			break;
 		}
+	}
+	
+	public void setHeldEntity(Entity entity)
+	{
+		heldEntity = entity;
+	}
+	
+	public Entity getHeldEntity()
+	{
+		return heldEntity;
+	}
+	
+	private void writeNBTToBuffer(NBTTagCompound nbt, ByteBuf buffer)
+	{
+		for (String key : nbt.getKeySet())
+		{
+			NBTBase baseTag = nbt.getTag(key);
+			String tagType = NBTBase.NBT_TYPES[baseTag.getId()];
+			
+			if (tagType.equals("INT"))
+			{
+				buffer.writeInt(nbt.getInteger(key));
+			}
+			
+			else if (tagType.equals("BYTE"))
+			{
+				buffer.writeByte(nbt.getByte(key));
+			}
+			
+			else if (tagType.equals("FLOAT"))
+			{
+				buffer.writeFloat(nbt.getFloat(key));
+			}
+			
+			else if (tagType.equals("SHORT"))
+			{
+				buffer.writeShort(nbt.getShort(key));
+			}
+			
+			else if (tagType.equals("LONG"))
+			{
+				buffer.writeLong(nbt.getLong(key));
+			}
+		}
+	}
+	
+	private NBTTagCompound readNBTFromBuffer(Entity entity, ByteBuf buffer)
+	{
+		NBTTagCompound nbt = new NBTTagCompound();
+		
+		//To get the names of what we need to read from the buffer
+		entity.writeToNBT(nbt);
+		
+		for (String key : nbt.getKeySet())
+		{
+			NBTBase baseTag = nbt.getTag(key);
+			String tagType = NBTBase.NBT_TYPES[baseTag.getId()];
+			
+			if (tagType.equals("INT"))
+			{
+				nbt.setInteger(key, buffer.readInt());
+			}
+			
+			else if (tagType.equals("BYTE"))
+			{
+				nbt.setByte(key, buffer.readByte());
+			}
+			
+			else if (tagType.equals("FLOAT"))
+			{
+				nbt.setFloat(key, buffer.readFloat());
+			}
+			
+			else if (tagType.equals("SHORT"))
+			{
+				nbt.setShort(key, buffer.readShort());
+			}
+			
+			else if (tagType.equals("LONG"))
+			{
+				nbt.setLong(key, buffer.readLong());
+			}
+		}
+		
+		return nbt;
 	}
 }
