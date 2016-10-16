@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import sq.client.render.CocoonRenderFactory;
+import sq.client.render.RenderSpiderQueenPlayer;
 import sq.client.render.WebshotRenderFactory;
 import sq.entities.EntityCocoon;
 import sq.entities.EntityWebshot;
@@ -19,6 +20,7 @@ import sq.items.ISubtypeModelProvider;
 public class ClientProxy extends ServerProxy
 {
 	private HashMap<String, Item> initRegistrationMap = new HashMap<String, Item>();
+	public static RenderSpiderQueenPlayer renderSpiderQueen;
 	
 	@Override
 	public void registerEntityModels()
@@ -58,6 +60,8 @@ public class ClientProxy extends ServerProxy
 	@Override
 	public void handleInitEvent()
 	{
+		renderSpiderQueen = new RenderSpiderQueenPlayer(Minecraft.getMinecraft().getRenderManager());
+		
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		
 		for (Map.Entry<String, Item> entry : initRegistrationMap.entrySet())

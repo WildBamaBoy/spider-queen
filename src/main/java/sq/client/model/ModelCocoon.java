@@ -39,10 +39,12 @@ public class ModelCocoon extends ModelBase
 
 	static
 	{
+		//Grab getEntityTexture()...
 		Method targetMethod = null;
 
 		for (Method method : Render.class.getDeclaredMethods())
 		{
+			//As of right now it's the only method that returns a resource location in Render.
 			if (method.getReturnType() == ResourceLocation.class)
 			{
 				targetMethod = method;
@@ -54,6 +56,7 @@ public class ModelCocoon extends ModelBase
 		REFLECT_GET_ENTITY_TEXTURE = targetMethod;
 	}
 
+	/* All the different cocoons */
 	private final ModelRenderer	modelWrappedHead;
 	private final ModelRenderer	modelWrappedBody;
 	private final ModelRenderer	modelWrappedBodyTall;
@@ -189,6 +192,8 @@ public class ModelCocoon extends ModelBase
 						headModels = new ModelRenderer[]{witchModel.villagerHead};
 						GL11.glTranslated(0.0D, 0.3D, 0.3D);
 						break;
+					
+					/* Why oh why are some of these private?! */
 					case GUARDIAN:
 						ModelGuardian guardianModel = (ModelGuardian)entityModel;
 						headModels = new ModelRenderer[]{
@@ -219,7 +224,7 @@ public class ModelCocoon extends ModelBase
 				}
 			}
 			
-			//Finally render everything in our head models.
+			//Finally, render everything in our head models.
 			for (ModelRenderer model : headModels)
 			{
 				model.render(0.0625F);

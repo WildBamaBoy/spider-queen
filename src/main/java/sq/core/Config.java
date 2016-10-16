@@ -14,6 +14,10 @@ public final class Config implements Serializable
 	private transient final Configuration config;
 	
 	public boolean allowUpdateChecking;
+
+	public boolean usePlayerSkin = false;
+
+	public boolean useSpiderQueenModel = true;
 	
 	public Config(FMLPreInitializationEvent event)
 	{

@@ -8,7 +8,9 @@ import net.minecraft.client.model.ModelRenderer;
  * 
  * The class implementing this interface MUST be a model.
  * 
- * If your model extends from ModelQuadruped or ModelBiped, you MIGHT NOT need to implement this interface.
+ * If your model extends from ModelQuadruped or ModelBiped, you MIGHT NOT need to implement this interface if you don't
+ * add any additional models. Spider Queen will make some guesses as to the models that belong to the creature's head
+ * and any needed corrections for quadrupeds and bipeds.  
  */
 public interface ICocoonModel 
 {

@@ -114,4 +114,9 @@ public final class SpiderCore
 	{
 		return logger;
 	}
+
+	public static Config getConfig() 
+	{
+		return config;
+	}
 }
